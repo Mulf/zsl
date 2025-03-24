@@ -99,13 +99,15 @@ int main()
 		std::cerr << "Caught exception:\n";
 		std::cerr << e.what() << "\n";
 
-		std::cerr << "Error code: " << e.GetErrorCode() << "\n";
-		std::cerr << "Location: " << e.GetLocation() << "\n";
-		std::cerr << "Stack trace:\n" << e.GetStackTrace() << "\n";
+		//std::cerr << "Error code: " << e.GetErrorCode() << "\n";
+		//std::cerr << "Location: " << e.GetLocation() << "\n";
+		//std::cerr << "Stack trace:\n" << e.GetStackTrace() << "\n";
+
+		// 清理符号系统
+	//ZException::CleanupSymbols();
 	}
 
-	// 清理符号系统
-	ZException::CleanupSymbols();
+	
 
 	return 0;
 }
