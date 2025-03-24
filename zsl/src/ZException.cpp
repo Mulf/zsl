@@ -69,82 +69,41 @@ void ZException::CleanupSymbols()
 }
 
 std::string ZException::CaptureStackTrace()
-{
-    std::ostringstream stackStream;
+ {
+    std::stringstream ss;
+    SymInitialize(GetCurrentProcess(), NULL, TRUE);
 
-    // 获取当前线程上下文
-    CONTEXT context;
-    RtlCaptureContext(&context);
+    void* stack[100];
+    USHORT frames = CaptureStackBackTrace(2, 99, stack, NULL);
 
-    // 初始化栈帧
-    STACKFRAME64 stackFrame = {};
-    stackFrame.AddrPC.Offset = context.Rip;
-    stackFrame.AddrPC.Mode = AddrModeFlat;
-    stackFrame.AddrFrame.Offset = context.Rbp;
-    stackFrame.AddrFrame.Mode = AddrModeFlat;
-    stackFrame.AddrStack.Offset = context.Rsp;
-    stackFrame.AddrStack.Mode = AddrModeFlat;
+    SYMBOL_INFO* symbol = (SYMBOL_INFO*)malloc(sizeof(SYMBOL_INFO) + 256 * sizeof(char));
+    symbol->MaxNameLen = 255;
+    symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+    DWORD64 displacement;
 
-    HANDLE process = GetCurrentProcess();
-    HANDLE thread = GetCurrentThread();
-
-    // 限制最大帧数
-    const int maxFrames = 50;
-
-    for (int i = 0; i < maxFrames; i++)
-    {
-        if (!StackWalk64(
-            IMAGE_FILE_MACHINE_AMD64,
-            process,
-            thread,
-            &stackFrame,
-            &context,
-            nullptr,
-            SymFunctionTableAccess64,
-            SymGetModuleBase64,
-            nullptr))
-        {
-            break;
-        }
-
-        if (stackFrame.AddrPC.Offset == 0)
-        {
-            break;
-        }
-
-        // 获取符号信息
-        DWORD64 displacement = 0;
-        char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)];
-        PSYMBOL_INFO symbol = (PSYMBOL_INFO)buffer;
-        symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-        symbol->MaxNameLen = MAX_SYM_NAME;
-
-        if (SymFromAddr(process, stackFrame.AddrPC.Offset, &displacement, symbol))
-        {
-            stackStream << "[" << i << "] " << symbol->Name << " (";
-
-            // 尝试获取行号信息
+    ss << "Caller Call Stack:\n";
+    for (USHORT i = 0; i < frames; i++) {
+        DWORD64 address = (DWORD64)stack[i];
+        if (SymFromAddr(GetCurrentProcess(), address, &displacement, symbol)) {
             IMAGEHLP_LINE64 line;
             line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
-            DWORD lineDisplacement = 0;
+            DWORD lineDisplacement;
 
-            if (SymGetLineFromAddr64(process, stackFrame.AddrPC.Offset,
-                &lineDisplacement, &line))
-            {
-                stackStream << line.FileName << ":" << line.LineNumber;
+            if (SymGetLineFromAddr64(GetCurrentProcess(), address, &lineDisplacement, &line)) {
+                ss << "  " << symbol->Name << " + " << displacement
+                    << " (Line: " << line.LineNumber << ", File: " << line.FileName << ")\n";
             }
-            else
-            {
-                stackStream << "unknown file";
+            else {
+                ss << "  " << symbol->Name << " + " << displacement << " (Line info not available)\n";
             }
-
-            stackStream << ")\n";
         }
-        else
-        {
-            stackStream << "[" << i << "] Unknown function\n";
+        else {
+            ss << "  0x" << std::hex << address << std::dec << " (Symbol not found)\n";
         }
     }
 
-    return stackStream.str();
+    free(symbol);
+    SymCleanup(GetCurrentProcess());
+
+    return ss.str();
 }
