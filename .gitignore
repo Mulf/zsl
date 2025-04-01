@@ -108,3 +108,7 @@ ScaffoldingReadMe.txt
 *.sln.docstates
 
 .vs/
+
+buid/ 
+
+zsl-cmake/build
