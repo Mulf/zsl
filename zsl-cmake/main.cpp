@@ -1,6 +1,6 @@
 #include <iostream>
-#include "std_vector_op.h"
-#include "ZException.h"
+#include "zsl/std_vector_op.h"
+#include "basics/ZException.h"
 #include  "config.h"
 
 

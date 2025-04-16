@@ -1,6 +1,7 @@
 #include "std_vector_op.h"
 #include <cassert>
 
+
 std::vector<double>  zsl::vadd(const std::vector<double>& v1, const std::vector<double>& v2)
 {
 	assert(v1.size() == v2.size());
@@ -18,6 +19,7 @@ std::vector<double>  zsl::vadd(const std::vector<double>& v1, const std::vector<
 
 std::vector<double>  zsl::vadd(const std::vector<double>& v, double a)
 {
+
 	const size_t N = v.size();
 	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
 

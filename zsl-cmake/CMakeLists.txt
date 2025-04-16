@@ -14,3 +14,7 @@ target_include_directories(Demo PUBLIC "${PROJECT_BINARY_DIR}")
 add_subdirectory(zsl)
 
 target_link_libraries(Demo zsl)
+
+
+enable_testing()
+add_subdirectory(test EXCLUDE_FROM_ALL)

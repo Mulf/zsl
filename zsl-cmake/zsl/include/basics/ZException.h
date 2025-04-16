@@ -63,4 +63,3 @@ private:
 // 简化异常抛出的宏
 #define Z_THROW(errorCode, message) \
     throw ZException(errorCode, message, __FILE__, __LINE__, __FUNCTION__)
-
