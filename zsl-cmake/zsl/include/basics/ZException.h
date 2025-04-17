@@ -1,7 +1,10 @@
 #pragma once 
-#include <exception>
+#ifndef ZSL_BASICS_ZEXCEPTION_H
+#define ZSL_BASICS_ZEXCEPTION_H
+
 #include <exception>
 #include <string>
+#include <vector>
 
 namespace zsl {
 
@@ -20,7 +23,7 @@ namespace zsl {
     public:
 
         ZException(ZErrorCode errorCode, std::string message, const char* file, int line, const char* function);
-        ~ZException();
+        virtual ~ZException();
 
         // 获取错误码
         int error_code() const noexcept {
@@ -40,6 +43,8 @@ namespace zsl {
         // 重写 what() 方法
         const char* what() const noexcept override;
 
+    protected:
+        void _append_message(const std::string& msg);
 
     private:
         ZErrorCode _errorCode;
@@ -61,7 +66,24 @@ namespace zsl {
         static bool s_symbolsInitialized;
     };
 
+
+    class ZZeorDivisorException : public ZException {
+    public:
+        ZZeorDivisorException(const char* file, int line, const char* function);
+        virtual ~ZZeorDivisorException() override;
+    };
+
+    class ZEmptyVecException : public ZException {
+    public:
+        ZEmptyVecException(const char* file, int line, const char* function);
+        virtual ~ZEmptyVecException() override;
+    };
     
+    class ZVecDiffLenException : public ZException {
+    public:
+        ZVecDiffLenException(const std::vector<double> &v1, const std::vector<double> &v2, const char* file, int line, const char* function);
+        virtual ~ZVecDiffLenException() override;
+    };
 
 }
 
@@ -70,11 +92,12 @@ namespace zsl {
     throw zsl::ZException(errorCode, message, __FILE__, __LINE__, __FUNCTION__)
 
 #define Z_EXPECTOR_NON_ZERO_DIVISOR(d) \
-    if (d == 0) [[unlikely]]  Z_THROW(zsl::ZErrorCode::MATH_ZERO_DIVISOR, "");
-
+    if (d == 0) [[unlikely]] throw zsl::ZZeorDivisorException(__FILE__, __LINE__, __FUNCTION__)
 
 #define Z_EXPECT_NON_EMPTY_VEC(v) \
-    if (v.empty())[[unlikely]] Z_THROW(zsl::ZErrorCode::MATH_EMPTY_VEC, "")
+    if (v.empty())[[unlikely]] throw zsl::ZEmptyVecException(__FILE__, __LINE__, __FUNCTION__)
 
 #define Z_EXPECT_SAME_LEN(v1, v2) \
-    if (v1.size() != v2.size())[[unlikely]] throw zsl::ZException(zsl::ZErrorCode::MATH_DIFF_VEC_LEN, "",  __FILE__, __LINE__, __FUNCTION__)
+    if (v1.size() != v2.size())[[unlikely]] throw ZVecDiffLenException(v1, v2, __FILE__, __LINE__, __FUNCTION__)
+
+#endif

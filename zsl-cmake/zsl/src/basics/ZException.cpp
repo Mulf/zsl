@@ -51,13 +51,6 @@ namespace zsl {
             }
         }
 
-        // 构建完整错误信息
-        std::ostringstream fullStream;
-        fullStream << "Error [" << static_cast<int>(_errorCode) << "]: " << _message << "\n"
-            << "Location: " << _location << "\n"
-            << "Stack trace:\n" << _stackTrace;
-        _fullMessage = fullStream.str();
-
         // 确保符号系统已初始化
         Init_Symbols();
     }
@@ -66,9 +59,24 @@ namespace zsl {
         Cleanup_Symbols();
     }
 
+    void ZException::_append_message(const std::string& msg) {
+        if (msg.empty()) {
+            _message = msg;
+        }
+        else {
+            _message += ", " + msg;
+        }
+    }
 
     const char* ZException::what() const noexcept
     {
+        // 构建完整错误信息
+        std::ostringstream fullStream;
+        fullStream << "Error [" << static_cast<int>(_errorCode) << "]: " << _message << "\n"
+            << "Location: " << _location << "\n"
+            << "Stack trace:\n" << _stackTrace;
+        _fullMessage = fullStream.str();
+
         return _fullMessage.c_str();
     }
 
@@ -137,7 +145,23 @@ namespace zsl {
         }
     }
 
+    ZZeorDivisorException::ZZeorDivisorException(const char* file, int line, const char* function) :
+        ZException(ZErrorCode::MATH_ZERO_DIVISOR, "", file, line, function) {}
 
+    ZZeorDivisorException::~ZZeorDivisorException() = default;
 
+    ZEmptyVecException::ZEmptyVecException(const char* file, int line, const char* function) :
+        ZException(ZErrorCode::MATH_EMPTY_VEC, "", file, line, function) {}
 
+    ZEmptyVecException::~ZEmptyVecException() = default;
+
+    ZVecDiffLenException::ZVecDiffLenException(const std::vector<double>& v1, const std::vector<double>& v2, const char* file, int line, const char* function) :
+        ZException(ZErrorCode::MATH_DIFF_VEC_LEN, "", file, line, function)  {
+        std::string msg{};
+        msg += "length of v1 is: " + std::to_string(v1.size());
+        msg += ", length of v2 is: " + std::to_string(v2.size());
+        _append_message(msg);
+    }
+
+    ZVecDiffLenException::~ZVecDiffLenException()  = default;
 }

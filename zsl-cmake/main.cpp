@@ -12,7 +12,7 @@ void print(const std::vector<double>& v)
 
 void test_throw_exception() {
 	std::vector<double> a {0.0, 2.0, 3.0};
-	std::vector<double> b {1.0, 2.0, 3.0};
+	std::vector<double> b {1.0, 2.0, 3.0, 4};
 	double d = 1;
 	//auto c = a - b;
 

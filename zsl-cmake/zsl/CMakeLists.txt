@@ -8,7 +8,7 @@ target_sources(
     PRIVATE
         src/basics/ZException.cpp
         src/basics/std_vector_op.cpp
-)
+ "include/basics/defines.h")
 
 target_include_directories(zsl
     PUBLIC
