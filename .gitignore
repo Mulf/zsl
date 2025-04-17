@@ -111,4 +111,6 @@ ScaffoldingReadMe.txt
 
 buid/ 
 
-zsl-cmake/build
+zsl-cmake/build/
+
+zsl-cmake/out/

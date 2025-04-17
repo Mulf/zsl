@@ -1,14 +1,15 @@
-#include "std_vector_op.h"
+#include "basics/std_vector_op.h"
+#include "basics/ZException.h"
+
 #include <cassert>
 
 
 std::vector<double>  zsl::vadd(const std::vector<double>& v1, const std::vector<double>& v2)
 {
-	assert(v1.size() == v2.size());
+	Z_EXPECT_SAME_LEN(v1, v2);
 
 	const size_t N = v1.size();
 	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
 	for (size_t i = 0; i < N; i++)
 	{
 		ans[i] = v1[i] + v2[i];
@@ -19,10 +20,7 @@ std::vector<double>  zsl::vadd(const std::vector<double>& v1, const std::vector<
 
 std::vector<double>  zsl::vadd(const std::vector<double>& v, double a)
 {
-
-	const size_t N = v.size();
-	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
+	std::vector<double> ans{v.size(), std::vector<double>::allocator_type{}};
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		ans[i] = v[i] + a;
@@ -37,11 +35,10 @@ std::vector<double>  zsl::vadd(double a, const std::vector<double>& v) {
 
 std::vector<double>  zsl::vsub(const std::vector<double>& v1, const std::vector<double>& v2)
 {
-	assert(v1.size() == v2.size());
+	Z_EXPECT_SAME_LEN(v1, v2);
 
 	const size_t N = v1.size();
 	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
 	for (size_t i = 0; i < N; i++)
 	{
 		ans[i] = v1[i] - v2[i];
@@ -52,9 +49,7 @@ std::vector<double>  zsl::vsub(const std::vector<double>& v1, const std::vector<
 
 std::vector<double>  zsl::vsub(const std::vector<double>& v, double a)
 {
-	const size_t N = v.size();
-	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
+	std::vector<double> ans{v.size(), std::vector<double>::allocator_type{}};
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		ans[i] = v[i] - a;
@@ -66,7 +61,6 @@ std::vector<double>  zsl::vsub(const std::vector<double>& v, double a)
 std::vector<double>  zsl::vsub(double a, const std::vector<double>& v) {
 	const size_t N = v.size();
 	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		ans[i] = a - v[i];
@@ -77,8 +71,7 @@ std::vector<double>  zsl::vsub(double a, const std::vector<double>& v) {
 
 std::vector<double>  zsl::vmul(const std::vector<double>& v1, const std::vector<double>& v2)
 {
-	assert(v1.size() == v2.size());
-
+	Z_EXPECT_SAME_LEN(v1, v2);
 	const size_t N = v1.size();
 	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
 
@@ -92,9 +85,7 @@ std::vector<double>  zsl::vmul(const std::vector<double>& v1, const std::vector<
 
 std::vector<double>  zsl::vmul(const std::vector<double>& v, double a)
 {
-	const size_t N = v.size();
-	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
+	std::vector<double> ans{v.size(), std::vector<double>::allocator_type{}};
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		ans[i] = v[i] * a;
@@ -109,14 +100,15 @@ std::vector<double>  zsl::vmul(double a, const std::vector<double>& v) {
 
 std::vector<double>  zsl::vdiv(const std::vector<double>& v1, const std::vector<double>& v2)
 {
-	assert(v1.size() == v2.size());
+	Z_EXPECT_SAME_LEN(v1, v2);
 
 	const size_t N = v1.size();
 	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
 
 	for (size_t i = 0; i < N; i++)
 	{
-		assert(v2[i] != 0);
+		Z_EXPECTOR_NON_ZERO_DIVISOR(v2[i]);
+
 		ans[i] = v1[i] / v2[i];
 	}
 
@@ -125,10 +117,9 @@ std::vector<double>  zsl::vdiv(const std::vector<double>& v1, const std::vector<
 
 std::vector<double>  zsl::vdiv(const std::vector<double>& v, double a)
 {
-	assert(a != 0);
-	const size_t N = v.size();
-	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
+	Z_EXPECTOR_NON_ZERO_DIVISOR(a);
 
+	std::vector<double> ans{v.size(), std::vector<double>::allocator_type{}};
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		ans[i] = v[i] / a;
@@ -138,12 +129,11 @@ std::vector<double>  zsl::vdiv(const std::vector<double>& v, double a)
 }
 
 std::vector<double>  zsl::vdiv(double a, const std::vector<double>& v) {
-	const size_t N = v.size();
-	std::vector<double> ans{N, std::vector<double>::allocator_type{}};
-
+	std::vector<double> ans{v.size(), std::vector<double>::allocator_type{}};
 	for (size_t i = 0; i < v.size(); i++)
 	{
-		assert(v[i] != 0);
+		Z_EXPECTOR_NON_ZERO_DIVISOR(v[i]);
+
 		ans[i] = a / v[i];
 	}
 
@@ -152,7 +142,7 @@ std::vector<double>  zsl::vdiv(double a, const std::vector<double>& v) {
 
 void zsl::vadd_self(std::vector<double>& v, const std::vector<double>& w)
 {
-	assert(v.size() == w.size());
+	Z_EXPECT_SAME_LEN(v, w);
 
 	for (size_t i = 0; i < v.size(); i++)
 	{
@@ -170,7 +160,7 @@ void zsl::vadd_self(std::vector<double>& v, double a)
 
 void zsl::vsub_self(std::vector<double>& v, const std::vector<double>& w)
 {
-	assert(v.size() == w.size());
+	Z_EXPECT_SAME_LEN(v, w);
 
 	for (size_t i = 0; i < v.size(); i++)
 	{
@@ -188,7 +178,7 @@ void zsl::vsub_self(std::vector<double>& v, double a)
 
 void zsl::vmul_self(std::vector<double>& v, const std::vector<double>& w)
 {
-	assert(v.size() == w.size());
+	Z_EXPECT_SAME_LEN(v, w);
 
 	for (size_t i = 0; i < v.size(); i++)
 	{
@@ -206,7 +196,7 @@ void zsl::vmul_self(std::vector<double>& v, double a)
 
 void zsl::vdiv_self(std::vector<double>& v, const std::vector<double>& w)
 {
-	assert(v.size() == w.size());
+	Z_EXPECT_SAME_LEN(v, w);
 
 	for (size_t i = 0; i < v.size(); i++)
 	{
@@ -217,7 +207,8 @@ void zsl::vdiv_self(std::vector<double>& v, const std::vector<double>& w)
 
 void zsl::vdiv_self(std::vector<double>& v, double a)
 {
-	assert(a != 0);
+	Z_EXPECTOR_NON_ZERO_DIVISOR(a);
+
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		v[i] /= a;

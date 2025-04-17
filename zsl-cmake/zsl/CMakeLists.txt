@@ -1,11 +1,13 @@
 
-add_library(zsl SHARED "")
+add_library(zsl STATIC "")
+
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 target_sources(
     zsl
     PRIVATE
         src/basics/ZException.cpp
-        src/zsl/std_vector_op.cpp
+        src/basics/std_vector_op.cpp
 )
 
 target_include_directories(zsl
