@@ -125,7 +125,69 @@ TEST(std_vector_op, vdiv)
 
 
 TEST(std_vector_op, madd) {
+	matrix_d m1 = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+	matrix_d m2 = { {1, 1, 1}, {2, 2, 2}, {3, 3, 3} };
+	vector_d v = { 1, 2, 3 };
+	double d = 1;
+	matrix_d r1 = { {2, 3, 4}, {6, 7, 8}, {10, 11, 12} };
+	matrix_d r2 = { {2, 3, 4}, {6, 7, 8}, {10, 11, 12} };
+	matrix_d r3 = { {2, 3, 4}, {5, 6, 7}, {8, 9, 10} };
 
+	EXPECT_EQ(madd(m1, m2), r1);
+	EXPECT_EQ(madd(m1, v), r2);
+	EXPECT_EQ(madd(v, m1), r2);
+	EXPECT_EQ(madd(m1, d), r3);
+	EXPECT_EQ(madd(d, m1), r3);
+	EXPECT_EQ(m1 + m2, r1);
+	EXPECT_EQ(m1 + v, r2);
+	EXPECT_EQ(v + m1, r2);
+	EXPECT_EQ(m1 + d, r3);
+	EXPECT_EQ(d + m1, r3);
 
+	auto n1 = m1;
+	auto n2 = m1;
+	auto n3 = m1;
+	n1 += m2;
+	n2 += v;
+	n3 += d;
+	EXPECT_EQ(n1, r1);
+	EXPECT_EQ(n2, r2);
+	EXPECT_EQ(n3, r3);
 }
 
+
+TEST(std_vector_op, msub) {
+	matrix_d m1 = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+	matrix_d m2 = { {1, 1, 1}, {2, 2, 2}, {3, 3, 3} };
+	vector_d v = { 1, 2, 3 };
+	double d = 1;
+	matrix_d r1 = { {0, 1, 2}, {2, 3, 4}, {4, 5, 6} };
+	matrix_d r2 = { {0, -1, -2}, {-2, -3, -4}, {-4, -5, -6} };
+	matrix_d r3 = { {0, 1, 2}, {2, 3, 4}, {4, 5, 6} };
+	matrix_d r4 = { {0, -1, -2}, {-2, -3, -4}, {-4, -5, -6} };
+	matrix_d r5 = { {0, 1, 2}, {3, 4, 5}, {6, 7, 8} };
+	matrix_d r6 = { {0, -1, -2}, {-3, -4, -5}, {-6, -7, -8} };
+
+	EXPECT_EQ(msub(m1, m2), r1);
+	EXPECT_EQ(msub(m2, m1), r2);
+	EXPECT_EQ(msub(m1, v), r3);
+	EXPECT_EQ(msub(v, m1), r4);
+	EXPECT_EQ(msub(m1, d), r5);
+	EXPECT_EQ(msub(d, m1), r6);
+	EXPECT_EQ(m1 - m2, r1);
+	EXPECT_EQ(m2 - m1, r2);
+	EXPECT_EQ(m1 - v, r3);
+	EXPECT_EQ(v - m1, r4);
+	EXPECT_EQ(m1 - d, r5);
+	EXPECT_EQ(d - m1, r6);
+
+	auto n1 = m1;
+	auto n2 = m1;
+	auto n3 = m1;
+	n1 -= m2;
+	n2 -= v;
+	n3 -= d;
+	EXPECT_EQ(n1, r1);
+	EXPECT_EQ(n2, r3);
+	EXPECT_EQ(n3, r5);
+}

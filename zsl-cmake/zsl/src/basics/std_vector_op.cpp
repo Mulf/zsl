@@ -509,7 +509,7 @@ zsl::matrix_d operator-(const zsl::matrix_d& m, double d) {
 }
 
 zsl::matrix_d operator-(double d, const zsl::matrix_d& m) {
-	return zsl::msub(m, d);
+	return zsl::msub(d, m);
 }
 
 void operator-=(zsl::matrix_d& m1, const zsl::matrix_d& m2) {

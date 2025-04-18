@@ -6,7 +6,8 @@
 
 namespace zsl
 {
-	[[nodiscard]] vector_d vadd(const vector_d& v1, const vector_d& v2);
+
+	vector_d vadd(const vector_d& v1, const vector_d& v2);
 	vector_d vadd(const vector_d& v, double a);
 	vector_d vadd(double a, const vector_d& v);
 	vector_d vsub(const vector_d& v1, const vector_d& v2);
