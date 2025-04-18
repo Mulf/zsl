@@ -6,18 +6,18 @@
 
 namespace zsl
 {
-	vector_d  vadd(const vector_d& v1, const vector_d& v2);
-	vector_d  vadd(const vector_d& v, double a);
-	vector_d  vadd(double a, const vector_d& v);
-	vector_d  vsub(const vector_d& v1, const vector_d& v2);
-	vector_d  vsub(const vector_d& v, double a);
-	vector_d  vsub(double a, const vector_d& v);
-	vector_d  vmul(const vector_d& v1, const vector_d& v2);
-	vector_d  vmul(const vector_d& v, double a);
-	vector_d  vmul(double a, const vector_d& v);
-	vector_d  vdiv(const vector_d& v1, const vector_d& v2);
-	vector_d  vdiv(const vector_d& v, double a);
-	vector_d  vdiv(double a, const vector_d& v);
+	[[nodiscard]] vector_d vadd(const vector_d& v1, const vector_d& v2);
+	vector_d vadd(const vector_d& v, double a);
+	vector_d vadd(double a, const vector_d& v);
+	vector_d vsub(const vector_d& v1, const vector_d& v2);
+	vector_d vsub(const vector_d& v, double a);
+	vector_d vsub(double a, const vector_d& v);
+	vector_d vmul(const vector_d& v1, const vector_d& v2);
+	vector_d vmul(const vector_d& v, double a);
+	vector_d vmul(double a, const vector_d& v);
+	vector_d vdiv(const vector_d& v1, const vector_d& v2);
+	vector_d vdiv(const vector_d& v, double a);
+	vector_d vdiv(double a, const vector_d& v);
 
 	void vadd_self(vector_d& v, const vector_d& w);
 	void vadd_self(vector_d& v, double a);
@@ -30,7 +30,7 @@ namespace zsl
 
 	matrix_d madd(const matrix_d& m1, const matrix_d& m2);
 	matrix_d madd(const matrix_d& m, const vector_d& v);
-	matrix_d madd(const vector_d& m, const matrix_d& v);
+	matrix_d madd(const vector_d& v, const matrix_d& m);
 	matrix_d madd(const matrix_d& m, double d);
 	matrix_d madd(double d, const matrix_d& m);
 	void madd_self(matrix_d& m1, const matrix_d& m2);
@@ -47,18 +47,18 @@ namespace zsl
 	void msub_self(matrix_d& m, double d);
 }
 
-zsl::vector_d  operator+(const zsl::vector_d& v1, const zsl::vector_d& v2);
-zsl::vector_d  operator+(const zsl::vector_d& v, double a);
-zsl::vector_d  operator+(double a, const zsl::vector_d& v);
-zsl::vector_d  operator-(const zsl::vector_d& v1, const zsl::vector_d& v2);
-zsl::vector_d  operator-(const zsl::vector_d& v, double a);
-zsl::vector_d  operator-(double a, const zsl::vector_d& v);
-zsl::vector_d  operator*(const zsl::vector_d& v1, const zsl::vector_d& v2);
-zsl::vector_d  operator*(const zsl::vector_d& v, double a);
-zsl::vector_d  operator*(double a, const zsl::vector_d& v);
-zsl::vector_d  operator/(const zsl::vector_d& v1, const zsl::vector_d& v2);
-zsl::vector_d  operator/(const zsl::vector_d& v, double a);
-zsl::vector_d  operator/(double a, const zsl::vector_d& v);
+zsl::vector_d operator+(const zsl::vector_d& v1, const zsl::vector_d& v2);
+zsl::vector_d operator+(const zsl::vector_d& v, double a);
+zsl::vector_d operator+(double a, const zsl::vector_d& v);
+zsl::vector_d operator-(const zsl::vector_d& v1, const zsl::vector_d& v2);
+zsl::vector_d operator-(const zsl::vector_d& v, double a);
+zsl::vector_d operator-(double a, const zsl::vector_d& v);
+zsl::vector_d operator*(const zsl::vector_d& v1, const zsl::vector_d& v2);
+zsl::vector_d operator*(const zsl::vector_d& v, double a);
+zsl::vector_d operator*(double a, const zsl::vector_d& v);
+zsl::vector_d operator/(const zsl::vector_d& v1, const zsl::vector_d& v2);
+zsl::vector_d operator/(const zsl::vector_d& v, double a);
+zsl::vector_d operator/(double a, const zsl::vector_d& v);
 
 void operator+=(zsl::vector_d& v, const zsl::vector_d& w);
 void operator+=(zsl::vector_d& v, double a);
@@ -77,6 +77,15 @@ zsl::matrix_d operator+(double d, const zsl::matrix_d& m);
 void operator+=(zsl::matrix_d& m1, const zsl::matrix_d& m2);
 void operator+=(zsl::matrix_d& m, const zsl::vector_d& v);
 void operator+=(zsl::matrix_d& m, double d);
+
+zsl::matrix_d operator-(const zsl::matrix_d& m1, const zsl::matrix_d& m2);
+zsl::matrix_d operator-(const zsl::matrix_d& m, const zsl::vector_d& v);
+zsl::matrix_d operator-(const zsl::vector_d& m, const zsl::matrix_d& v);
+zsl::matrix_d operator-(const zsl::matrix_d& m, double d);
+zsl::matrix_d operator-(double d, const zsl::matrix_d& m);
+void operator-=(zsl::matrix_d& m1, const zsl::matrix_d& m2);
+void operator-=(zsl::matrix_d& m, const zsl::vector_d& v);
+void operator-=(zsl::matrix_d& m, double d);
 
 
 #endif // !ZSL_STD_VECTOR_OP_H
