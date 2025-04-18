@@ -124,3 +124,8 @@ TEST(std_vector_op, vdiv)
 }
 
 
+TEST(std_vector_op, madd) {
+
+
+}
+

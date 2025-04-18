@@ -15,7 +15,7 @@ namespace zsl {
         {ZErrorCode::LANG_INVALID_INDEX, "Index out range"},
         {ZErrorCode::MATH_ZERO_DIVISOR, "Divisor is 0"},
         {ZErrorCode::MATH_EMPTY_VEC, "Vector is empty"},
-        {ZErrorCode::MATH_DIFF_VEC_LEN, "Length of vectors is different"},
+        {ZErrorCode::MATH_DIM_UNMATCH, "Dimensions of matrices is different"},
     };
 
 
@@ -155,15 +155,15 @@ namespace zsl {
 
     ZEmptyVecException::~ZEmptyVecException() = default;
 
-    ZVecDiffLenException::ZVecDiffLenException(const std::vector<double>& v1, const std::vector<double>& v2, const char* file, int line, const char* function) :
-        ZException(ZErrorCode::MATH_DIFF_VEC_LEN, "", file, line, function)  {
+    ZDimUnmatchException::ZDimUnmatchException(const vector_d& v1, const vector_d& v2, const char* file, int line, const char* function) :
+        ZException(ZErrorCode::MATH_DIM_UNMATCH, "", file, line, function)  {
         std::string msg{};
         msg += "length of v1 is: " + std::to_string(v1.size());
         msg += ", length of v2 is: " + std::to_string(v2.size());
         _append_message(msg);
     }
 
-    ZVecDiffLenException::~ZVecDiffLenException()  = default;
+    ZDimUnmatchException::~ZDimUnmatchException()  = default;
 
 
 }

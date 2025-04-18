@@ -5,13 +5,15 @@
 #include <string>
 #include <vector>
 
+#include "defines.h"
+
 namespace zsl {
 
     enum class ZErrorCode {
         LANG_INVALID_INDEX = 1001,
         MATH_ZERO_DIVISOR = 2001,
         MATH_EMPTY_VEC = 2002,
-        MATH_DIFF_VEC_LEN = 2003,
+        MATH_DIM_UNMATCH = 2003,
         MATH_INVALID_MATRIX = 2004,
         
         UNKOWN = 9999
@@ -79,17 +81,23 @@ namespace zsl {
         virtual ~ZEmptyVecException() override;
     };
     
-    class ZVecDiffLenException : public ZException {
+    class ZDimUnmatchException : public ZException {
     public:
-        ZVecDiffLenException(const std::vector<double> &v1, const std::vector<double> &v2, const char* file, int line, const char* function);
-        virtual ~ZVecDiffLenException() override;
+        ZDimUnmatchException(const vector_d &v1, const vector_d &v2, const char* file, int line, const char* function);
+        virtual ~ZDimUnmatchException() override;
+
+        //static bool dim_match(const vector_d& v1, const vector_d& v2);
+        //static bool dim_match(const matrix_d& m, const matrix_d& v);
     };
 
-    class ZInvalidMatrixException : public ZException {
-    public:
-        ZInvalidMatrixException(const zsl::matrix_d& A, const char* file, int line, const char* function);
-        virtual ~ZInvalidMatrixException() override;
-    };
+    //class ZInvalidMatrixException : public ZException {
+    //public:
+    //    ZInvalidMatrixException(const matrix_d& A, const char* file, int line, const char* function);
+    //    virtual ~ZInvalidMatrixException() override;
+    //};
+
+
+    
 
 }
 
@@ -104,6 +112,6 @@ namespace zsl {
     if (v.empty())[[unlikely]] throw zsl::ZEmptyVecException(__FILE__, __LINE__, __FUNCTION__)
 
 #define Z_EXPECT_SAME_LEN(v1, v2) \
-    if (v1.size() != v2.size())[[unlikely]] throw ZVecDiffLenException(v1, v2, __FILE__, __LINE__, __FUNCTION__)
+    if (v1.size() != v2.size())[[unlikely]] throw ZDimUnmatchException(v1, v2, __FILE__, __LINE__, __FUNCTION__)
 
 #endif

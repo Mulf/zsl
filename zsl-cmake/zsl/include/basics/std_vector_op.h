@@ -28,7 +28,23 @@ namespace zsl
 	void vdiv_self(vector_d& v, const vector_d& w);
 	void vdiv_self(vector_d& v, double a);
 
+	matrix_d madd(const matrix_d& m1, const matrix_d& m2);
+	matrix_d madd(const matrix_d& m, const vector_d& v);
+	matrix_d madd(const vector_d& m, const matrix_d& v);
+	matrix_d madd(const matrix_d& m, double d);
+	matrix_d madd(double d, const matrix_d& m);
+	void madd_self(matrix_d& m1, const matrix_d& m2);
+	void madd_self(matrix_d& m, const vector_d& v);
+	void madd_self(matrix_d& m, double d);
 
+	matrix_d msub(const matrix_d& m1, const matrix_d& m2);
+	matrix_d msub(const matrix_d& m, const vector_d& v);
+	matrix_d msub(const vector_d& m, const matrix_d& v);
+	matrix_d msub(const matrix_d& m, double d);
+	matrix_d msub(double d, const matrix_d& m);
+	void msub_self(matrix_d& m1, const matrix_d& m2);
+	void msub_self(matrix_d& m, const vector_d& v);
+	void msub_self(matrix_d& m, double d);
 }
 
 zsl::vector_d  operator+(const zsl::vector_d& v1, const zsl::vector_d& v2);
@@ -52,6 +68,15 @@ void operator*=(zsl::vector_d& v, const zsl::vector_d& w);
 void operator*=(zsl::vector_d& v, double a);
 void operator/=(zsl::vector_d& v, const zsl::vector_d& w);
 void operator/=(zsl::vector_d& v, double a);
+
+zsl::matrix_d operator+(const zsl::matrix_d& m1, const zsl::matrix_d& m2);
+zsl::matrix_d operator+(const zsl::matrix_d& m, const zsl::vector_d& v);
+zsl::matrix_d operator+(const zsl::vector_d& m, const zsl::matrix_d& v);
+zsl::matrix_d operator+(const zsl::matrix_d& m, double d);
+zsl::matrix_d operator+(double d, const zsl::matrix_d& m);
+void operator+=(zsl::matrix_d& m1, const zsl::matrix_d& m2);
+void operator+=(zsl::matrix_d& m, const zsl::vector_d& v);
+void operator+=(zsl::matrix_d& m, double d);
 
 
 #endif // !ZSL_STD_VECTOR_OP_H
