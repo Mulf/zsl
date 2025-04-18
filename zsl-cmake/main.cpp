@@ -1,6 +1,7 @@
 #include <iostream>
 #include "basics/std_vector_op.h"
 #include "basics/ZException.h"
+#include "zatlab/language_fundamental/matrices_and_arrays.h"
 
 using namespace zsl;
 void print(const std::vector<double>& v)
@@ -21,13 +22,21 @@ void test_throw_exception() {
 	print(c);
 }
 
+void test_ones() {
+	auto v = vzeros(4);
+	std::vector<double> a {0.0, 2.0, 3.0};
+
+	auto ans = v + a;
+	print(ans);
+}
+
 
 
 int main()
 {
 	try
 	{
-		test_throw_exception();
+		test_ones();
 	}
 	catch (const ZException & e)
 	{

@@ -8,12 +8,14 @@ target_sources(
     PRIVATE
         src/basics/ZException.cpp
         src/basics/std_vector_op.cpp
- "include/basics/defines.h")
+        src/zatlab/language_fundamental/matrices_and_arrays.cpp
+)
 
 target_include_directories(zsl
     PUBLIC
         include
     PRIVATE
-        include/zsl
         include/basics
+        include/zatlab
+        include/zatlab/language_fundamental
 )

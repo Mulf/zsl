@@ -1,4 +1,3 @@
-#pragma once 
 #ifndef ZSL_BASICS_ZEXCEPTION_H
 #define ZSL_BASICS_ZEXCEPTION_H
 
@@ -13,6 +12,7 @@ namespace zsl {
         MATH_ZERO_DIVISOR = 2001,
         MATH_EMPTY_VEC = 2002,
         MATH_DIFF_VEC_LEN = 2003,
+        MATH_INVALID_MATRIX = 2004,
         
         UNKOWN = 9999
     };
@@ -83,6 +83,12 @@ namespace zsl {
     public:
         ZVecDiffLenException(const std::vector<double> &v1, const std::vector<double> &v2, const char* file, int line, const char* function);
         virtual ~ZVecDiffLenException() override;
+    };
+
+    class ZInvalidMatrixException : public ZException {
+    public:
+        ZInvalidMatrixException(const zsl::matrix_d& A, const char* file, int line, const char* function);
+        virtual ~ZInvalidMatrixException() override;
     };
 
 }
