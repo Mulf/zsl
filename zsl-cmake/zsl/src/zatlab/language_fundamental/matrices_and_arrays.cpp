@@ -150,4 +150,139 @@ namespace zsl {
 		return static_cast<double>(A.size() * A[0].size());
 	}
 #pragma endregion 
+
+#pragma region Resize, Reshape, and Rearrange
+	matrix_d head(const matrix_d& A) {
+		return head(A, 8);
+	}
+
+	matrix_d head(const matrix_d& A, size_t k) {
+		matrix_d ans{};
+		for (size_t i = 0; i < k; i++)
+		{
+			ans.push_back(A[i]);
+		}
+
+		return ans;
+	}
+
+	matrix_d tail(const matrix_d& A) {
+		return tail(A, 8);
+	}
+
+	matrix_d tail(const matrix_d& A, size_t k) {
+		matrix_d ans{};
+		for (size_t i = 0; i < k; i++) {
+			ans.push_back(A[A.size() - 1 - i]);
+		}
+
+		return ans;
+	}
+#pragma endregion
+
+#pragma region Indexing
+	vector_d colon(double j, double k) {
+		size_t N = static_cast<size_t>(k - j) + 1;
+
+		vector_d x{ N, vector_d::allocator_type{} };
+		for (size_t i = 0; i < N; i++)
+		{
+			x[i] = j + static_cast<double>(i);
+		}
+		
+		return x;
+	}
+
+	vector_d colon(double j, double i, double k) {
+		if (i == 0) {
+			return {j};
+		}
+
+		if ((k - j) * i < 0) {
+			return {};
+		}
+
+		if (k == j) {
+			return vector_d{ i };
+		}
+
+		size_t N = static_cast<size_t>((k - j) / i) + 1;
+		vector_d x{ N, vector_d::allocator_type{} };
+		for (size_t idx = 0; idx < N; idx++) {
+			x[idx] = j + i * idx;
+		}
+
+		return x;
+	}
+
+	vector_d colon(const vector_d& v) {
+		return v;
+	}
+
+	vector_d colon(const matrix_d& A) {
+		vector_d v{ static_cast<size_t>(numel(A)), vector_d::allocator_type{} };
+		if (v.empty()) {
+			return v;
+		}
+		size_t idx = 0;
+		for (size_t j = 0; j < A[0].size(); j++) {
+			for (size_t i = 0; i < A.size(); i++) {
+				v[idx++] = A[i][j];
+			}
+		}
+
+		return v;
+	}
+
+	vector_d colon(const vector_d& v, size_t j, size_t k) {
+		assert(j < v.size() && k < v.size());
+		
+		if (j > k) {
+			return {};
+		}
+
+		vector_d ans{ k - j + 1, vector_d::allocator_type{} };
+		std::copy(v.begin() + j, v.begin() + k + 1, ans.begin());
+
+		return ans;
+	}
+
+	matrix_d colon(const matrix_d& A, size_t j, size_t k) {
+		assert(j < A.size() && k < A.size());
+
+		if (j > k) {
+			return {};
+		}
+
+		matrix_d ans{ k - j + 1, matrix_d::allocator_type{} };
+		std::copy(A.begin() + j, A.begin() + k + 1, ans.begin());
+
+		return ans;
+	}
+
+	vector_d colon_col(const matrix_d& A, size_t n) {
+		if (A.empty()) {
+			return {};
+		}
+
+		assert(n < A[0].size());
+
+		vector_d v{ A.size(), vector_d::allocator_type{} };
+		for (size_t i = 0; i < A.size(); i++) {
+			v[i] = A[i][n];
+		}
+
+		return v;
+	}
+
+	vector_d colon_row(const matrix_d& A, size_t m) {
+		if (A.empty()) {
+			return {};
+		}
+
+		assert(m < A.size());
+
+		return A[m];
+	}
+#pragma endregion
 }

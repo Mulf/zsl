@@ -39,9 +39,27 @@ namespace zsl {
 	double size(const vector_d& v);
 	vector_d size(const matrix_d& A);
 	double size(const matrix_d& A, size_t dim);
-
-	
 #pragma endregion 
+
+#pragma region Resize, Reshape, and Rearrange
+	matrix_d head(const matrix_d& A);
+	matrix_d head(const matrix_d& A, size_t k);
+
+	matrix_d tail(const matrix_d& A);
+	matrix_d tail(const matrix_d& A, size_t k);
+#pragma endregion
+
+
+#pragma region Indexing
+	vector_d colon(double j, double k);
+	vector_d colon(double j, double i, double k);
+	vector_d colon(const vector_d& v);
+	vector_d colon(const matrix_d& A);
+	vector_d colon(const vector_d& v, size_t j, size_t k);
+	matrix_d colon(const matrix_d& A, size_t j, size_t k);
+	vector_d colon_col(const matrix_d& A, size_t n);
+	vector_d colon_row(const matrix_d& A, size_t m);
+#pragma endregion
 }
 
 #endif
