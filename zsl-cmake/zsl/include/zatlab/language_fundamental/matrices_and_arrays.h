@@ -2,6 +2,8 @@
 #define ZSL_ZATLAB_LANGUAGE_FUNDAMENTAL_MATRICES_AND_ARRARYS_H
 
 #include "basics/basics.h"
+#include <utility>
+
 
 namespace zsl {
 #pragma region Create and Combine Arrays
@@ -48,6 +50,11 @@ namespace zsl {
 
 	matrix_d tail(const matrix_d& A);
 	matrix_d tail(const matrix_d& A, size_t k);
+
+	// Reshape
+	matrix_d reshape(const vector_d& v, const std::pair<size_t, size_t>& sz);
+	matrix_d reshape(const matrix_d& A, const std::pair<size_t, size_t>& sz);
+
 #pragma endregion
 
 
@@ -65,6 +72,14 @@ namespace zsl {
 	vector_d row(const matrix_d& A, size_t m);
 	matrix_d rows(const matrix_d& A, size_t j, size_t k);
 	matrix_d rows(const matrix_d& A, size_t j, int i, size_t k);
+
+	// ind2sub
+	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind);
+	std::vector<std::pair<size_t, size_t>> ind2sub(const std::pair<size_t, size_t> &sz, const std::vector<size_t> &ind);
+
+	// sub2ind
+	size_t sub2ind(const std::pair<size_t, size_t>& sz, const std::pair<size_t, size_t>& sub);
+	std::vector<size_t> sub2ind(const std::pair<size_t, size_t>& sz, const std::vector<std::pair<size_t, size_t>>& sub);
 #pragma endregion
 }
 

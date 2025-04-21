@@ -152,6 +152,7 @@ namespace zsl {
 #pragma endregion 
 
 #pragma region Resize, Reshape, and Rearrange
+	// resize
 	matrix_d head(const matrix_d& A) {
 		return head(A, 8);
 	}
@@ -178,9 +179,40 @@ namespace zsl {
 
 		return ans;
 	}
+
+	// reshape
+	matrix_d reshape(const vector_d& v, const std::pair<size_t, size_t>& sz) {
+		if (v.empty()) {
+			return {};
+		}
+
+		assert(v.size() == sz.first * sz.second);
+
+		size_t idx = 0;
+		matrix_d B{ sz.first, vector_d{sz.second, vector_d::allocator_type{}} };
+		for (size_t col = 0; col < sz.second; col++) {
+			for (size_t row = 0; row < sz.first; row++) {
+				B[row][col] = v[idx++];	
+			}
+		}
+
+		return B;
+	}
+
+	matrix_d reshape(const matrix_d& A, const std::pair<size_t, size_t>& sz) {
+		if (A.empty()) {
+			return A;
+		}
+
+		assert(A.size() * A[0].size() == sz.first * sz.second);
+
+		return {};
+	}
+
 #pragma endregion
 
 #pragma region Indexing
+	// colon
 	vector_d colon(double j, double k) {
 		size_t N = static_cast<size_t>(k - j) + 1;
 
@@ -285,19 +317,6 @@ namespace zsl {
 
 		return ans;
 	}
-
-	/*matrix_d colon(const matrix_d& A, size_t j, size_t k) {
-		assert(j < A.size() && k < A.size());
-
-		if (j > k) {
-			return {};
-		}
-
-		matrix_d ans{ k - j + 1, matrix_d::allocator_type{} };
-		std::copy(A.begin() + j, A.begin() + k + 1, ans.begin());
-
-		return ans;
-	}*/
 
 	vector_d col(const matrix_d& A, size_t n) {
 		if (A.empty()) {
@@ -446,5 +465,38 @@ namespace zsl {
 
 		return ans;
 	}
+
+	// ind2sub
+	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind) {
+		assert(ind < sz.first * sz.second);
+
+		size_t col = ind / sz.first;
+		size_t row = ind % sz.first;
+		return { row, col };
+	}
+
+	std::vector<std::pair<size_t, size_t>> ind2sub(const std::pair<size_t, size_t>& sz, const std::vector<size_t>& ind) {
+		std::vector<std::pair<size_t, size_t>> sub(ind.size());
+		for (size_t i = 0; i < ind.size(); i++) {
+			sub[i] = ind2sub(sz, ind[i]);
+		}
+
+		return sub;
+	}
+
+	// sub2ind
+	size_t sub2ind(const std::pair<size_t, size_t>& sz, const std::pair<size_t, size_t>& sub) {
+		return sz.first * sub.second + sub.first;
+	}
+
+	std::vector<size_t> sub2ind(const std::pair<size_t, size_t>& sz, const std::vector<std::pair<size_t, size_t>>& sub) {
+		std::vector<size_t> ind(sub.size());
+		for (size_t i = 0; i < sub.size(); i++) {
+			ind[i] = sz.first * sub[i].second + sub[i].first;
+		}
+
+		return ind;
+	}
+
 #pragma endregion
 }

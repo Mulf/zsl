@@ -107,6 +107,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 
 
 TEST(matrices_and_arrays, indexing) {
+	// colon
 	vector_d x{ 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10 };
 	EXPECT_EQ(colon(1, 10), x);
 
@@ -150,7 +151,7 @@ TEST(matrices_and_arrays, indexing) {
 	matrix_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
 	EXPECT_EQ(rows(A, 2, -2, 0), r5);
 
-	vector_d c2{ 2, 6, 10, 14};
+	vector_d c2{ 2, 6, 10, 14 };
 	EXPECT_EQ(col(A, 1), c2);
 	matrix_d c3{ {2,3}, {6,7}, {10, 11}, {14, 15} };
 	EXPECT_EQ(cols(A, 1, 2), c3);
@@ -158,8 +159,26 @@ TEST(matrices_and_arrays, indexing) {
 	EXPECT_EQ(cols(A, 1, 2, 3), c4);
 	matrix_d c5{ {4, 2}, {8, 6}, {12, 10}, {16, 14} };
 	EXPECT_EQ(cols(A, 3, -2, 1), c5);
+
+
+	// ind2sub & sub2ind
+	std::vector<size_t> ind{ 2, 3, 4, 5 };
+	std::pair<size_t, size_t> sz{ 3, 3 };
+	std::vector<std::pair<size_t, size_t>> sub = { {2, 0}, {0, 1}, {1, 1}, {2, 1} };
+
+	{
+		auto ans = ind2sub(sz, ind);
+		EXPECT_EQ(ind2sub(sz, ind[0]), ans[0]);
+		EXPECT_EQ(ind2sub(sz, ind[1]), ans[1]);
+		EXPECT_EQ(ans, sub); 
+	}
+
+	{
+		auto ans = sub2ind(sz, sub);
+		EXPECT_EQ(sub2ind(sz, sub[0]), ans[0]);
+		EXPECT_EQ(sub2ind(sz, sub[1]), ans[1]);
+		EXPECT_EQ(ans, ind);
+	}
+
 	
-	//EXPECT_EQ(colon(A, 1, 2), r23);
 }
-
-
