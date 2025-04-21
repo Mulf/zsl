@@ -195,7 +195,7 @@ namespace zsl {
 
 	vector_d colon(double j, double i, double k) {
 		if (i == 0) {
-			return {j};
+			return {};
 		}
 
 		if ((k - j) * i < 0) {
@@ -247,7 +247,46 @@ namespace zsl {
 		return ans;
 	}
 
-	matrix_d colon(const matrix_d& A, size_t j, size_t k) {
+	vector_d colon(const vector_d& v, size_t j, int i, size_t k) {
+		if (i == 0) {
+			return {};
+		}
+		if (i > 0 ) {
+			if (j > k) {
+				return {};
+			}
+
+			assert(j < v.size() && k < v.size());
+
+			const size_t isz = static_cast<size_t>(i);
+			const size_t N = (k - j) / isz + 1;
+			vector_d ans{ N, vector_d::allocator_type{} };
+			
+			for (size_t p = 0; p < N; p++) {
+				ans[p] = v[j + p * isz];
+			}
+
+			return ans;
+		}
+
+		assert(i < 0);
+		if (j < k) {
+			return {};
+		}
+
+		assert(j < v.size() && k < v.size());
+
+		const size_t isz = static_cast<size_t>(-i);
+		const size_t N = (j - k) / isz + 1;
+		vector_d ans{ N, vector_d::allocator_type{} };
+		for (size_t p = 0; p < N; p++) {
+			ans[p] = v[j - p * isz];
+		}
+
+		return ans;
+	}
+
+	/*matrix_d colon(const matrix_d& A, size_t j, size_t k) {
 		assert(j < A.size() && k < A.size());
 
 		if (j > k) {
@@ -258,9 +297,9 @@ namespace zsl {
 		std::copy(A.begin() + j, A.begin() + k + 1, ans.begin());
 
 		return ans;
-	}
+	}*/
 
-	vector_d colon_col(const matrix_d& A, size_t n) {
+	vector_d col(const matrix_d& A, size_t n) {
 		if (A.empty()) {
 			return {};
 		}
@@ -275,7 +314,66 @@ namespace zsl {
 		return v;
 	}
 
-	vector_d colon_row(const matrix_d& A, size_t m) {
+	matrix_d cols(const matrix_d& A, size_t j, size_t k) {
+		if (A.empty()) {
+			return {};
+		}
+		
+		if (j > k) {
+			return {};
+		}
+
+		assert(j < A[0].size() && k < A[0].size());
+
+		matrix_d ans{ A.size(), matrix_d::allocator_type{}};
+		for (size_t r = 0; r < A.size(); r++) {
+			ans[r] = colon(A[r], j, k);
+		}
+
+		return ans;
+	}
+
+	matrix_d cols(const matrix_d& A, size_t j, int i, size_t k) {
+		if (A.empty()) {
+			return A;
+		}
+
+		if (i == 0) {
+			return {};
+		}
+
+		if (i > 0) {
+			if (j > k) {
+				return {};
+			}
+
+			assert(j < A[0].size() && k < A[0].size());
+
+			matrix_d ans{ A.size(), matrix_d::allocator_type{}};
+			for (size_t r = 0; r < A.size(); r++) {
+				ans[r] = colon(A[r], j, i, k);
+			}
+
+			return ans;
+		}
+
+
+		assert(i < 0);
+		if (j < k) {
+			return {};
+		}
+
+		assert(j < A.size() && k < A.size());
+
+		matrix_d ans{ A.size(), vector_d::allocator_type{}};
+		for (size_t r = 0; r < A.size(); r++) {
+			ans[r] = colon(A[r], j, i, k);
+		}
+
+		return ans;
+	}
+
+	vector_d row(const matrix_d& A, size_t m) {
 		if (A.empty()) {
 			return {};
 		}
@@ -283,6 +381,70 @@ namespace zsl {
 		assert(m < A.size());
 
 		return A[m];
+	}
+
+	matrix_d rows(const matrix_d& A, size_t j, size_t k) {
+		if (A.empty()) {
+			return A;
+		}
+
+		if (j > k) {
+			return {};
+		}
+
+		assert(j < A.size() && k < A.size());
+
+		const size_t N = k - j + 1;
+		matrix_d ans{ N, matrix_d::allocator_type{} };
+		for (size_t r = 0; r < N; r++) {
+			ans[r] = A[r + j];
+		}
+
+		return ans;
+	}
+
+	matrix_d rows(const matrix_d& A, size_t j, int i, size_t k) {
+		if (A.empty()) {
+			return A;
+		}
+
+		if (i == 0) {
+			return {};
+		}
+
+		if (i > 0) {
+			if (j > k) {
+				return {};
+			}
+
+			assert(j < A.size() && k < A.size());
+
+			const size_t isz = static_cast<size_t>(i);
+			const size_t N = (k - j) / isz + 1;
+			matrix_d ans{ N, vector_d::allocator_type{} };
+			for (size_t r = 0; r < N; r++) {
+				ans[r] = A[j + r * isz];
+			}
+
+			return ans;
+		}
+
+
+		assert(i < 0);
+		if (j < k) {
+			return {};
+		}
+
+		assert(j < A.size() && k < A.size());
+
+		const size_t isz = static_cast<size_t>(-i);
+		const size_t N = (j - k) / isz + 1;
+		matrix_d ans{ N, vector_d::allocator_type{} };
+		for (size_t r = 0; r < N; r++) {
+			ans[r] = A[j - r * isz];
+		}
+
+		return ans;
 	}
 #pragma endregion
 }

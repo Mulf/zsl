@@ -42,6 +42,7 @@ namespace zsl {
 #pragma endregion 
 
 #pragma region Resize, Reshape, and Rearrange
+	// Resize 
 	matrix_d head(const matrix_d& A);
 	matrix_d head(const matrix_d& A, size_t k);
 
@@ -56,9 +57,14 @@ namespace zsl {
 	vector_d colon(const vector_d& v);
 	vector_d colon(const matrix_d& A);
 	vector_d colon(const vector_d& v, size_t j, size_t k);
-	matrix_d colon(const matrix_d& A, size_t j, size_t k);
-	vector_d colon_col(const matrix_d& A, size_t n);
-	vector_d colon_row(const matrix_d& A, size_t m);
+	vector_d colon(const vector_d& v, size_t j, int i, size_t k);
+	//matrix_d colon(const matrix_d& A, size_t j, size_t k);
+	vector_d col(const matrix_d& A, size_t n);
+	matrix_d cols(const matrix_d& A, size_t j, size_t k);
+	matrix_d cols(const matrix_d &A, size_t j,  int i, size_t k);
+	vector_d row(const matrix_d& A, size_t m);
+	matrix_d rows(const matrix_d& A, size_t j, size_t k);
+	matrix_d rows(const matrix_d& A, size_t j, int i, size_t k);
 #pragma endregion
 }
 

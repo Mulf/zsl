@@ -107,7 +107,6 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 
 
 TEST(matrices_and_arrays, indexing) {
-
 	vector_d x{ 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10 };
 	EXPECT_EQ(colon(1, 10), x);
 
@@ -120,20 +119,47 @@ TEST(matrices_and_arrays, indexing) {
 	vector_d y{ 10, 8, 6, 4, 2, 0 };
 	EXPECT_EQ(colon(10, -2, 0), y);
 
-	EXPECT_EQ(colon(1, 0, 1), vector_d{1.0});
+	EXPECT_EQ(colon(1, 0, 1), vector_d{});
 	EXPECT_EQ(colon(1, -1, 2), vector_d{});
 	EXPECT_EQ(colon(1, 1, -2), vector_d{});
 
+	EXPECT_EQ(colon(x), x);
 	vector_d x4{ 3.0, 4.0, 5.0 };
-	EXPECT_EQ(colon(x, 2ull, 4ull), x4);
+	EXPECT_EQ(colon(x, 2, 4), x4);
+	EXPECT_EQ(colon(x, 2, 2), vector_d{ 3 });
+	EXPECT_EQ(colon(x, 4, 2), vector_d{});
+	vector_d x5{ 1, 3, 5, 7, 9 };
+	EXPECT_EQ(colon(x, 0, 2, 8), x5);
+	EXPECT_EQ(colon(x, 0, 2, 9), x5);
+	vector_d x6{ 10, 8, 6, 4, 2 };
+	EXPECT_EQ(colon(x, 9, -2, 0), x6);
+	EXPECT_EQ(colon(x, 9, -2, 1), x6);
 
-	matrix_d A{ {1,2,3}, {4, 5, 6}, {7, 8, 9} };
-	vector_d r2{ 4, 5, 6 };
-	vector_d c2{ 2, 5, 8 };
-	matrix_d r23{ {4, 5, 6}, {7, 8, 9} };
-	EXPECT_EQ(colon_col(A, 1), c2);
-	EXPECT_EQ(colon_row(A, 1), r2);
-	EXPECT_EQ(colon(A, 1, 2), r23);
+	matrix_d A{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 10, 11, 12},
+		{13, 14, 15, 16} };
+	vector_d r2{ 5, 6, 7, 8 };
+	EXPECT_EQ(row(A, 1), r2);
+	matrix_d r3{ {5, 6, 7, 8}, {9, 10, 11, 12} };
+	EXPECT_EQ(rows(A, 1, 2), r3);
+	matrix_d r4{ {1, 2, 3, 4}, {9, 10, 11, 12} };
+	EXPECT_EQ(rows(A, 0, 2, 2), r4);
+	EXPECT_EQ(rows(A, 0, 2, 3), r4);
+	matrix_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
+	EXPECT_EQ(rows(A, 2, -2, 0), r5);
+
+	vector_d c2{ 2, 6, 10, 14};
+	EXPECT_EQ(col(A, 1), c2);
+	matrix_d c3{ {2,3}, {6,7}, {10, 11}, {14, 15} };
+	EXPECT_EQ(cols(A, 1, 2), c3);
+	matrix_d c4{ {2, 4}, {6, 8}, {10, 12}, {14, 16} };
+	EXPECT_EQ(cols(A, 1, 2, 3), c4);
+	matrix_d c5{ {4, 2}, {8, 6}, {12, 10}, {16, 14} };
+	EXPECT_EQ(cols(A, 3, -2, 1), c5);
+	
+	//EXPECT_EQ(colon(A, 1, 2), r23);
 }
 
 
