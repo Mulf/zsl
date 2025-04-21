@@ -94,15 +94,49 @@ TEST(matrices_and_arrays, create_grids) {
 }
 
 TEST(matrices_and_arrays, determine_size_shape_and_order) {
-	const vector_d v{ 1, 2, 3 };
-	const matrix_d A{ {1, 2, 3}, {4, 5, 6} };
-	EXPECT_EQ(length(v), 3);
-	EXPECT_EQ(length(A), 3);
-	EXPECT_EQ(size(v), 3);
-	vector_d sz{ 2.0, 3.0 };
-	EXPECT_EQ(size(A), sz);
-	EXPECT_EQ(numel(v), 3);
-	EXPECT_EQ(numel(A), 6);
+	// size
+	{
+		const vector_d v{ 1, 2, 3 };
+		const matrix_d A{ {1, 2, 3}, {4, 5, 6} };
+		EXPECT_EQ(length(v), 3);
+		EXPECT_EQ(length(A), 3);
+		EXPECT_EQ(size(v), 3);
+		vector_d sz{ 2.0, 3.0 };
+		EXPECT_EQ(size(A), sz);
+		EXPECT_EQ(numel(v), 3);
+		EXPECT_EQ(numel(A), 6);
+	}
+
+	{
+		// reshape
+		{
+			vector_d A = colon(1, 10);
+			matrix_d B = { {1, 6}, {2, 7}, {3, 8}, {4, 9}, {5, 10} };
+			EXPECT_EQ(reshape(A, { 5, 2 }), B);
+			EXPECT_EQ(reshape(A, 5, {}), B);
+			EXPECT_EQ(reshape(A, {}, 2), B);
+
+			matrix_d C = {
+				{16,  2,  3, 13},
+				{ 5, 11, 10,  8},
+				{ 9,  7,  6, 12},
+				{ 4, 14, 15,  1}};
+			matrix_d D = {
+				{16,  3},
+				{ 5, 10},
+				{ 9,  6},
+				{ 4, 15},
+				{ 2, 13},
+				{11,  8},
+				{ 7, 12},
+				{14,  1} };
+			EXPECT_EQ(reshape(C, { 5, 2 }), D);
+			EXPECT_EQ(reshape(C, 5, {}), D);
+			EXPECT_EQ(reshape(C, {}, 2), D);
+		}
+		
+		
+	}
 }
 
 

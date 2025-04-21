@@ -206,7 +206,65 @@ namespace zsl {
 
 		assert(A.size() * A[0].size() == sz.first * sz.second);
 
-		return {};
+		size_t i = 0;
+		size_t j = 0;
+		const size_t rowA = A.size();
+		matrix_d B{ sz.first, vector_d{sz.second, vector_d::allocator_type{}} };
+		for (size_t col = 0; col < sz.second; col++) {
+			for (size_t row = 0; row < sz.first; row++) {
+				B[row][col] = A[i][j];
+
+				i++;
+				if (i == rowA) {
+					i = 0;
+					j++;
+				}
+			}
+		}
+
+		return B;
+	}
+
+	matrix_d reshape(const vector_d& v, std::optional<size_t> sz1, std::optional<size_t> sz2) {
+		assert(sz1 || sz2);
+
+		if (v.empty()) {
+			return {};
+		}
+
+		if (sz1 && !sz2) {
+			const size_t N = v.size();
+			assert(N % *sz1 == 0);
+			return reshape(v, *sz1, N / *sz1);
+		}
+		else if (!sz1 && sz2) {
+			const size_t N = v.size();
+			assert(N % *sz2 == 0);
+			return reshape(v, N / *sz2, *sz2);
+		}
+
+		return reshape(v, { *sz1, *sz2 });
+	}
+
+	matrix_d reshape(const matrix_d& A, std::optional<size_t> sz1, std::optional<size_t> sz2) {
+		assert(sz1 || sz2);
+
+		if (A.empty()) {
+			return {};
+		}
+		
+		if (sz1 && !sz2) {
+			const size_t N = A.size() * A[0].size();
+			assert(N % *sz1 == 0);
+			return reshape(A, *sz1, N / *sz1);
+		}
+		else if (!sz1 && sz2) {
+			const size_t N = A.size() * A[0].size();
+			assert(N % *sz2 == 0);
+			return reshape(A, N / *sz2, *sz2);
+		}
+
+		return reshape(A, {*sz1, *sz2});
 	}
 
 #pragma endregion
@@ -468,8 +526,6 @@ namespace zsl {
 
 	// ind2sub
 	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind) {
-		assert(ind < sz.first * sz.second);
-
 		size_t col = ind / sz.first;
 		size_t row = ind % sz.first;
 		return { row, col };

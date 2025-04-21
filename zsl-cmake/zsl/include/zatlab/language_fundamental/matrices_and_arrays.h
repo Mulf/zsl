@@ -3,7 +3,7 @@
 
 #include "basics/basics.h"
 #include <utility>
-
+#include <optional>
 
 namespace zsl {
 #pragma region Create and Combine Arrays
@@ -54,6 +54,8 @@ namespace zsl {
 	// Reshape
 	matrix_d reshape(const vector_d& v, const std::pair<size_t, size_t>& sz);
 	matrix_d reshape(const matrix_d& A, const std::pair<size_t, size_t>& sz);
+	matrix_d reshape(const vector_d& v, std::optional<size_t> sz1, std::optional<size_t> sz2);
+	matrix_d reshape(const matrix_d& A, std::optional<size_t> sz1, std::optional<size_t> sz2);
 
 #pragma endregion
 
