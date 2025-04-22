@@ -9,6 +9,7 @@ target_sources(
         src/basics/ZException.cpp
         src/basics/std_vector_op.cpp
         src/zatlab/language_fundamental/matrices_and_arrays.cpp
+        src/zatlab/language_fundamental/matrices_and_arrays_indexing.cpp
 )
 
 target_include_directories(zsl

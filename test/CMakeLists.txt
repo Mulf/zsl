@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(
 	test_std_vector_op
 	test_std_vector_op.cpp
- "zatlab/test_matrices_and_arrays.cpp")
+	"zatlab/test_matrices_and_arrays.cpp")
 
 target_link_libraries(
 	test_std_vector_op

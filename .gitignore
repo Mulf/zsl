@@ -109,8 +109,10 @@ ScaffoldingReadMe.txt
 
 .vs/
 
-buid/ 
+build/
+out/
+install/
 
-zsl-cmake/build/
 
-zsl-cmake/out/
+# matlab
+.asv
