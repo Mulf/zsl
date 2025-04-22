@@ -82,6 +82,7 @@ namespace zsl {
 		for (size_t i = 0; i < x.size(); i++) {
 			x[i] = A[i][i];
 		}
+		return x;
 	}
 
 	vector_d diag(const matrix_d& A, int k) {
@@ -158,6 +159,10 @@ namespace zsl {
 		return cat(1, A, B);
 	}
 
+	vector_d vertcat(const vector_d& v, const vector_d& w) {
+		return cat(v, w);
+	}
+
 	// ones
 	vector_d vones(size_t n) {
 		return vector_d(n, 1.0);
@@ -202,50 +207,50 @@ namespace zsl {
 
 #pragma region Determine Size, Shape, and Order
 	// length
-	double length(const vector_d& v) {
-		return static_cast<double>(v.size());
+	size_t length(const vector_d& v) {
+		return v.size();
 	}
 
-	double length(const matrix_d& A) {
+	size_t length(const matrix_d& A) {
 		return std::max(size(A, 1), size(A, 2));
 	}
 
 	// size
-	double size(const vector_d& v) {
-		return static_cast<double>(v.size());
+	size_t size(const vector_d& v) {
+		return v.size();
 	}
 
-	vector_d size(const matrix_d& A) {
+	vector_sz size(const matrix_d& A) {
 		if (A.empty()) {
-			return { 0.0, 0.0 };
+			return { 0, 0 };
 		}
-		return { static_cast<double>(A.size()), static_cast<double>(A[0].size()) };
+		return { A.size(), A[0].size() };
 	}
 
-	double size(const matrix_d& A, size_t dim) {
+	size_t size(const matrix_d& A, size_t dim) {
 		assert(dim == 1 || dim == 2);
 
 		if (A.empty()) {
-			return 0.0;
+			return 0;
 		}
 
 		if (dim == 1) {
-			return static_cast<double>(A.size());
+			return A.size();
 		}
-		return static_cast<double>(A[0].size());
+		return A[0].size();
 	}
 
 	// numel
-	double numel(const vector_d& v) {
-		return static_cast<double>(v.size());
+	size_t numel(const vector_d& v) {
+		return v.size();
 	}
 
-	double numel(const matrix_d& A) {
+	size_t numel(const matrix_d& A) {
 		assert(is_matrix(A));
-		if (A.empty()) {
+		if (A.empty() || A[0].empty()) {
 			return 0;
 		}
-		return static_cast<double>(A.size() * A[0].size());
+		return A.size() * A[0].size();
 	}
 #pragma endregion 
 

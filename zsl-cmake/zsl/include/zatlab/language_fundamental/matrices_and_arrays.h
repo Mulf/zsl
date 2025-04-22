@@ -7,27 +7,35 @@
 
 namespace zsl {
 #pragma region Create and Combine Arrays
+	// cat
 	vector_d cat(const vector_d& v1, const vector_d &v2);
 	matrix_d cat(size_t dim, const matrix_d& A, const matrix_d& B);
 
+	// diag
 	matrix_d diag(const vector_d &v);
 	matrix_d diag(const vector_d& v, int k);
 	vector_d diag(const matrix_d& A);
 	vector_d diag(const matrix_d& A, int k);
 
+	// eye
 	matrix_d eye(size_t n);
 	matrix_d eye(size_t n, size_t m);
 
+	// horzcat
 	matrix_d horzcat(const matrix_d& A, const matrix_d& B);
 	matrix_d horzcat(const matrix_d& A, const vector_d& v);
 	vector_d horzcat(const vector_d& v, const vector_d& w);
 
+	// vertcat
 	matrix_d vertcat(const matrix_d& A, const matrix_d& B);
+	vector_d vertcat(const vector_d& v, const vector_d& w);
 
+	// ones
 	vector_d vones(size_t n);
 	matrix_d ones(size_t n);
 	matrix_d ones(size_t sz1, size_t sz2);
 
+	// zeros
 	vector_d vzeros(size_t n);
 	matrix_d zeros(size_t n);
 	matrix_d zeros(size_t n);
@@ -35,20 +43,22 @@ namespace zsl {
 #pragma endregion 
 
 #pragma region Create Grids
+	// linspace
 	vector_d linspace(double x1, double x2);
 	vector_d linspace(double x1, double x2, size_t n);
 #pragma endregion
 
 #pragma region Determine Size, Shape, and Order
-	double length(const vector_d& v);
-	double length(const matrix_d& A);
+	// length
+	size_t length(const vector_d& v);
+	size_t length(const matrix_d& A);
 
-	double numel(const vector_d& v);
-	double numel(const matrix_d& A);
+	size_t numel(const vector_d& v);
+	size_t numel(const matrix_d& A);
 
-	double size(const vector_d& v);
-	vector_d size(const matrix_d& A);
-	double size(const matrix_d& A, size_t dim);
+	size_t size(const vector_d& v);
+	vector_sz size(const matrix_d& A);
+	size_t size(const matrix_d& A, size_t dim);
 #pragma endregion 
 
 #pragma region Resize, Reshape, and Rearrange

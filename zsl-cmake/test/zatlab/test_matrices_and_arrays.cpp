@@ -90,7 +90,6 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 		vector_d w{ 4, 5, 6 };
 		vector_d r{ 1, 2, 4, 5, 6 };
 
-
 		EXPECT_EQ(horzcat(A, B), C);
 		EXPECT_EQ(horzcat(A, d), E);
 		EXPECT_EQ(horzcat(v, w), r);
@@ -103,6 +102,7 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 		matrix_d C = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
 
 		EXPECT_EQ(vertcat(A, B), C);
+		EXPECT_EQ(vertcat(col(A, 0), col(B, 0)), col(C, 0));
 	}
 
 	// zeros
@@ -156,7 +156,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 		EXPECT_EQ(length(v), 3);
 		EXPECT_EQ(length(A), 3);
 		EXPECT_EQ(size(v), 3);
-		vector_d sz{ 2.0, 3.0 };
+		vector_sz sz = {2, 3};
 		EXPECT_EQ(size(A), sz);
 		EXPECT_EQ(numel(v), 3);
 		EXPECT_EQ(numel(A), 6);

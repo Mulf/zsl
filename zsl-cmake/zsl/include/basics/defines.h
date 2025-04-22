@@ -8,6 +8,7 @@ namespace zsl {
 	constexpr double pi = 3.141592653589;
 	
 	using vector_d = std::vector<double>;
+	using vector_sz = std::vector<size_t>;
 	//using vector_c = std::vector<std::complex<double>>;
 	using matrix_d = std::vector<std::vector<double>>;
 	//using matrix_c = std::vector<std::vector<std::complex<double>>>;
