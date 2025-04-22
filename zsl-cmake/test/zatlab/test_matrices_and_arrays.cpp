@@ -6,6 +6,14 @@ using namespace zsl;
 TEST(matrices_and_arrays, create_and_combine_arrays) {
 	// cat
 	{
+		vector_d v{ 1, 2, 3 };
+		vector_d w{ 4, 5 };
+		vector_d x{ 1, 2, 3, 4, 5 };
+		EXPECT_EQ(cat(v, {}), v);
+		EXPECT_EQ(cat({}, v), v);
+		EXPECT_EQ(cat(v, w), x);
+
+
 		auto A = ones(3);
 		auto B = zeros(3);
 		matrix_d C1{
@@ -22,6 +30,51 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 		EXPECT_EQ(cat(1, A, B), C1);
 		EXPECT_EQ(cat(2, A, B), C2);
+	}
+
+	// diag
+	{
+		vector_d v{ 2, 1, -1, -2, -5 };
+		matrix_d D{ 
+			{2, 0, 0, 0, 0},
+			{0, 1, 0, 0, 0},
+			{0, 0, -1, 0, 0},
+			{0, 0, 0, -2, 0},
+			{0, 0, 0, 0, -5} };
+		matrix_d D1{
+			{0, 2, 0, 0, 0, 0},
+			{0, 0, 1, 0, 0, 0},
+			{0, 0, 0, -1, 0, 0},
+			{0, 0, 0, 0, -2, 0},
+			{0, 0, 0, 0, 0, -5},
+			{0, 0, 0, 0, 0, 0} };
+		matrix_d D2{
+			{0, 0, 0, 0, 0, 0},
+			{2, 0, 0, 0, 0, 0},
+			{0, 1, 0, 0, 0, 0},
+			{0, 0, -1, 0, 0, 0},
+			{0, 0, 0, -2, 0, 0},
+			{0, 0, 0, 0, -5, 0} };
+		EXPECT_EQ(diag(vector_d{}), matrix_d{});
+		EXPECT_EQ(diag(v), D);
+		EXPECT_EQ(diag(v, 1), D1);
+		EXPECT_EQ(diag(v, -1), D2);
+		EXPECT_EQ(diag(D1, 1), v);
+		EXPECT_EQ(diag(D2, -1), v);
+	}
+
+	// eye
+	{
+		matrix_d I{ 
+			{1, 0, 0, 0},
+			{0, 1, 0, 0},
+			{0, 0, 1, 0},
+			{0, 0, 0, 1} };
+		matrix_d I1{ 
+			{1, 0, 0},
+			{0, 1, 0} };
+		EXPECT_EQ(eye(4), I);
+		EXPECT_EQ(eye(2, 3), I1);
 	}
 
 	// horzcat
@@ -53,7 +106,7 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 	}
 
 	// zeros
-	{ 
+	{
 		vector_d v = vzeros(3);
 		vector_d r{ 0.0, 0.0, 0.0 };
 		matrix_d m1 = zeros(3);
@@ -63,6 +116,8 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 		EXPECT_EQ(v, r);
 		EXPECT_EQ(m1, r1);
 		EXPECT_EQ(m2, r2);
+		EXPECT_EQ(vzeros(0), vector_d{});
+		EXPECT_EQ(zeros(0), matrix_d{});
 	}
 
 	// ones
@@ -77,7 +132,7 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 		EXPECT_EQ(m4, r4);
 		EXPECT_EQ(m5, r5);
 	}
-	
+
 
 }
 
@@ -89,7 +144,7 @@ TEST(matrices_and_arrays, create_grids) {
 		for (size_t i = 0; i < y.size(); i++) {
 			EXPECT_NEAR(y[i], y1[i], ABS_EPS);
 		}
-		
+
 	}
 }
 
@@ -107,6 +162,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 		EXPECT_EQ(numel(A), 6);
 	}
 
+	// Reshape
 	{
 		// reshape
 		{
@@ -120,7 +176,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 				{16,  2,  3, 13},
 				{ 5, 11, 10,  8},
 				{ 9,  7,  6, 12},
-				{ 4, 14, 15,  1}};
+				{ 4, 14, 15,  1} };
 			matrix_d D = {
 				{16,  3},
 				{ 5, 10},
@@ -134,8 +190,51 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 			EXPECT_EQ(reshape(C, 5, {}), D);
 			EXPECT_EQ(reshape(C, {}, 2), D);
 		}
-		
-		
+	}
+
+	// Rearrange
+	{
+		// circshift
+		{
+			vector_d v = colon(1, 10);
+			vector_d w{ 8,  9, 10, 1, 2, 3, 4, 5, 6, 7 };
+			EXPECT_EQ(circshift(w, 3), w);
+			EXPECT_EQ(circshift(w, -7), w);
+
+			matrix_d A{ {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7} };
+			matrix_d B{ {5, 5}, {6, 6}, {7, 7}, {1, 1}, {2, 2}, {3, 3}, {4, 4} };
+			EXPECT_EQ(circshift(A, 3), B);
+			EXPECT_EQ(circshift(A, -4), B);
+
+			matrix_d X{
+				{1, 1, 0, 0},
+				{1, 1, 0, 0},
+				{0, 0, 0, 0},
+				{0, 0, 0, 0} };
+			matrix_d Y{
+				{0, 1, 1, 0},
+				{0, 1, 1, 0},
+				{0, 0, 0, 0},
+				{0, 0, 0, 0} };
+			matrix_d Z{
+				{0, 0, 0, 0},
+				{0, 1, 1, 0},
+				{0, 1, 1, 0},
+				{0, 0, 0, 0} };
+			EXPECT_EQ(circshift(X, 1, 2), Y);
+			EXPECT_EQ(circshift(X, { 1, 1 }), Z);
+			EXPECT_EQ(circshift(Z, { -1, -1 }), X);
+		}
+
+		// flip
+		{
+			vector_d a{ 1, 2, 3 };
+			vector_d b{ 3, 2, 1 };
+			EXPECT_EQ(flip(a), b);
+			auto a1 = a;
+			flip_self(a1);
+			EXPECT_EQ(a1, b);
+		}
 	}
 }
 
@@ -204,7 +303,7 @@ TEST(matrices_and_arrays, indexing) {
 		auto ans = ind2sub(sz, ind);
 		EXPECT_EQ(ind2sub(sz, ind[0]), ans[0]);
 		EXPECT_EQ(ind2sub(sz, ind[1]), ans[1]);
-		EXPECT_EQ(ans, sub); 
+		EXPECT_EQ(ans, sub);
 	}
 
 	{
@@ -214,5 +313,5 @@ TEST(matrices_and_arrays, indexing) {
 		EXPECT_EQ(ans, ind);
 	}
 
-	
+
 }

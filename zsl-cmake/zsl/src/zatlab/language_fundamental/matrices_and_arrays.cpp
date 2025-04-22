@@ -6,7 +6,8 @@
 
 namespace zsl {
 #pragma region Create and Combine Arrays
-	vector_d vcat(const vector_d& v1, const vector_d& v2) {
+	// cat
+	vector_d cat(const vector_d& v1, const vector_d& v2) {
 		vector_d r{ v1.size() + v2.size(), vector_d::allocator_type{} };
 		std::copy(v1.begin(), v1.end(), r.begin());
 		std::copy(v2.begin(), v2.end(), r.begin() + v1.size());
@@ -37,12 +38,103 @@ namespace zsl {
 			assert(A.size() == B.size());
 			matrix_d r{};
 			for (size_t i = 0; i < A.size(); i++) {
-				r.push_back(vcat(A[i], B[i]));
+				r.push_back(cat(A[i], B[i]));
 			}
 			return r;
 		}
 	}
 
+	// diag
+	matrix_d diag(const vector_d& v) {
+		auto A = zeros(v.size());
+		for (size_t i = 0; i < v.size(); i++) {
+			A[i][i] = v[i];
+		}
+		return A;
+	}
+
+	matrix_d diag(const vector_d& v, int k) {
+		if (k == 0) {
+			return diag(v);
+		}
+
+		if (k > 0) {
+			auto A = zeros(v.size() + static_cast<size_t>(k));
+			for (size_t i = 0; i < v.size(); i++) {
+				A[i][i + static_cast<size_t>(k)] = v[i];
+			}
+			return A;
+		}
+		
+		auto A = zeros(v.size() + static_cast<size_t>(-k));
+		for (size_t i = 0; i < v.size(); i++) {
+			A[i + static_cast<size_t>(-k)][i] = v[i];
+		}
+		return A;
+	}
+
+	vector_d diag(const matrix_d& A) {
+		if (A.empty()) {
+			return {};
+		}
+		const size_t N = std::min(A.size(), A[0].size());
+		vector_d x{ N, vector_d::allocator_type{} };
+		for (size_t i = 0; i < x.size(); i++) {
+			x[i] = A[i][i];
+		}
+	}
+
+	vector_d diag(const matrix_d& A, int k) {
+		if (A.empty()) {
+			return {};
+		}
+
+		if (k == 0) {
+			return diag(A);
+		}
+
+		const size_t L = std::max(A.size(), A[0].size());
+		if (static_cast<size_t>(std::abs(k)) >= L) {
+			return {};
+		}
+
+		if (k > 0) {
+			const size_t N = std::min(A.size(), A[0].size() - k);
+			vector_d x{ N, vector_d::allocator_type{} };
+			for (size_t i = 0; i < x.size(); i++) {
+				x[i] = A[i][i+k];
+			}
+
+			return x;
+		}
+
+		const size_t N = std::min(A.size(), A[0].size() + k);
+		vector_d x{ N, vector_d::allocator_type{} };
+		for (size_t i = 0; i < x.size(); i++) {
+			x[i] = A[i - k][i];
+		}
+
+		return x;
+	}
+
+	// eye
+	matrix_d eye(size_t n) {
+		return diag(vones(n));
+	}
+
+	matrix_d eye(size_t n, size_t m) {
+		assert(n != 0 && m != 0);
+
+		matrix_d A = zeros(n, m);
+		const size_t N = std::min(n, m);
+		for (size_t i = 0; i < N; i++) {
+			A[i][i] = 1;
+		}
+
+		return A;
+	}
+
+	// horzcat 
 	matrix_d horzcat(const matrix_d& A, const matrix_d& B) {
 		return cat(2, A, B);
 	}
@@ -58,13 +150,15 @@ namespace zsl {
 	}
 
 	vector_d horzcat(const vector_d& v, const vector_d& w) {
-		return vcat(v, w);
+		return cat(v, w);
 	}
 
+	// vercat
 	matrix_d vertcat(const matrix_d& A, const matrix_d& B) {
 		return cat(1, A, B);
 	}
 
+	// ones
 	vector_d vones(size_t n) {
 		return vector_d(n, 1.0);
 	}
@@ -77,6 +171,7 @@ namespace zsl {
 		return matrix_d(sz1, vones(sz2));
 	}
 
+	// zeros
 	vector_d vzeros(size_t n) {
 		return vector_d(n, 0.0);
 	}
@@ -106,6 +201,7 @@ namespace zsl {
 #pragma endregion
 
 #pragma region Determine Size, Shape, and Order
+	// length
 	double length(const vector_d& v) {
 		return static_cast<double>(v.size());
 	}
@@ -114,6 +210,7 @@ namespace zsl {
 		return std::max(size(A, 1), size(A, 2));
 	}
 
+	// size
 	double size(const vector_d& v) {
 		return static_cast<double>(v.size());
 	}
@@ -138,6 +235,7 @@ namespace zsl {
 		return static_cast<double>(A[0].size());
 	}
 
+	// numel
 	double numel(const vector_d& v) {
 		return static_cast<double>(v.size());
 	}
@@ -167,6 +265,7 @@ namespace zsl {
 		return ans;
 	}
 
+	// tail
 	matrix_d tail(const matrix_d& A) {
 		return tail(A, 8);
 	}
@@ -265,6 +364,101 @@ namespace zsl {
 		}
 
 		return reshape(A, {*sz1, *sz2});
+	}
+
+	// circshift
+	vector_d circshift(const vector_d& v, int k) {
+		k = k % static_cast<int>(v.size());
+		if (k < 0) {
+			k += static_cast<int>(v.size());
+		}
+
+		vector_d A{ v.size(), vector_d::allocator_type{} };
+		std::copy(v.end() - k, v.end(), A.begin());
+		std::copy(v.begin(), v.end() - k, A.begin() + k);
+
+		return A;
+	}
+
+	matrix_d circshift(const matrix_d& A, int k) {
+		k = k % static_cast<int>(A.size());
+		if (k < 0) {
+			k += static_cast<int>(A.size());
+		}
+
+		matrix_d B{ A.size(), matrix_d::allocator_type{} };
+		std::copy(A.end() - k, A.end(), B.begin());
+		std::copy(A.begin(), A.end() - k, B.begin() + k);
+
+		return B;
+	}
+
+	matrix_d circshift(const matrix_d& A, int k, size_t dim) {
+		assert(dim == 0 || dim == 1);
+		if (dim == 0) {
+			return circshift(A, k);
+		}
+
+		auto B = A;
+		for (auto& v : B) {
+			v = circshift(v, k);
+		}
+
+		return {};
+	}
+
+	matrix_d circshift(const matrix_d& A, std::pair<int, int> K) {
+		return circshift(circshift(A, 0, K.first), 1, K.second);
+	}
+
+	// flip
+	vector_d flip(const vector_d& v) {
+		auto w = v;
+		std::reverse(w.begin(), w.end());
+		return w;
+	}
+
+	vector_d& flip_self(vector_d& v) {
+		std::reverse(v.begin(), v.end());
+		return v;
+	}
+
+	matrix_d flip(const matrix_d& A) {
+		auto B = A;
+		std::reverse(B.begin(), B.end());
+		return B;
+	}
+
+	matrix_d& flip_self(matrix_d& A) {
+		std::reverse(A.begin(), A.end());
+		return A;
+	}
+
+	matrix_d flip(const matrix_d& A, size_t dim) {
+		assert(dim == 0 || dim == 1);
+		if (dim == 0) {
+			return flip(A);
+		}
+		
+		auto B = A;
+		for (auto& v : B) {
+			flip_self(v);
+		}
+
+		return B;
+	}
+
+	matrix_d &flip_self(matrix_d& A, size_t dim) {
+		assert(dim == 0 || dim == 1);
+		if (dim == 0) {
+			return flip_self(A);
+		}
+
+		for (auto& v : A) {
+			flip_self(v);
+		}
+
+		return A;
 	}
 
 #pragma endregion
@@ -553,6 +747,5 @@ namespace zsl {
 
 		return ind;
 	}
-
 #pragma endregion
 }

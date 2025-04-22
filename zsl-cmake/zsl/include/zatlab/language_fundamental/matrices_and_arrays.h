@@ -7,8 +7,16 @@
 
 namespace zsl {
 #pragma region Create and Combine Arrays
-	vector_d vcat(const vector_d& v1, const vector_d &v2);
+	vector_d cat(const vector_d& v1, const vector_d &v2);
 	matrix_d cat(size_t dim, const matrix_d& A, const matrix_d& B);
+
+	matrix_d diag(const vector_d &v);
+	matrix_d diag(const vector_d& v, int k);
+	vector_d diag(const matrix_d& A);
+	vector_d diag(const matrix_d& A, int k);
+
+	matrix_d eye(size_t n);
+	matrix_d eye(size_t n, size_t m);
 
 	matrix_d horzcat(const matrix_d& A, const matrix_d& B);
 	matrix_d horzcat(const matrix_d& A, const vector_d& v);
@@ -56,6 +64,19 @@ namespace zsl {
 	matrix_d reshape(const matrix_d& A, const std::pair<size_t, size_t>& sz);
 	matrix_d reshape(const vector_d& v, std::optional<size_t> sz1, std::optional<size_t> sz2);
 	matrix_d reshape(const matrix_d& A, std::optional<size_t> sz1, std::optional<size_t> sz2);
+
+	// Rearrange
+	vector_d circshift(const vector_d& v, int k);
+	matrix_d circshift(const matrix_d& A, int k);
+	matrix_d circshift(const matrix_d& A, int k, size_t dim);
+	matrix_d circshift(const matrix_d& A, std::pair<int, int> K);
+	
+	vector_d flip(const vector_d& v);
+	vector_d &flip_self(vector_d& v);
+	matrix_d flip(const matrix_d&A);
+	matrix_d &flip_self(matrix_d& A);
+	matrix_d flip(const matrix_d& A, size_t dim);
+	matrix_d &flip_self(matrix_d& A, size_t dim);
 
 #pragma endregion
 
