@@ -398,58 +398,6 @@ namespace zsl {
 		return v;
 	}
 
-	vector_d colon(const vector_d& v, size_t j, size_t k) {
-		assert(j < v.size() && k < v.size());
-
-		if (j > k) {
-			return {};
-		}
-
-		vector_d ans{ k - j + 1, vector_d::allocator_type{} };
-		std::copy(v.begin() + j, v.begin() + k + 1, ans.begin());
-
-		return ans;
-	}
-
-	vector_d colon(const vector_d& v, size_t j, int i, size_t k) {
-		if (i == 0) {
-			return {};
-		}
-		if (i > 0) {
-			if (j > k) {
-				return {};
-			}
-
-			assert(j < v.size() && k < v.size());
-
-			const size_t isz = static_cast<size_t>(i);
-			const size_t N = (k - j) / isz + 1;
-			vector_d ans{ N, vector_d::allocator_type{} };
-
-			for (size_t p = 0; p < N; p++) {
-				ans[p] = v[j + p * isz];
-			}
-
-			return ans;
-		}
-
-		assert(i < 0);
-		if (j < k) {
-			return {};
-		}
-
-		assert(j < v.size() && k < v.size());
-
-		const size_t isz = static_cast<size_t>(-i);
-		const size_t N = (j - k) / isz + 1;
-		vector_d ans{ N, vector_d::allocator_type{} };
-		for (size_t p = 0; p < N; p++) {
-			ans[p] = v[j - p * isz];
-		}
-
-		return ans;
-	}
-
 	// vector block
 	vector_d block(const vector_d& v, const Colon& rng) {
 		return _::block<double>(v, rng);
