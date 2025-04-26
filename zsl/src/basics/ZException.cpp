@@ -13,6 +13,7 @@ namespace zsl {
     
     static std::map<ZErrorCode, std::string> ErrorInfoMap = {
         {ZErrorCode::LANG_INVALID_INDEX, "Index out range"},
+        {ZErrorCode::LANG_INVLAID_INDEX_RANGE, "Invalid index range"},
         {ZErrorCode::MATH_ZERO_DIVISOR, "Divisor is 0"},
         {ZErrorCode::MATH_EMPTY_VEC, "Vector is empty"},
         {ZErrorCode::MATH_DIM_UNMATCH, "Dimensions of matrices is different"},
@@ -47,7 +48,7 @@ namespace zsl {
                 _message = ErrorInfoMap.at(_errorCode) + ": ["  + message + "]";
             }
             else {
-                _message = "Unknown Error";
+                _message = "Unknown Error: [" + message + "]";
             }
         }
 

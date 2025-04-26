@@ -11,6 +11,7 @@ namespace zsl {
 
     enum class ZErrorCode {
         LANG_INVALID_INDEX = 1001,
+        LANG_INVLAID_INDEX_RANGE = 1002,
         MATH_ZERO_DIVISOR = 2001,
         MATH_EMPTY_VEC = 2002,
         MATH_DIM_UNMATCH = 2003,

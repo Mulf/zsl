@@ -5,6 +5,7 @@
 #include "defines.h"
 #include "std_vector_op.h"
 #include "ZException.h"
+#include "copy_control.h"
 
 #include <cassert>
 

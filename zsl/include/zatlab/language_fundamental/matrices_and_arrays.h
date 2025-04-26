@@ -31,7 +31,7 @@ namespace zsl {
 	vector_d vertcat(const vector_d& v, const vector_d& w);
 
 	// ones
-	vector_d vones(size_t n);
+	vector_d ones_v(size_t n);
 	matrix_d ones(size_t n);
 	matrix_d ones(size_t sz1, size_t sz2);
 
@@ -92,19 +92,32 @@ namespace zsl {
 
 
 #pragma region Indexing
+	struct Colon
+	{
+		size_t first;
+		size_t last;
+		int interval;
+		Colon(size_t first, size_t last);
+		Colon(size_t first, int interval, size_t last);
+
+		COPYABLE(Colon);
+
+		vector_sz to_vector() const;
+		size_t count() const;
+	};
 	vector_d colon(double j, double k);
+	vector_sz colon(size_t j, size_t k);
 	vector_d colon(double j, double i, double k);
+	vector_sz colon(size_t j, int i, size_t k);
 	vector_d colon(const vector_d& v);
 	vector_d colon(const matrix_d& A);
-	vector_d colon(const vector_d& v, size_t j, size_t k);
-	vector_d colon(const vector_d& v, size_t j, int i, size_t k);
-	//matrix_d colon(const matrix_d& A, size_t j, size_t k);
+	vector_d block(const vector_d& v, const Colon& rng);
+	vector_d set_block(const vector_d& v, const Colon& rng, const vector_d& w);
 	vector_d col(const matrix_d& A, size_t n);
-	matrix_d cols(const matrix_d& A, size_t j, size_t k);
-	matrix_d cols(const matrix_d &A, size_t j,  int i, size_t k);
+	matrix_d cols(const matrix_d& A, const Colon& rng);
 	vector_d row(const matrix_d& A, size_t m);
-	matrix_d rows(const matrix_d& A, size_t j, size_t k);
-	matrix_d rows(const matrix_d& A, size_t j, int i, size_t k);
+	matrix_d rows(const matrix_d& A, const Colon& rng);
+	matrix_d block(const matrix_d& A, const Colon& rowRng, const Colon &colRng);
 
 	// ind2sub
 	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind);

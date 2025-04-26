@@ -122,7 +122,7 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 	// ones
 	{
-		auto v3 = vones(4);
+		auto v3 = ones_v(4);
 		vector_d r3 = { 1.0, 1.0, 1.0, 1.0 };
 		matrix_d m4 = ones(3);
 		matrix_d r4 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
@@ -166,7 +166,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 	{
 		// reshape
 		{
-			vector_d A = colon(1, 10);
+			vector_d A = colon(1.0, 10.0);
 			matrix_d B = { {1, 6}, {2, 7}, {3, 8}, {4, 9}, {5, 10} };
 			EXPECT_EQ(reshape(A, { 5, 2 }), B);
 			EXPECT_EQ(reshape(A, 5, {}), B);
@@ -196,7 +196,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 	{
 		// circshift
 		{
-			vector_d v = colon(1, 10);
+			vector_d v = colon(1.0, 10.0);
 			vector_d w{ 8,  9, 10, 1, 2, 3, 4, 5, 6, 7 };
 			EXPECT_EQ(circshift(w, 3), w);
 			EXPECT_EQ(circshift(w, -7), w);
@@ -241,9 +241,14 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 
 TEST(matrices_and_arrays, indexing) {
 	// colon
-	vector_d x{ 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10 };
-	EXPECT_EQ(colon(1, 10), x);
 
+
+	vector_d x{ 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10 };
+	vector_sz xsz{ 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10 };
+	EXPECT_EQ(colon(1.0, 10.0), x);
+	EXPECT_EQ(colon(1ull, 10ull), xsz);
+	EXPECT_EQ(Colon(1, 10).to_vector(), xsz);
+	
 	vector_d x2{ 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 };
 	vector_d x3 = colon(0, 0.1, 1);
 	for (size_t i = 0; i < x2.size(); i++) {
@@ -251,23 +256,34 @@ TEST(matrices_and_arrays, indexing) {
 	}
 
 	vector_d y{ 10, 8, 6, 4, 2, 0 };
-	EXPECT_EQ(colon(10, -2, 0), y);
+	vector_sz ysz{ 10, 8, 6, 4, 2, 0 };
+	EXPECT_EQ(colon(10.0, -2.0, 0), y);
+	EXPECT_EQ(colon(10ull, -2, 0ull), ysz);
+	EXPECT_EQ(Colon(10, -2, 0).to_vector(), ysz);
 
-	EXPECT_EQ(colon(1, 0, 1), vector_d{});
-	EXPECT_EQ(colon(1, -1, 2), vector_d{});
-	EXPECT_EQ(colon(1, 1, -2), vector_d{});
+	EXPECT_EQ(colon(1.0, 0.0, 1.0), vector_d{});
+	EXPECT_EQ(colon(1.0, -1.0, 2.0), vector_d{});
+	EXPECT_EQ(colon(1.0, 1.0, -2.0), vector_d{});
+
+	EXPECT_EQ(colon(1ull, 0, 1ull), vector_sz{});
+	EXPECT_EQ(colon(1ull , -1, 2ull), vector_sz{});
+	EXPECT_THROW(Colon(1, 0, 1), ZException);
+	EXPECT_THROW(Colon(1, -1, 2), ZException);
 
 	EXPECT_EQ(colon(x), x);
 	vector_d x4{ 3.0, 4.0, 5.0 };
-	EXPECT_EQ(colon(x, 2, 4), x4);
-	EXPECT_EQ(colon(x, 2, 2), vector_d{ 3 });
-	EXPECT_EQ(colon(x, 4, 2), vector_d{});
 	vector_d x5{ 1, 3, 5, 7, 9 };
-	EXPECT_EQ(colon(x, 0, 2, 8), x5);
-	EXPECT_EQ(colon(x, 0, 2, 9), x5);
 	vector_d x6{ 10, 8, 6, 4, 2 };
-	EXPECT_EQ(colon(x, 9, -2, 0), x6);
-	EXPECT_EQ(colon(x, 9, -2, 1), x6);
+
+	EXPECT_EQ(block(x, { 2, 4 }), x4);
+	EXPECT_EQ(block(x, { 2, 2 }), vector_d{ 3 });
+	EXPECT_EQ(block(x, { 0, 2, 8 }), x5);
+	EXPECT_EQ(block(x, { 0, 2, 9 }), x5);
+	EXPECT_EQ(block(x, { 9, -2, 0 }), x6);
+	EXPECT_EQ(block(x, { 9, -2, 1 }), x6);
+	EXPECT_THROW(block(x, { 1, 0, 1 }), ZException);
+	EXPECT_THROW(block(x, { 1, -1, 2 }), ZException);
+	EXPECT_THROW(block(x, { 2, 1, 1 }), ZException);
 
 	matrix_d A{
 		{1, 2, 3, 4},
@@ -277,21 +293,32 @@ TEST(matrices_and_arrays, indexing) {
 	vector_d r2{ 5, 6, 7, 8 };
 	EXPECT_EQ(row(A, 1), r2);
 	matrix_d r3{ {5, 6, 7, 8}, {9, 10, 11, 12} };
-	EXPECT_EQ(rows(A, 1, 2), r3);
 	matrix_d r4{ {1, 2, 3, 4}, {9, 10, 11, 12} };
-	EXPECT_EQ(rows(A, 0, 2, 2), r4);
-	EXPECT_EQ(rows(A, 0, 2, 3), r4);
 	matrix_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
-	EXPECT_EQ(rows(A, 2, -2, 0), r5);
+	EXPECT_EQ(rows(A, { 1, 2 }), r3);
+	EXPECT_EQ(rows(A, { 0, 2, 2 }), r4);
+	EXPECT_EQ(rows(A, { 0, 2, 3 }), r4);
+	EXPECT_EQ(rows(A, { 2, -2, 0 }), r5);
 
 	vector_d c2{ 2, 6, 10, 14 };
 	EXPECT_EQ(col(A, 1), c2);
 	matrix_d c3{ {2,3}, {6,7}, {10, 11}, {14, 15} };
-	EXPECT_EQ(cols(A, 1, 2), c3);
 	matrix_d c4{ {2, 4}, {6, 8}, {10, 12}, {14, 16} };
-	EXPECT_EQ(cols(A, 1, 2, 3), c4);
 	matrix_d c5{ {4, 2}, {8, 6}, {12, 10}, {16, 14} };
-	EXPECT_EQ(cols(A, 3, -2, 1), c5);
+
+	EXPECT_EQ(cols(A, { 1, 2 }), c3);
+	EXPECT_EQ(cols(A, { 1, 2, 3 }), c4);
+	EXPECT_EQ(cols(A, { 3, -2, 1 }), c5);
+
+	matrix_d B{ {3, 4}, {7, 8} };
+	EXPECT_EQ(block(A, { 0, 1 }, { 2, 3 }), B);
+	matrix_d B1{ {3, 4}, {11, 12} };
+	EXPECT_EQ(block(A, { 0, 1, 2 }, { 2, 3 }), B1);
+	matrix_d B2{ {3, 2, 1}, {11, 10, 9} };
+	EXPECT_EQ(block(A, { 0, 2, 2 }, { 2, -1, 0 }), B2);
+	matrix_d B3{ {11, 10, 9}, {7, 6, 5} };
+	EXPECT_EQ(block(A, { 2, -1, 1 }, { 2, -1, 0 }), B3);
+
 
 
 	// ind2sub & sub2ind
