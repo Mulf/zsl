@@ -8,5 +8,6 @@
 #include "copy_control.h"
 
 #include <cassert>
+#include <format>
 
 #endif //  ZSL_BASICS_H

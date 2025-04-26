@@ -1,5 +1,254 @@
 #include "zatlab/language_fundamental/matrices_and_arrays.h"
 
+namespace _ {
+	using namespace zsl;
+
+	template<class T>
+	std::vector<T> block(const std::vector<T>& v, const Colon& rng) {
+		const size_t N = rng.count();
+		std::vector<T> ans( N, T{} );
+		for (int r = 0; r < N; r++) {
+			const int i = static_cast<int>(rng.first) + r * rng.interval;
+			const size_t isz = static_cast<size_t>(i);
+			if (isz >= v.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+			ans[static_cast<size_t>(r)] = v[isz];
+		}
+		return ans;
+	}
+
+	template<class T>
+	std::vector<T> block(const std::vector<T>& v, const vector_sz& indices) {
+		const size_t N = indices.size();
+		std::vector<T> ans(N, T{} );
+		for (size_t r = 0; r < N; r++) {
+			const size_t isz = indices.at(r);
+			if (isz >= v.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+			ans[r] = v[isz];
+		}
+		return ans;
+	}
+
+	template<class Vector>
+	Vector set_block(const Vector& v, const Colon& rng, const Vector& w) {
+		if (rng.count() != w.size()) {
+			std::string msg = std::format("source vector's length({}) does not match destination block's length({})", w.size(), rng.count());
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, msg);
+		}
+		auto indices = rng.to_vector();
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= v.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		auto ans{ v };
+		for (size_t i = 0; i < w.size(); i++) {
+			ans[indices[i]] = w[i];
+		}
+
+		return ans;
+	}
+
+	template<class Vector>
+	Vector set_block(const Vector& v, const vector_sz& indices, const vector_d& w) {
+		if (indices.size() != w.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "source vector's length does not match target block's length");
+		}
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= v.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		auto ans = v;
+		for (size_t i = 0; i < w.size(); i++) {
+			ans[indices[i]] = w[i];
+		}
+
+		return ans;
+	}
+
+	template<class Vector>
+	Vector& set_block_self(Vector& v, const Colon& rng, const Vector& w) {
+		if (rng.count() != w.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "source vector's length does not match target block's length");
+		}
+		auto indices = rng.to_vector();
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= v.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		for (size_t i = 0; i < w.size(); i++) {
+			v[indices[i]] = w[i];
+		}
+		return v;
+	}
+
+	template<class Vector>
+	Vector& set_block_self(Vector& v, const vector_sz& indices, const Vector& w) {
+		if (indices.size() != w.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "source vector's length does not match target block's length");
+		}
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= v.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		for (size_t i = 0; i < w.size(); i++) {
+			v[indices[i]] = w[i];
+		}
+		return v;
+	}
+
+	template<class T>
+	std::vector<T> col(const std::vector<std::vector<T>>& A, size_t n) {
+		if (A.empty() ) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (n >= A[0].size()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+		}
+
+		std::vector<T> v(A.size(), T{});
+		for (size_t i = 0; i < A.size(); i++) {
+			v[i] = A[i][n];
+		}
+
+		return v;
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> cols(const std::vector<std::vector<T>>& A, const vector_sz& indices) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= A[0].size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		std::vector<std::vector<T>> ans(A.size(), std::vector<T>(indices.size()));
+		for (size_t i = 0; i < A.size(); i++) {
+			for (size_t j = 0; j < indices.size(); j++) {
+				ans[i][j] = A[i][indices[j]];
+			}
+		}
+		return ans;
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> cols(const std::vector<std::vector<T>>& A, const Colon& rng) {
+		return cols(A, rng.to_vector());
+	}
+
+	template<class T>
+	std::vector<T> row(const std::vector<std::vector<T>>& A, size_t m) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (m >= A.size()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+		}
+
+		return A[m];
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> rows(const std::vector<std::vector<T>>& A, const vector_sz& indices) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (indices.empty()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "Indices are empty");
+		}
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= A.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		std::vector<std::vector<T>> ans(indices.size(), std::vector<T>(A[0].size()));
+		for (size_t i = 0; i < indices.size(); i++) {
+			for (size_t j = 0; j < A[0].size(); j++) {
+				ans[i][j] = A[indices[i]][j];
+			}
+		}
+		return ans;
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> rows(const std::vector<std::vector<T>>& A, const Colon& rng) {
+		return rows(A, rng.to_vector());
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> block(const std::vector<std::vector<T>>& A, const vector_sz& rowIndices, const vector_sz& colIndices) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (rowIndices.empty() || colIndices.empty()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "Indices are empty");
+		}
+		for (size_t i = 0; i < rowIndices.size(); i++) {
+			if (rowIndices[i] >= A.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		for (size_t i = 0; i < colIndices.size(); i++) {
+			if (colIndices[i] >= A[0].size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+
+		std::vector<std::vector<T>> ans(rowIndices.size(), std::vector<T>(colIndices.size()));
+
+		for (size_t i = 0; i < rowIndices.size(); i++) {
+			for (size_t j = 0; j < colIndices.size(); j++) {
+				ans[i][j] = A[rowIndices[i]][colIndices[j]];
+			}
+		}
+		return ans;
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> block(const std::vector<std::vector<T>>& A, const Colon& rowRng, const Colon& colRng) {		
+		return block(A, rowRng.to_vector(), colRng.to_vector());
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> block(const std::vector<std::vector<T>>& A, const vector_sz& rowIndices, const Colon& colRng) {
+		return block(A, rowIndices, colRng.to_vector());
+	}
+
+	template<class T>
+	std::vector<std::vector<T>> block(const std::vector<std::vector<T>>& A, const Colon& rowRng, const vector_sz& colIndices) {
+		return block(A, rowRng.to_vector(), colIndices);
+	}
+}
+
 namespace zsl {
 	Colon::Colon(size_t first, size_t last) :
 		Colon(first, 1, last) {}
@@ -201,113 +450,72 @@ namespace zsl {
 		return ans;
 	}
 
+	// vector block
 	vector_d block(const vector_d& v, const Colon& rng) {
-		if (v.empty()) {
-			return {};
-		}
-
-		const size_t N = rng.count();
-		vector_d ans{ N, vector_d::allocator_type{} };
-		for (int r = 0; r < N; r++) {
-			const int i = static_cast<int>(rng.first) + r * rng.interval;
-			ans[static_cast<size_t>(r)] = v[static_cast<size_t>(i)];
-		}
-
-		return ans;
+		return _::block<double>(v, rng);
+	}
+	
+	vector_d block(const vector_d& v, const vector_sz& indices) {
+		return _::block<double>(v, indices);
 	}
 
 	vector_d set_block(const vector_d& v, const Colon& rng, const vector_d& w) {
-		if (rng.count() != w.size()) {
-			
-		}
-
-		return {};
+		return _::set_block(v, rng, w);
 	}
 
+	vector_d set_block(const vector_d& v, const vector_sz& indices, const vector_d& w) {
+		return _::set_block(v, indices, w);
+	}
+
+	vector_d& set_block_self(vector_d& v, const Colon& rng, const vector_d& w) {
+		return _::set_block_self(v, rng, w);
+	}
+
+	vector_d& set_block_self(vector_d& v, const vector_sz& rng, const vector_d& w) {
+		return _::set_block_self(v, rng, w);
+	}
+
+	// matrix block
 	vector_d col(const matrix_d& A, size_t n) {
-		if (A.empty()) {
-			return {};
-		}
-
-		assert(n < A[0].size());
-
-		vector_d v{ A.size(), vector_d::allocator_type{} };
-		for (size_t i = 0; i < A.size(); i++) {
-			v[i] = A[i][n];
-		}
-
-		return v;
+		return _::col(A, n);
 	}
 
 	matrix_d cols(const matrix_d& A, const Colon& rng) {
-		if (A.empty()) {
-			return A;
-		}
+		return _::cols(A, rng);
+	}
 
-		if (rng.interval > 0) {
-			matrix_d ans{ A.size(), matrix_d::allocator_type{} };
-			for (size_t r = 0; r < A.size(); r++) {
-				ans[r] = block(A[r], rng);
-			}
-
-			return ans;
-		}
-
-		matrix_d ans{ A.size(), vector_d::allocator_type{} };
-		for (size_t r = 0; r < A.size(); r++) {
-			ans[r] = block(A[r], rng);
-		}
-
-		return ans;
+	matrix_d cols(const matrix_d& A, const vector_sz& indices) {
+		return _::cols(A, indices);
 	}
 	 
-
 	vector_d row(const matrix_d& A, size_t m) {
-		if (A.empty()) {
-			return {};
-		}
-
-		assert(m < A.size());
-
-		return A[m];
+		return _::row(A, m);
 	}
 
 	matrix_d rows(const matrix_d& A, const Colon& rng) {
-		if (A.empty()) {
-			return {};
-		}
+		return _::rows(A, rng);
+	}
 
-		if (rng.interval > 0) {
-			const size_t isz = static_cast<size_t>(rng.interval);
-			const size_t N = (rng.last - rng.first) / isz + 1;
-			matrix_d ans{ N, vector_d::allocator_type{} };
-			for (size_t r = 0; r < N; r++) {
-				ans[r] = A[rng.first + r * isz];
-			}
-
-			return ans;
-		}
-
-		const size_t isz = static_cast<size_t>(-rng.interval);
-		const size_t N = (rng.first - rng.last) / isz + 1;
-		matrix_d ans{ N, vector_d::allocator_type{} };
-		for (size_t r = 0; r < N; r++) {
-			ans[r] = A[rng.first - r * isz];
-		}
+	matrix_d rows(const matrix_d& A, const vector_sz& indices) {
+		return _::rows(A, indices);
 	}
 
 	matrix_d block(const matrix_d& A, const Colon& rowRng, const Colon& colRng) {
-		auto rowIndices = rowRng.to_vector();
-		auto colIndices = colRng.to_vector();
-		matrix_d ans = zeros(rowIndices.size(), colIndices.size());
-
-		for (size_t i = 0; i < rowIndices.size(); i++) {
-			for (size_t j = 0; j < colIndices.size(); j++) {
-				ans[i][j] = A[rowIndices[i]][colIndices[j]];
-			}
-		}
-		return ans;
+		return _::block(A, rowRng, colRng);
 	}
+
+	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices) {
+		return _::block(A, rowIndices, colIndices);
+	}
+
+	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const Colon& colRng) {
+		return _::block(A, rowIndices, colRng);
+	}
+
+	matrix_d block(const matrix_d& A, const Colon& rowRng, const vector_sz& colIndices) {
+		return _::block(A, rowRng, colIndices);
+	}
+
 
 
 	// ind2sub

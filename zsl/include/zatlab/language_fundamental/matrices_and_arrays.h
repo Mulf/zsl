@@ -112,12 +112,21 @@ namespace zsl {
 	vector_d colon(const vector_d& v);
 	vector_d colon(const matrix_d& A);
 	vector_d block(const vector_d& v, const Colon& rng);
+	vector_d block(const vector_d& v, const vector_sz& indices);
 	vector_d set_block(const vector_d& v, const Colon& rng, const vector_d& w);
+	vector_d set_block(const vector_d& v, const vector_sz& indices, const vector_d& w);
+	vector_d& set_block_self(vector_d& v, const Colon& rng, const vector_d& w);
+	vector_d& set_block_self(vector_d& v, const vector_sz& rng, const vector_d& w);
 	vector_d col(const matrix_d& A, size_t n);
 	matrix_d cols(const matrix_d& A, const Colon& rng);
+	matrix_d cols(const matrix_d& A, const vector_sz& indices);
 	vector_d row(const matrix_d& A, size_t m);
 	matrix_d rows(const matrix_d& A, const Colon& rng);
+	matrix_d rows(const matrix_d& A, const vector_sz& indices);
 	matrix_d block(const matrix_d& A, const Colon& rowRng, const Colon &colRng);
+	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices);
+	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const Colon& colRng);
+	matrix_d block(const matrix_d& A, const Colon& rowRng, const vector_sz& colIndices);
 
 	// ind2sub
 	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind);

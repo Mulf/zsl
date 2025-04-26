@@ -15,8 +15,9 @@ namespace zsl {
         {ZErrorCode::LANG_INVALID_INDEX, "Index out range"},
         {ZErrorCode::LANG_INVLAID_INDEX_RANGE, "Invalid index range"},
         {ZErrorCode::MATH_ZERO_DIVISOR, "Divisor is 0"},
-        {ZErrorCode::MATH_EMPTY_VEC, "Vector is empty"},
-        {ZErrorCode::MATH_DIM_UNMATCH, "Dimensions of matrices is different"},
+        {ZErrorCode::MATH_EMPTY_VEC, "Vector or matrix is empty"},
+        {ZErrorCode::MATH_DIM_UNMATCH, "Dimensions of matrices(vectors) are different"},
+        {ZErrorCode::MATH_INVALID_MATRIX, "Invalid matrix"}
     };
 
 
