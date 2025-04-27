@@ -136,9 +136,17 @@ namespace zsl {
 	matrix_d set_rows(const matrix_d& A, const vector_sz& indices, const matrix_d &V);
 	matrix_d& set_rows_self(matrix_d& A, const vector_sz& indices, const matrix_d& V);
 	matrix_d block(const matrix_d& A, const Colon& rowRng, const Colon &colRng);
+	matrix_d set_block(const matrix_d& A, const Colon& rowRng, const Colon& colRng, const matrix_d& B);
+	matrix_d& set_block_self(matrix_d& A, const Colon& rowRng, const Colon& colRng, const matrix_d& B);
 	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices);
+	matrix_d set_block(const matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices, const matrix_d& B);
+	matrix_d& set_block_self(matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices, const matrix_d& B);
 	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const Colon& colRng);
+	matrix_d set_block(const matrix_d& A, const vector_sz& rowIndices, const Colon& colRng, const matrix_d& B);
+	matrix_d& set_block_self(matrix_d& A, const vector_sz& rowIndices, const Colon& colRng, const matrix_d& B);
 	matrix_d block(const matrix_d& A, const Colon& rowRng, const vector_sz& colIndices);
+	matrix_d set_block(const matrix_d& A, const Colon& rowRng, const vector_sz& colIndices, const matrix_d& B);
+	matrix_d& set_block_self(matrix_d& A, const Colon& rowRng, const vector_sz& colIndices, const matrix_d& B);
 
 	// ind2sub
 	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind);

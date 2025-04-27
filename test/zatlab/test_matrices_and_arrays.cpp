@@ -452,26 +452,58 @@ TEST(matrices_and_arrays, indexing) {
 		EXPECT_THROW(set_cols_self(B, vector_sz{ 1, 2 }, C), ZException);
 	}
 
-	matrix_d B{ {3, 4}, {7, 8} };
-	EXPECT_EQ(block(A, Colon{ 0, 1 }, Colon{ 2, 3 }), B);
-	EXPECT_EQ(block(A, vector_sz{ 0, 1 }, vector_sz{ 2, 3 }), B);
-	EXPECT_EQ(block(A, Colon{ 0, 1 }, vector_sz{ 2, 3 }), B);
-	EXPECT_EQ(block(A, vector_sz{ 0, 1 }, Colon{ 2, 3 }), B);
-	matrix_d B1{ {3, 4}, {11, 12} };
-	EXPECT_EQ(block(A, Colon{ 0, 1, 2 }, Colon{ 2, 3 }), B1);
-	EXPECT_EQ(block(A, vector_sz{ 0, 1, 2 }, vector_sz{ 2, 3 }), B1);
-	EXPECT_EQ(block(A, Colon{ 0, 1, 2 }, vector_sz{ 2, 3 }), B1);
-	EXPECT_EQ(block(A, vector_sz{ 0, 1, 2 }, Colon{ 2, 3 }), B1);
-	matrix_d B2{ {3, 2, 1}, {11, 10, 9} };
-	EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, Colon{ 2, -1, 0 }), B2);
-	EXPECT_EQ(block(A, vector_sz{ 0, 2 }, vector_sz{ 2, 1, 0 }), B2);
-	EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, vector_sz{ 2, 1, 0 }), B2);
-	EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, vector_sz{ 2, 1, 0 }), B2);
-	matrix_d B3{ {11, 10, 9}, {7, 6, 5} };
-	EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, Colon{ 2, -1, 0 }), B3);
-	EXPECT_EQ(block(A, vector_sz{ 2,  1 }, vector_sz{ 2, 1, 0 }), B3);
-	EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, vector_sz{ 2, 1, 0 }), B3);
-	EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, vector_sz{ 2, 1, 0 }), B3);
+	{  // block get & set
+		matrix_d B{ {3, 4}, {7, 8} };
+		EXPECT_EQ(block(A, Colon{ 0, 1 }, Colon{ 2, 3 }), B);
+		EXPECT_EQ(block(A, vector_sz{ 0, 1 }, vector_sz{ 2, 3 }), B);
+		EXPECT_EQ(block(A, Colon{ 0, 1 }, vector_sz{ 2, 3 }), B);
+		EXPECT_EQ(block(A, vector_sz{ 0, 1 }, Colon{ 2, 3 }), B);
+		matrix_d B1{ {3, 4}, {11, 12} };
+		EXPECT_EQ(block(A, Colon{ 0, 1, 2 }, Colon{ 2, 3 }), B1);
+		EXPECT_EQ(block(A, vector_sz{ 0, 1, 2 }, vector_sz{ 2, 3 }), B1);
+		EXPECT_EQ(block(A, Colon{ 0, 1, 2 }, vector_sz{ 2, 3 }), B1);
+		EXPECT_EQ(block(A, vector_sz{ 0, 1, 2 }, Colon{ 2, 3 }), B1);
+		matrix_d B2{ {3, 2, 1}, {11, 10, 9} };
+		EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, Colon{ 2, -1, 0 }), B2);
+		EXPECT_EQ(block(A, vector_sz{ 0, 2 }, vector_sz{ 2, 1, 0 }), B2);
+		EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, vector_sz{ 2, 1, 0 }), B2);
+		EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, vector_sz{ 2, 1, 0 }), B2);
+		matrix_d B3{ {11, 10, 9}, {7, 6, 5} };
+		EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, Colon{ 2, -1, 0 }), B3);
+		EXPECT_EQ(block(A, vector_sz{ 2,  1 }, vector_sz{ 2, 1, 0 }), B3);
+		EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, vector_sz{ 2, 1, 0 }), B3);
+		EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, vector_sz{ 2, 1, 0 }), B3);
+
+
+		const matrix_d D{ {0, 0}, {0, 0} };
+		const matrix_d P{
+		{1, 2, 3, 4},
+		{5, 0, 0, 8},
+		{9, 0, 0, 12},
+		{13, 14, 15, 16} };
+		EXPECT_EQ(set_block(P, vector_sz{ 1, 2 }, vector_sz{ 1, 2 }, D), P);
+		EXPECT_EQ(set_block(P, Colon{ 1, 2 }, Colon{ 1, 2 }, D), P);
+		EXPECT_EQ(set_block(P, vector_sz{ 1, 2 }, Colon{ 1, 2 }, D), P);
+		EXPECT_EQ(set_block(P, Colon{ 1, 2 }, vector_sz{ 1, 2 }, D), P);
+		auto P1 = P;
+		auto P2 = P;
+		auto P3 = P;
+		auto P4 = P;
+		set_block_self(P1, vector_sz{ 1, 2 }, vector_sz{ 1, 2 }, D);
+		set_block_self(P2, Colon{ 1, 2 }, Colon{ 1, 2 }, D);
+		set_block_self(P3, vector_sz{ 1, 2 }, Colon{ 1, 2 }, D);
+		set_block_self(P4, Colon{ 1, 2 }, vector_sz{ 1, 2 }, D);
+		EXPECT_EQ(P1, P);
+		EXPECT_EQ(P2, P);
+		EXPECT_EQ(P3, P);
+		EXPECT_EQ(P4, P);
+
+		EXPECT_THROW(set_block(P, Colon{ 1, 2 }, Colon{ 1, 3 }, D), ZException);
+		EXPECT_THROW(set_block(P, Colon{ 1, 3 }, Colon{ 1, 2 }, D), ZException);
+		EXPECT_THROW(set_block_self(P1, Colon{ 1, 2 }, Colon{ 1, 3 }, D), ZException);
+		EXPECT_THROW(set_block_self(P1, Colon{ 1, 3 }, Colon{ 1, 2 }, D), ZException);
+
+	}
 
 
 	// ind2sub & sub2ind

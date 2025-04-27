@@ -457,9 +457,94 @@ namespace _ {
 		return ans;
 	}
 
+	template<class Matrix>
+	Matrix set_block(const Matrix& A, const vector_sz& rowIndices, const vector_sz& colIndices, const Matrix &B) {
+		if (A.empty() || B.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A) || !is_matrix(B)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (rowIndices.empty() || colIndices.empty()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "Indices are empty");
+		}
+		for (size_t i = 0; i < rowIndices.size(); i++) {
+			if (rowIndices[i] >= A.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		for (size_t i = 0; i < colIndices.size(); i++) {
+			if (colIndices[i] >= A[0].size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		if (rowIndices.size() != B.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Row Indices do not match source matrix's rows");
+		}
+		if (colIndices.size() != B[0].size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Col Indices do not match source matrix's cols");
+		}
+
+		
+		auto ans{ A };
+		for (size_t i = 0; i < rowIndices.size(); i++) {
+			for (size_t j = 0; j < colIndices.size(); j++) {
+				ans[rowIndices[i]][colIndices[j]] = B[i][j] ;
+			}
+		}
+		return ans;
+	}
+
+	template<class Matrix>
+	Matrix& set_block_self(Matrix& A, const vector_sz& rowIndices, const vector_sz& colIndices, const Matrix& B) {
+		if (A.empty() || B.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A) || !is_matrix(B)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (rowIndices.empty() || colIndices.empty()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "Indices are empty");
+		}
+		for (size_t i = 0; i < rowIndices.size(); i++) {
+			if (rowIndices[i] >= A.size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		for (size_t i = 0; i < colIndices.size(); i++) {
+			if (colIndices[i] >= A[0].size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		if (rowIndices.size() != B.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Row Indices do not match source matrix's rows");
+		}
+		if (colIndices.size() != B[0].size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Col Indices do not match source matrix's cols");
+		}
+
+
+		for (size_t i = 0; i < rowIndices.size(); i++) {
+			for (size_t j = 0; j < colIndices.size(); j++) {
+				A[rowIndices[i]][colIndices[j]] = B[i][j];
+			}
+		}
+		return A;
+	}
+
 	template<class T>
 	std::vector<std::vector<T>> block(const std::vector<std::vector<T>>& A, const Colon& rowRng, const Colon& colRng) {		
 		return block(A, rowRng.to_vector(), colRng.to_vector());
+	}
+
+	template<class Matrix>
+	Matrix set_block(const Matrix& A, const Colon& rowRng, const Colon& colRng, const Matrix& B) {
+		return set_block(A, rowRng.to_vector(), colRng.to_vector(), B);
+	}
+
+	template<class Matrix>
+	Matrix& set_block_self(Matrix& A, const Colon& rowRng, const Colon& colRng, const Matrix& B) {
+		return set_block_self(A, rowRng.to_vector(), colRng.to_vector(), B);
 	}
 
 	template<class T>
@@ -467,9 +552,29 @@ namespace _ {
 		return block(A, rowIndices, colRng.to_vector());
 	}
 
+	template<class Matrix>
+	Matrix set_block(const Matrix& A, const vector_sz& rowIndices, const Colon& colRng, const Matrix& B) {
+		return set_block(A, rowIndices, colRng.to_vector(), B);
+	}
+
+	template<class Matrix>
+	Matrix& set_block_self(Matrix& A, const vector_sz& rowIndices, const Colon& colRng, const Matrix& B) {
+		return set_block_self(A, rowIndices, colRng.to_vector(), B);
+	}
+
 	template<class T>
 	std::vector<std::vector<T>> block(const std::vector<std::vector<T>>& A, const Colon& rowRng, const vector_sz& colIndices) {
 		return block(A, rowRng.to_vector(), colIndices);
+	}
+
+	template<class Matrix>
+	Matrix set_block(const Matrix& A, const Colon& rowRng, const vector_sz& colIndices, const Matrix& B) {
+		return set_block(A, rowRng.to_vector(), colIndices, B);
+	}
+
+	template<class Matrix>
+	Matrix& set_block_self(Matrix& A, const Colon& rowRng, const vector_sz& colIndices, const Matrix& B) {
+		return set_block_self(A, rowRng.to_vector(), colIndices, B);
 	}
 }
 
@@ -725,20 +830,48 @@ namespace zsl {
 		return _::block(A, rowRng, colRng);
 	}
 
+	matrix_d set_block(const matrix_d& A, const Colon& rowRng, const Colon& colRng, const matrix_d& B) {
+		return _::set_block(A, rowRng, colRng, B);
+	}
+	matrix_d& set_block_self(matrix_d& A, const Colon& rowRng, const Colon& colRng, const matrix_d& B) {
+		return _::set_block_self(A, rowRng, colRng, B);
+	}
+
 	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices) {
 		return _::block(A, rowIndices, colIndices);
+	}
+
+	matrix_d set_block(const matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices, const matrix_d& B) {
+		return _::set_block(A, rowIndices, colIndices, B);
+	}
+
+	matrix_d& set_block_self(matrix_d& A, const vector_sz& rowIndices, const vector_sz& colIndices, const matrix_d& B) {
+		return _::set_block_self(A, rowIndices, colIndices, B);
 	}
 
 	matrix_d block(const matrix_d& A, const vector_sz& rowIndices, const Colon& colRng) {
 		return _::block(A, rowIndices, colRng);
 	}
 
+	matrix_d set_block(const matrix_d& A, const vector_sz& rowIndices, const Colon& colRng, const matrix_d& B) {
+		return _::set_block(A, rowIndices, colRng, B);
+	}
+
+	matrix_d& set_block_self(matrix_d& A, const vector_sz& rowIndices, const Colon& colRng, const matrix_d& B) {
+		return _::set_block_self(A, rowIndices, colRng, B);
+	}
+
 	matrix_d block(const matrix_d& A, const Colon& rowRng, const vector_sz& colIndices) {
 		return _::block(A, rowRng, colIndices);
 	}
 
+	matrix_d set_block(const matrix_d& A, const Colon& rowRng, const vector_sz& colIndices, const matrix_d& B) {
+		return _::set_block(A, rowRng, colIndices, B);
+	}
 
-
+	matrix_d& set_block_self(matrix_d& A, const Colon& rowRng, const vector_sz& colIndices, const matrix_d& B) {
+		return _::set_block_self(A, rowRng, colIndices, B);
+	}
 	// ind2sub
 	std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t>& sz, size_t ind) {
 		size_t col = ind / sz.first;
