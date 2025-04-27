@@ -339,20 +339,62 @@ TEST(matrices_and_arrays, indexing) {
 		{5, 6, 7, 8},
 		{9, 10, 11, 12},
 		{13, 14, 15, 16} };
-	vector_d r2{ 5, 6, 7, 8 };
-	EXPECT_EQ(row(A, 1), r2);
-	EXPECT_THROW(row(matrix_d{}, 1), ZException);
-	EXPECT_THROW(row(A, 4), ZException);
-	matrix_d r3{ {5, 6, 7, 8}, {9, 10, 11, 12} };
-	matrix_d r4{ {1, 2, 3, 4}, {9, 10, 11, 12} };
-	matrix_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
-	EXPECT_EQ(rows(A, Colon{ 1, 2 }), r3);
-	EXPECT_EQ(rows(A, vector_sz{ 1, 2 }), r3);
-	EXPECT_EQ(rows(A, Colon{ 0, 2, 2 }), r4);
-	EXPECT_EQ(rows(A, Colon{ 0, 2, 3 }), r4);
-	EXPECT_EQ(rows(A, vector_sz{ 0, 2 }), r4);
-	EXPECT_EQ(rows(A, Colon{ 2, -2, 0 }), r5);
-	EXPECT_EQ(rows(A, vector_sz{ 2, 0 }), r5);
+	{	// row get & set
+		
+		vector_d r2{ 5, 6, 7, 8 };
+		EXPECT_EQ(row(A, 1), r2);
+		EXPECT_THROW(row(matrix_d{}, 1), ZException);
+		EXPECT_THROW(row(A, 4), ZException);
+		matrix_d r3{ {5, 6, 7, 8}, {9, 10, 11, 12} };
+		matrix_d r4{ {1, 2, 3, 4}, {9, 10, 11, 12} };
+		matrix_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
+		EXPECT_EQ(rows(A, Colon{ 1, 2 }), r3);
+		EXPECT_EQ(rows(A, vector_sz{ 1, 2 }), r3);
+		EXPECT_EQ(rows(A, Colon{ 0, 2, 2 }), r4);
+		EXPECT_EQ(rows(A, Colon{ 0, 2, 3 }), r4);
+		EXPECT_EQ(rows(A, vector_sz{ 0, 2 }), r4);
+		EXPECT_EQ(rows(A, Colon{ 2, -2, 0 }), r5);
+		EXPECT_EQ(rows(A, vector_sz{ 2, 0 }), r5);
+
+		matrix_d B{
+		{1, 2, 3, 4},
+		{1, 1, 1, 1},
+		{9, 10, 11, 12},
+		{13, 14, 15, 16} };
+		vector_d v{ 1, 1, 1, 1 };
+		vector_d a{ 1, 2, 3, 4, 5 };
+		EXPECT_EQ(set_row(A, 1, v), B);
+		auto A1 = A;
+		set_row_self(A1, 1, v);
+		EXPECT_EQ(A1, B);
+		EXPECT_THROW(set_row(A, 1, a), ZException);
+		EXPECT_THROW(set_row_self(A, 1, a), ZException);
+		
+		matrix_d C{
+			{1, 2, 3, 4},
+			{1, 1, 1, 1},
+			{1, 1, 1, 1},
+			{13, 14, 15, 16} };
+		matrix_d V{
+			{1, 1, 1, 1},
+			{1, 1, 1, 1} };
+		matrix_d V2{
+			{1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1} };
+		EXPECT_EQ(set_rows(A, vector_sz{ 1, 2 }, V), C);
+		EXPECT_EQ(set_rows(A, Colon{ 1, 2 }, V), C);
+		EXPECT_THROW(set_rows(A, vector_sz{ 1, 2 }, V2), ZException);
+		EXPECT_THROW(set_rows(A, Colon{ 1, 2 }, V2), ZException);
+		auto A2 = A;
+		auto A3 = A;
+		auto A4 = A;
+		set_rows_self(A2, vector_sz{ 1, 2 }, V);
+		set_rows_self(A2, Colon{ 1, 2 }, V);
+		EXPECT_EQ(A2, C);
+		EXPECT_EQ(A3, C);
+		EXPECT_THROW(set_rows_self(A4, vector_sz{ 1, 2 }, V2), ZException);
+		EXPECT_THROW(set_rows_self(A4, Colon{ 1, 2 }, V2), ZException);
+	}
 
 	vector_d c2{ 2, 6, 10, 14 };
 	EXPECT_EQ(col(A, 1), c2);
