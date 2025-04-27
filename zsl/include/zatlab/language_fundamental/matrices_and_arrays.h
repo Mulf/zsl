@@ -118,8 +118,14 @@ namespace zsl {
 	vector_d& set_block_self(vector_d& v, const Colon& rng, const vector_d& w);
 	vector_d& set_block_self(vector_d& v, const vector_sz& rng, const vector_d& w);
 	vector_d col(const matrix_d& A, size_t n);
+	matrix_d set_col(const matrix_d& A, size_t n, const vector_d &v);
+	matrix_d& set_col_self(matrix_d& A, size_t n, const vector_d& v);
 	matrix_d cols(const matrix_d& A, const Colon& rng);
+	matrix_d set_cols(const matrix_d& A, const Colon& rng, const matrix_d& V);
+	matrix_d& set_cols_self(matrix_d& A, const Colon& rng, const matrix_d& V);
 	matrix_d cols(const matrix_d& A, const vector_sz& indices);
+	matrix_d set_cols(const matrix_d& A, const vector_sz& indices, const matrix_d& V);
+	matrix_d& set_cols_self(matrix_d& A, const vector_sz& indices, const matrix_d& V);
 	vector_d row(const matrix_d& A, size_t m);
 	matrix_d set_row(const matrix_d& A, size_t m, const vector_d &v);
 	matrix_d& set_row_self(matrix_d& A, size_t m, const vector_d& v);

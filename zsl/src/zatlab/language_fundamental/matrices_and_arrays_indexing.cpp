@@ -127,6 +127,51 @@ namespace _ {
 		return v;
 	}
 
+	template<class Matrix, class Vector>
+	Matrix set_col(const Matrix& A, size_t n, const Vector& v) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (n >= A[0].size()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+		}
+		if (A.size() != v.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Vector length doest not matrix's length");
+		}
+
+		auto B{ A };
+		for (size_t i = 0; i < A.size(); i++) {
+			B[i][n] = v[i]; 
+		}
+
+		return B;
+	}
+
+	template<class Matrix, class Vector>
+	Matrix& set_col_self(Matrix& A, size_t n, const Vector& v) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		if (n >= A[0].size()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+		}
+		if (A.size() != v.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Vector length doest not matrix's length");
+		}
+
+		for (size_t i = 0; i < A.size(); i++) {
+			A[i][n] = v[i];
+		}
+
+		return A;
+	}
+
 	template<class T>
 	std::vector<std::vector<T>> cols(const std::vector<std::vector<T>>& A, const vector_sz& indices) {
 		if (A.empty()) {
@@ -150,9 +195,76 @@ namespace _ {
 		return ans;
 	}
 
-	template<class T>
-	std::vector<std::vector<T>> cols(const std::vector<std::vector<T>>& A, const Colon& rng) {
+	template<class Matrix>
+	Matrix set_cols(const Matrix& A, const vector_sz& indices, const Matrix& V) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A) || !is_matrix(V)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= A[0].size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		if (A.size() != V.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Target matrix's rows do not match source matrix's rows");
+		}
+		if (indices.size() != V[0].size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Indices' size does not match source matrix's columns");
+		}
+
+		auto ans{A};
+		for (size_t i = 0; i < A.size(); i++) {
+			for (size_t j = 0; j < indices.size(); j++) {
+				ans[i][indices[j]] = V[i][j];
+			}
+		}
+		return ans;
+	}
+
+	template<class Matrix>
+	Matrix &set_cols_self(Matrix& A, const vector_sz& indices, const Matrix& V) {
+		if (A.empty()) {
+			Z_THROW(ZErrorCode::MATH_EMPTY_VEC, "");
+		}
+		if (!is_matrix(A) || !is_matrix(V)) {
+			Z_THROW(ZErrorCode::MATH_INVALID_MATRIX, "");
+		}
+		for (size_t i = 0; i < indices.size(); i++) {
+			if (indices[i] >= A[0].size()) {
+				Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+			}
+		}
+		if (A.size() != V.size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Target matrix's rows do not match source matrix's rows");
+		}
+		if (indices.size() != V[0].size()) {
+			Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, "Indices' size does not match source matrix's columns");
+		}
+
+		for (size_t i = 0; i < A.size(); i++) {
+			for (size_t j = 0; j < indices.size(); j++) {
+				A[i][indices[j]] = V[i][j];
+			}
+		}
+		return A;
+	}
+
+	template<class Matrix>
+	Matrix cols(const Matrix& A, const Colon& rng) {
 		return cols(A, rng.to_vector());
+	}
+
+	template<class Matrix>
+	Matrix set_cols(const Matrix& A, const Colon& rng, const Matrix& V) {
+		return set_cols(A, rng.to_vector(), V);
+	}
+
+	template<class Matrix>
+	Matrix& set_cols_self(Matrix& A, const Colon& rng, const Matrix& V) {
+		return set_cols_self(A, rng.to_vector(), V);
 	}
 
 	template<class T>
@@ -541,12 +653,36 @@ namespace zsl {
 		return _::col(A, n);
 	}
 
+	matrix_d set_col(const matrix_d& A, size_t n, const vector_d& v) {
+		return _::set_col(A, n, v);
+	}
+
+	matrix_d& set_col_self(matrix_d& A, size_t n, const vector_d& v) {
+		return _::set_col_self(A, n, v);
+	}
+
 	matrix_d cols(const matrix_d& A, const Colon& rng) {
 		return _::cols(A, rng);
 	}
 
 	matrix_d cols(const matrix_d& A, const vector_sz& indices) {
 		return _::cols(A, indices);
+	}
+
+	matrix_d set_cols(const matrix_d& A, const Colon& rng, const matrix_d& V) {
+		return _::set_cols(A, rng, V);
+	}
+
+	matrix_d& set_cols_self(matrix_d& A, const Colon& rng, const matrix_d& V) {
+		return _::set_cols_self(A, rng, V);
+	}
+
+	matrix_d set_cols(const matrix_d& A, const vector_sz& indices, const matrix_d& V) {
+		return _::set_cols(A, indices, V);
+	}
+
+	matrix_d& set_cols_self(matrix_d& A, const vector_sz& indices, const matrix_d& V) {
+		return _::set_cols_self(A, indices, V);
 	}
 
 	vector_d row(const matrix_d& A, size_t m) {
