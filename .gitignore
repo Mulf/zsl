@@ -116,3 +116,6 @@ install/
 
 # matlab
 .asv
+
+# python
+*.pyc
