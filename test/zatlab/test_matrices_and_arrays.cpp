@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <zatlab/language_fundamental/matrices_and_arrays.h>
+#include <zatlab/language_fundamentals/matrices_and_arrays.h>
 
 using namespace zsl;
 

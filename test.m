@@ -12,7 +12,7 @@ function matstr =  to_cpp_mat(A)
     matstr = "";
     for i = 1 : size(A, 1)
         sa = "{" + join(sA(i, :), ', ') + "}";
-        if i == 1
+        if i == 1   
             matstr = sa;
         else
             matstr = matstr + "," + newline + sa;

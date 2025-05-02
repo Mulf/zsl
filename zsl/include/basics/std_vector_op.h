@@ -5,6 +5,7 @@
 
 #include <vector>
 
+/*
 namespace zsl {
 
 vector_d vadd(const vector_d &v1, const vector_d &v2);
@@ -87,5 +88,5 @@ zsl::matrix_d operator-(double d, const zsl::matrix_d &m);
 void operator-=(zsl::matrix_d &m1, const zsl::matrix_d &m2);
 void operator-=(zsl::matrix_d &m, const zsl::vector_d &v);
 void operator-=(zsl::matrix_d &m, double d);
-
+*/
 #endif // !ZSL_STD_VECTOR_OP_H

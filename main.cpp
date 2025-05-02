@@ -1,7 +1,7 @@
 #include <iostream>
 #include "basics/std_vector_op.h"
 #include "basics/ZException.h"
-#include "zatlab/language_fundamental/matrices_and_arrays.h"
+#include "zatlab/language_fundamentals/matrices_and_arrays.h"
 
 using namespace zsl;
 void print(const std::vector<double>& v)

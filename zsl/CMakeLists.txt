@@ -10,7 +10,7 @@ target_sources(
         src/basics/std_vector_op.cpp
         src/zatlab/language_fundamental/matrices_and_arrays.cpp
         src/zatlab/language_fundamental/matrices_and_arrays_indexing.cpp
- "include/basics/copy_control.h")
+        src/zatlab/language_fundamental/operators_and_elementary_operations/arithmetic_operations.cpp)
 
 target_include_directories(zsl
     PUBLIC
@@ -18,5 +18,6 @@ target_include_directories(zsl
     PRIVATE
         include/basics
         include/zatlab
-        include/zatlab/language_fundamental
+        include/zatlab/language_fundamentals
+        include/zatlab/language_fundamentals/operators_and_elementary_operations
 )

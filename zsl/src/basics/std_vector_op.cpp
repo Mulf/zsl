@@ -1,8 +1,10 @@
 #include "basics/std_vector_op.h"
-
+/*
 #include "basics/ZException.h"
 
 #include <cassert>
+
+
 
 using namespace zsl;
 
@@ -432,3 +434,5 @@ void operator-=(zsl::matrix_d &m, const zsl::vector_d &v) {
 }
 
 void operator-=(zsl::matrix_d &m, double d) { zsl::msub_self(m, d); }
+
+*/

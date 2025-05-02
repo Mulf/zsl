@@ -1,4 +1,4 @@
-#include "zatlab/language_fundamental/matrices_and_arrays.h"
+#include "zatlab/language_fundamentals/matrices_and_arrays.h"
 
 #include <algorithm>
 #include <iterator>

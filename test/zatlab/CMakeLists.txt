@@ -7,3 +7,5 @@ target_link_libraries(
 	test_matrices_and_arrays
 	GTest::gtest_main zsl
 )
+
+add_subdirectory(language_fundamental)
