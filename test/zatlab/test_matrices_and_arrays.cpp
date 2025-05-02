@@ -107,7 +107,7 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 	// zeros
 	{
-		vector_d v = vzeros(3);
+		vector_d v = zeros_v(3);
 		vector_d r{ 0.0, 0.0, 0.0 };
 		matrix_d m1 = zeros(3);
 		matrix_d r1 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
@@ -116,7 +116,7 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 		EXPECT_EQ(v, r);
 		EXPECT_EQ(m1, r1);
 		EXPECT_EQ(m2, r2);
-		EXPECT_EQ(vzeros(0), vector_d{});
+		EXPECT_EQ(zeros_v(0), vector_d{});
 		EXPECT_EQ(zeros(0), matrix_d{});
 	}
 

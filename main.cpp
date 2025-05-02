@@ -1,8 +1,5 @@
 #include <iostream>
-#include "basics/std_vector_op.h"
-#include "basics/ZException.h"
-#include "zatlab/language_fundamentals/matrices_and_arrays.h"
-
+#include <zsl.h>
 using namespace zsl;
 void print(const std::vector<double>& v)
 {
@@ -18,12 +15,12 @@ void test_throw_exception() {
 	//auto c = a - b;
 
 	//a = { 0 };
-	auto c = b / a;
+	auto c = b + a;
 	print(c);
 }
 
 void test_ones() {
-	auto v = vzeros(4);
+	auto v = zeros_v(4);
 	std::vector<double> a {0.0, 2.0, 3.0};
 
 	auto ans = v + a;

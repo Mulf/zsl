@@ -1,0 +1,34 @@
+% 
+% A = [ [1, 2, 3, 4]; [5, 6, 7, 8]; [9, 10, 11, 12]; [13, 14, 15, 16] ];
+% 
+% B = A(3 : -1 : 2 , 3 : -1 : 1);
+% 
+% disp(to_cpp_mat(B))
+
+v= [1, 2, 3];
+w = [1.0 + 1.0i, 2.0 + 2.0i, 3.0 + 3.0i];
+b = b{1.0 + 1.0i, 1.0 + 1.0i, 1.0 + 1.0i
+w_mul_c = w * c;
+disp(to_cpp_vec(w_mul_c))
+
+function matstr =  to_cpp_mat(A)
+    sA = string(A);
+
+    matstr = "";
+    for i = 1 : size(A, 1)
+        sa = "{" + join(sA(i, :), ', ') + "}";
+        if i == 1   
+            matstr = sa;
+        else
+            matstr = matstr + "," + newline + sa;
+        end
+    end
+
+    matstr = "{" + matstr + "}";
+end
+
+function vecstr = to_cpp_vec(v)
+    sv = string(v);
+    vecstr = "{" + join(sv, ', ') + "}";
+    
+end

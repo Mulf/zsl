@@ -1,10 +1,20 @@
 
-A = [ [1, 2, 3, 4]; [5, 6, 7, 8]; [9, 10, 11, 12]; [13, 14, 15, 16] ];
+A = [1, 2, 3; 4, 5, 6; 7, 8, 9];
+d = 2;
+B = [ 1.0 + 2.0i, 2.0 + 2.0i, 3.0 + 2.0i;
+      4.0 + 2.0i, 5.0 + 2.0i, 6.0 + 2.0i;
+	  7.0 + 2.0i, 8.0 + 2.0i, 9.0 + 2.0i];
+c = 1.0 + 2.0i;
 
-B = A(3 : -1 : 2 , 3 : -1 : 1);
+A_mul_d = A * d;
+A_mul_c = A * c;
+B_mul_d = B * d;
+B_mul_c = B * c;
 
-disp(to_cpp_mat(B))
-
+disp(to_cpp_mat(A_mul_d))
+disp(to_cpp_mat(A_mul_c))
+disp(to_cpp_mat(B_mul_d))
+disp(to_cpp_mat(B_mul_c))
 
 function matstr =  to_cpp_mat(A)
     sA = string(A);
@@ -19,5 +29,11 @@ function matstr =  to_cpp_mat(A)
         end
     end
 
-    matstr = "{" + matstr + "}";
+    matstr = "{" + matstr + "}" + newline;
+end
+
+function vecstr = to_cpp_vec(v)
+    sv = string(v);
+    vecstr = "{" + join(sv, ', ') + "}";
+    
 end

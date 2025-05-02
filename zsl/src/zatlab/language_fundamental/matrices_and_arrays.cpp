@@ -158,11 +158,11 @@ matrix_d ones(size_t n) { return matrix_d(n, ones_v(n)); }
 matrix_d ones(size_t sz1, size_t sz2) { return matrix_d(sz1, ones_v(sz2)); }
 
 // zeros
-vector_d vzeros(size_t n) { return vector_d(n, 0.0); }
+vector_d zeros_v(size_t n) { return vector_d(n, 0.0); }
 
-matrix_d zeros(size_t n) { return matrix_d(n, vzeros(n)); }
+matrix_d zeros(size_t n) { return matrix_d(n, zeros_v(n)); }
 
-matrix_d zeros(size_t sz1, size_t sz2) { return matrix_d(sz1, vzeros(sz2)); }
+matrix_d zeros(size_t sz1, size_t sz2) { return matrix_d(sz1, zeros_v(sz2)); }
 #pragma endregion
 
 #pragma region Create Grids

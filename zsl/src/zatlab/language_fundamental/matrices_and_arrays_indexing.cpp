@@ -653,6 +653,8 @@ size_t Colon::count() const {
 }
 
 #pragma region Indexing
+
+#pragma region colon
 // colon
 vector_d colon(double j, double k) {
   if (j > k) {
@@ -738,6 +740,9 @@ vector_sz colon(size_t j, int i, size_t k) {
 
   return ans;
 }
+
+#pragma endregion colon
+
 
 vector_d colon(const vector_d &v) { return v; }
 
@@ -908,6 +913,7 @@ matrix_d &set_block_self(matrix_d &A, const Colon &rowRng,
                          const vector_sz &colIndices, const matrix_d &B) {
   return _::set_block_self(A, rowRng, colIndices, B);
 }
+
 // ind2sub
 std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t> &sz,
                                   size_t ind) {

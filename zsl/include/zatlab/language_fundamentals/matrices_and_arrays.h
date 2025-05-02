@@ -37,7 +37,7 @@ matrix_d ones(size_t n);
 matrix_d ones(size_t sz1, size_t sz2);
 
 // zeros
-vector_d vzeros(size_t n);
+vector_d zeros_v(size_t n);
 matrix_d zeros(size_t n);
 matrix_d zeros(size_t n);
 matrix_d zeros(size_t sz1, size_t sz2);

@@ -2,7 +2,7 @@
 #include <functional>
 #include <type_traits>
 
-
+#pragma region template basics
 template<typename T, typename U>
 concept AirthOpResultSame = requires(T t, U u) {
 	requires std::is_same_v<decltype(t + u), decltype(t - u)>;
@@ -87,6 +87,7 @@ std::vector<T> &arith_op_self_vv(std::vector<T> &v, const std::vector<U> &w,
 
   return v;
 }
+#pragma endregion
 
 namespace _ {
 
@@ -185,6 +186,49 @@ std::vector<T> &minus_self(std::vector<T> &v, const std::vector<U> &w) {
 }
 
 #pragma endregion Subtraction template
+
+
+#pragma region Multiplication template
+template <class T, class U>
+auto times(const std::vector<T> &v, const U &s)
+-> std::vector<decltype(T{} + U{})> {
+	ArithOp<T, U> mul = [](const T &t, const U &u) -> decltype(T{} + U{}) {
+		return t * u;
+	};
+	auto ans = arith_op_vs<T, U>(v, s, mul);
+	return ans;
+}
+
+template <class T, class U>
+std::vector<T> &times_self(std::vector<T> &v, const U &s) {
+	ArithOpSelf<T, U> mul_self = [](T &t, const U &u) -> T &{
+		t *= u;
+		return t;
+	};
+
+	return arith_op_vs_self<T, U>(v, s, mul_self);
+}
+
+template <class T, class U>
+auto times(const std::vector<T> &v, const std::vector<U> &w)
+-> std::vector<decltype(T{} + U{}) > {
+	ArithOp<T, U> mul = [](const T &t, const U &u) -> decltype(T{} + U{}) {
+		return t * u;
+	};
+	auto ans = arith_op_vv(v, w, mul);
+	return ans;
+}
+
+template <class T, class U>
+std::vector<T> &times_self(std::vector<T> &v, const std::vector<U> &w) {
+	ArithOpSelf<T, U> mul_self = [](T &t, const U &u) -> T &{
+		t *= u;
+		return t;
+	};
+	arith_op_self_vv(v, w, mul_self);
+	return v;
+}
+#pragma endregion Multiplication template
 
 } // namespace _
 
@@ -504,6 +548,192 @@ matrix_c &minus_self(matrix_c &A, const matrix_d &B){
 }
 
 #pragma endregion
+
+#pragma region Muliplication
+// vector * scalar
+vector_d times(const vector_d &v, double d) {
+	return _::times(v, d);
+}
+
+vector_d times(double d, const vector_d &v) {
+	return _::times(v, d);
+}
+
+vector_c times(const vector_d &v, const complex_d &c) {
+	return _::times(v, c);
+}
+
+vector_c times(const complex_d &c, const vector_d &v) {
+	return _::times(v, c);
+}
+
+vector_c times(const vector_c &v, double d) {
+	return _::times(v, d);
+}
+
+vector_c times(double d, const vector_c &v) {
+	return times(v, d);
+}
+
+vector_c times(const vector_c &v, const complex_d &c) {
+	return _::times(v, c);
+}
+
+vector_c times(const complex_d &c, const vector_c &v) {
+	return times(v, c);
+}
+
+vector_d &times_self(vector_d &v, double d) {
+	return _::times_self(v, d);
+}
+
+vector_c &times_self(vector_c &v, const complex_d &c) {
+	return _::times_self(v, c);
+}
+
+vector_c &times_self(vector_c &v, double d) {
+	return _::times_self(v, d);
+}
+// vector * vector
+vector_d times(const vector_d &v, const vector_d &w) {
+	return _::times(v, w);
+}
+
+vector_c times(const vector_c &v, const vector_c &w) {
+	return _::times(v, w);
+}
+
+vector_c times(const vector_d &v, const vector_c &w) {
+	return _::times(v, w);
+}
+
+vector_c times(const vector_c &v, const vector_d &w) {
+	return _::times(v, w);
+}
+
+vector_d &times_self(vector_d &v, const vector_d &w) {
+	return _::times_self(v, w);
+}
+
+vector_c &times_self(vector_c &v, const vector_c &w) {
+	return _::times_self(v, w);
+}
+
+vector_c &times_self(vector_c &v, const vector_d &w) {
+	return _::times_self(v, w);
+}
+// matrix * scalar
+matrix_d times(const matrix_d &A, double d) {
+	return _::times(A, d);
+}
+
+matrix_d times(double d, const matrix_d &A) {
+	return times(A, d);
+}
+
+matrix_c times(const matrix_d &A, const complex_d &c) {
+	return _::times(A, c);
+}
+
+matrix_c times(const complex_d &c, const matrix_d &A) {
+	return times(A, c);
+}
+
+matrix_c times(const matrix_c &A, double d) {
+	return _::times(A, d);
+}
+
+matrix_c times(double d, const matrix_c &A) {
+	return times(A, d);
+}
+
+matrix_c times(const matrix_c &A, const complex_d &c) {
+	return _::times(A, c);
+}
+
+matrix_c times(const complex_d &c, const matrix_c &A) {
+	return times(A, c);
+}
+
+matrix_d &times_self(matrix_d &A, double d) {
+	return _::times_self(A, d);
+}
+
+matrix_c &times_self(matrix_c &A, const complex_d &c) {
+	return _::times_self(A, c);
+}
+
+matrix_c &times_self(matrix_c &A, double d) {
+	return _::times_self(A, d);
+}
+// matrix * vector
+matrix_d times(const matrix_d &A, const vector_d &v) {
+	return _::times(A, v);
+}
+
+matrix_d times(const vector_d &v, const matrix_d &A) {
+	return _::times(A, v);
+}
+
+matrix_c times(const matrix_d &A, const vector_c &v) {
+	return _::times(A, v);
+}
+
+matrix_c times(const vector_c &v, const matrix_d &A) {
+	return _::times(A, v);
+}
+
+matrix_c times(const matrix_c &A, const vector_d &v) {
+	return _::times(A, v);
+}
+
+matrix_c times(const vector_d &v, const matrix_c &A) {
+	return _::times(A, v);
+}
+
+matrix_c times(const matrix_c &A, const vector_c &v) {
+	return _::times(A, v);
+}
+
+matrix_c times(const vector_c &v, const matrix_c &A) {
+	return _::times(A, v);
+}
+
+matrix_d &times_self(matrix_d &A, const vector_d &v) {
+	return _::times_self(A, v);
+}
+
+matrix_c &times_self(matrix_c &A, const vector_c &v) {
+	return _::times_self(A, v);
+}
+
+matrix_c &times_self(matrix_c &A, const vector_d &v) {
+	return _::times_self(A, v);
+}
+// matrix * matrix
+matrix_d times(const matrix_d &A, const matrix_d &B){
+	return _::times(A, B);
+}
+matrix_c times(const matrix_c &A, const matrix_c &B){
+	return _::times(A, B);
+}
+matrix_c times(const matrix_d &A, const matrix_c &B){
+	return _::times(A, B);
+}
+matrix_c times(const matrix_c &A, const matrix_d &B){
+	return _::times(A, B);
+}
+matrix_d &times_self(matrix_d &A, const matrix_d &B){
+	return _::times_self(A, B);
+}
+matrix_c &times_self(matrix_c &A, const matrix_c &B){
+	return _::times_self(A, B);
+}
+matrix_c &times_self(matrix_c &A, const matrix_d &B){
+	return _::times_self(A, B);
+}
+#pragma endregion
+
 } // namespace zsl
 
 #pragma region Addition plus sign overload
@@ -688,7 +918,6 @@ zsl::matrix_c &operator+=(zsl::matrix_c &A, const zsl::matrix_d &B){
 }
 #pragma endregion plus sign overload
 
-
 #pragma region Subtraction minus sign overload
 // vector - scalar
 zsl::vector_d operator-(const zsl::vector_d &v, double d) {
@@ -870,3 +1099,184 @@ zsl::matrix_c &operator-=(zsl::matrix_c &A, const zsl::matrix_d &B){
 	return zsl::minus_self(A, B);
 }
 #pragma endregion minus sign overload
+
+#pragma region times sign overload
+// vector * scalar
+zsl::vector_d operator*(const zsl::vector_d &v, double d) {
+	return zsl::times(v, d);
+}
+zsl::vector_d operator*(double d, const zsl::vector_d &v) {
+	return zsl::times(d, v);
+}
+
+zsl::vector_c operator*(const zsl::vector_d &v, const zsl::complex_d &c) {
+	return zsl::times(v, c);
+}
+
+zsl::vector_c operator*(const zsl::complex_d &c, const zsl::vector_d &v) {
+	return zsl::times(c, v);
+}
+
+zsl::vector_c operator*(const zsl::vector_c &v, double d) {
+	return zsl::times(v, d);
+}
+
+zsl::vector_c operator*(double d, const zsl::vector_c &v) {
+	return zsl::times(d, v);
+}
+
+zsl::vector_c operator*(const zsl::vector_c &v, const zsl::complex_d &c) {
+	return zsl::times(v, c);
+}
+
+zsl::vector_c operator*(const zsl::complex_d &c, const zsl::vector_c &v) {
+	return zsl::times(c, v);
+}
+
+zsl::vector_d &operator*=(zsl::vector_d &v, double d) {
+	return zsl::times_self(v, d);
+}
+
+zsl::vector_c &operator*=(zsl::vector_c &v, const zsl::complex_d &c) {
+	return zsl::times_self(v, c);
+}
+
+zsl::vector_c &operator*=(zsl::vector_c &v, double d) {
+	return zsl::times_self(v, d);
+}
+
+// vector * vector
+zsl::vector_d operator*(const zsl::vector_d &v, const zsl::vector_d &w) {
+	return zsl::times(v, w);
+}
+
+zsl::vector_c operator*(const zsl::vector_c &v, const zsl::vector_c &w) {
+	return zsl::times(v, w);
+}
+
+zsl::vector_c operator*(const zsl::vector_d &v, const zsl::vector_c &w) {
+	return zsl::times(v, w);
+}
+
+zsl::vector_c operator*(const zsl::vector_c &v, const zsl::vector_d &w) {
+	return zsl::times(v, w);
+}
+
+zsl::vector_d &operator*=(zsl::vector_d &v, const zsl::vector_d &w) {
+	return zsl::times_self(v, w);
+}
+
+zsl::vector_c &operator*=(zsl::vector_c &v, const zsl::vector_c &w) {
+	return zsl::times_self(v, w);
+}
+
+zsl::vector_c &operator*=(zsl::vector_c &v, const zsl::vector_d &w) {
+	return zsl::times_self(v, w);
+}
+// matrix * scalar
+zsl::matrix_d operator*(const zsl::matrix_d &A, double d) {
+	return zsl::times(A, d);
+}
+zsl::matrix_d operator*(double d, const zsl::matrix_d &A) {
+	return zsl::times(d, A);
+}
+zsl::matrix_c operator*(const zsl::matrix_d &A, const zsl::complex_d &c) {
+	return zsl::times(A, c);
+}
+zsl::matrix_c operator*(const zsl::complex_d &c, const zsl::matrix_d &A) {
+	return zsl::times(c, A);
+}
+zsl::matrix_c operator*(const zsl::matrix_c &A, double d) {
+	return zsl::times(A, d);
+}
+zsl::matrix_c operator*(double d, const zsl::matrix_c &A) {
+	return zsl::times(d, A);
+}
+zsl::matrix_c operator*(const zsl::matrix_c &A, const zsl::complex_d &c) {
+	return zsl::times(A, c);
+}
+zsl::matrix_c operator*(const zsl::complex_d &c, const zsl::matrix_c &A) {
+	return zsl::times(c, A);
+}
+zsl::matrix_d &operator*=(zsl::matrix_d &A, double d) {
+	return zsl::times_self(A, d);
+}
+zsl::matrix_c &operator*=(zsl::matrix_c &A, const zsl::complex_d &c) {
+	return zsl::times_self(A, c);
+}
+zsl::matrix_c &operator*=(zsl::matrix_c &A, double d) {
+	return zsl::times_self(A, d);
+}
+// matrix * vector
+zsl::matrix_d operator*(const zsl::matrix_d &A, const zsl::vector_d &v) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_d operator*(const zsl::vector_d &v, const zsl::matrix_d &A) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_c operator*(const zsl::matrix_d &A, const zsl::vector_c &v) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_c operator*(const zsl::vector_c &v, const zsl::matrix_d &A) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_c operator*(const zsl::matrix_c &A, const zsl::vector_d &v) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_c operator*(const zsl::vector_d &v, const zsl::matrix_c &A) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_c operator*(const zsl::matrix_c &A, const zsl::vector_c &v) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_c operator*(const zsl::vector_c &v, const zsl::matrix_c &A) {
+	return zsl::times(A, v);
+}
+
+zsl::matrix_d &operator*=(zsl::matrix_d &A, const zsl::vector_d &v) {
+	return zsl::times_self(A, v);
+}
+
+zsl::matrix_c &operator*=(zsl::matrix_c &A, const zsl::vector_c &v) {
+	return zsl::times_self(A, v);
+}
+
+zsl::matrix_c &operator*=(zsl::matrix_c &A, const zsl::vector_d &v) {
+	return zsl::times_self(A, v);
+}
+// matrix * matrix
+zsl::matrix_d operator*(const zsl::matrix_d &A, const zsl::matrix_d &B){
+	return zsl::times(A, B);
+}
+
+zsl::matrix_c operator*(const zsl::matrix_c &A, const zsl::matrix_c &B){
+	return zsl::times(A, B);
+}
+
+zsl::matrix_c operator*(const zsl::matrix_d &A, const zsl::matrix_c &B){
+	return zsl::times(A, B);
+}
+
+zsl::matrix_c operator*(const zsl::matrix_c &A, const zsl::matrix_d &B){
+	return zsl::times(A, B);
+}
+
+zsl::matrix_d &operator*=(zsl::matrix_d &A, const zsl::matrix_d &B){
+	return zsl::times_self(A, B);
+}
+
+zsl::matrix_c &operator*=(zsl::matrix_c &A, const zsl::matrix_c &B){
+	return zsl::times_self(A, B);
+}
+
+zsl::matrix_c &operator*=(zsl::matrix_c &A, const zsl::matrix_d &B){
+	return zsl::times_self(A, B);
+}
+#pragma endregion
