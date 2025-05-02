@@ -6,6 +6,8 @@
 template<typename T, typename U>
 concept AirthOpResultSame = requires(T t, U u) {
 	requires std::is_same_v<decltype(t + u), decltype(t - u)>;
+	requires std::is_same_v<decltype(t + u), decltype(t * u)>;
+	//requires std::is_same_v<decltype(t + u), decltype(t / u)>;
 };
 
 template <class T, class U>
@@ -187,7 +189,6 @@ std::vector<T> &minus_self(std::vector<T> &v, const std::vector<U> &w) {
 
 #pragma endregion Subtraction template
 
-
 #pragma region Multiplication template
 template <class T, class U>
 auto times(const std::vector<T> &v, const U &s)
@@ -229,6 +230,59 @@ std::vector<T> &times_self(std::vector<T> &v, const std::vector<U> &w) {
 	return v;
 }
 #pragma endregion Multiplication template
+
+#pragma region Rdivide template
+template <class T, class U>
+auto rdivide(const std::vector<T> &v, const U &s)
+-> std::vector<decltype(T{} + U{}) > {
+	ArithOp<T, U> div = [](const T &t, const U &u) -> decltype(T{} + U{}) {
+		return t / u;
+	};
+	auto ans = arith_op_vs<T, U>(v, s, div);
+	return ans;
+}
+
+template <class T, class U>
+auto rdivide(const U &s, const std::vector<T> &v)
+-> std::vector<decltype(T{} - U{}) > {
+	ArithOp<U, T> div = [](const U &u, const T &t) -> decltype(U{} - T{}) {
+		return u / t;
+	};
+	auto ans = arith_op_vs<T, U>(s, v, div);
+	return ans;
+}
+
+template <class T, class U>
+std::vector<T> &rdivide_self(std::vector<T> &v, const U &s) {
+	ArithOpSelf<T, U> div_self = [](T &t, const U &u) -> T &{
+		t /= u;
+		return t;
+	};
+
+	return arith_op_vs_self<T, U>(v, s, div_self);
+}
+
+template <class T, class U>
+auto rdivide(const std::vector<T> &v, const std::vector<U> &w)
+-> std::vector<decltype(T{} - U{}) > {
+	ArithOp<T, U> div = [](const T &t, const U &u) -> decltype(T{} - U{}) {
+		return t / u;
+	};
+	auto ans = arith_op_vv(v, w, div);
+	return ans;
+}
+
+template <class T, class U>
+std::vector<T> &rdivide_self(std::vector<T> &v, const std::vector<U> &w) {
+	ArithOpSelf<T, U> div_self = [](T &t, const U &u) -> T &{
+		t /= u;
+		return t;
+	};
+	arith_op_self_vv(v, w, div_self);
+	return v;
+}
+
+#pragma endregion Rdivide template
 
 } // namespace _
 
@@ -434,7 +488,6 @@ vector_c &minus_self(vector_c &v, const vector_d &w) {
 	return _::minus_self(v, w);
 }
 
-
 // matrix - scalar
 matrix_d minus(const matrix_d &A, double d) {
 	return _::minus(A, d);
@@ -480,7 +533,7 @@ matrix_c &minus_self(matrix_c &A, double d) {
 	return _::minus_self(A, d);
 }
 
-// matrix + vector
+// matrix - vector
 matrix_d minus(const matrix_d &A, const vector_d &v) {
 	return _::minus(A, v);
 }
@@ -524,7 +577,7 @@ matrix_c &minus_self(matrix_c &A, const vector_c &v) {
 matrix_c &minus_self(matrix_c &A, const vector_d &v) {
 	return _::minus_self(A, v);
 }
-// matrix + matrix
+// matrix - matrix
 matrix_d minus(const matrix_d &A, const matrix_d &B){
 	return _::minus(A, B);
 }
@@ -546,7 +599,6 @@ matrix_c &minus_self(matrix_c &A, const matrix_c &B){
 matrix_c &minus_self(matrix_c &A, const matrix_d &B){
 	return _::minus_self(A, B);
 }
-
 #pragma endregion
 
 #pragma region Muliplication
@@ -731,6 +783,194 @@ matrix_c &times_self(matrix_c &A, const matrix_c &B){
 }
 matrix_c &times_self(matrix_c &A, const matrix_d &B){
 	return _::times_self(A, B);
+}
+#pragma endregion
+
+#pragma region Rdivide
+// vector / scalar
+vector_d rdivide(const vector_d &v, double d) {
+	return _::rdivide(v, d);
+}
+
+vector_d rdivide(double d, const vector_d &v) {
+	return _::rdivide(d, v);
+}
+
+vector_c rdivide(const vector_d &v, const complex_d &c) {
+	return _::rdivide(v, c);
+}
+
+vector_c rdivide(const complex_d &c, const vector_d &v) {
+	return _::rdivide(c, v);
+}
+
+vector_c rdivide(const vector_c &v, double d) {
+	return _::rdivide(v, d);
+}
+
+vector_c rdivide(double d, const vector_c &v) {
+	return _::rdivide(d, v);
+}
+
+vector_c rdivide(const vector_c &v, const complex_d &c) {
+	return _::rdivide(v, c);
+}
+
+vector_c rdivide(const complex_d &c, const vector_c &v) {
+	return _::rdivide(c, v);
+}
+
+vector_d &rdivide_self(vector_d &v, double d) {
+	return _::rdivide_self(v, d);
+}
+
+vector_c &rdivide_self(vector_c &v, const complex_d &c) {
+	return _::rdivide_self(v, c);
+}
+
+vector_c &rdivide_self(vector_c &v, double d) {
+	return _::rdivide_self(v, d);
+}
+
+// vector / vector
+vector_d rdivide(const vector_d &v, const vector_d &w) {
+	return _::rdivide(v, w);
+}
+
+vector_c rdivide(const vector_c &v, const vector_c &w) {
+	return _::rdivide(v, w);
+}
+
+vector_c rdivide(const vector_d &v, const vector_c &w) {
+	return _::rdivide(v, w);
+}
+
+vector_c rdivide(const vector_c &v, const vector_d &w) {
+	return _::rdivide(v, w);
+}
+
+vector_d &rdivide_self(vector_d &v, const vector_d &w) {
+	return _::rdivide_self(v, w);
+}
+
+vector_c &rdivide_self(vector_c &v, const vector_c &w) {
+	return _::rdivide_self(v, w);
+}
+
+vector_c &rdivide_self(vector_c &v, const vector_d &w) {
+	return _::rdivide_self(v, w);
+}
+
+// matrix / scalar
+matrix_d rdivide(const matrix_d &A, double d) {
+	return _::rdivide(A, d);
+}
+
+matrix_d rdivide(double d, const matrix_d &A) {
+	return _::rdivide(d, A);
+}
+
+matrix_c rdivide(const matrix_d &A, const complex_d &c) {
+	return _::rdivide(A, c);
+}
+
+matrix_c rdivide(const complex_d &c, const matrix_d &A) {
+	return _::rdivide(c, A);
+}
+
+matrix_c rdivide(const matrix_c &A, double d) {
+	return _::rdivide(A, d);
+}
+
+matrix_c rdivide(double d, const matrix_c &A) {
+	return _::rdivide(d, A);
+}
+
+matrix_c rdivide(const matrix_c &A, const complex_d &c) {
+	return _::rdivide(A, c);
+}
+
+matrix_c rdivide(const complex_d &c, const matrix_c &A) {
+	return _::rdivide(c, A);
+}
+
+matrix_d &rdivide_self(matrix_d &A, double d) {
+	return _::rdivide_self(A, d);
+}
+
+matrix_c &rdivide_self(matrix_c &A, const complex_d &c) {
+	return _::rdivide_self(A, c);
+}
+
+matrix_c &rdivide_self(matrix_c &A, double d) {
+	return _::rdivide_self(A, d);
+}
+
+// matrix / vector
+matrix_d rdivide(const matrix_d &A, const vector_d &v) {
+	return _::rdivide(A, v);
+}
+
+matrix_d rdivide(const vector_d &v, const matrix_d &A) {
+	return _::rdivide(v, A);
+}
+
+matrix_c rdivide(const matrix_d &A, const vector_c &v) {
+	return _::rdivide(A, v);
+}
+
+matrix_c rdivide(const vector_c &v, const matrix_d &A) {
+	return _::rdivide(v, A);
+}
+
+matrix_c rdivide(const matrix_c &A, const vector_d &v) {
+	return _::rdivide(A, v);
+}
+
+matrix_c rdivide(const vector_d &v, const matrix_c &A) {
+	return _::rdivide(v, A);
+}
+
+matrix_c rdivide(const matrix_c &A, const vector_c &v) {
+	return _::rdivide(A, v);
+}
+
+matrix_c rdivide(const vector_c &v, const matrix_c &A) {
+	return _::rdivide(v, A);
+}
+
+matrix_d &rdivide_self(matrix_d &A, const vector_d &v) {
+	return _::rdivide_self(A, v);
+}
+
+matrix_c &rdivide_self(matrix_c &A, const vector_c &v) {
+	return _::rdivide_self(A, v);
+}
+
+matrix_c &rdivide_self(matrix_c &A, const vector_d &v) {
+	return _::rdivide_self(A, v);
+}
+// matrix / matrix
+matrix_d rdivide(const matrix_d &A, const matrix_d &B){
+	return _::rdivide(A, B);
+}
+matrix_c rdivide(const matrix_c &A, const matrix_c &B){
+	return _::rdivide(A, B);
+}
+matrix_c rdivide(const matrix_d &A, const matrix_c &B){
+	return _::rdivide(A, B);
+}
+matrix_c rdivide(const matrix_c &A, const matrix_d &B){
+	return _::rdivide(A, B);
+}
+matrix_d &rdivide_self(matrix_d &A, const matrix_d &B){
+	return _::rdivide_self(A, B);
+}
+matrix_c &rdivide_self(matrix_c &A, const matrix_c &B){
+	return _::rdivide_self(A, B);
+}
+matrix_c &rdivide_self(matrix_c &A, const matrix_d &B){
+	return _::rdivide_self(A, B);
 }
 #pragma endregion
 
@@ -1280,3 +1520,185 @@ zsl::matrix_c &operator*=(zsl::matrix_c &A, const zsl::matrix_d &B){
 	return zsl::times_self(A, B);
 }
 #pragma endregion
+
+#pragma region Rdivide sign overload
+// vector / scalar
+zsl::vector_d operator/(const zsl::vector_d &v, double d) {
+	return zsl::rdivide(v, d);
+}
+zsl::vector_d operator/(double d, const zsl::vector_d &v) {
+	return zsl::rdivide(d, v);
+}
+
+zsl::vector_c operator/(const zsl::vector_d &v, const zsl::complex_d &c) {
+	return zsl::rdivide(v, c);
+}
+
+zsl::vector_c operator/(const zsl::complex_d &c, const zsl::vector_d &v) {
+	return zsl::rdivide(c, v);
+}
+
+zsl::vector_c operator/(const zsl::vector_c &v, double d) {
+	return zsl::rdivide(v, d);
+}
+
+zsl::vector_c operator/(double d, const zsl::vector_c &v) {
+	return zsl::rdivide(d, v);
+}
+
+zsl::vector_c operator/(const zsl::vector_c &v, const zsl::complex_d &c) {
+	return zsl::rdivide(v, c);
+}
+
+zsl::vector_c operator/(const zsl::complex_d &c, const zsl::vector_c &v) {
+	return zsl::rdivide(c, v);
+}
+
+zsl::vector_d &operator/=(zsl::vector_d &v, double d) {
+	return zsl::rdivide_self(v, d);
+}
+
+zsl::vector_c &operator/=(zsl::vector_c &v, const zsl::complex_d &c) {
+	return zsl::rdivide_self(v, c);
+}
+
+zsl::vector_c &operator/=(zsl::vector_c &v, double d) {
+	return zsl::rdivide_self(v, d);
+}
+
+// vector / vector
+zsl::vector_d operator/(const zsl::vector_d &v, const zsl::vector_d &w) {
+	return zsl::rdivide(v, w);
+}
+
+zsl::vector_c operator/(const zsl::vector_c &v, const zsl::vector_c &w) {
+	return zsl::rdivide(v, w);
+}
+
+zsl::vector_c operator/(const zsl::vector_d &v, const zsl::vector_c &w) {
+	return zsl::rdivide(v, w);
+}
+
+zsl::vector_c operator/(const zsl::vector_c &v, const zsl::vector_d &w) {
+	return zsl::rdivide(v, w);
+}
+
+zsl::vector_d &operator/=(zsl::vector_d &v, const zsl::vector_d &w) {
+	return zsl::rdivide_self(v, w);
+}
+
+zsl::vector_c &operator/=(zsl::vector_c &v, const zsl::vector_c &w) {
+	return zsl::rdivide_self(v, w);
+}
+
+zsl::vector_c &operator/=(zsl::vector_c &v, const zsl::vector_d &w) {
+	return zsl::rdivide_self(v, w);
+}
+
+// matrix / scalar
+zsl::matrix_d operator/(const zsl::matrix_d &A, double d) {
+	return zsl::rdivide(A, d);
+}
+zsl::matrix_d operator/(double d, const zsl::matrix_d &A) {
+	return zsl::rdivide(d, A);
+}
+zsl::matrix_c operator/(const zsl::matrix_d &A, const zsl::complex_d &c) {
+	return zsl::rdivide(A, c);
+}
+zsl::matrix_c operator/(const zsl::complex_d &c, const zsl::matrix_d &A) {
+	return zsl::rdivide(c, A);
+}
+zsl::matrix_c operator/(const zsl::matrix_c &A, double d) {
+	return zsl::rdivide(A, d);
+}
+zsl::matrix_c operator/(double d, const zsl::matrix_c &A) {
+	return zsl::rdivide(d, A);
+}
+zsl::matrix_c operator/(const zsl::matrix_c &A, const zsl::complex_d &c) {
+	return zsl::rdivide(A, c);
+}
+zsl::matrix_c operator/(const zsl::complex_d &c, const zsl::matrix_c &A) {
+	return zsl::rdivide(c, A);
+}
+zsl::matrix_d &operator/=(zsl::matrix_d &A, double d) {
+	return zsl::rdivide_self(A, d);
+}
+zsl::matrix_c &operator/=(zsl::matrix_c &A, const zsl::complex_d &c) {
+	return zsl::rdivide_self(A, c);
+}
+zsl::matrix_c &operator/=(zsl::matrix_c &A, double d) {
+	return zsl::rdivide_self(A, d);
+}
+// matrix / vector
+zsl::matrix_d operator/(const zsl::matrix_d &A, const zsl::vector_d &v) {
+	return zsl::rdivide(A, v);
+}
+
+zsl::matrix_d operator/(const zsl::vector_d &v, const zsl::matrix_d &A) {
+	return zsl::rdivide(v, A);
+}
+
+zsl::matrix_c operator/(const zsl::matrix_d &A, const zsl::vector_c &v) {
+	return zsl::rdivide(A, v);
+}
+
+zsl::matrix_c operator/(const zsl::vector_c &v, const zsl::matrix_d &A) {
+	return zsl::rdivide(v, A);
+}
+
+zsl::matrix_c operator/(const zsl::matrix_c &A, const zsl::vector_d &v) {
+	return zsl::rdivide(A, v);
+}
+
+zsl::matrix_c operator/(const zsl::vector_d &v, const zsl::matrix_c &A) {
+	return zsl::rdivide(v, A);
+}
+
+zsl::matrix_c operator/(const zsl::matrix_c &A, const zsl::vector_c &v) {
+	return zsl::rdivide(A, v);
+}
+
+zsl::matrix_c operator/(const zsl::vector_c &v, const zsl::matrix_c &A) {
+	return zsl::rdivide(v, A);
+}
+
+zsl::matrix_d &operator/=(zsl::matrix_d &A, const zsl::vector_d &v) {
+	return zsl::rdivide_self(A, v);
+}
+
+zsl::matrix_c &operator/=(zsl::matrix_c &A, const zsl::vector_c &v) {
+	return zsl::rdivide_self(A, v);
+}
+
+zsl::matrix_c &operator/=(zsl::matrix_c &A, const zsl::vector_d &v) {
+	return zsl::rdivide_self(A, v);
+}
+// matrix / matrix
+zsl::matrix_d operator/(const zsl::matrix_d &A, const zsl::matrix_d &B){
+	return zsl::rdivide(A, B);
+}
+
+zsl::matrix_c operator/(const zsl::matrix_c &A, const zsl::matrix_c &B){
+	return zsl::rdivide(A, B);
+}
+
+zsl::matrix_c operator/(const zsl::matrix_d &A, const zsl::matrix_c &B){
+	return zsl::rdivide(A, B);
+}
+
+zsl::matrix_c operator/(const zsl::matrix_c &A, const zsl::matrix_d &B){
+	return zsl::rdivide(A, B);
+}
+
+zsl::matrix_d &operator/=(zsl::matrix_d &A, const zsl::matrix_d &B){
+	return zsl::rdivide_self(A, B);
+}
+
+zsl::matrix_c &operator/=(zsl::matrix_c &A, const zsl::matrix_c &B){
+	return zsl::rdivide_self(A, B);
+}
+
+zsl::matrix_c &operator/=(zsl::matrix_c &A, const zsl::matrix_d &B){
+	return zsl::rdivide_self(A, B);
+}
+#pragma endregion rdivide sign overload
