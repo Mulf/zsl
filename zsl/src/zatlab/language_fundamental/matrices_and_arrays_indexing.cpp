@@ -56,7 +56,7 @@ Vector set_block(const Vector &v, const Colon &rng, const Vector &w) {
 }
 
 template <class Vector>
-Vector set_block(const Vector &v, const vector_sz &indices, const vector_d &w) {
+Vector set_block(const Vector &v, const vector_sz &indices, const Vector &w) {
   if (indices.size() != w.size()) {
     Z_THROW(ZErrorCode::MATH_DIM_UNMATCH,
             "source vector's length does not match target block's length");
@@ -743,7 +743,7 @@ vector_sz colon(size_t j, int i, size_t k) {
 
 #pragma endregion colon
 
-
+#pragma region Real matrix/vector block
 vector_d colon(const vector_d &v) { return v; }
 
 vector_d colon(const matrix_d &A) {
@@ -913,6 +913,190 @@ matrix_d &set_block_self(matrix_d &A, const Colon &rowRng,
                          const vector_sz &colIndices, const matrix_d &B) {
   return _::set_block_self(A, rowRng, colIndices, B);
 }
+#pragma endregion
+
+
+#pragma region Real matrix/vector block
+vector_c colon(const vector_c &v) {
+	return v;
+}
+
+vector_c colon(const matrix_c &A) {
+	vector_c v{static_cast<size_t>(numel(A)), vector_c::allocator_type{}};
+	if(v.empty()) {
+		return v;
+	}
+	size_t idx = 0;
+	for(size_t j = 0; j < A[0].size(); j++) {
+		for(size_t i = 0; i < A.size(); i++) {
+			v[idx++] = A[i][j];
+		}
+	}
+
+	return v;
+}
+
+// vector block
+vector_c block(const vector_c &v, const Colon &rng) {
+	return _::block<complex_d>(v, rng);
+}
+
+vector_c block(const vector_c &v, const vector_sz &indices) {
+	return _::block<complex_d>(v, indices);
+}
+
+vector_c set_block(const vector_c &v, const Colon &rng, const vector_c &w) {
+	return _::set_block(v, rng, w);
+}
+
+vector_c set_block(const vector_c &v, const vector_sz &indices,
+				   const vector_c &w) {
+	return _::set_block(v, indices, w);
+}
+
+vector_c &set_block_self(vector_c &v, const Colon &rng, const vector_c &w) {
+	return _::set_block_self(v, rng, w);
+}
+
+vector_c &set_block_self(vector_c &v, const vector_sz &rng, const vector_c &w) {
+	return _::set_block_self(v, rng, w);
+}
+
+// matrix block
+vector_c col(const matrix_c &A, size_t n) {
+	return _::col(A, n);
+}
+
+matrix_c set_col(const matrix_c &A, size_t n, const vector_c &v) {
+	return _::set_col(A, n, v);
+}
+
+matrix_c &set_col_self(matrix_c &A, size_t n, const vector_c &v) {
+	return _::set_col_self(A, n, v);
+}
+
+matrix_c cols(const matrix_c &A, const Colon &rng) {
+	return _::cols(A, rng);
+}
+
+matrix_c cols(const matrix_c &A, const vector_sz &indices) {
+	return _::cols(A, indices);
+}
+
+matrix_c set_cols(const matrix_c &A, const Colon &rng, const matrix_c &V) {
+	return _::set_cols(A, rng, V);
+}
+
+matrix_c &set_cols_self(matrix_c &A, const Colon &rng, const matrix_c &V) {
+	return _::set_cols_self(A, rng, V);
+}
+
+matrix_c set_cols(const matrix_c &A, const vector_sz &indices,
+				  const matrix_c &V) {
+	return _::set_cols(A, indices, V);
+}
+
+matrix_c &set_cols_self(matrix_c &A, const vector_sz &indices,
+						const matrix_c &V) {
+	return _::set_cols_self(A, indices, V);
+}
+
+vector_c row(const matrix_c &A, size_t m) {
+	return _::row(A, m);
+}
+
+matrix_c set_row(const matrix_c &A, size_t m, const vector_c &v) {
+	return _::set_row(A, m, v);
+}
+
+matrix_c &set_row_self(matrix_c &A, size_t m, const vector_c &v) {
+	return _::set_row_self(A, m, v);
+}
+
+matrix_c rows(const matrix_c &A, const Colon &rng) {
+	return _::rows(A, rng);
+}
+
+matrix_c set_rows(const matrix_c &A, const Colon &rng, const matrix_c &V) {
+	return _::set_rows(A, rng, V);
+}
+
+matrix_c &set_rows_self(matrix_c &A, const Colon &rng, const matrix_c &V) {
+	return _::set_rows_self(A, rng, V);
+}
+
+matrix_c rows(const matrix_c &A, const vector_sz &indices) {
+	return _::rows(A, indices);
+}
+
+matrix_c set_rows(const matrix_c &A, const vector_sz &indices,
+				  const matrix_c &V) {
+	return _::set_rows(A, indices, V);
+}
+
+matrix_c &set_rows_self(matrix_c &A, const vector_sz &indices,
+						const matrix_c &V) {
+	return _::set_rows_self(A, indices, V);
+}
+
+matrix_c block(const matrix_c &A, const Colon &rowRng, const Colon &colRng) {
+	return _::block(A, rowRng, colRng);
+}
+
+matrix_c set_block(const matrix_c &A, const Colon &rowRng, const Colon &colRng,
+				   const matrix_c &B) {
+	return _::set_block(A, rowRng, colRng, B);
+}
+matrix_c &set_block_self(matrix_c &A, const Colon &rowRng, const Colon &colRng,
+						 const matrix_c &B) {
+	return _::set_block_self(A, rowRng, colRng, B);
+}
+
+matrix_c block(const matrix_c &A, const vector_sz &rowIndices,
+			   const vector_sz &colIndices) {
+	return _::block(A, rowIndices, colIndices);
+}
+
+matrix_c set_block(const matrix_c &A, const vector_sz &rowIndices,
+				   const vector_sz &colIndices, const matrix_c &B) {
+	return _::set_block(A, rowIndices, colIndices, B);
+}
+
+matrix_c &set_block_self(matrix_c &A, const vector_sz &rowIndices,
+						 const vector_sz &colIndices, const matrix_c &B) {
+	return _::set_block_self(A, rowIndices, colIndices, B);
+}
+
+matrix_c block(const matrix_c &A, const vector_sz &rowIndices,
+			   const Colon &colRng) {
+	return _::block(A, rowIndices, colRng);
+}
+
+matrix_c set_block(const matrix_c &A, const vector_sz &rowIndices,
+				   const Colon &colRng, const matrix_c &B) {
+	return _::set_block(A, rowIndices, colRng, B);
+}
+
+matrix_c &set_block_self(matrix_c &A, const vector_sz &rowIndices,
+						 const Colon &colRng, const matrix_c &B) {
+	return _::set_block_self(A, rowIndices, colRng, B);
+}
+
+matrix_c block(const matrix_c &A, const Colon &rowRng,
+			   const vector_sz &colIndices) {
+	return _::block(A, rowRng, colIndices);
+}
+
+matrix_c set_block(const matrix_c &A, const Colon &rowRng,
+				   const vector_sz &colIndices, const matrix_c &B) {
+	return _::set_block(A, rowRng, colIndices, B);
+}
+
+matrix_c &set_block_self(matrix_c &A, const Colon &rowRng,
+						 const vector_sz &colIndices, const matrix_c &B) {
+	return _::set_block_self(A, rowRng, colIndices, B);
+}
+#pragma endregion
 
 // ind2sub
 std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t> &sz,

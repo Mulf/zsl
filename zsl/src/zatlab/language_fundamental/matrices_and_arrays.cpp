@@ -3,6 +3,37 @@
 #include <algorithm>
 #include <iterator>
 
+namespace _{
+using namespace zsl;
+template<class Vector>
+size_t size(const Vector &v) {
+	return v.size();
+}
+
+template<class Matrix>
+vector_sz size(const Matrix &A) {
+	if(A.empty()) {
+		return {0, 0};
+	}
+	return {A.size(), A[0].size()};
+}
+
+template<class Matrix>
+size_t size(const Matrix &A, size_t dim) {
+	assert(dim == 1 || dim == 2);
+
+	if(A.empty()) {
+		return 0;
+	}
+
+	if(dim == 1) {
+		return A.size();
+	}
+	return A[0].size();
+}
+
+}
+
 namespace zsl {
 #pragma region Create and Combine Arrays
 // cat
@@ -184,6 +215,10 @@ size_t length(const vector_d &v) { return v.size(); }
 
 size_t length(const matrix_d &A) { return std::max(size(A, 1), size(A, 2)); }
 
+//size_t length(const matrix_c &A) {
+//	return std::max(size(A, 1), size(A, 2));
+//}
+
 // size
 size_t size(const vector_d &v) { return v.size(); }
 
@@ -192,10 +227,11 @@ vector_sz size(const matrix_d &A) {
     return {0, 0};
   }
   return {A.size(), A[0].size()};
+	//return _::size(A);
 }
 
 size_t size(const matrix_d &A, size_t dim) {
-  assert(dim == 1 || dim == 2);
+  /*assert(dim == 1 || dim == 2);
 
   if (A.empty()) {
     return 0;
@@ -204,7 +240,24 @@ size_t size(const matrix_d &A, size_t dim) {
   if (dim == 1) {
     return A.size();
   }
-  return A[0].size();
+  return A[0].size();*/
+	return _::size(A, dim);
+}
+
+size_t size(const vector_c &v) {
+	return v.size();
+}
+
+vector_sz size(const matrix_c &A) {
+	if(A.empty()) {
+		return {0, 0};
+	}
+	return {A.size(), A[0].size()};
+	//return _::size<matrix_c>(A);
+}
+
+size_t size(const matrix_c &A, size_t dim) {
+	return _::size(A, dim);
 }
 
 // numel
@@ -216,6 +269,14 @@ size_t numel(const matrix_d &A) {
     return 0;
   }
   return A.size() * A[0].size();
+}
+
+size_t numel(const matrix_c &A) {
+	assert(is_matrix(A));
+	if(A.empty() || A[0].empty()) {
+		return 0;
+	}
+	return A.size() * A[0].size();
 }
 #pragma endregion
 
