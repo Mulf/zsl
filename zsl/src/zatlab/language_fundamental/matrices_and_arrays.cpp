@@ -215,9 +215,9 @@ size_t length(const vector_d &v) { return v.size(); }
 
 size_t length(const matrix_d &A) { return std::max(size(A, 1), size(A, 2)); }
 
-//size_t length(const matrix_c &A) {
-//	return std::max(size(A, 1), size(A, 2));
-//}
+size_t length(const matrix_c &A) {
+	return std::max(size(A, 1), size(A, 2));
+}
 
 // size
 size_t size(const vector_d &v) { return v.size(); }

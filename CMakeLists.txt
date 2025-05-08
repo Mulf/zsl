@@ -11,6 +11,11 @@ add_executable(Demo main.cpp)
 
 target_include_directories(Demo PUBLIC "${PROJECT_BINARY_DIR}")
 
+#find_package(matplotplusplus CONFIG REQUIRED)
+
+#target_link_libraries(Demo matplotplusplus::matplotplusplus)
+
+
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 add_subdirectory(zsl)
