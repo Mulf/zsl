@@ -9,3 +9,4 @@ target_link_libraries(
 )
 
 add_subdirectory(language_fundamental)
+add_subdirectory(data_import_and_analysis)

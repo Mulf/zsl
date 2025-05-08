@@ -119,3 +119,6 @@ install/
 
 # python
 *.pyc
+
+# test
+test-deps

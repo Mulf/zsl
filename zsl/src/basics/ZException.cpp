@@ -17,7 +17,10 @@ static std::map<ZErrorCode, std::string> ErrorInfoMap = {
     {ZErrorCode::MATH_EMPTY_VEC, "Vector or matrix is empty"},
     {ZErrorCode::MATH_DIM_UNMATCH,
      "Dimensions of matrices(vectors) are different"},
-    {ZErrorCode::MATH_INVALID_MATRIX, "Invalid matrix"}};
+    {ZErrorCode::MATH_INVALID_MATRIX, "Invalid matrix"},
+	{ZErrorCode::FILE_NOT_EXIST, "File or directory not exists"},
+	{ZErrorCode::FILE_FAIL_TO_OPEN, "Fail to open file"}
+};
 
 bool ZException::s_symbolsInitialized = false;
 
