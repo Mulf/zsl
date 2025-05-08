@@ -3,6 +3,7 @@
 
 #include <complex>
 #include <vector>
+#include <functional>
 
 namespace zsl {
 constexpr double pi = 3.141592653589;
@@ -13,7 +14,6 @@ using complex_d = std::complex<double>;
 using vector_c = std::vector<std::complex<double>>;
 using matrix_d = std::vector<std::vector<double>>;
 using matrix_c = std::vector<std::vector<std::complex<double>>>;
-
 
 template <typename T>
 concept Vector = std::is_same_v<T, vector_d> || std::is_same_v<T, vector_c>;
@@ -31,6 +31,7 @@ bool is_matrix(const Matrix &A) {
 	return true;
 }
 
+using UnaryOp = std::function<double(double)>;
 
 constexpr double ABS_EPS = 1e-4;
 } // namespace zsl
