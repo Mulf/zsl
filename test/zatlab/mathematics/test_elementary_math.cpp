@@ -27,7 +27,7 @@ TEST(mathematics, elementary_math) {
 		auto wd = sind(v);
 		auto wpi = sinpi(v);
 
-		plot(v, row(Y, 0), "-o")->display_name("sin(x)");
+	/*	plot(v, row(Y, 0), "-o")->display_name("sin(x)");
 		hold(on);
 		plot(v, row(Y, 1), "-+")->display_name("sin(x+1.5)");
 		hold(on);
@@ -37,6 +37,6 @@ TEST(mathematics, elementary_math) {
 		title("sin");
 		xlabel("x");
 		matplot::legend();
-		show();
+		show();*/
 	}
 }
