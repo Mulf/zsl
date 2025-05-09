@@ -5,7 +5,7 @@ add_executable(
 
 target_link_libraries(
 	test_elementary_math
-	GTest::gtest_main zsl
+	GTest::gtest_main zsl matplot
 )
 
 
