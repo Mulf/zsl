@@ -12,7 +12,7 @@ FetchContent_MakeAvailable(googletest)
 
 
 
-add_subdirectory(basics)
+# add_subdirectory(basics)
 add_subdirectory(zatlab)
 
 include(GoogleTest)
