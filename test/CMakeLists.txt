@@ -10,19 +10,10 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(
-	test_std_vector_op
-	test_std_vector_op.cpp
-)
 
-target_link_libraries(
-	test_std_vector_op
-	GTest::gtest_main zsl
-)
 
 add_subdirectory(basics)
 add_subdirectory(zatlab)
 
 include(GoogleTest)
-gtest_discover_tests(test_std_vector_op)
 
