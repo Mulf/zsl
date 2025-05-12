@@ -178,7 +178,7 @@ vector_c block(const vector_c &v, const Colon &rng);
 vector_c block(const vector_c &v, const vector_sz &indices);
 vector_c set_block(const vector_c &v, const Colon &rng, const vector_c &w);
 vector_c set_block(const vector_c &v, const vector_sz &indices,
-				   const vector_c &w);
+                   const vector_c &w);
 vector_c &set_block_self(vector_c &v, const Colon &rng, const vector_c &w);
 vector_c &set_block_self(vector_c &v, const vector_sz &rng, const vector_c &w);
 vector_c col(const matrix_c &A, size_t n);
@@ -189,9 +189,9 @@ matrix_c set_cols(const matrix_c &A, const Colon &rng, const matrix_c &V);
 matrix_c &set_cols_self(matrix_c &A, const Colon &rng, const matrix_c &V);
 matrix_c cols(const matrix_c &A, const vector_sz &indices);
 matrix_c set_cols(const matrix_c &A, const vector_sz &indices,
-				  const matrix_c &V);
+                  const matrix_c &V);
 matrix_c &set_cols_self(matrix_c &A, const vector_sz &indices,
-						const matrix_c &V);
+                        const matrix_c &V);
 vector_c row(const matrix_c &A, size_t m);
 matrix_c set_row(const matrix_c &A, size_t m, const vector_c &v);
 matrix_c &set_row_self(matrix_c &A, size_t m, const vector_c &v);
@@ -200,32 +200,32 @@ matrix_c set_rows(const matrix_c &A, const Colon &rng, const matrix_c &V);
 matrix_c &set_rows_self(matrix_c &A, const Colon &rng, const matrix_c &V);
 matrix_c rows(const matrix_c &A, const vector_sz &indices);
 matrix_c set_rows(const matrix_c &A, const vector_sz &indices,
-				  const matrix_c &V);
+                  const matrix_c &V);
 matrix_c &set_rows_self(matrix_c &A, const vector_sz &indices,
-						const matrix_c &V);
+                        const matrix_c &V);
 matrix_c block(const matrix_c &A, const Colon &rowRng, const Colon &colRng);
 matrix_c set_block(const matrix_c &A, const Colon &rowRng, const Colon &colRng,
-				   const matrix_c &B);
+                   const matrix_c &B);
 matrix_c &set_block_self(matrix_c &A, const Colon &rowRng, const Colon &colRng,
-						 const matrix_c &B);
+                         const matrix_c &B);
 matrix_c block(const matrix_c &A, const vector_sz &rowIndices,
-			   const vector_sz &colIndices);
+               const vector_sz &colIndices);
 matrix_c set_block(const matrix_c &A, const vector_sz &rowIndices,
-				   const vector_sz &colIndices, const matrix_c &B);
+                   const vector_sz &colIndices, const matrix_c &B);
 matrix_c &set_block_self(matrix_c &A, const vector_sz &rowIndices,
-						 const vector_sz &colIndices, const matrix_c &B);
+                         const vector_sz &colIndices, const matrix_c &B);
 matrix_c block(const matrix_c &A, const vector_sz &rowIndices,
-			   const Colon &colRng);
+               const Colon &colRng);
 matrix_c set_block(const matrix_c &A, const vector_sz &rowIndices,
-				   const Colon &colRng, const matrix_c &B);
+                   const Colon &colRng, const matrix_c &B);
 matrix_c &set_block_self(matrix_c &A, const vector_sz &rowIndices,
-						 const Colon &colRng, const matrix_c &B);
+                         const Colon &colRng, const matrix_c &B);
 matrix_c block(const matrix_c &A, const Colon &rowRng,
-			   const vector_sz &colIndices);
+               const vector_sz &colIndices);
 matrix_c set_block(const matrix_c &A, const Colon &rowRng,
-				   const vector_sz &colIndices, const matrix_c &B);
+                   const vector_sz &colIndices, const matrix_c &B);
 matrix_c &set_block_self(matrix_c &A, const Colon &rowRng,
-						 const vector_sz &colIndices, const matrix_c &B);
+                         const vector_sz &colIndices, const matrix_c &B);
 
 // ind2sub
 std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t> &sz,

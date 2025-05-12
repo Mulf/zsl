@@ -223,14 +223,14 @@ matrix_d &rdivide_self(matrix_d &A, const matrix_d &B);
 matrix_c &rdivide_self(matrix_c &A, const matrix_c &B);
 matrix_c &rdivide_self(matrix_c &A, const matrix_d &B);
 #pragma endregion
-}
+} // namespace zsl
 
 #pragma region Addition Plus sign Overload
 // vector + scalar
-zsl::vector_d operator+(const zsl::vector_d& v, double d);
-zsl::vector_d operator+(double d, const zsl::vector_d& v);
-zsl::vector_c operator+(const zsl::vector_d& v, const zsl::complex_d& c);
-zsl::vector_c operator+(const zsl::complex_d& c, const zsl::vector_d& v);
+zsl::vector_d operator+(const zsl::vector_d &v, double d);
+zsl::vector_d operator+(double d, const zsl::vector_d &v);
+zsl::vector_c operator+(const zsl::vector_d &v, const zsl::complex_d &c);
+zsl::vector_c operator+(const zsl::complex_d &c, const zsl::vector_d &v);
 zsl::vector_c operator+(const zsl::vector_c &v, double d);
 zsl::vector_c operator+(double d, const zsl::vector_c &v);
 zsl::vector_c operator+(const zsl::vector_c &v, const zsl::complex_d &c);

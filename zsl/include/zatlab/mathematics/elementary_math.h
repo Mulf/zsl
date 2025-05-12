@@ -136,7 +136,7 @@ matrix_d rad2deg(const matrix_d &A);
 #pragma endregion
 
 #pragma region Exponents and Logarithms
-//exp
+// exp
 vector_d exp(const vector_d &v);
 vector_c exp(const vector_c &v);
 matrix_d exp(const matrix_d &A);
@@ -173,8 +173,8 @@ matrix_c sqrt(const matrix_c &A);
 
 #pragma region Complex Numbers
 // abs
-vector_d abs_d(const vector_d &v);
-matrix_d abs_d(const matrix_d &X);
+vector_d abs(const vector_d &v);
+matrix_d abs(const matrix_d &X);
 vector_d abs(const vector_c &v);
 matrix_d abs(const matrix_c &X);
 // angle
@@ -197,7 +197,6 @@ vector_c sign(const vector_c &v);
 matrix_c sign(const matrix_c &Z);
 
 #pragma endregion
-}
-
+} // namespace zsl
 
 #endif // !ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_H

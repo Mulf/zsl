@@ -2,8 +2,8 @@
 #define ZSL_BASICS_DEFINES_H
 
 #include <complex>
-#include <vector>
 #include <functional>
+#include <vector>
 
 namespace zsl {
 constexpr double pi = 3.141592653589;
@@ -21,14 +21,13 @@ concept Vector = std::is_same_v<T, vector_d> || std::is_same_v<T, vector_c>;
 template <typename T>
 concept Matrix = std::is_same_v<T, matrix_c> || std::is_same_v<T, matrix_c>;
 
-template<class Matrix>
-bool is_matrix(const Matrix &A) {
-	for(size_t i = 1; i < A.size(); i++) {
-		if(A[i].size() != A[0].size()) {
-			return false;
-		}
-	}
-	return true;
+template <class Matrix> bool is_matrix(const Matrix &A) {
+  for (size_t i = 1; i < A.size(); i++) {
+    if (A[i].size() != A[0].size()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 using UnaryOp = std::function<double(double)>;

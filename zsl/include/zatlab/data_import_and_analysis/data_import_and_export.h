@@ -11,10 +11,6 @@ matrix_d readmatrix(const std::string &filename);
 void writevector(const vector_d &v, const std::string &filename);
 void writematrix(const matrix_d &A, const std::string &filename);
 
-
-
-
-
-}
+} // namespace zsl
 
 #endif // !DATA_IMPORT_AND_EXPORT_H

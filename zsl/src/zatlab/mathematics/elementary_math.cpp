@@ -933,7 +933,7 @@ matrix_c sqrt(const matrix_c &A) {
 #pragma endregion
 
 #pragma region Complex Numbers
-vector_d abs_d(const vector_d &v){
+vector_d abs(const vector_d &v){
 	return _::unary_func(v, std::abs);
 }
 
@@ -941,7 +941,7 @@ vector_d abs(const vector_c &v){
 	return _::unary_func(v, std::abs);
 }
 
-matrix_d abs_d(const matrix_d &X){
+matrix_d abs(const matrix_d &X){
 	return _::unary_func(X, std::abs);
 }
 

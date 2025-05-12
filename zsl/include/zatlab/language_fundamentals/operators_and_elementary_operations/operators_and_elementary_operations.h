@@ -3,5 +3,4 @@
 
 #include "arithmetic_operations.h"
 
-
 #endif // !ZSL_ZATLAB_OPERATORS_AND_ELEMENTARY_OPERATIONS_H
