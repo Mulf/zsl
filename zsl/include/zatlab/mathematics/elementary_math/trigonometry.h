@@ -1,7 +1,8 @@
-#ifndef ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_H
-#define ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_H
+#ifndef ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_TRIGONOMETRY_H
+#define ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_TRIGONOMETRY_H
 
 #include "basics/basics.h"
+
 
 namespace zsl {
 #pragma region Trigonometry
@@ -134,69 +135,6 @@ vector_d rad2deg(const vector_d &v);
 matrix_d rad2deg(const matrix_d &A);
 
 #pragma endregion
+}
 
-#pragma region Exponents and Logarithms
-// exp
-vector_d exp(const vector_d &v);
-vector_c exp(const vector_c &v);
-matrix_d exp(const matrix_d &A);
-matrix_c exp(const matrix_c &A);
-// log
-vector_d log(const vector_d &v);
-vector_c log(const vector_c &v);
-matrix_d log(const matrix_d &A);
-matrix_c log(const matrix_c &A);
-// log10
-vector_d log10(const vector_d &v);
-vector_c log10(const vector_c &v);
-matrix_d log10(const matrix_d &A);
-matrix_c log10(const matrix_c &A);
-// log2
-vector_d log2(const vector_d &v);
-vector_c log2(const vector_c &v);
-matrix_d log2(const matrix_d &A);
-matrix_c log2(const matrix_c &A);
-// pow2
-double pow2(double x);
-complex_d pow2(const complex_d &z);
-vector_d pow2(const vector_d &v);
-vector_c pow2(const vector_c &v);
-matrix_d pow2(const matrix_d &A);
-matrix_c pow2(const matrix_c &A);
-// sqrt
-vector_d sqrt(const vector_d &v);
-vector_c sqrt(const vector_c &v);
-matrix_d sqrt(const matrix_d &A);
-matrix_c sqrt(const matrix_c &A);
-
-#pragma endregion
-
-#pragma region Complex Numbers
-// abs
-vector_d abs(const vector_d &v);
-matrix_d abs(const matrix_d &X);
-vector_d abs(const vector_c &v);
-matrix_d abs(const matrix_c &X);
-// angle
-vector_d angle(const vector_c &v);
-matrix_d angle(const matrix_c &X);
-// conj
-vector_c conj(const vector_c &v);
-matrix_c conj(const matrix_c &Z);
-// imag
-vector_d imag(const vector_c &v);
-matrix_d imag(const matrix_c &X);
-// imag
-vector_d real(const vector_c &v);
-matrix_d real(const matrix_c &X);
-// sign
-// imag
-vector_d sign(const vector_d &v);
-matrix_d sign(const matrix_d &X);
-vector_c sign(const vector_c &v);
-matrix_c sign(const matrix_c &Z);
-
-#pragma endregion
-} // namespace zsl
-
-#endif // !ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_H
+#endif // ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_TRIGONOMETRY_H

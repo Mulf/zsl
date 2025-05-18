@@ -1,6 +1,4 @@
-#include "zatlab/mathematics/elementary_math.h"
-#include "zatlab/data_import_and_analysis/data_import_and_export.h"
-#include "zatlab/language_fundamentals/matrices_and_arrays.h"
+#include "zatlab/mathematics/elementary_math/trigonometry.h"
 #include "zsl.h"
 #include <gtest/gtest.h>
 #include <filesystem>
@@ -27,7 +25,7 @@ TEST(mathematics, elementary_math) {
 		auto wd = sind(v);
 		auto wpi = sinpi(v);
 
-		{
+		/*{
 			using namespace matplot;
 			plot(v, row(Y, 0), "-o")->display_name("sin(x)");
 			hold(on);
@@ -40,7 +38,7 @@ TEST(mathematics, elementary_math) {
 			xlabel("x");
 			matplot::legend();
 			show();
-		}
-		
+		}*/
+
 	}
 }
