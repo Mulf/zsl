@@ -4,9 +4,13 @@
 #include <complex>
 #include <functional>
 #include <vector>
+#include <numbers>
+#include <limits>
 
 namespace zsl {
-constexpr double pi = 3.141592653589;
+constexpr double pi = std::numbers::pi_v<double>;
+constexpr double EPS = std::numeric_limits<double>::epsilon();
+
 
 using vector_d = std::vector<double>;
 using vector_sz = std::vector<size_t>;

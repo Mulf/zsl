@@ -5,7 +5,7 @@
 using namespace zsl;
 using namespace std::literals::complex_literals;
 
-constexpr double EPS = 1e-4;
+//constexpr double EPS = 1e-4;
 
 static bool expect_near(const vector_d &v, const vector_d &w){
 	for(size_t i = 0; i < v.size(); i++){

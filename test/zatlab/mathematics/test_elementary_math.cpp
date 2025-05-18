@@ -10,7 +10,7 @@
 #define XSTRING(x) STRING(x)
 
 using namespace zsl;
-using namespace matplot;
+
 
 
 TEST(mathematics, elementary_math) {
@@ -27,16 +27,20 @@ TEST(mathematics, elementary_math) {
 		auto wd = sind(v);
 		auto wpi = sinpi(v);
 
-	/*	plot(v, row(Y, 0), "-o")->display_name("sin(x)");
-		hold(on);
-		plot(v, row(Y, 1), "-+")->display_name("sin(x+1.5)");
-		hold(on);
-		plot(v, wd, "-*")->display_name("sind(x)");
-		hold(on);
-		plot(v, wpi, "-.")->display_name("sinpi(x)");
-		title("sin");
-		xlabel("x");
-		matplot::legend();
-		show();*/
+		{
+			using namespace matplot;
+			plot(v, row(Y, 0), "-o")->display_name("sin(x)");
+			hold(on);
+			plot(v, row(Y, 1), "-+")->display_name("sin(x+1.5)");
+			hold(on);
+			plot(v, wd, "-*")->display_name("sind(x)");
+			hold(on);
+			plot(v, wpi, "-.")->display_name("sinpi(x)");
+			title("sin");
+			xlabel("x");
+			matplot::legend();
+			show();
+		}
+		
 	}
 }
