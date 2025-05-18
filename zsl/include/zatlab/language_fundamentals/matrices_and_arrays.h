@@ -85,6 +85,7 @@ matrix_d reshape(const matrix_d &A, std::optional<size_t> sz1,
 
 // Rearrange
 vector_d circshift(const vector_d &v, int k);
+vector_c circshift(const vector_c &v, int k);
 matrix_d circshift(const matrix_d &A, int k);
 matrix_d circshift(const matrix_d &A, int k, size_t dim);
 matrix_d circshift(const matrix_d &A, std::pair<int, int> K);

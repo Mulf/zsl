@@ -1,4 +1,5 @@
 #include "zatlab/mathematics/fourier_analysis_and_filtering.h"
+#include "zatlab/language_fundamentals/matrices_and_arrays.h"
 #include "fasttransforms.h"
 
 namespace _ {
@@ -82,6 +83,22 @@ vector_c ifft(const vector_c &v) {
 	alglib::fftc1dinv(alglibInput, n);
 
 	return _::to_vetor_c(alglibInput);
+}
+
+// fftshit
+vector_c fftshift(const vector_c &v) {
+	if(v.size() % 2 == 0) {
+		return circshift(v, v.size() / 2);
+	}
+	return circshift(v, (v.size() - 1) / 2);
+}
+
+// ifftshit
+vector_c ifftshift(const vector_c &v) {
+	if(v.size() % 2 == 0) {
+		return circshift(v, v.size() / 2);
+	}
+	return circshift(v, (v.size() + 1) / 2);
 }
 
 #pragma endregion

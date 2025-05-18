@@ -11,6 +11,13 @@ vector_c fft(const vector_d &v);
 
 // 
 vector_c ifft(const vector_c &v);
+
+// fftshit
+vector_c fftshift(const vector_c &v);
+// ifftshit
+vector_c fftshift(const vector_c &v);
+
+
 #pragma endregion
 
 }

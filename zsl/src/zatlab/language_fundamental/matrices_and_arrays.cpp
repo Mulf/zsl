@@ -32,6 +32,20 @@ size_t size(const Matrix &A, size_t dim) {
 	return A[0].size();
 }
 
+template<typename T>
+std::vector<T> circshift(const std::vector<T> &v, int k) {
+	k = k % static_cast<int>(v.size());
+	if(k < 0) {
+		k += static_cast<int>(v.size());
+	}
+
+	std::vector<T> A(v.size());
+	std::copy(v.end() - k, v.end(), A.begin());
+	std::copy(v.begin(), v.end() - k, A.begin() + k);
+
+	return A;
+}
+
 }
 
 namespace zsl {
@@ -394,16 +408,11 @@ matrix_d reshape(const matrix_d &A, std::optional<size_t> sz1,
 
 // circshift
 vector_d circshift(const vector_d &v, int k) {
-  k = k % static_cast<int>(v.size());
-  if (k < 0) {
-    k += static_cast<int>(v.size());
-  }
+	return _::circshift(v, k);
+}
 
-  vector_d A{v.size(), vector_d::allocator_type{}};
-  std::copy(v.end() - k, v.end(), A.begin());
-  std::copy(v.begin(), v.end() - k, A.begin() + k);
-
-  return A;
+vector_c circshift(const vector_c &v, int k) {
+	return _::circshift(v, k);
 }
 
 matrix_d circshift(const matrix_d &A, int k) {
