@@ -1,4 +1,5 @@
 #include "zatlab/mathematics/interpolation.h"
+#include "zatlab/data_import_and_analysis/data_process.h"
 #include "interpolation.h"
 #include "linalg.h"
 
@@ -49,7 +50,8 @@ vector_d interp1(const vector_d &x, const vector_d &v, const vector_d &xq, const
 
 	if(method == "cubic")
 	{
-		spline1dbuildcubic(xa, ya, s);
+		if (isuniform(v))
+			spline1dbuildcubic(xa, ya, s);
 	}
 	else if(method == "spline") {
 
