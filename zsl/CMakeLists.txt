@@ -40,5 +40,5 @@ target_include_directories(zsl
 
 target_link_libraries(
     zsl 
-    PRIVATE alglib
+    PRIVATE gsl
 )

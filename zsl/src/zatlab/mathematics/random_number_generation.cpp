@@ -1,16 +1,20 @@
 #include "zatlab/mathematics/random_number_generation.h"
-#include "linalg.h"
+//#include "linalg.h"
 #include <random>
 
 namespace zsl{
 double rand() {
-	return alglib::randomreal();
+	std::default_random_engine gen;
+	std::uniform_real_distribution<double> dist(0.0, 1.0);
+	return dist(gen);
 }
 
 vector_d rand_v(size_t n) {
+	std::default_random_engine gen;
+	std::uniform_real_distribution<double> dist(0.0, 1.0);
 	vector_d v{n, vector_d::allocator_type{}};
 	for(size_t i = 0; i < n; i++) {
-		v[i] = rand();
+		v[i] = dist(gen);
 	}
 	return v;
 }

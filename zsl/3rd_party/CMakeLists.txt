@@ -1,11 +1,6 @@
-# Define the directory containing the source files
-set(ALGLIB_SRC alglib/src)
 
-# Use file(GLOB) to find all .cpp files in the source directory
-file(GLOB ALGLIB_SRC_FILES "${ALGLIB_SRC}/*.cpp")
+set(THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(THIRD_PARTY_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-add_library(alglib ${ALGLIB_SRC_FILES})
-target_include_directories(
-	alglib
-	PUBLIC ${ALGLIB_SRC}
-)
+add_subdirectory(gsl)
+#target_include_directories(gsl PUBLIC ${THIRD_PARTY_INCLUDE_DIR})

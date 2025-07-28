@@ -637,29 +637,41 @@ foreach (path ${GSL_HEADER_PATHS_NE})
   set(GSL_HEADER_PATHS ${GSL_HEADER_PATHS} ${escaped}) 
 endforeach ()
 
-#[[file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/copy-headers.cmake "
-  file(MAKE_DIRECTORY gsl)
-  foreach (path ${GSL_HEADER_PATHS})
-    get_filename_component(filename \${path} NAME)
-    configure_file(\${path} \"${GSL_BINARY_DIR}/gsl/\${filename}\" COPYONLY)
-  endforeach ()")]]
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/copy-headers.cmake "
   file(MAKE_DIRECTORY gsl)
   foreach (path ${GSL_HEADER_PATHS})
     get_filename_component(filename \${path} NAME)
-    configure_file(\${path} \"${ZSL_SRC_DIR}/include/gsl/\${filename}\" COPYONLY)
+    configure_file(\${path} \"${GSL_BINARY_DIR}/gsl/\${filename}\" COPYONLY)
   endforeach ()")
+#[[file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/copy-headers.cmake "
+  file(MAKE_DIRECTORY gsl)
+  foreach (path ${GSL_HEADER_PATHS})
+    get_filename_component(filename \${path} NAME)
+    configure_file(\${path} \"${THIRD_PARTY_DIR}/include/gsl/\${filename}\" COPYONLY)
+  endforeach ()")]]
 
-set(GLS_H "${ZSL_SRC_DIR}/include/gsl.h")
-file(APPEND ${GLS_H}
+
+get_filename_component(gslParentDir ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
+message("gslParentDir:${gslParentDir}")
+set(GSL_H "${gslParentDir}/gsl.h")
+message("GSL_H:${GSL_H}")
+file(REMOVE ${GSL_H})
+
+if(NOT EXISTS ${GSL_H})
+file(APPEND ${GSL_H}
 "#ifndef GSL_H
 #define GSL_H\n\n")
 foreach (path ${GSL_HEADER_PATHS})
     get_filename_component(filename ${path} NAME)
-    set(headerline "#include <gsl/${filename}>\n")
-    file(APPEND ${GLS_H} ${headerline})
+    
+    get_filename_component(dirpath ${path} DIRECTORY)
+    get_filename_component(dirname ${dirpath} NAME)
+    # message(${dirname})
+    set(headerline "#include <${dirname}/${filename}>\n")
+    file(APPEND ${GSL_H} ${headerline})
 endforeach()
-file(APPEND ${GLS_H} "\n#endif\n")
+file(APPEND ${GSL_H} "\n#endif\n")
+endif()
 
 add_custom_command(OUTPUT ${GSL_HEADERS}
   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/copy-headers.cmake)
@@ -764,7 +776,6 @@ function(addDependencies lib)
     else()
       return()
     endif()
-
    if(NOT ${lib} IN_LIST HAVETOBUILD)
       set(HAVETOBUILD ${HAVETOBUILD} ${lib})
       set_property(GLOBAL PROPERTY HAVETOBUILD_GLOBAL ${HAVETOBUILD})
@@ -809,6 +820,7 @@ foreach (dir ${HAVETOBUILD})
       if (dir STREQUAL cblas)
         add_library(gslcblas ${SOURCES})
         target_link_libraries(gslcblas ${CMAKE_REQUIRED_LIBRARIES})
+       # target_include_directories(gslcblas PUBLIC ${THIRD_PARTY_INCLUDE_DIR})
         set_target_properties(gslcblas PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON )
         add_dependencies(gslcblas copy-headers)
       else ()
