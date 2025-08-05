@@ -9,7 +9,7 @@
 
 namespace zsl {
 constexpr double pi = std::numbers::pi_v<double>;
-constexpr double EPS = std::numeric_limits<double>::epsilon();
+//constexpr double eps = std::numeric_limits<double>::epsilon();
 
 
 using vector_d = std::vector<double>;

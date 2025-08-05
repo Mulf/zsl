@@ -55,6 +55,7 @@ option(BUILD_SHARED_LIBS "Export symbols to library." ON)
 option(GSL_DISABLE_WARNINGS "disable warnings." ON)
 option(MSVC_RUNTIME_DYNAMIC "Use dynamically-linked runtime: /MD(d)" ON)
 option(GSL_INSTALL_MULTI_CONFIG "Install libraries in lib/<config> directory" ON)
+option(GSL_DISABLE_TESTS "Build test targets in gsl" on)
 
 set(PACKAGE "gsl")
 set(PACKAGE_NAME ${PACKAGE})

@@ -7,14 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 configure_file("config.h.in" "config.h")
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 add_executable(Demo main.cpp)
 
 target_include_directories(Demo PUBLIC "${PROJECT_BINARY_DIR}")
-
-#find_package(matplotplusplus CONFIG REQUIRED)
-
-#target_link_libraries(Demo matplotplusplus::matplotplusplus)
-
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 

@@ -5,7 +5,7 @@
 namespace zsl {
 
 constexpr double eps() {
-	return EPS;
+	return std::numeric_limits<double>::epsilon();
 }
 
 double eps(double x) {
