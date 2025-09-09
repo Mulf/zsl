@@ -1,5 +1,4 @@
-% test_interp1()
-test_pchip()
+test_interp1()
 
 
 
@@ -26,19 +25,10 @@ function test_pchip()
     p = pchip(x,y,xq1);
     s = spline(x,y,xq1);
     m = makima(x,y,xq1);
-%     plot(x,y,'o',xq1,p,'-',xq1,s,'-.',xq1,m,'--')
-    figure
-    plot(x, y, 'o', DisplayName='Sample Point')
-    hold on
-    plot(xq1, p, '-', LineWidth=1.5, DisplayName='pchip')
-    hold on
-    plot(xq1, s, '-.', LineWidth=1.5, DisplayName='spline')
-    legend
-
-%     fprintf("p=\n %s", comma_str(p));
-    fprintf("s=\n %s", comma_str(s));
+    plot(x,y,'o',xq1,p,'-',xq1,s,'-.',xq1,m,'--')
+    legend('Sample Points','pchip','spline','makima','Location','SouthEast')
 end
 
-function s = comma_str(v)
+function s = to_cpp_str(v)
     s = strjoin(arrayfun(@(x) num2str(x), v,'UniformOutput',false),',');
 end

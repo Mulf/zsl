@@ -15,3 +15,11 @@ target_link_libraries(
 	test_data_process
 	GTest::gtest_main zsl
 )
+
+add_executable(
+	test_descriptive_statistics
+	test_descriptive_statistics.cpp)
+target_link_libraries(
+	test_descriptive_statistics
+	GTest::gtest_main zsl
+)
