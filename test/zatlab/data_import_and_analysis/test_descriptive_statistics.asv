@@ -1,8 +1,16 @@
+to_str = @(v)(strjoin(arrayfun(@(x) num2str(x), v,'UniformOutput',false),','));
+
 
 x = [ -0.2050   -0.1241    1.4897    1.4090    1.4172    0.6715];
 y = [ -1.2075    0.7172    1.6302    0.4889    1.0347    0.7269];
-R = corrcoef(x, y)
-R = cov(x, y)
+R = corrcoef(x, y);
+R = cov(x, y);
 
 %% movemean
-x = [3, 14, 15, 9, 26, 53, 58, 9, 79, 32, 38, 4];
+x = [3, 14, 15, 9, 26, 53, 58];
+mean3 = movmean(x, 3);
+mean4 = movmean(x, 4);
+
+max3 = movmax(x, 3); t
+max4 = movmax(x, 4);
+

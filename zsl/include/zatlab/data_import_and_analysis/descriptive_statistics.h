@@ -44,11 +44,29 @@ double corr(const vector_d &v, const vector_d &w);
 #pragma endregion
 
 #pragma region Moving Statistics
-vector_d movmean(const vector_d &v, size_t k);
-vector_d movmean(const vector_d &v, const vector_sz &k);
+vector_d movmad(const vector_d &v, size_t k);
+vector_d movmad(const vector_d &v, const vector_sz &k);
+
+vector_d movmax(const vector_d &v, size_t k);
+vector_d movmax(const vector_d &v, const vector_sz &k);
 
 vector_d movmean(const vector_d &v, size_t k);
 vector_d movmean(const vector_d &v, const vector_sz &k);
+
+vector_d movmedian(const vector_d &v, size_t k);
+vector_d movmedian(const vector_d &v, const vector_sz &k);
+
+vector_d movmin(const vector_d &v, size_t k);
+vector_d movmin(const vector_d &v, const vector_sz &k);
+
+vector_d movstd(const vector_d &v, size_t k);
+vector_d movstd(const vector_d &v, const vector_sz &k);
+
+vector_d movsum(const vector_d &v, size_t k);
+vector_d movsum(const vector_d &v, const vector_sz &k);
+
+vector_d movvar(const vector_d &v, size_t k);
+vector_d movvar(const vector_d &v, const vector_sz &k);
 
 #pragma endregion
 
