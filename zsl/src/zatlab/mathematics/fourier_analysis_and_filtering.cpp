@@ -75,13 +75,8 @@ vector_c ifft(const vector_c &v) {
 		return w;
 	}
 
-
-
 	gsl_fft_complex_wavetable *wt = gsl_fft_complex_wavetable_alloc(N);
 	gsl_fft_complex_workspace *ws = gsl_fft_complex_workspace_alloc(N);
-
-
-
 
 	int error = gsl_fft_complex_backward(reinterpret_cast<double *>(w.data()), 1, N, wt, ws);
 	if(error != 0) {

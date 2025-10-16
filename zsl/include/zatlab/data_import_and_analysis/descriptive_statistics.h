@@ -25,10 +25,32 @@ double median(const vector_d &v); // copy data & rearrange
 double min(const vector_d &v);
 size_t min_index(const vector_d &v);
 
+double stdev(const vector_d &v);
+
+double var(const vector_d &v);
+
+double rms(const vector_d &v);
+
 //vector_d mink(const vector_d &v);
 
 #pragma endregion
 
+#pragma region Covariance and Correlation
+//double autocorr(const vector_d &v, const vector_d &w);
+
+double cov(const vector_d &v, const vector_d &w);
+
+double corr(const vector_d &v, const vector_d &w);
+#pragma endregion
+
+#pragma region Moving Statistics
+vector_d movmean(const vector_d &v, size_t k);
+vector_d movmean(const vector_d &v, const vector_sz &k);
+
+vector_d movmean(const vector_d &v, size_t k);
+vector_d movmean(const vector_d &v, const vector_sz &k);
+
+#pragma endregion
 
 }
 
