@@ -52,9 +52,13 @@ vector_d movmax(const vector_d &v, const vector_sz &k);
 
 vector_d movmean(const vector_d &v, size_t k);
 vector_d movmean(const vector_d &v, const vector_sz &k);
+void movmean_self(vector_d &v, size_t k);
+void movmean_self(vector_d &v, const vector_sz &k);
 
 vector_d movmedian(const vector_d &v, size_t k);
 vector_d movmedian(const vector_d &v, const vector_sz &k);
+void movmedian_self(vector_d &v, size_t k);
+void movmedian_self(vector_d &v, const vector_sz &k);
 
 vector_d movmin(const vector_d &v, size_t k);
 vector_d movmin(const vector_d &v, const vector_sz &k);

@@ -22,4 +22,17 @@ bool isuniform(const vector_d &v) {
 	return true;
 }
 
+
+vector_d smoothdata(const vector_d &v, const std::string &method, size_t window)
+{
+	if(method == "movmean")
+	{
+		return movmean(v, window);
+	}
+	else if(method == "movmedian")
+	{
+		return movmedian(v, window);
+	}
+}
+
 }

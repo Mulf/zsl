@@ -40,6 +40,27 @@ vector_d move_stat(const vector_d &v, const vector_sz &k, MoveStatFunc func) {
 }
 
 
+void move_stat_self(const vector_d &v, size_t k, MoveStatFunc func) {
+	auto vv = gsl_vector_const_view_array(v.data(), v.size());
+	gsl_vector *gv = &vv.vector;
+
+	gsl_movstat_workspace *wp = gsl_movstat_alloc(k);
+	func(GSL_MOVSTAT_END_TRUNCATE, gv, gv, wp);
+	gsl_movstat_free(wp);
+}
+
+void move_stat_self(vector_d &v, const vector_sz &k, MoveStatFunc func) {
+	auto vv = gsl_vector_const_view_array(v.data(), v.size());
+	gsl_vector *gv = &vv.vector;
+
+	const size_t kb = k.at(0);
+	const size_t kf = k.at(1);
+	gsl_movstat_workspace *wp = gsl_movstat_alloc2(kb, kf);
+	func(GSL_MOVSTAT_END_TRUNCATE, gv, gv, wp);
+	gsl_movstat_free(wp);
+}
+
+
 }
 
 
@@ -187,12 +208,27 @@ vector_d movmean(const vector_d &v, size_t k)
 	return _::move_stat(v, k, gsl_movstat_mean);
 }
 
+void movmean_self(vector_d &v, size_t k)
+{
+	assert(k <= v.size());
+
+	_::move_stat_self(v, k, gsl_movstat_mean);
+}
+
 vector_d movmean(const vector_d &v, const vector_sz &k)
 {
 	assert(k.size() == 2);
 	assert(k[0] + k[1] + 1 <= v.size());
 	
 	return _::move_stat(v, k, gsl_movstat_mean);
+}
+
+void movmean_self(vector_d &v, const vector_sz &k)
+{
+	assert(k.size() == 2);
+	assert(k[0] + k[1] + 1 <= v.size());
+
+	_::move_stat_self(v, k, gsl_movstat_mean);
 }
 
 vector_d movmedian(const vector_d &v, size_t k)
@@ -208,6 +244,21 @@ vector_d movmedian(const vector_d &v, const vector_sz &k)
 	assert(k[0] + k[1] + 1 <= v.size());
 
 	return _::move_stat(v, k, gsl_movstat_median);
+}
+
+void movmedian_self(vector_d &v, size_t k)
+{
+	assert(k <= v.size());
+
+	_::move_stat_self(v, k, gsl_movstat_median);
+}
+
+void movmedian_self(vector_d &v, const vector_sz &k)
+{
+	assert(k.size() == 2);
+	assert(k[0] + k[1] + 1 <= v.size());
+
+	_::move_stat_self(v, k, gsl_movstat_median);
 }
 
 vector_d movmin(const vector_d &v, size_t k)

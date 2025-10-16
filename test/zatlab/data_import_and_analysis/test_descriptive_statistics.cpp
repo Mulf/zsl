@@ -89,6 +89,20 @@ TEST(data_process, Moving_Statistics) {
 		expect_near(w4, m4);
 		expect_equal(x3, w3);
 		expect_equal(x4, w4);
+
+		vector_d w{3, 14, 15, 9, 26, 53, 58};
+		vector_d w2{3, 14, 15, 9, 26, 53, 58};
+		vector_d y{3, 14, 15, 9, 26, 53, 58};
+		vector_d y2{3, 14, 15, 9, 26, 53, 58};
+		movmean_self(w, 3);
+		expect_equal(w, w3);
+		movmean_self(w2, 4);
+		expect_equal(w2, w4);
+
+		movmean_self(y, {1, 1});
+		expect_equal(y, w3);
+		movmean_self(y2, {2, 1});
+		expect_equal(y2, w4);
 	}
 	{
 		vector_d v{3, 14, 15, 9, 26, 53, 58};
@@ -102,6 +116,20 @@ TEST(data_process, Moving_Statistics) {
 		expect_near(w4, m4);
 		expect_equal(x3, w3);
 		expect_equal(x4, w4);
+
+		vector_d w{3, 14, 15, 9, 26, 53, 58};
+		vector_d w2{3, 14, 15, 9, 26, 53, 58};
+		vector_d y{3, 14, 15, 9, 26, 53, 58};
+		vector_d y2{3, 14, 15, 9, 26, 53, 58};
+		movmedian_self(w, 3);
+		expect_equal(w, w3);
+		movmedian_self(w2, 4);
+		expect_equal(w2, w4);
+
+		movmedian_self(y, {1, 1});
+		expect_equal(y, w3);
+		movmedian_self(y2, {2, 1});
+		expect_equal(y2, w4);
 	}
 	{
 		vector_d v{3, 14, 15, 9, 26, 53, 58};
