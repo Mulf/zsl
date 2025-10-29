@@ -16,14 +16,14 @@ using vector_d = std::vector<double>;
 using vector_sz = std::vector<size_t>;
 using complex_d = std::complex<double>;
 using vector_c = std::vector<std::complex<double>>;
-using matrix_d = std::vector<std::vector<double>>;
-using matrix_c = std::vector<std::vector<std::complex<double>>>;
+using vector2_d = std::vector<std::vector<double>>;
+using vector2_c = std::vector<std::vector<std::complex<double>>>;
 
 template <typename T>
 concept Vector = std::is_same_v<T, vector_d> || std::is_same_v<T, vector_c>;
 
 template <typename T>
-concept Matrix = std::is_same_v<T, matrix_c> || std::is_same_v<T, matrix_c>;
+concept Matrix = std::is_same_v<T, vector2_d> || std::is_same_v<T, vector2_c>;
 
 template <class Matrix> bool is_matrix(const Matrix &A) {
   for (size_t i = 1; i < A.size(); i++) {

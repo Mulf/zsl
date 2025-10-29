@@ -14,7 +14,7 @@ using namespace zsl;
 TEST(mathematics, elementary_math) {
 	{
 		auto v = zsl::linspace(0, 8, 50);
-		matrix_d X = {v, v + 1.5};
+		vector2_d X = {v, v + 1.5};
 		auto w = sin(v);
 		auto Y = sin(X);
 

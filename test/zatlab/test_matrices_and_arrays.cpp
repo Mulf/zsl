@@ -16,14 +16,14 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 		auto A = ones(3);
 		auto B = zeros(3);
-		matrix_d C1{
+		vector2_d C1{
 			{1, 1, 1},
 			{1, 1, 1},
 			{1, 1, 1},
 			{0, 0, 0},
 			{0, 0, 0},
 			{0, 0, 0} };
-		matrix_d C2{
+		vector2_d C2{
 			{1, 1, 1, 0, 0, 0},
 			{1, 1, 1, 0, 0, 0},
 			{1, 1, 1, 0, 0, 0} };
@@ -35,27 +35,27 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 	// diag
 	{
 		vector_d v{ 2, 1, -1, -2, -5 };
-		matrix_d D{ 
+		vector2_d D{ 
 			{2, 0, 0, 0, 0},
 			{0, 1, 0, 0, 0},
 			{0, 0, -1, 0, 0},
 			{0, 0, 0, -2, 0},
 			{0, 0, 0, 0, -5} };
-		matrix_d D1{
+		vector2_d D1{
 			{0, 2, 0, 0, 0, 0},
 			{0, 0, 1, 0, 0, 0},
 			{0, 0, 0, -1, 0, 0},
 			{0, 0, 0, 0, -2, 0},
 			{0, 0, 0, 0, 0, -5},
 			{0, 0, 0, 0, 0, 0} };
-		matrix_d D2{
+		vector2_d D2{
 			{0, 0, 0, 0, 0, 0},
 			{2, 0, 0, 0, 0, 0},
 			{0, 1, 0, 0, 0, 0},
 			{0, 0, -1, 0, 0, 0},
 			{0, 0, 0, -2, 0, 0},
 			{0, 0, 0, 0, -5, 0} };
-		EXPECT_EQ(diag(vector_d{}), matrix_d{});
+		EXPECT_EQ(diag(vector_d{}), vector2_d{});
 		EXPECT_EQ(diag(v), D);
 		EXPECT_EQ(diag(v, 1), D1);
 		EXPECT_EQ(diag(v, -1), D2);
@@ -65,12 +65,12 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 	// eye
 	{
-		matrix_d I{ 
+		vector2_d I{ 
 			{1, 0, 0, 0},
 			{0, 1, 0, 0},
 			{0, 0, 1, 0},
 			{0, 0, 0, 1} };
-		matrix_d I1{ 
+		vector2_d I1{ 
 			{1, 0, 0},
 			{0, 1, 0} };
 		EXPECT_EQ(eye(4), I);
@@ -79,13 +79,13 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 	// horzcat
 	{
-		matrix_d A{ {1, 2}, {3, 4} };
-		matrix_d B{ {4, 5, 6}, {7, 8, 9} };
-		matrix_d C{
+		vector2_d A{ {1, 2}, {3, 4} };
+		vector2_d B{ {4, 5, 6}, {7, 8, 9} };
+		vector2_d C{
 			{1, 2, 4, 5, 6},
 			{3, 4, 7, 8, 9} };
 		vector_d d{ 5, 6 };
-		matrix_d E{ {1, 2, 5}, {3, 4, 6} };
+		vector2_d E{ {1, 2, 5}, {3, 4, 6} };
 		vector_d v{ 1, 2 };
 		vector_d w{ 4, 5, 6 };
 		vector_d r{ 1, 2, 4, 5, 6 };
@@ -97,9 +97,9 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 	// vercat
 	{
-		matrix_d A = { {1, 2, 3}, {4, 5, 6} };
-		matrix_d B = { {7, 8, 9} };
-		matrix_d C = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+		vector2_d A = { {1, 2, 3}, {4, 5, 6} };
+		vector2_d B = { {7, 8, 9} };
+		vector2_d C = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
 
 		EXPECT_EQ(vertcat(A, B), C);
 		EXPECT_EQ(vertcat(col(A, 0), col(B, 0)), col(C, 0));
@@ -109,25 +109,25 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 	{
 		vector_d v = zeros_v(3);
 		vector_d r{ 0.0, 0.0, 0.0 };
-		matrix_d m1 = zeros(3);
-		matrix_d r1 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
-		matrix_d m2 = zeros(2, 3);
-		matrix_d r2 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
+		vector2_d m1 = zeros(3);
+		vector2_d r1 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
+		vector2_d m2 = zeros(2, 3);
+		vector2_d r2 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
 		EXPECT_EQ(v, r);
 		EXPECT_EQ(m1, r1);
 		EXPECT_EQ(m2, r2);
 		EXPECT_EQ(zeros_v(0), vector_d{});
-		EXPECT_EQ(zeros(0), matrix_d{});
+		EXPECT_EQ(zeros(0), vector2_d{});
 	}
 
 	// ones
 	{
 		auto v3 = ones_v(4);
 		vector_d r3 = { 1.0, 1.0, 1.0, 1.0 };
-		matrix_d m4 = ones(3);
-		matrix_d r4 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
-		matrix_d m5 = ones(2, 3);
-		matrix_d r5 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
+		vector2_d m4 = ones(3);
+		vector2_d r4 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
+		vector2_d m5 = ones(2, 3);
+		vector2_d r5 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
 		EXPECT_EQ(v3, r3);
 		EXPECT_EQ(m4, r4);
 		EXPECT_EQ(m5, r5);
@@ -152,7 +152,7 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 	// size
 	{
 		const vector_d v{ 1, 2, 3 };
-		const matrix_d A{ {1, 2, 3}, {4, 5, 6} };
+		const vector2_d A{ {1, 2, 3}, {4, 5, 6} };
 		EXPECT_EQ(length(v), 3);
 		EXPECT_EQ(length(A), 3);
 		EXPECT_EQ(size(v), 3);
@@ -167,17 +167,17 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 		// reshape
 		{
 			vector_d A = colon(1.0, 10.0);
-			matrix_d B = { {1, 6}, {2, 7}, {3, 8}, {4, 9}, {5, 10} };
+			vector2_d B = { {1, 6}, {2, 7}, {3, 8}, {4, 9}, {5, 10} };
 			EXPECT_EQ(reshape(A, { 5, 2 }), B);
 			EXPECT_EQ(reshape(A, 5, {}), B);
 			EXPECT_EQ(reshape(A, {}, 2), B);
 
-			matrix_d C = {
+			vector2_d C = {
 				{16,  2,  3, 13},
 				{ 5, 11, 10,  8},
 				{ 9,  7,  6, 12},
 				{ 4, 14, 15,  1} };
-			matrix_d D = {
+			vector2_d D = {
 				{16,  3},
 				{ 5, 10},
 				{ 9,  6},
@@ -201,22 +201,22 @@ TEST(matrices_and_arrays, determine_size_shape_and_order) {
 			EXPECT_EQ(circshift(w, 3), w);
 			EXPECT_EQ(circshift(w, -7), w);
 
-			matrix_d A{ {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7} };
-			matrix_d B{ {5, 5}, {6, 6}, {7, 7}, {1, 1}, {2, 2}, {3, 3}, {4, 4} };
+			vector2_d A{ {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7} };
+			vector2_d B{ {5, 5}, {6, 6}, {7, 7}, {1, 1}, {2, 2}, {3, 3}, {4, 4} };
 			EXPECT_EQ(circshift(A, 3), B);
 			EXPECT_EQ(circshift(A, -4), B);
 
-			matrix_d X{
+			vector2_d X{
 				{1, 1, 0, 0},
 				{1, 1, 0, 0},
 				{0, 0, 0, 0},
 				{0, 0, 0, 0} };
-			matrix_d Y{
+			vector2_d Y{
 				{0, 1, 1, 0},
 				{0, 1, 1, 0},
 				{0, 0, 0, 0},
 				{0, 0, 0, 0} };
-			matrix_d Z{
+			vector2_d Z{
 				{0, 0, 0, 0},
 				{0, 1, 1, 0},
 				{0, 1, 1, 0},
@@ -334,7 +334,7 @@ TEST(matrices_and_arrays, indexing) {
 
 	}
 
-	const matrix_d A{
+	const vector2_d A{
 		{1, 2, 3, 4},
 		{5, 6, 7, 8},
 		{9, 10, 11, 12},
@@ -343,11 +343,11 @@ TEST(matrices_and_arrays, indexing) {
 		
 		vector_d r2{ 5, 6, 7, 8 };
 		EXPECT_EQ(row(A, 1), r2);
-		EXPECT_THROW(row(matrix_d{}, 1), ZException);
+		EXPECT_THROW(row(vector2_d{}, 1), ZException);
 		EXPECT_THROW(row(A, 4), ZException);
-		matrix_d r3{ {5, 6, 7, 8}, {9, 10, 11, 12} };
-		matrix_d r4{ {1, 2, 3, 4}, {9, 10, 11, 12} };
-		matrix_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
+		vector2_d r3{ {5, 6, 7, 8}, {9, 10, 11, 12} };
+		vector2_d r4{ {1, 2, 3, 4}, {9, 10, 11, 12} };
+		vector2_d r5{ {9, 10, 11, 12}, {1, 2, 3, 4} };
 		EXPECT_EQ(rows(A, Colon{ 1, 2 }), r3);
 		EXPECT_EQ(rows(A, vector_sz{ 1, 2 }), r3);
 		EXPECT_EQ(rows(A, Colon{ 0, 2, 2 }), r4);
@@ -356,7 +356,7 @@ TEST(matrices_and_arrays, indexing) {
 		EXPECT_EQ(rows(A, Colon{ 2, -2, 0 }), r5);
 		EXPECT_EQ(rows(A, vector_sz{ 2, 0 }), r5);
 
-		matrix_d B{
+		vector2_d B{
 		{1, 2, 3, 4},
 		{1, 1, 1, 1},
 		{9, 10, 11, 12},
@@ -370,15 +370,15 @@ TEST(matrices_and_arrays, indexing) {
 		EXPECT_THROW(set_row(A, 1, a), ZException);
 		EXPECT_THROW(set_row_self(A1, 1, a), ZException);
 		
-		matrix_d C{
+		vector2_d C{
 			{1, 2, 3, 4},
 			{1, 1, 1, 1},
 			{1, 1, 1, 1},
 			{13, 14, 15, 16} };
-		matrix_d V{
+		vector2_d V{
 			{1, 1, 1, 1},
 			{1, 1, 1, 1} };
-		matrix_d V2{
+		vector2_d V2{
 			{1, 1, 1, 1, 1},
 			{1, 1, 1, 1, 1} };
 		EXPECT_EQ(set_rows(A, vector_sz{ 1, 2 }, V), C);
@@ -399,23 +399,23 @@ TEST(matrices_and_arrays, indexing) {
 	vector_d c2{ 2, 6, 10, 14 };
 	{  // col get & set
 		EXPECT_EQ(col(A, 1), c2);
-		EXPECT_THROW(col(matrix_d{}, 1), ZException);
+		EXPECT_THROW(col(vector2_d{}, 1), ZException);
 		EXPECT_THROW(col(A, 4), ZException);
 
-		matrix_d c3{ {2,3}, {6,7}, {10, 11}, {14, 15} };
-		matrix_d c4{ {2, 4}, {6, 8}, {10, 12}, {14, 16} };
-		matrix_d c5{ {4, 2}, {8, 6}, {12, 10}, {16, 14} };
+		vector2_d c3{ {2,3}, {6,7}, {10, 11}, {14, 15} };
+		vector2_d c4{ {2, 4}, {6, 8}, {10, 12}, {14, 16} };
+		vector2_d c5{ {4, 2}, {8, 6}, {12, 10}, {16, 14} };
 		EXPECT_EQ(cols(A, Colon{ 1, 2 }), c3);
 		EXPECT_EQ(cols(A, vector_sz{ 1, 2 }), c3);
 		EXPECT_EQ(cols(A, Colon{ 1, 2, 3 }), c4);
 		EXPECT_EQ(cols(A, vector_sz{ 1, 3 }), c4);
 		EXPECT_EQ(cols(A, Colon{ 3, -2, 1 }), c5);
 		EXPECT_EQ(cols(A, vector_sz{ 3, 1 }), c5);
-		EXPECT_THROW(cols(matrix_d{}, vector_sz{ 1, 2 }), ZException);
+		EXPECT_THROW(cols(vector2_d{}, vector_sz{ 1, 2 }), ZException);
 		EXPECT_THROW(cols(A, Colon{ 1, 4 }), ZException);
 		EXPECT_THROW(cols(A, vector_sz{ 1, 4 }), ZException);
 
-		const matrix_d P{
+		const vector2_d P{
 		{1, 1, 3, 4},
 		{5, 1, 7, 8},
 		{9, 1, 11, 12},
@@ -429,13 +429,13 @@ TEST(matrices_and_arrays, indexing) {
 		EXPECT_THROW(set_col(P, 1, c), ZException);
 		EXPECT_THROW(set_col_self(P1, 1, c), ZException);
 
-		matrix_d B{
+		vector2_d B{
 		{1, 1, 1, 4},
 		{5, 1, 1, 8},
 		{9, 1, 1, 12},
 		{13, 1, 1, 16} };
-		matrix_d V{ {1, 1}, {1, 1}, {1, 1}, {1, 1} };
-		matrix_d C{ {1, 1}, {1, 1}, {1, 1}, {1, 1}, {1, 1} };
+		vector2_d V{ {1, 1}, {1, 1}, {1, 1}, {1, 1} };
+		vector2_d C{ {1, 1}, {1, 1}, {1, 1}, {1, 1}, {1, 1} };
 		EXPECT_EQ(set_cols(A, Colon{ 1, 2 }, V), B);
 		EXPECT_EQ(set_cols(A, vector_sz{ 1, 2 }, V), B);
 
@@ -453,30 +453,30 @@ TEST(matrices_and_arrays, indexing) {
 	}
 
 	{  // block get & set
-		matrix_d B{ {3, 4}, {7, 8} };
+		vector2_d B{ {3, 4}, {7, 8} };
 		EXPECT_EQ(block(A, Colon{ 0, 1 }, Colon{ 2, 3 }), B);
 		EXPECT_EQ(block(A, vector_sz{ 0, 1 }, vector_sz{ 2, 3 }), B);
 		EXPECT_EQ(block(A, Colon{ 0, 1 }, vector_sz{ 2, 3 }), B);
 		EXPECT_EQ(block(A, vector_sz{ 0, 1 }, Colon{ 2, 3 }), B);
-		matrix_d B1{ {3, 4}, {11, 12} };
+		vector2_d B1{ {3, 4}, {11, 12} };
 		EXPECT_EQ(block(A, Colon{ 0, 1, 2 }, Colon{ 2, 3 }), B1);
 		EXPECT_EQ(block(A, vector_sz{ 0, 1, 2 }, vector_sz{ 2, 3 }), B1);
 		EXPECT_EQ(block(A, Colon{ 0, 1, 2 }, vector_sz{ 2, 3 }), B1);
 		EXPECT_EQ(block(A, vector_sz{ 0, 1, 2 }, Colon{ 2, 3 }), B1);
-		matrix_d B2{ {3, 2, 1}, {11, 10, 9} };
+		vector2_d B2{ {3, 2, 1}, {11, 10, 9} };
 		EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, Colon{ 2, -1, 0 }), B2);
 		EXPECT_EQ(block(A, vector_sz{ 0, 2 }, vector_sz{ 2, 1, 0 }), B2);
 		EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, vector_sz{ 2, 1, 0 }), B2);
 		EXPECT_EQ(block(A, Colon{ 0, 2, 2 }, vector_sz{ 2, 1, 0 }), B2);
-		matrix_d B3{ {11, 10, 9}, {7, 6, 5} };
+		vector2_d B3{ {11, 10, 9}, {7, 6, 5} };
 		EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, Colon{ 2, -1, 0 }), B3);
 		EXPECT_EQ(block(A, vector_sz{ 2,  1 }, vector_sz{ 2, 1, 0 }), B3);
 		EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, vector_sz{ 2, 1, 0 }), B3);
 		EXPECT_EQ(block(A, Colon{ 2, -1, 1 }, vector_sz{ 2, 1, 0 }), B3);
 
 
-		const matrix_d D{ {0, 0}, {0, 0} };
-		const matrix_d P{
+		const vector2_d D{ {0, 0}, {0, 0} };
+		const vector2_d P{
 		{1, 2, 3, 4},
 		{5, 0, 0, 8},
 		{9, 0, 0, 12},

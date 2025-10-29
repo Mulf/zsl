@@ -746,7 +746,7 @@ vector_sz colon(size_t j, int i, size_t k) {
 #pragma region Real matrix/vector block
 vector_d colon(const vector_d &v) { return v; }
 
-vector_d colon(const matrix_d &A) {
+vector_d colon(const vector2_d &A) {
   vector_d v{static_cast<size_t>(numel(A)), vector_d::allocator_type{}};
   if (v.empty()) {
     return v;
@@ -788,129 +788,129 @@ vector_d &set_block_self(vector_d &v, const vector_sz &rng, const vector_d &w) {
 }
 
 // matrix block
-vector_d col(const matrix_d &A, size_t n) { return _::col(A, n); }
+vector_d col(const vector2_d &A, size_t n) { return _::col(A, n); }
 
-matrix_d set_col(const matrix_d &A, size_t n, const vector_d &v) {
+vector2_d set_col(const vector2_d &A, size_t n, const vector_d &v) {
   return _::set_col(A, n, v);
 }
 
-matrix_d &set_col_self(matrix_d &A, size_t n, const vector_d &v) {
+vector2_d &set_col_self(vector2_d &A, size_t n, const vector_d &v) {
   return _::set_col_self(A, n, v);
 }
 
-matrix_d cols(const matrix_d &A, const Colon &rng) { return _::cols(A, rng); }
+vector2_d cols(const vector2_d &A, const Colon &rng) { return _::cols(A, rng); }
 
-matrix_d cols(const matrix_d &A, const vector_sz &indices) {
+vector2_d cols(const vector2_d &A, const vector_sz &indices) {
   return _::cols(A, indices);
 }
 
-matrix_d set_cols(const matrix_d &A, const Colon &rng, const matrix_d &V) {
+vector2_d set_cols(const vector2_d &A, const Colon &rng, const vector2_d &V) {
   return _::set_cols(A, rng, V);
 }
 
-matrix_d &set_cols_self(matrix_d &A, const Colon &rng, const matrix_d &V) {
+vector2_d &set_cols_self(vector2_d &A, const Colon &rng, const vector2_d &V) {
   return _::set_cols_self(A, rng, V);
 }
 
-matrix_d set_cols(const matrix_d &A, const vector_sz &indices,
-                  const matrix_d &V) {
+vector2_d set_cols(const vector2_d &A, const vector_sz &indices,
+                  const vector2_d &V) {
   return _::set_cols(A, indices, V);
 }
 
-matrix_d &set_cols_self(matrix_d &A, const vector_sz &indices,
-                        const matrix_d &V) {
+vector2_d &set_cols_self(vector2_d &A, const vector_sz &indices,
+                        const vector2_d &V) {
   return _::set_cols_self(A, indices, V);
 }
 
-vector_d row(const matrix_d &A, size_t m) { return _::row(A, m); }
+vector_d row(const vector2_d &A, size_t m) { return _::row(A, m); }
 
-matrix_d set_row(const matrix_d &A, size_t m, const vector_d &v) {
+vector2_d set_row(const vector2_d &A, size_t m, const vector_d &v) {
   return _::set_row(A, m, v);
 }
 
-matrix_d &set_row_self(matrix_d &A, size_t m, const vector_d &v) {
+vector2_d &set_row_self(vector2_d &A, size_t m, const vector_d &v) {
   return _::set_row_self(A, m, v);
 }
 
-matrix_d rows(const matrix_d &A, const Colon &rng) { return _::rows(A, rng); }
+vector2_d rows(const vector2_d &A, const Colon &rng) { return _::rows(A, rng); }
 
-matrix_d set_rows(const matrix_d &A, const Colon &rng, const matrix_d &V) {
+vector2_d set_rows(const vector2_d &A, const Colon &rng, const vector2_d &V) {
   return _::set_rows(A, rng, V);
 }
 
-matrix_d &set_rows_self(matrix_d &A, const Colon &rng, const matrix_d &V) {
+vector2_d &set_rows_self(vector2_d &A, const Colon &rng, const vector2_d &V) {
   return _::set_rows_self(A, rng, V);
 }
 
-matrix_d rows(const matrix_d &A, const vector_sz &indices) {
+vector2_d rows(const vector2_d &A, const vector_sz &indices) {
   return _::rows(A, indices);
 }
 
-matrix_d set_rows(const matrix_d &A, const vector_sz &indices,
-                  const matrix_d &V) {
+vector2_d set_rows(const vector2_d &A, const vector_sz &indices,
+                  const vector2_d &V) {
   return _::set_rows(A, indices, V);
 }
 
-matrix_d &set_rows_self(matrix_d &A, const vector_sz &indices,
-                        const matrix_d &V) {
+vector2_d &set_rows_self(vector2_d &A, const vector_sz &indices,
+                        const vector2_d &V) {
   return _::set_rows_self(A, indices, V);
 }
 
-matrix_d block(const matrix_d &A, const Colon &rowRng, const Colon &colRng) {
+vector2_d block(const vector2_d &A, const Colon &rowRng, const Colon &colRng) {
   return _::block(A, rowRng, colRng);
 }
 
-matrix_d set_block(const matrix_d &A, const Colon &rowRng, const Colon &colRng,
-                   const matrix_d &B) {
+vector2_d set_block(const vector2_d &A, const Colon &rowRng, const Colon &colRng,
+                   const vector2_d &B) {
   return _::set_block(A, rowRng, colRng, B);
 }
-matrix_d &set_block_self(matrix_d &A, const Colon &rowRng, const Colon &colRng,
-                         const matrix_d &B) {
+vector2_d &set_block_self(vector2_d &A, const Colon &rowRng, const Colon &colRng,
+                         const vector2_d &B) {
   return _::set_block_self(A, rowRng, colRng, B);
 }
 
-matrix_d block(const matrix_d &A, const vector_sz &rowIndices,
+vector2_d block(const vector2_d &A, const vector_sz &rowIndices,
                const vector_sz &colIndices) {
   return _::block(A, rowIndices, colIndices);
 }
 
-matrix_d set_block(const matrix_d &A, const vector_sz &rowIndices,
-                   const vector_sz &colIndices, const matrix_d &B) {
+vector2_d set_block(const vector2_d &A, const vector_sz &rowIndices,
+                   const vector_sz &colIndices, const vector2_d &B) {
   return _::set_block(A, rowIndices, colIndices, B);
 }
 
-matrix_d &set_block_self(matrix_d &A, const vector_sz &rowIndices,
-                         const vector_sz &colIndices, const matrix_d &B) {
+vector2_d &set_block_self(vector2_d &A, const vector_sz &rowIndices,
+                         const vector_sz &colIndices, const vector2_d &B) {
   return _::set_block_self(A, rowIndices, colIndices, B);
 }
 
-matrix_d block(const matrix_d &A, const vector_sz &rowIndices,
+vector2_d block(const vector2_d &A, const vector_sz &rowIndices,
                const Colon &colRng) {
   return _::block(A, rowIndices, colRng);
 }
 
-matrix_d set_block(const matrix_d &A, const vector_sz &rowIndices,
-                   const Colon &colRng, const matrix_d &B) {
+vector2_d set_block(const vector2_d &A, const vector_sz &rowIndices,
+                   const Colon &colRng, const vector2_d &B) {
   return _::set_block(A, rowIndices, colRng, B);
 }
 
-matrix_d &set_block_self(matrix_d &A, const vector_sz &rowIndices,
-                         const Colon &colRng, const matrix_d &B) {
+vector2_d &set_block_self(vector2_d &A, const vector_sz &rowIndices,
+                         const Colon &colRng, const vector2_d &B) {
   return _::set_block_self(A, rowIndices, colRng, B);
 }
 
-matrix_d block(const matrix_d &A, const Colon &rowRng,
+vector2_d block(const vector2_d &A, const Colon &rowRng,
                const vector_sz &colIndices) {
   return _::block(A, rowRng, colIndices);
 }
 
-matrix_d set_block(const matrix_d &A, const Colon &rowRng,
-                   const vector_sz &colIndices, const matrix_d &B) {
+vector2_d set_block(const vector2_d &A, const Colon &rowRng,
+                   const vector_sz &colIndices, const vector2_d &B) {
   return _::set_block(A, rowRng, colIndices, B);
 }
 
-matrix_d &set_block_self(matrix_d &A, const Colon &rowRng,
-                         const vector_sz &colIndices, const matrix_d &B) {
+vector2_d &set_block_self(vector2_d &A, const Colon &rowRng,
+                         const vector_sz &colIndices, const vector2_d &B) {
   return _::set_block_self(A, rowRng, colIndices, B);
 }
 #pragma endregion
@@ -921,7 +921,7 @@ vector_c colon(const vector_c &v) {
 	return v;
 }
 
-vector_c colon(const matrix_c &A) {
+vector_c colon(const vector2_c &A) {
 	vector_c v{static_cast<size_t>(numel(A)), vector_c::allocator_type{}};
 	if(v.empty()) {
 		return v;
@@ -963,137 +963,137 @@ vector_c &set_block_self(vector_c &v, const vector_sz &rng, const vector_c &w) {
 }
 
 // matrix block
-vector_c col(const matrix_c &A, size_t n) {
+vector_c col(const vector2_c &A, size_t n) {
 	return _::col(A, n);
 }
 
-matrix_c set_col(const matrix_c &A, size_t n, const vector_c &v) {
+vector2_c set_col(const vector2_c &A, size_t n, const vector_c &v) {
 	return _::set_col(A, n, v);
 }
 
-matrix_c &set_col_self(matrix_c &A, size_t n, const vector_c &v) {
+vector2_c &set_col_self(vector2_c &A, size_t n, const vector_c &v) {
 	return _::set_col_self(A, n, v);
 }
 
-matrix_c cols(const matrix_c &A, const Colon &rng) {
+vector2_c cols(const vector2_c &A, const Colon &rng) {
 	return _::cols(A, rng);
 }
 
-matrix_c cols(const matrix_c &A, const vector_sz &indices) {
+vector2_c cols(const vector2_c &A, const vector_sz &indices) {
 	return _::cols(A, indices);
 }
 
-matrix_c set_cols(const matrix_c &A, const Colon &rng, const matrix_c &V) {
+vector2_c set_cols(const vector2_c &A, const Colon &rng, const vector2_c &V) {
 	return _::set_cols(A, rng, V);
 }
 
-matrix_c &set_cols_self(matrix_c &A, const Colon &rng, const matrix_c &V) {
+vector2_c &set_cols_self(vector2_c &A, const Colon &rng, const vector2_c &V) {
 	return _::set_cols_self(A, rng, V);
 }
 
-matrix_c set_cols(const matrix_c &A, const vector_sz &indices,
-				  const matrix_c &V) {
+vector2_c set_cols(const vector2_c &A, const vector_sz &indices,
+				  const vector2_c &V) {
 	return _::set_cols(A, indices, V);
 }
 
-matrix_c &set_cols_self(matrix_c &A, const vector_sz &indices,
-						const matrix_c &V) {
+vector2_c &set_cols_self(vector2_c &A, const vector_sz &indices,
+						const vector2_c &V) {
 	return _::set_cols_self(A, indices, V);
 }
 
-vector_c row(const matrix_c &A, size_t m) {
+vector_c row(const vector2_c &A, size_t m) {
 	return _::row(A, m);
 }
 
-matrix_c set_row(const matrix_c &A, size_t m, const vector_c &v) {
+vector2_c set_row(const vector2_c &A, size_t m, const vector_c &v) {
 	return _::set_row(A, m, v);
 }
 
-matrix_c &set_row_self(matrix_c &A, size_t m, const vector_c &v) {
+vector2_c &set_row_self(vector2_c &A, size_t m, const vector_c &v) {
 	return _::set_row_self(A, m, v);
 }
 
-matrix_c rows(const matrix_c &A, const Colon &rng) {
+vector2_c rows(const vector2_c &A, const Colon &rng) {
 	return _::rows(A, rng);
 }
 
-matrix_c set_rows(const matrix_c &A, const Colon &rng, const matrix_c &V) {
+vector2_c set_rows(const vector2_c &A, const Colon &rng, const vector2_c &V) {
 	return _::set_rows(A, rng, V);
 }
 
-matrix_c &set_rows_self(matrix_c &A, const Colon &rng, const matrix_c &V) {
+vector2_c &set_rows_self(vector2_c &A, const Colon &rng, const vector2_c &V) {
 	return _::set_rows_self(A, rng, V);
 }
 
-matrix_c rows(const matrix_c &A, const vector_sz &indices) {
+vector2_c rows(const vector2_c &A, const vector_sz &indices) {
 	return _::rows(A, indices);
 }
 
-matrix_c set_rows(const matrix_c &A, const vector_sz &indices,
-				  const matrix_c &V) {
+vector2_c set_rows(const vector2_c &A, const vector_sz &indices,
+				  const vector2_c &V) {
 	return _::set_rows(A, indices, V);
 }
 
-matrix_c &set_rows_self(matrix_c &A, const vector_sz &indices,
-						const matrix_c &V) {
+vector2_c &set_rows_self(vector2_c &A, const vector_sz &indices,
+						const vector2_c &V) {
 	return _::set_rows_self(A, indices, V);
 }
 
-matrix_c block(const matrix_c &A, const Colon &rowRng, const Colon &colRng) {
+vector2_c block(const vector2_c &A, const Colon &rowRng, const Colon &colRng) {
 	return _::block(A, rowRng, colRng);
 }
 
-matrix_c set_block(const matrix_c &A, const Colon &rowRng, const Colon &colRng,
-				   const matrix_c &B) {
+vector2_c set_block(const vector2_c &A, const Colon &rowRng, const Colon &colRng,
+				   const vector2_c &B) {
 	return _::set_block(A, rowRng, colRng, B);
 }
-matrix_c &set_block_self(matrix_c &A, const Colon &rowRng, const Colon &colRng,
-						 const matrix_c &B) {
+vector2_c &set_block_self(vector2_c &A, const Colon &rowRng, const Colon &colRng,
+						 const vector2_c &B) {
 	return _::set_block_self(A, rowRng, colRng, B);
 }
 
-matrix_c block(const matrix_c &A, const vector_sz &rowIndices,
+vector2_c block(const vector2_c &A, const vector_sz &rowIndices,
 			   const vector_sz &colIndices) {
 	return _::block(A, rowIndices, colIndices);
 }
 
-matrix_c set_block(const matrix_c &A, const vector_sz &rowIndices,
-				   const vector_sz &colIndices, const matrix_c &B) {
+vector2_c set_block(const vector2_c &A, const vector_sz &rowIndices,
+				   const vector_sz &colIndices, const vector2_c &B) {
 	return _::set_block(A, rowIndices, colIndices, B);
 }
 
-matrix_c &set_block_self(matrix_c &A, const vector_sz &rowIndices,
-						 const vector_sz &colIndices, const matrix_c &B) {
+vector2_c &set_block_self(vector2_c &A, const vector_sz &rowIndices,
+						 const vector_sz &colIndices, const vector2_c &B) {
 	return _::set_block_self(A, rowIndices, colIndices, B);
 }
 
-matrix_c block(const matrix_c &A, const vector_sz &rowIndices,
+vector2_c block(const vector2_c &A, const vector_sz &rowIndices,
 			   const Colon &colRng) {
 	return _::block(A, rowIndices, colRng);
 }
 
-matrix_c set_block(const matrix_c &A, const vector_sz &rowIndices,
-				   const Colon &colRng, const matrix_c &B) {
+vector2_c set_block(const vector2_c &A, const vector_sz &rowIndices,
+				   const Colon &colRng, const vector2_c &B) {
 	return _::set_block(A, rowIndices, colRng, B);
 }
 
-matrix_c &set_block_self(matrix_c &A, const vector_sz &rowIndices,
-						 const Colon &colRng, const matrix_c &B) {
+vector2_c &set_block_self(vector2_c &A, const vector_sz &rowIndices,
+						 const Colon &colRng, const vector2_c &B) {
 	return _::set_block_self(A, rowIndices, colRng, B);
 }
 
-matrix_c block(const matrix_c &A, const Colon &rowRng,
+vector2_c block(const vector2_c &A, const Colon &rowRng,
 			   const vector_sz &colIndices) {
 	return _::block(A, rowRng, colIndices);
 }
 
-matrix_c set_block(const matrix_c &A, const Colon &rowRng,
-				   const vector_sz &colIndices, const matrix_c &B) {
+vector2_c set_block(const vector2_c &A, const Colon &rowRng,
+				   const vector_sz &colIndices, const vector2_c &B) {
 	return _::set_block(A, rowRng, colIndices, B);
 }
 
-matrix_c &set_block_self(matrix_c &A, const Colon &rowRng,
-						 const vector_sz &colIndices, const matrix_c &B) {
+vector2_c &set_block_self(vector2_c &A, const Colon &rowRng,
+						 const vector_sz &colIndices, const vector2_c &B) {
 	return _::set_block_self(A, rowRng, colIndices, B);
 }
 #pragma endregion

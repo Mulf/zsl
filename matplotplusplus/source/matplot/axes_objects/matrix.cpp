@@ -126,7 +126,7 @@ namespace matplot {
         }
     }
 
-    std::string matrix::matrix_data_string() {
+    std::string matrix::vector2_data_string() {
         // single matrix
         auto &matrix_ = matrices_[0];
 
@@ -304,7 +304,7 @@ namespace matplot {
 
     std::string matrix::data_string() {
         return matrices_.size() > 1 ? image_data_string()
-                                    : matrix_data_string();
+                                    : vector2_data_string();
     }
 
     double matrix::xmax() { return (x_ + w_ - 1) + x_width() / 2; }

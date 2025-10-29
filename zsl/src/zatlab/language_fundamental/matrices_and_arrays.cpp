@@ -59,7 +59,7 @@ vector_d cat(const vector_d &v1, const vector_d &v2) {
   return r;
 }
 
-matrix_d cat(size_t dim, const matrix_d &A, const matrix_d &B) {
+vector2_d cat(size_t dim, const vector2_d &A, const vector2_d &B) {
   assert(dim == 1 || dim == 2);
 
   if (A.empty()) {
@@ -78,7 +78,7 @@ matrix_d cat(size_t dim, const matrix_d &A, const matrix_d &B) {
     return r;
   } else {
     assert(A.size() == B.size());
-    matrix_d r{};
+    vector2_d r{};
     for (size_t i = 0; i < A.size(); i++) {
       r.push_back(cat(A[i], B[i]));
     }
@@ -87,7 +87,7 @@ matrix_d cat(size_t dim, const matrix_d &A, const matrix_d &B) {
 }
 
 // diag
-matrix_d diag(const vector_d &v) {
+vector2_d diag(const vector_d &v) {
   auto A = zeros(v.size());
   for (size_t i = 0; i < v.size(); i++) {
     A[i][i] = v[i];
@@ -95,7 +95,7 @@ matrix_d diag(const vector_d &v) {
   return A;
 }
 
-matrix_d diag(const vector_d &v, int k) {
+vector2_d diag(const vector_d &v, int k) {
   if (k == 0) {
     return diag(v);
   }
@@ -115,7 +115,7 @@ matrix_d diag(const vector_d &v, int k) {
   return A;
 }
 
-vector_d diag(const matrix_d &A) {
+vector_d diag(const vector2_d &A) {
   if (A.empty()) {
     return {};
   }
@@ -127,7 +127,7 @@ vector_d diag(const matrix_d &A) {
   return x;
 }
 
-vector_d diag(const matrix_d &A, int k) {
+vector_d diag(const vector2_d &A, int k) {
   if (A.empty()) {
     return {};
   }
@@ -161,12 +161,12 @@ vector_d diag(const matrix_d &A, int k) {
 }
 
 // eye
-matrix_d eye(size_t n) { return diag(ones_v(n)); }
+vector2_d eye(size_t n) { return diag(ones_v(n)); }
 
-matrix_d eye(size_t n, size_t m) {
+vector2_d eye(size_t n, size_t m) {
   assert(n != 0 && m != 0);
 
-  matrix_d A = zeros(n, m);
+  vector2_d A = zeros(n, m);
   const size_t N = std::min(n, m);
   for (size_t i = 0; i < N; i++) {
     A[i][i] = 1;
@@ -176,9 +176,9 @@ matrix_d eye(size_t n, size_t m) {
 }
 
 // horzcat
-matrix_d horzcat(const matrix_d &A, const matrix_d &B) { return cat(2, A, B); }
+vector2_d horzcat(const vector2_d &A, const vector2_d &B) { return cat(2, A, B); }
 
-matrix_d horzcat(const matrix_d &A, const vector_d &v) {
+vector2_d horzcat(const vector2_d &A, const vector_d &v) {
   assert(A.size() == v.size());
 
   auto r = A;
@@ -191,23 +191,23 @@ matrix_d horzcat(const matrix_d &A, const vector_d &v) {
 vector_d horzcat(const vector_d &v, const vector_d &w) { return cat(v, w); }
 
 // vercat
-matrix_d vertcat(const matrix_d &A, const matrix_d &B) { return cat(1, A, B); }
+vector2_d vertcat(const vector2_d &A, const vector2_d &B) { return cat(1, A, B); }
 
 vector_d vertcat(const vector_d &v, const vector_d &w) { return cat(v, w); }
 
 // ones
 vector_d ones_v(size_t n) { return vector_d(n, 1.0); }
 
-matrix_d ones(size_t n) { return matrix_d(n, ones_v(n)); }
+vector2_d ones(size_t n) { return vector2_d(n, ones_v(n)); }
 
-matrix_d ones(size_t sz1, size_t sz2) { return matrix_d(sz1, ones_v(sz2)); }
+vector2_d ones(size_t sz1, size_t sz2) { return vector2_d(sz1, ones_v(sz2)); }
 
 // zeros
 vector_d zeros_v(size_t n) { return vector_d(n, 0.0); }
 
-matrix_d zeros(size_t n) { return matrix_d(n, zeros_v(n)); }
+vector2_d zeros(size_t n) { return vector2_d(n, zeros_v(n)); }
 
-matrix_d zeros(size_t sz1, size_t sz2) { return matrix_d(sz1, zeros_v(sz2)); }
+vector2_d zeros(size_t sz1, size_t sz2) { return vector2_d(sz1, zeros_v(sz2)); }
 #pragma endregion
 
 #pragma region Create Grids
@@ -227,16 +227,16 @@ vector_d linspace(double x1, double x2, size_t n) {
 // length
 size_t length(const vector_d &v) { return v.size(); }
 
-size_t length(const matrix_d &A) { return std::max(size(A, 1), size(A, 2)); }
+size_t length(const vector2_d &A) { return std::max(size(A, 1), size(A, 2)); }
 
-size_t length(const matrix_c &A) {
+size_t length(const vector2_c &A) {
 	return std::max(size(A, 1), size(A, 2));
 }
 
 // size
 size_t size(const vector_d &v) { return v.size(); }
 
-vector_sz size(const matrix_d &A) {
+vector_sz size(const vector2_d &A) {
   if (A.empty()) {
     return {0, 0};
   }
@@ -244,7 +244,7 @@ vector_sz size(const matrix_d &A) {
 	//return _::size(A);
 }
 
-size_t size(const matrix_d &A, size_t dim) {
+size_t size(const vector2_d &A, size_t dim) {
   /*assert(dim == 1 || dim == 2);
 
   if (A.empty()) {
@@ -262,22 +262,22 @@ size_t size(const vector_c &v) {
 	return v.size();
 }
 
-vector_sz size(const matrix_c &A) {
+vector_sz size(const vector2_c &A) {
 	if(A.empty()) {
 		return {0, 0};
 	}
 	return {A.size(), A[0].size()};
-	//return _::size<matrix_c>(A);
+	//return _::size<vector2_c>(A);
 }
 
-size_t size(const matrix_c &A, size_t dim) {
+size_t size(const vector2_c &A, size_t dim) {
 	return _::size(A, dim);
 }
 
 // numel
 size_t numel(const vector_d &v) { return v.size(); }
 
-size_t numel(const matrix_d &A) {
+size_t numel(const vector2_d &A) {
   assert(is_matrix(A));
   if (A.empty() || A[0].empty()) {
     return 0;
@@ -285,7 +285,7 @@ size_t numel(const matrix_d &A) {
   return A.size() * A[0].size();
 }
 
-size_t numel(const matrix_c &A) {
+size_t numel(const vector2_c &A) {
 	assert(is_matrix(A));
 	if(A.empty() || A[0].empty()) {
 		return 0;
@@ -296,10 +296,10 @@ size_t numel(const matrix_c &A) {
 
 #pragma region Resize, Reshape, and Rearrange
 // resize
-matrix_d head(const matrix_d &A) { return head(A, 8); }
+vector2_d head(const vector2_d &A) { return head(A, 8); }
 
-matrix_d head(const matrix_d &A, size_t k) {
-  matrix_d ans{};
+vector2_d head(const vector2_d &A, size_t k) {
+  vector2_d ans{};
   for (size_t i = 0; i < k; i++) {
     ans.push_back(A[i]);
   }
@@ -308,10 +308,10 @@ matrix_d head(const matrix_d &A, size_t k) {
 }
 
 // tail
-matrix_d tail(const matrix_d &A) { return tail(A, 8); }
+vector2_d tail(const vector2_d &A) { return tail(A, 8); }
 
-matrix_d tail(const matrix_d &A, size_t k) {
-  matrix_d ans{};
+vector2_d tail(const vector2_d &A, size_t k) {
+  vector2_d ans{};
   for (size_t i = 0; i < k; i++) {
     ans.push_back(A[A.size() - 1 - i]);
   }
@@ -320,7 +320,7 @@ matrix_d tail(const matrix_d &A, size_t k) {
 }
 
 // reshape
-matrix_d reshape(const vector_d &v, const std::pair<size_t, size_t> &sz) {
+vector2_d reshape(const vector_d &v, const std::pair<size_t, size_t> &sz) {
   if (v.empty()) {
     return {};
   }
@@ -328,7 +328,7 @@ matrix_d reshape(const vector_d &v, const std::pair<size_t, size_t> &sz) {
   assert(v.size() == sz.first * sz.second);
 
   size_t idx = 0;
-  matrix_d B{sz.first, vector_d{sz.second, vector_d::allocator_type{}}};
+  vector2_d B{sz.first, vector_d{sz.second, vector_d::allocator_type{}}};
   for (size_t col = 0; col < sz.second; col++) {
     for (size_t row = 0; row < sz.first; row++) {
       B[row][col] = v[idx++];
@@ -338,7 +338,7 @@ matrix_d reshape(const vector_d &v, const std::pair<size_t, size_t> &sz) {
   return B;
 }
 
-matrix_d reshape(const matrix_d &A, const std::pair<size_t, size_t> &sz) {
+vector2_d reshape(const vector2_d &A, const std::pair<size_t, size_t> &sz) {
   if (A.empty()) {
     return A;
   }
@@ -348,7 +348,7 @@ matrix_d reshape(const matrix_d &A, const std::pair<size_t, size_t> &sz) {
   size_t i = 0;
   size_t j = 0;
   const size_t rowA = A.size();
-  matrix_d B{sz.first, vector_d{sz.second, vector_d::allocator_type{}}};
+  vector2_d B{sz.first, vector_d{sz.second, vector_d::allocator_type{}}};
   for (size_t col = 0; col < sz.second; col++) {
     for (size_t row = 0; row < sz.first; row++) {
       B[row][col] = A[i][j];
@@ -364,7 +364,7 @@ matrix_d reshape(const matrix_d &A, const std::pair<size_t, size_t> &sz) {
   return B;
 }
 
-matrix_d reshape(const vector_d &v, std::optional<size_t> sz1,
+vector2_d reshape(const vector_d &v, std::optional<size_t> sz1,
                  std::optional<size_t> sz2) {
   assert(sz1 || sz2);
 
@@ -385,7 +385,7 @@ matrix_d reshape(const vector_d &v, std::optional<size_t> sz1,
   return reshape(v, {*sz1, *sz2});
 }
 
-matrix_d reshape(const matrix_d &A, std::optional<size_t> sz1,
+vector2_d reshape(const vector2_d &A, std::optional<size_t> sz1,
                  std::optional<size_t> sz2) {
   assert(sz1 || sz2);
 
@@ -415,20 +415,20 @@ vector_c circshift(const vector_c &v, int k) {
 	return _::circshift(v, k);
 }
 
-matrix_d circshift(const matrix_d &A, int k) {
+vector2_d circshift(const vector2_d &A, int k) {
   k = k % static_cast<int>(A.size());
   if (k < 0) {
     k += static_cast<int>(A.size());
   }
 
-  matrix_d B{A.size(), matrix_d::allocator_type{}};
+  vector2_d B{A.size(), vector2_d::allocator_type{}};
   std::copy(A.end() - k, A.end(), B.begin());
   std::copy(A.begin(), A.end() - k, B.begin() + k);
 
   return B;
 }
 
-matrix_d circshift(const matrix_d &A, int k, size_t dim) {
+vector2_d circshift(const vector2_d &A, int k, size_t dim) {
   assert(dim == 0 || dim == 1);
   if (dim == 0) {
     return circshift(A, k);
@@ -442,7 +442,7 @@ matrix_d circshift(const matrix_d &A, int k, size_t dim) {
   return {};
 }
 
-matrix_d circshift(const matrix_d &A, std::pair<int, int> K) {
+vector2_d circshift(const vector2_d &A, std::pair<int, int> K) {
   return circshift(circshift(A, 0, K.first), 1, K.second);
 }
 
@@ -458,18 +458,18 @@ vector_d &flip_self(vector_d &v) {
   return v;
 }
 
-matrix_d flip(const matrix_d &A) {
+vector2_d flip(const vector2_d &A) {
   auto B = A;
   std::reverse(B.begin(), B.end());
   return B;
 }
 
-matrix_d &flip_self(matrix_d &A) {
+vector2_d &flip_self(vector2_d &A) {
   std::reverse(A.begin(), A.end());
   return A;
 }
 
-matrix_d flip(const matrix_d &A, size_t dim) {
+vector2_d flip(const vector2_d &A, size_t dim) {
   assert(dim == 0 || dim == 1);
   if (dim == 0) {
     return flip(A);
@@ -483,7 +483,7 @@ matrix_d flip(const matrix_d &A, size_t dim) {
   return B;
 }
 
-matrix_d &flip_self(matrix_d &A, size_t dim) {
+vector2_d &flip_self(vector2_d &A, size_t dim) {
   assert(dim == 0 || dim == 1);
   if (dim == 0) {
     return flip_self(A);

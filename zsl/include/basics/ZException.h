@@ -82,12 +82,12 @@ public:
   virtual ~ZDimUnmatchException() override;
 
   // static bool dim_match(const vector_d& v1, const vector_d& v2);
-  // static bool dim_match(const matrix_d& m, const matrix_d& v);
+  // static bool dim_match(const vector2_d& m, const vector2_d& v);
 };
 
 // class ZInvalidMatrixException : public ZException {
 // public:
-//     ZInvalidMatrixException(const matrix_d& A, const char* file, int line,
+//     ZInvalidMatrixException(const vector2_d& A, const char* file, int line,
 //     const char* function); virtual ~ZInvalidMatrixException() override;
 // };
 

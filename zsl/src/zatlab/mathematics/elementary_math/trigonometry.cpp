@@ -32,24 +32,24 @@ vector_d unary_func(const vector_c &x, double (*func)(const complex_d &)) {
 	return y;
 }
 
-matrix_d unary_func(const matrix_d &X, double (*func)(double)) {
-	matrix_d Y(X.size());
+vector2_d unary_func(const vector2_d &X, double (*func)(double)) {
+	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_d &x){
 		return unary_func(x, func);
 	});
 	return Y;
 }
 
-matrix_c unary_func(const matrix_c &X, complex_d (*func)(const complex_d &)) {
-	matrix_c Y(X.size());
+vector2_c unary_func(const vector2_c &X, complex_d (*func)(const complex_d &)) {
+	vector2_c Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
 	});
 	return Y;
 }
 
-matrix_d unary_func(const matrix_c &X, double (*func)(const complex_d &)) {
-	matrix_d Y(X.size());
+vector2_d unary_func(const vector2_c &X, double (*func)(const complex_d &)) {
+	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
 	});
@@ -68,11 +68,11 @@ vector_c sin(const vector_c &v) {
 	return _::unary_func(v, std::sin);
 }
 
-matrix_d sin(const matrix_d &A) {
+vector2_d sin(const vector2_d &A) {
 	return _::unary_func(A, std::sin);
 }
 
-matrix_c sin(const matrix_c &A) {
+vector2_c sin(const vector2_c &A) {
 	return _::unary_func(A, std::sin);
 }
 
@@ -88,13 +88,13 @@ vector_c sind(const vector_c &v) {
 	});
 }
 
-matrix_d sind(const matrix_d &A) {
+vector2_d sind(const vector2_d &A) {
 	return _::unary_func(A, +[](double x) {
 		return std::sin(DEG_TO_RAD(x));
 	});
 }
 
-matrix_c sind(const matrix_c &A) {
+vector2_c sind(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &x) {
 		return std::sin(DEG_TO_RAD(x));
 	});
@@ -112,13 +112,13 @@ vector_c sinpi(const vector_c &v) {
 	});
 }
 
-matrix_d sinpi(const matrix_d &A) {
+vector2_d sinpi(const vector2_d &A) {
 	return _::unary_func(A, +[](double x){
 		return std::sin(x * pi);
 	});
 }
 
-matrix_c sinpi(const matrix_c &A) {
+vector2_c sinpi(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &x){
 		return std::sin(x * pi);
 	});
@@ -132,11 +132,11 @@ vector_c asin(const vector_c &v) {
 	return _::unary_func(v, std::asin);
 }
 
-matrix_d asin(const matrix_d &A) {
+vector2_d asin(const vector2_d &A) {
 	return _::unary_func(A, std::asin);
 }
 
-matrix_c asin(const matrix_c &A) {
+vector2_c asin(const vector2_c &A) {
 	return _::unary_func(A, std::asin);
 }
 
@@ -148,11 +148,11 @@ vector_c sinh(const vector_c &v) {
 	return _::unary_func(v, std::sinh);
 }
 
-matrix_d sinh(const matrix_d &A) {
+vector2_d sinh(const vector2_d &A) {
 	return _::unary_func(A, std::sinh);
 }
 
-matrix_c sinh(const matrix_c &A) {
+vector2_c sinh(const vector2_c &A) {
 	return _::unary_func(A, std::sinh);
 }
 
@@ -165,11 +165,11 @@ vector_c asinh(const vector_c &A) {
 }
 
 
-matrix_d asinh(const matrix_d &A) {
+vector2_d asinh(const vector2_d &A) {
 	return _::unary_func(A, std::asinh);
 }
 
-matrix_c asinh(const matrix_c &A) {
+vector2_c asinh(const vector2_c &A) {
 	return _::unary_func(A, std::asinh);
 }
 
@@ -182,11 +182,11 @@ vector_c cos(const vector_c &v) {
 	return _::unary_func(v, std::cos);
 }
 
-matrix_d cos(const matrix_d &A) {
+vector2_d cos(const vector2_d &A) {
 	return _::unary_func(A, std::cos);
 }
 
-matrix_c cos(const matrix_c &A) {
+vector2_c cos(const vector2_c &A) {
 	return _::unary_func(A, std::cos);
 }
 
@@ -202,13 +202,13 @@ vector_c cosd(const vector_c &v) {
 	});
 }
 
-matrix_d cosd(const matrix_d &A) {
+vector2_d cosd(const vector2_d &A) {
 	return _::unary_func(A, +[](double x) {
 		return std::cos(DEG_TO_RAD(x));
 	});
 }
 
-matrix_c cosd(const matrix_c &A) {
+vector2_c cosd(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &x) {
 		return std::cos(DEG_TO_RAD(x));
 	});
@@ -226,13 +226,13 @@ vector_c cospi(const vector_c &v) {
 	});
 }
 
-matrix_d cospi(const matrix_d &A) {
+vector2_d cospi(const vector2_d &A) {
 	return _::unary_func(A, +[](double x){
 		return std::cos(x * pi);
 	});
 }
 
-matrix_c cospi(const matrix_c &A) {
+vector2_c cospi(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &x){
 		return std::cos(x * pi);
 	});
@@ -246,11 +246,11 @@ vector_c acos(const vector_c &v) {
 	return _::unary_func(v, std::acos);
 }
 
-matrix_d acos(const matrix_d &A) {
+vector2_d acos(const vector2_d &A) {
 	return _::unary_func(A, std::acos);
 }
 
-matrix_c acos(const matrix_c &A) {
+vector2_c acos(const vector2_c &A) {
 	return _::unary_func(A, std::acos);
 }
 
@@ -262,11 +262,11 @@ vector_c cosh(const vector_c &v) {
 	return _::unary_func(v, std::cosh);
 }
 
-matrix_d cosh(const matrix_d &A) {
+vector2_d cosh(const vector2_d &A) {
 	return _::unary_func(A, std::cosh);
 }
 
-matrix_c cosh(const matrix_c &A) {
+vector2_c cosh(const vector2_c &A) {
 	return _::unary_func(A, std::cosh);
 }
 
@@ -278,11 +278,11 @@ vector_c acosh(const vector_c &A) {
 	return _::unary_func(A, std::acosh);
 }
 
-matrix_d acosh(const matrix_d &A) {
+vector2_d acosh(const vector2_d &A) {
 	return _::unary_func(A, std::acosh);
 }
 
-matrix_c acosh(const matrix_c &A) {
+vector2_c acosh(const vector2_c &A) {
 	return _::unary_func(A, std::acosh);
 }
 
@@ -295,11 +295,11 @@ vector_c tan(const vector_c &v) {
 	return _::unary_func(v, std::tan);
 }
 
-matrix_d tan(const matrix_d &A) {
+vector2_d tan(const vector2_d &A) {
 	return _::unary_func(A, std::tan);
 }
 
-matrix_c tan(const matrix_c &A) {
+vector2_c tan(const vector2_c &A) {
 	return _::unary_func(A, std::tan);
 }
 
@@ -315,13 +315,13 @@ vector_c tand(const vector_c &v) {
 	});
 }
 
-matrix_d tand(const matrix_d &A) {
+vector2_d tand(const vector2_d &A) {
 	return _::unary_func(A, +[](double x) {
 		return std::tan(DEG_TO_RAD(x));
 	});
 }
 
-matrix_c tand(const matrix_c &A) {
+vector2_c tand(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &x) {
 		return std::tan(DEG_TO_RAD(x));
 	});
@@ -339,13 +339,13 @@ vector_c tanpi(const vector_c &v) {
 	});
 }
 
-matrix_d tanpi(const matrix_d &A) {
+vector2_d tanpi(const vector2_d &A) {
 	return _::unary_func(A, +[](double x){
 		return std::tan(x * pi);
 	});
 }
 
-matrix_c tanpi(const matrix_c &A) {
+vector2_c tanpi(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &x){
 		return std::tan(x * pi);
 	});
@@ -359,11 +359,11 @@ vector_c atan(const vector_c &v) {
 	return _::unary_func(v, std::atan);
 }
 
-matrix_d atan(const matrix_d &A) {
+vector2_d atan(const vector2_d &A) {
 	return _::unary_func(A, std::atan);
 }
 
-matrix_c atan(const matrix_c &A) {
+vector2_c atan(const vector2_c &A) {
 	return _::unary_func(A, std::atan);
 }
 
@@ -375,11 +375,11 @@ vector_c tanh(const vector_c &v) {
 	return _::unary_func(v, std::tanh);
 }
 
-matrix_d tanh(const matrix_d &A) {
+vector2_d tanh(const vector2_d &A) {
 	return _::unary_func(A, std::tanh);
 }
 
-matrix_c tanh(const matrix_c &A) {
+vector2_c tanh(const vector2_c &A) {
 	return _::unary_func(A, std::tanh);
 }
 
@@ -392,11 +392,11 @@ vector_c atanh(const vector_c &A) {
 }
 
 
-matrix_d atanh(const matrix_d &A) {
+vector2_d atanh(const vector2_d &A) {
 	return _::unary_func(A, std::atanh);
 }
 
-matrix_c atanh(const matrix_c &A) {
+vector2_c atanh(const vector2_c &A) {
 	return _::unary_func(A, std::atanh);
 }
 
@@ -406,7 +406,7 @@ vector_d csc(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return 1 / std::sin(x); });
 }
 
-matrix_d csc(const matrix_d &A) {
+vector2_d csc(const vector2_d &A) {
 	return  _::unary_func(A, +[](double x){ return 1 / std::sin(x); });
 }
 
@@ -416,7 +416,7 @@ vector_d cscd(const vector_d &v) {
 	});
 }
 
-matrix_d cscd(const matrix_d &A) {
+vector2_d cscd(const vector2_d &A) {
 	return _::unary_func(A, +[](double x) {
 		return 1 / std::sin(DEG_TO_RAD(x));
 	});
@@ -432,7 +432,7 @@ vector_d acsc(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return std::asin(1 / x); });
 }
 
-matrix_d acsc(const matrix_d &A) {
+vector2_d acsc(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -454,7 +454,7 @@ vector_d acscd(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return std::asin(1 / DEG_TO_RAD(x)); });
 }
 
-matrix_d acscd(const matrix_d &A) {
+vector2_d acscd(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -476,7 +476,7 @@ vector_d csch(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return 1 / std::sinh(x); });
 }
 
-matrix_d csch(const matrix_d &A) {
+vector2_d csch(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -500,7 +500,7 @@ vector_d acsch(const vector_d &v) {
 	});
 }
 
-matrix_d acsch(const matrix_d &A) {
+vector2_d acsch(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -519,7 +519,7 @@ vector_d sec(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return 1 / std::cos(x); });
 }
 
-matrix_d sec(const matrix_d &A) {
+vector2_d sec(const vector2_d &A) {
 	return  _::unary_func(A, +[](double x){ return 1 / std::cos(x); });
 }
 
@@ -529,7 +529,7 @@ vector_d secd(const vector_d &v) {
 	});
 }
 
-matrix_d secd(const matrix_d &A) {
+vector2_d secd(const vector2_d &A) {
 	return _::unary_func(A, +[](double x) {
 		return 1 / std::cos(DEG_TO_RAD(x));
 	});
@@ -545,7 +545,7 @@ vector_d asec(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return std::acos(1 / x); });
 }
 
-matrix_d asec(const matrix_d &A) {
+vector2_d asec(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -567,7 +567,7 @@ vector_d asecd(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return std::acos(1 / DEG_TO_RAD(x)); });
 }
 
-matrix_d asecd(const matrix_d &A) {
+vector2_d asecd(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -589,7 +589,7 @@ vector_d sech(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return 1 / std::cosh(x); });
 }
 
-matrix_d sech(const matrix_d &A) {
+vector2_d sech(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -613,7 +613,7 @@ vector_d asech(const vector_d &v) {
 	});
 }
 
-matrix_d asech(const matrix_d &A) {
+vector2_d asech(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x <= 0 || x > 1) {
@@ -633,7 +633,7 @@ vector_d cot(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return 1 / std::tan(x); });
 }
 
-matrix_d cot(const matrix_d &A) {
+vector2_d cot(const vector2_d &A) {
 	return  _::unary_func(A, +[](double x){ return 1 / std::tan(x); });
 }
 
@@ -643,7 +643,7 @@ vector_d cotd(const vector_d &v) {
 	});
 }
 
-matrix_d cotd(const matrix_d &A) {
+vector2_d cotd(const vector2_d &A) {
 	return _::unary_func(A, +[](double x) {
 		return 1 / std::tan(DEG_TO_RAD(x));
 	});
@@ -659,7 +659,7 @@ vector_d acot(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return std::atan(1 / x); });
 }
 
-matrix_d acot(const matrix_d &A) {
+vector2_d acot(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -681,7 +681,7 @@ vector_d acotd(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return std::atan(1 / DEG_TO_RAD(x)); });
 }
 
-matrix_d acotd(const matrix_d &A) {
+vector2_d acotd(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -703,7 +703,7 @@ vector_d coth(const vector_d &v) {
 	return _::unary_func(v, +[](double x){ return 1 / std::tanh(x); });
 }
 
-matrix_d coth(const matrix_d &A) {
+vector2_d coth(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(x == 0) {
@@ -727,7 +727,7 @@ vector_d acoth(const vector_d &v) {
 	});
 }
 
-matrix_d acoth(const matrix_d &A) {
+vector2_d acoth(const vector2_d &A) {
 	for(auto &v : A) {
 		for(auto x : v) {
 			if(-1 <= x && x <= 1) {
@@ -753,8 +753,8 @@ vector_d deg2rad(const vector_d &v) {
 	return w;
 }
 
-matrix_d deg2rad(const matrix_d &A) {
-	matrix_d B(A.size());
+vector2_d deg2rad(const vector2_d &A) {
+	vector2_d B(A.size());
 	for(auto &v : A) {
 		for(size_t i = 0; i < A.size(); i++) {
 			B[i] = deg2rad(A[i]);
@@ -775,8 +775,8 @@ vector_d rad2deg(const vector_d &v) {
 	return w;
 }
 
-matrix_d rad2deg(const matrix_d &A) {
-	matrix_d B(A.size());
+vector2_d rad2deg(const vector2_d &A) {
+	vector2_d B(A.size());
 	for(auto &v : A) {
 		for(size_t i = 0; i < A.size(); i++) {
 			B[i] = rad2deg(A[i]);

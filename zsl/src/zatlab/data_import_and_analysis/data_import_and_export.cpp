@@ -56,12 +56,12 @@ vector_d readvector(const std::string &filename) {
 	return _::str2num(lines);
 }
 
-matrix_d readmatrix(const std::string &filename) {
+vector2_d readmatrix(const std::string &filename) {
 	if(!std::filesystem::exists(filename)) {
 		Z_THROW(ZErrorCode::FILE_NOT_EXIST, "Cannot find file: " + filename);
 	}
 
-	matrix_d A{};
+	vector2_d A{};
 	std::ifstream ifs{filename};
 	std::string line{};
 	if(!ifs.is_open()) {
@@ -92,7 +92,7 @@ void writevector(const vector_d &v, const std::string &filename) {
 	ofs.close();
 }
 
-void writematrix(const matrix_d &A, const std::string &filename) {
+void writematrix(const vector2_d &A, const std::string &filename) {
 	std::ofstream ofs{filename};
 	if(!ofs.is_open()) {
 		Z_THROW(ZErrorCode::FILE_FAIL_TO_OPEN, "");

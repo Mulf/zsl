@@ -121,7 +121,7 @@ namespace matplot {
       private:
         bool should_plot_labels();
         void setup_axes();
-        std::string matrix_data_string();
+        std::string vector2_data_string();
         std::string image_data_string();
         std::string labels_data_string();
 

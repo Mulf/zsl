@@ -32,24 +32,24 @@ vector_d unary_func(const vector_c &x, double (*func)(const complex_d &)) {
 	return y;
 }
 
-matrix_d unary_func(const matrix_d &X, double (*func)(double)) {
-	matrix_d Y(X.size());
+vector2_d unary_func(const vector2_d &X, double (*func)(double)) {
+	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_d &x){
 		return unary_func(x, func);
 	});
 	return Y;
 }
 
-matrix_c unary_func(const matrix_c &X, complex_d (*func)(const complex_d &)) {
-	matrix_c Y(X.size());
+vector2_c unary_func(const vector2_c &X, complex_d (*func)(const complex_d &)) {
+	vector2_c Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
 	});
 	return Y;
 }
 
-matrix_d unary_func(const matrix_c &X, double (*func)(const complex_d &)) {
-	matrix_d Y(X.size());
+vector2_d unary_func(const vector2_c &X, double (*func)(const complex_d &)) {
+	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
 	});
@@ -84,11 +84,11 @@ vector_d abs(const vector_c &v){
 	return _::unary_func(v, std::abs);
 }
 
-matrix_d abs(const matrix_d &X){
+vector2_d abs(const vector2_d &X){
 	return _::unary_func(X, std::abs);
 }
 
-matrix_d abs(const matrix_c &X){
+vector2_d abs(const vector2_c &X){
 	return _::unary_func(X, std::abs);
 }
 
@@ -97,7 +97,7 @@ vector_d angle(const vector_c &v){
 	return _::unary_func(v, std::arg);
 }
 
-matrix_d angle(const matrix_c &X){
+vector2_d angle(const vector2_c &X){
 	return _::unary_func(X, std::arg);
 }
 
@@ -106,7 +106,7 @@ vector_c conj(const vector_c &v){
 	return _::unary_func(v, std::conj);
 }
 
-matrix_c conj(const matrix_c &Z){
+vector2_c conj(const vector2_c &Z){
 	return _::unary_func(Z, std::conj);
 }
 
@@ -115,7 +115,7 @@ vector_d imag(const vector_c &v){
 	return _::unary_func(v, std::imag);
 }
 
-matrix_d imag(const matrix_c &X){
+vector2_d imag(const vector2_c &X){
 	return _::unary_func(X, std::imag);
 }
 
@@ -124,7 +124,7 @@ vector_d real(const vector_c &v){
 	return _::unary_func(v, std::real);
 }
 
-matrix_d real(const matrix_c &X){
+vector2_d real(const vector2_c &X){
 	return _::unary_func(X, std::real);
 }
 
@@ -133,7 +133,7 @@ vector_d sign(const vector_d &v){
 	return _::unary_func(v, _::sign);
 }
 
-matrix_d sign(const matrix_d &X){
+vector2_d sign(const vector2_d &X){
 	return _::unary_func(X, _::sign);
 }
 
@@ -141,7 +141,7 @@ vector_c sign(const vector_c &v) {
 	return _::unary_func(v, _::sign);
 }
 
-matrix_c sign(const matrix_c &Z){
+vector2_c sign(const vector2_c &Z){
 	return _::unary_func(Z, _::sign);
 }
 #pragma endregion

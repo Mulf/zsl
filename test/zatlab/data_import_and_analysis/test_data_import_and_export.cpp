@@ -20,7 +20,7 @@ TEST(data_import_and_export, standard_file_formats) {
 
 	std::string filename = curSrcDir + "/magic4.csv";
 	auto magic4 = readmatrix(filename);
-	matrix_d A = {
+	vector2_d A = {
 		{16.0, 2.0, 3.0, 13.0},
 		{5.0, 11.0, 10.0, 8.0},
 		{9.0, 7.0, 6.0, 12.0},

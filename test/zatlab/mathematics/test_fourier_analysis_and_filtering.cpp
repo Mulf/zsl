@@ -22,14 +22,14 @@ static bool expect_near(const vector_c &v, const vector_c &w){
 	return true;
 }
 
-static bool expect_near(const matrix_d &A, const matrix_d &B){
+static bool expect_near(const vector2_d &A, const vector2_d &B){
 	for(size_t i = 0; i < A.size(); i++){
 		expect_near(A[i], B[i]);
 	}
 	return true;
 }
 
-static bool expect_near(const matrix_c &A, const matrix_c &B){
+static bool expect_near(const vector2_c &A, const vector2_c &B){
 	for(size_t i = 0; i < A.size(); i++){
 		expect_near(A[i], B[i]);
 	}

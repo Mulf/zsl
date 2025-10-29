@@ -32,24 +32,24 @@ vector_d unary_func(const vector_c &x, double (*func)(const complex_d &)) {
 	return y;
 }
 
-matrix_d unary_func(const matrix_d &X, double (*func)(double)) {
-	matrix_d Y(X.size());
+vector2_d unary_func(const vector2_d &X, double (*func)(double)) {
+	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_d &x){
 		return unary_func(x, func);
 	});
 	return Y;
 }
 
-matrix_c unary_func(const matrix_c &X, complex_d (*func)(const complex_d &)) {
-	matrix_c Y(X.size());
+vector2_c unary_func(const vector2_c &X, complex_d (*func)(const complex_d &)) {
+	vector2_c Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
 	});
 	return Y;
 }
 
-matrix_d unary_func(const matrix_c &X, double (*func)(const complex_d &)) {
-	matrix_d Y(X.size());
+vector2_d unary_func(const vector2_c &X, double (*func)(const complex_d &)) {
+	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
 	});
@@ -78,11 +78,11 @@ vector_c exp(const vector_c &v) {
 	return _::unary_func(v, std::exp);
 }
 
-matrix_d exp(const matrix_d &A) {
+vector2_d exp(const vector2_d &A) {
 	return _::unary_func(A, std::exp);
 }
 
-matrix_c exp(const matrix_c &A) {
+vector2_c exp(const vector2_c &A) {
 	return _::unary_func(A, std::exp);
 }
 
@@ -95,11 +95,11 @@ vector_c log(const vector_c &v) {
 	return _::unary_func(v, std::log);
 }
 
-matrix_d log(const matrix_d &A) {
+vector2_d log(const vector2_d &A) {
 	return _::unary_func(A, std::log);
 }
 
-matrix_c log(const matrix_c &A) {
+vector2_c log(const vector2_c &A) {
 	return _::unary_func(A, std::log);
 }
 
@@ -112,11 +112,11 @@ vector_c log10(const vector_c &v) {
 	return _::unary_func(v, std::log10);
 }
 
-matrix_d log10(const matrix_d &A) {
+vector2_d log10(const vector2_d &A) {
 	return _::unary_func(A, std::log10);
 }
 
-matrix_c log10(const matrix_c &A) {
+vector2_c log10(const vector2_c &A) {
 	return _::unary_func(A, std::log10);
 }
 
@@ -131,11 +131,11 @@ vector_c log2(const vector_c &v) {
 	});
 }
 
-matrix_d log2(const matrix_d &A) {
+vector2_d log2(const vector2_d &A) {
 	return _::unary_func(A, std::log2);
 }
 
-matrix_c log2(const matrix_c &A) {
+vector2_c log2(const vector2_c &A) {
 	return _::unary_func(A, +[](const complex_d &z){
 		return complex_d{std::log2(std::abs(z)), std::arg(z) / std::log(2)};
 	});
@@ -158,11 +158,11 @@ vector_c pow2(const vector_c &v) {
 	return _::unary_func(v, _::pow2);
 }
 
-matrix_d pow2(const matrix_d &A) {
+vector2_d pow2(const vector2_d &A) {
 	return _::unary_func(A, _::pow2);
 }
 
-matrix_c pow2(const matrix_c &A) {
+vector2_c pow2(const vector2_c &A) {
 	return _::unary_func(A, _::pow2);
 }
 
@@ -175,11 +175,11 @@ vector_c sqrt(const vector_c &v) {
 	return _::unary_func(v, std::sqrt);
 }
 
-matrix_d sqrt(const matrix_d &A) {
+vector2_d sqrt(const vector2_d &A) {
 	return _::unary_func(A, std::sqrt);
 }
 
-matrix_c sqrt(const matrix_c &A) {
+vector2_c sqrt(const vector2_c &A) {
 	return _::unary_func(A, std::sqrt);
 }
 #pragma endregion
