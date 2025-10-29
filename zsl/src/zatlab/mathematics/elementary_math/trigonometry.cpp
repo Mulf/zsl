@@ -423,77 +423,43 @@ vector2_d cscd(const vector2_d &A) {
 }
 
 vector_d acsc(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acsc not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return std::asin(1 / x); });
 }
 
 vector2_d acsc(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acsc not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return std::asin(1 / x); });
 }
 
 vector_d acscd(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acscd not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return std::asin(1 / DEG_TO_RAD(x)); });
 }
 
 vector2_d acscd(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acscd not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return std::asin(1 / DEG_TO_RAD(x)); });
 }
 
 vector_d csch(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function csch not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return 1 / std::sinh(x); });
 }
 
 vector2_d csch(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function csch not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return 1 / std::sinh(x); });
 }
 
 vector_d acsch(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acsch not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){
 		return std::log(1 / x + std::sqrt(1 / (x * x) + 1));
@@ -501,13 +467,7 @@ vector_d acsch(const vector_d &v) {
 }
 
 vector2_d acsch(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function csch not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){
 		return std::log(1 / x + std::sqrt(1 / (x * x) + 1));
@@ -536,77 +496,43 @@ vector2_d secd(const vector2_d &A) {
 }
 
 vector_d asec(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function asec not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return std::acos(1 / x); });
 }
 
 vector2_d asec(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function asec not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return std::acos(1 / x); });
 }
 
 vector_d asecd(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function asecd not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return std::acos(1 / DEG_TO_RAD(x)); });
 }
 
 vector2_d asecd(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function asecd not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return std::acos(1 / DEG_TO_RAD(x)); });
 }
 
 vector_d sech(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function sech not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return 1 / std::cosh(x); });
 }
 
 vector2_d sech(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function sech not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return 1 / std::cosh(x); });
 }
 
 vector_d asech(const vector_d &v) {
-	for(auto x : v) {
-		if(x <= 0 || x > 1) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function asech not defined out of (0, 1]");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){
 		return std::log(1 / x + std::sqrt(1 / (x * x) + 1));
@@ -614,13 +540,7 @@ vector_d asech(const vector_d &v) {
 }
 
 vector2_d asech(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x <= 0 || x > 1) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function sech not define out of (0, 1]");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){
 		return std::log(1 / x + std::sqrt(1 / (x * x) - 1));
@@ -630,97 +550,71 @@ vector2_d asech(const vector2_d &A) {
 
 // cot
 vector_d cot(const vector_d &v) {
+	expect_no_zero(v);
+
 	return _::unary_func(v, +[](double x){ return 1 / std::tan(x); });
 }
 
 vector2_d cot(const vector2_d &A) {
+	expect_no_zero(A);
+
 	return  _::unary_func(A, +[](double x){ return 1 / std::tan(x); });
 }
 
 vector_d cotd(const vector_d &v) {
+	expect_no_zero(v);
+
 	return _::unary_func(v, +[](double x) {
 		return 1 / std::tan(DEG_TO_RAD(x));
 	});
 }
 
 vector2_d cotd(const vector2_d &A) {
+	expect_no_zero(A);
+
 	return _::unary_func(A, +[](double x) {
 		return 1 / std::tan(DEG_TO_RAD(x));
 	});
 }
 
 vector_d acot(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acot not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return std::atan(1 / x); });
 }
 
 vector2_d acot(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acot not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return std::atan(1 / x); });
 }
 
 vector_d acotd(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acotd not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return std::atan(1 / DEG_TO_RAD(x)); });
 }
 
 vector2_d acotd(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acotd not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return std::atan(1 / DEG_TO_RAD(x)); });
 }
 
 vector_d coth(const vector_d &v) {
-	for(auto x : v) {
-		if(x == 0) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function coth not defined at 0");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){ return 1 / std::tanh(x); });
 }
 
 vector2_d coth(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(x == 0) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function coth not define at 0");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){ return 1 / std::tanh(x); });
 }
 
 vector_d acoth(const vector_d &v) {
-	for(auto x : v) {
-		if(-1 <= x && x <= 1) {
-			Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function acoth not defined in [-1, 1]");
-		}
-	}
+	expect_no_zero(v);
 
 	return _::unary_func(v, +[](double x){
 		return 0.5 * std::log((x + 1) / (x - 1));
@@ -728,13 +622,7 @@ vector_d acoth(const vector_d &v) {
 }
 
 vector2_d acoth(const vector2_d &A) {
-	for(auto &v : A) {
-		for(auto x : v) {
-			if(-1 <= x && x <= 1) {
-				Z_THROW(ZErrorCode::MATH_ZERO_DIVISOR, "Function coth not define in [-1, 1]");
-			}
-		}
-	}
+	expect_no_zero(A);
 
 	return _::unary_func(A, +[](double x){
 		return 0.5 * std::log((x + 1) / (x - 1));

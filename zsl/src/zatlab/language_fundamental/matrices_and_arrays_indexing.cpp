@@ -5,54 +5,54 @@ using namespace zsl;
 
 template <class T>
 std::vector<T> block(const std::vector<T> &v, const Colon &rng) {
-  const size_t N = rng.count();
-  std::vector<T> ans(N, T{});
-  for (int r = 0; r < N; r++) {
-    const int i = static_cast<int>(rng.first) + r * rng.interval;
-    const size_t isz = static_cast<size_t>(i);
-    if (isz >= v.size()) {
-      Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
-    }
-    ans[static_cast<size_t>(r)] = v[isz];
-  }
-  return ans;
+	expect_valid_range(v, rng.first, rng.interval, rng.last);
+
+	const size_t N = rng.count();
+	std::vector<T> ans(N, T{});
+	for (int r = 0; r < N; r++) {
+		const int i = static_cast<int>(rng.first) + r * rng.interval;
+		const size_t isz = static_cast<size_t>(i);
+		ans[static_cast<size_t>(r)] = v[isz];
+	}
+	return ans;
 }
 
 template <class T>
 std::vector<T> block(const std::vector<T> &v, const vector_sz &indices) {
-  const size_t N = indices.size();
-  std::vector<T> ans(N, T{});
-  for (size_t r = 0; r < N; r++) {
-    const size_t isz = indices.at(r);
-    if (isz >= v.size()) {
-      Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
-    }
-    ans[r] = v[isz];
-  }
-  return ans;
+	for(auto i : indices) {
+		expect_valid_index(v, i);
+	}
+
+	const size_t N = indices.size();
+	std::vector<T> ans(N, T{});
+	for (size_t r = 0; r < N; r++) {
+		const size_t isz = indices.at(r);
+		ans[r] = v[isz];
+	}
+	return ans;
 }
 
 template <class Vector>
 Vector set_block(const Vector &v, const Colon &rng, const Vector &w) {
-  if (rng.count() != w.size()) {
-    std::string msg = std::format("source vector's length({}) does not match "
-                                  "destination block's length({})",
-                                  w.size(), rng.count());
-    Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, msg);
-  }
-  auto indices = rng.to_vector();
-  for (size_t i = 0; i < indices.size(); i++) {
-    if (indices[i] >= v.size()) {
-      Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
-    }
-  }
+	if (rng.count() != w.size()) {
+		std::string msg = std::format("source vector's length({}) does not match "
+										"destination block's length({})",
+										w.size(), rng.count());
+		Z_THROW(ZErrorCode::MATH_DIM_UNMATCH, msg);
+	}
+	auto indices = rng.to_vector();
+	for (size_t i = 0; i < indices.size(); i++) {
+		if (indices[i] >= v.size()) {
+			Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "");
+		}
+	}
 
-  auto ans{v};
-  for (size_t i = 0; i < w.size(); i++) {
-    ans[indices[i]] = w[i];
-  }
+	auto ans{v};
+	for (size_t i = 0; i < w.size(); i++) {
+		ans[indices[i]] = w[i];
+	}
 
-  return ans;
+	return ans;
 }
 
 template <class Vector>
@@ -620,15 +620,13 @@ Colon::Colon(size_t first, size_t last) : Colon(first, 1, last) {}
 
 Colon::Colon(size_t first, int interval, size_t last)
     : first{first}, interval{interval}, last{last} {
-  if (interval == 0) {
-    Z_THROW(ZErrorCode::LANG_INVLAID_INDEX_RANGE, "interval is 0");
-  } else if (interval > 0 && first > last) {
-    Z_THROW(ZErrorCode::LANG_INVLAID_INDEX_RANGE,
-            "interval > 0 while first > last");
-  } else if (interval < 0 && first < last) {
-    Z_THROW(ZErrorCode::LANG_INVLAID_INDEX_RANGE,
-            "interval < 0 while first < last");
-  }
+	if (interval == 0) {
+		Z_THROW(ZErrorCode::LANG_INVALID_RANGE, "interval is 0");
+	} else if (interval > 0 && first > last) {
+		Z_THROW(ZErrorCode::LANG_INVALID_RANGE, "interval > 0 while first > last");
+	} else if (interval < 0 && first < last) {
+		Z_THROW(ZErrorCode::LANG_INVALID_RANGE, "interval < 0 while first < last");
+	}
 }
 
 vector_sz Colon::to_vector() const {

@@ -61,17 +61,15 @@ auto arith_op_vs_self(std::vector<T> &v, const U &s, ArithOpSelf<T, U> &op)
 template <class T, class U>
 auto arith_op_vv(const std::vector<T> &v, const std::vector<U> &w,
                  ArithOp<T, U> &op) -> std::vector<decltype(T{} + U{})> {
-  if (v.size() != w.size()) {
-    Z_THROW(zsl::ZErrorCode::MATH_DIM_UNMATCH, "Vectors' length are not same");
-  }
+	zsl::expect_dim_match(v, w);
 
-  using R = decltype(T{} + U{});
-  std::vector<R> ans(v.size(), R{});
-  for (size_t i = 0; i < v.size(); i++) {
-    ans[i] = op(v[i], w[i]);
-  }
+	using R = decltype(T{} + U{});
+	std::vector<R> ans(v.size(), R{});
+		for (size_t i = 0; i < v.size(); i++) {
+		ans[i] = op(v[i], w[i]);
+	}
 
-  return ans;
+	return ans;
 }
 
 template <class T, class U>

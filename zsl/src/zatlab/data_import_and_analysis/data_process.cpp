@@ -5,9 +5,7 @@
 namespace zsl {
 
 bool isuniform(const vector_d &v) {
-	if(v.size() < 2) {
-		Z_THROW(ZErrorCode::LANG_INVALID_INDEX, "Length of vector must be not less than 1");
-	}
+	expect_len_gt(v, 1);
 
 	double maxNum = max(v);
 	const double TOL = eps(maxNum);

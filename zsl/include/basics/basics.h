@@ -5,6 +5,7 @@
 #include "ZException.h"
 #include "copy_control.h"
 #include "defines.h"
+#include "check.h"
 
 #include <cassert>
 #include <format>
