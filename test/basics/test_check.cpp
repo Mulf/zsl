@@ -1,9 +1,9 @@
-#include <gtest/gtest.h>
 #include "basics/check.h"
 
 using namespace zsl;
 
-TEST(basics, check) {
+void test_check()
+{
 	{
 		vector_d v{1.0, 2.0, 3.0};
 		vector2_d A{{1.0, 2.0, 3.0, 3.0}, {1.0, 2.0, 0.0, 3.0}};
@@ -60,5 +60,4 @@ TEST(basics, check) {
 		std::string filepath = "E:\\zsl\\main2.cpp";
 		//expect_file_exist(filepath);
 	}
-
 }

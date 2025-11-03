@@ -1,7 +1,42 @@
 # zsl
 
-#### 介绍
-提高算法开发效率
+## 介绍
+
+`zsl` 是一个辅助数据处理的库。项目主要由 `C++` 实现———说是主要，是因为内部调用了由 `C` 实现的 `GSL`。项目目前使用的语言标准是 `C++23`。目前项目一直在 `Windows` 平台下用 `Visual Studio 2022` 开发和测试。项目完全从源码实现，不依赖其他的 `lib` 或 `dll`。
+
+1. 这个项目是什么？ \
+    `zsl` 是一个辅助数据处理的 `C++` 库。项目基于`C++` 原生的类型，提供类似于 `Matlab` 的接口。例如，对于一个 `std::vector<double>` 类型的数组 `v` 进行窗口为 `5` 滑动平均：
+
+        auto w = zsl::movmean(v, 5)
+    
+2. 为什么要开发这样一个项目？ \
+    我在项目的算法开发中，往往是先在 `Matlab` 中进行算法实验。`Matlab` 提供了大量的数组和矩阵的处理函数，算法验证很方便。但是当转移到 `C++` 中实现时，就会发现许多函数需要重新实现。诚然，网络上有许多第三方库，也提供相关科学计算的方法，例如 `GSL`, `Eigen`, `Armadillo`。但是这些库都有各自不同的特点和侧重点，跟我们在项目中的需求有一定差距。例如 `Eigen` 主要用于矩阵计算，信号处理的相关的函数很少；`GSL` 虽然提供了大量的科学计算的库，但是它使用 `C` 语言实现，调用一个接口往往需要写一些辅助的代码；`Armadillo` 提供了一些类似于 `Matlab` 相关的接口，但是这毕竟是一个新的库，即时我花了大量时间掌握了，对于其他同事来说，想要掌握这个库的使用，则又是一项繁重的工作。
+    
+    而且，我还有一个考虑是，在我们的项目中，数据往往储存在`std::vector<double>` 等类型中，第三方库往往会定义他们自身的向量、矩阵类型，调用第三方库往往需要大量代码实现数据在不同类型的变量之间拷贝和引用。这在开发中是一件烦人的工作，运行中也会降低程序的运行效率。
+
+
+    基于以上考虑，我决定开发一个类似于 `Matlab` 的 `C++` 科学计算库。
+
+3. 项目的设计理念有哪些？\
+    我希望 `zsl` 可以方便用户在算法实现的过程中， 在 `Matlab` 和 `C++` 之间无缝切换。\
+    因此， `zsl` 使用的变量类型是 `C++` 的类型——主要是 `std::vector<double>`, 而提供的接口尽可能接近 `Matlab`, 包括函数名称、参数、返回结果。诚然，由于两种语言的差异，不可能完全一样，但会通过各种方式接近 `Matlab`. 以方便用户在 `Matlab` 和 `C++` 之间转换。而且库里所有的接口都被包含在 `zsl.h` 头文件中，用户只要包含该文件就可以调用苦衷
+    
+    在源码组织方面，我确立了如下原则：
+
+    a.  所有代码放置于一个文件里。这主要为了把整个库组成一个 `zsl.vcxproj` 工程。如果有同事需要使用这个项目时，只要将整个文件夹拷贝到项目的文件夹中，让后在 `.sln` 项目中包含 `zsl.vcxproj` 工程，然后在项目中设置包含路径、引用库、输出目录即可。
+
+    b.  完全通过源代码实现，不依赖于 `lib` 和 `dll`。虽然项目中引用了 `GSL`， 但是我是花了大量时间实现通过源码编译。之所以选择通过源码，而不是引用第三方库, 是出于如下考虑：一、在 `VS` 工程中引用库是一项痛苦的工作，即时是经验丰富的 `C++` 开发者，也往往遇到一些不容易解决的错误，而一些新手更是难以解决这些问题。二：某些情况下，需要对底层库进行修改。例如，`GSL` 和 `Matlab` 在 `movmean` 中的窗口截取策略不同。
+
+    c. 文件结构类似于 [Matlab 文档](https://www.mathworks.com/help/matlab/index.htm). 目前项目中 `include` `src` `test` 在文件夹、文件命名方式上都类似于 `Matlab` 的文档。
+
+4. 项目为什么叫 `zsl` ？全称是什么？\
+    这个是仿照 `GSL(GNU Scientific Library)`，将项目命名为 `zsl(ZA Scientific Library)`.
+
+    但是后来发现 `GSL` 还是另一个库的简称——微软推出的 [`Guideline Support Library`](https://github.com/microsoft/GSL)。这个库主要是为了支撑 Bjarne Stroustrup 和 Herb Sutter 编写的 `C++` 编程规范 [`Cpp C++ Core Guidelines`](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines.html)。这个库提供了一些规范 `C++` 代码的工具。因此，我希望在 `zsl` 中增加一些类似的功能，提升代码质量。
+
+    所以 `zsl` 可以理解为 `ZA Science/Support Library`。
+
+        
 
 #### 软件架构
 软件架构说明
@@ -27,11 +62,3 @@
 4.  新建 Pull Request
 
 
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

@@ -265,7 +265,7 @@ void expect_len_gt(const std::vector<T> &v, size_t len, std::source_location loc
 	}
 }
 
-void expect_file_exist(const std::string &filepath, std::source_location loc = std::source_location::current())
+inline void expect_file_exist(const std::string &filepath, std::source_location loc = std::source_location::current())
 {
 	std::filesystem::path filePath{filepath};
 

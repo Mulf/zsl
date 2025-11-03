@@ -7,6 +7,13 @@
 #include <numbers>
 #include <limits>
 
+//#ifdef ZSL_DLL
+//#define ZSL_API __declspec(dllexport)
+//#else
+//#define ZSL_API __declspec(dllimport)
+//#endif
+
+
 namespace zsl {
 constexpr double pi = std::numbers::pi_v<double>;
 //constexpr double eps = std::numeric_limits<double>::epsilon();
