@@ -33,7 +33,7 @@ gsl_ieee_env_setup (void)
 
 #if defined( _MSC_VER )
 
-    extern const char *fp_env_string;
+  const char* fp_env_string = "round-to-nearest,double-precision,mask-all";
 	if(p == 0 || *p == '\0')
         p = fp_env_string;
 

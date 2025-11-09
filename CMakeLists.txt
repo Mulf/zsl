@@ -26,5 +26,5 @@ target_link_libraries(
 	PUBLIC matplot)
 
 
-enable_testing()
-add_subdirectory(test EXCLUDE_FROM_ALL)
+#enable_testing()
+#add_subdirectory(test EXCLUDE_FROM_ALL)

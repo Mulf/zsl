@@ -6,6 +6,8 @@
 
 #define __GSL_BUILD_H__
 
+//#undef COMPILE_INLINE_STATIC
+
 #ifdef COMPILE_INLINE_STATIC
 #ifndef HIDE_INLINE_STATIC  /* skip if inline functions are hidden */
 

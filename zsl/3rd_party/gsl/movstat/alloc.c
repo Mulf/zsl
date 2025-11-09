@@ -46,8 +46,7 @@ gsl_movstat_workspace *
 gsl_movstat_alloc(const size_t K)
 {
   const size_t H = K / 2;
-  const size_t J = K - H - 1;
-  return gsl_movstat_alloc_with_size(0, H, J);
+  return gsl_movstat_alloc_with_size(0, H, H);
 }
  
 /*

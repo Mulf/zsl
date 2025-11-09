@@ -51,7 +51,6 @@ if (POLICY CMP0053)
 endif( )
 
 # Advertise user-settable parameters (and defaults) in cmake-gui
-option(BUILD_SHARED_LIBS "Export symbols to library." ON)
 option(GSL_DISABLE_WARNINGS "disable warnings." ON)
 option(MSVC_RUNTIME_DYNAMIC "Use dynamically-linked runtime: /MD(d)" ON)
 option(GSL_INSTALL_MULTI_CONFIG "Install libraries in lib/<config> directory" ON)
@@ -659,20 +658,37 @@ message("GSL_H:${GSL_H}")
 file(REMOVE ${GSL_H})
 
 if(NOT EXISTS ${GSL_H})
-file(APPEND ${GSL_H}
-"#ifndef GSL_H
-#define GSL_H\n\n")
-foreach (path ${GSL_HEADER_PATHS})
-    get_filename_component(filename ${path} NAME)
+    file(APPEND ${GSL_H}
+    "#ifndef GSL_H
+    #define GSL_H\n\n")
+    foreach (path ${GSL_HEADER_PATHS})
+        get_filename_component(filename ${path} NAME)
     
+        get_filename_component(dirpath ${path} DIRECTORY)
+        get_filename_component(dirname ${dirpath} NAME)
+        # message(${dirname})
+        set(headerline "#include <${dirname}/${filename}>\n")
+        if (${dirname} STREQUAL "gsl")
+            set(headerline  "#include <${filename}>\n")
+        endif()
+        
+        file(APPEND ${GSL_H} ${headerline})
+    endforeach()
+    file(APPEND ${GSL_H} "\n#endif\n")
+endif()
+
+set(GSL_SOURCES)
+foreach (path ${GSL_HEADER_PATHS})
+    get_filename_component(filename ${path} NAME)    
     get_filename_component(dirpath ${path} DIRECTORY)
     get_filename_component(dirname ${dirpath} NAME)
     # message(${dirname})
-    set(headerline "#include <${dirname}/${filename}>\n")
-    file(APPEND ${GSL_H} ${headerline})
+    if (${dirname} STREQUAL "gsl")
+        set(GSL_SOURCES ${GSL_SOURCES} ${filename})
+    else()
+        set(GSL_SOURCES ${GSL_SOURCES} "${dirname}/${filename}")
+    endif()
 endforeach()
-file(APPEND ${GSL_H} "\n#endif\n")
-endif()
 
 add_custom_command(OUTPUT ${GSL_HEADERS}
   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/copy-headers.cmake)
@@ -840,7 +856,9 @@ foreach (dir ${HAVETOBUILD})
 endforeach ()
 
 add_library(gsl ${GSL_SOURCES})
+target_compile_definitions(gsl PUBLIC HAVE_INLINE)
 if (BUILD_SHARED_LIBS)
+  message(STATUS "Building GSL as shared library")
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
   if (WIN32)
     # only needed for global variables that must be exported.  Exporting of

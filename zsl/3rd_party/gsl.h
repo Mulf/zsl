@@ -1,16 +1,16 @@
 #ifndef GSL_H
-#define GSL_H
+    #define GSL_H
 
-#include <gsl/gsl_inline.h>
-#include <gsl/gsl_machine.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_minmax.h>
-#include <gsl/gsl_mode.h>
-#include <gsl/gsl_nan.h>
-#include <gsl/gsl_pow_int.h>
-#include <gsl/gsl_precision.h>
-#include <gsl/gsl_types.h>
-#include <gsl/gsl_version.h>
+#include <gsl_inline.h>
+#include <gsl_machine.h>
+#include <gsl_math.h>
+#include <gsl_minmax.h>
+#include <gsl_mode.h>
+#include <gsl_nan.h>
+#include <gsl_pow_int.h>
+#include <gsl_precision.h>
+#include <gsl_types.h>
+#include <gsl_version.h>
 #include <blas/gsl_blas.h>
 #include <blas/gsl_blas_types.h>
 #include <block/gsl_block.h>
@@ -185,6 +185,7 @@
 #include <spblas/gsl_spblas.h>
 #include <specfunc/gsl_sf.h>
 #include <specfunc/gsl_sf_airy.h>
+#include <specfunc/gsl_sf_alf.h>
 #include <specfunc/gsl_sf_bessel.h>
 #include <specfunc/gsl_sf_clausen.h>
 #include <specfunc/gsl_sf_coulomb.h>
