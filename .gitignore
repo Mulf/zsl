@@ -122,3 +122,5 @@ install/
 
 # test
 test-deps
+
+*.dir/

@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{40F2D6E6-999A-316E-80B8-736EC917CEE0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>gslcblas</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\bin\$(ProjectName).dir</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gslcblas</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\$(ProjectName).dir\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gslcblas</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(SolutionDir)\$(ProjectName).dir\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">gslcblas</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(SolutionDir)\$(ProjectName).dir\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">gslcblas</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)\gsl;$(ProjectDir)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <IncludePath>$(ProjectDir)\gsl;$(ProjectDir)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)\gsl;$(ProjectDir)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <IncludePath>$(ProjectDir)\gsl;$(ProjectDir)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4028;4056;4101;4244;4267;4334;4477;4700;4723;4756;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild>
+      </MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode>
+      </SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4018;4028;4056;4101;4244;4267;4334;4477;4700;4723;4756;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild>
+      </MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode>
+      </SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4018;4028;4056;4101;4244;4267;4334;4477;4700;4723;4756;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild>
+      </MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode>
+      </SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4028;4056;4101;4244;4267;4334;4477;4700;4723;4756;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild>
+      </MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode>
+      </SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\study\cpp\gsl-demo\build\3rd_party\gsl;E:\study\cpp\gsl-demo\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cblas\sasum.c" />
+    <ClCompile Include="cblas\saxpy.c" />
+    <ClCompile Include="cblas\scasum.c" />
+    <ClCompile Include="cblas\scnrm2.c" />
+    <ClCompile Include="cblas\scopy.c" />
+    <ClCompile Include="cblas\sdot.c" />
+    <ClCompile Include="cblas\sdsdot.c" />
+    <ClCompile Include="cblas\sgbmv.c" />
+    <ClCompile Include="cblas\sgemm.c" />
+    <ClCompile Include="cblas\sgemv.c" />
+    <ClCompile Include="cblas\sger.c" />
+    <ClCompile Include="cblas\snrm2.c" />
+    <ClCompile Include="cblas\srot.c" />
+    <ClCompile Include="cblas\srotg.c" />
+    <ClCompile Include="cblas\srotm.c" />
+    <ClCompile Include="cblas\srotmg.c" />
+    <ClCompile Include="cblas\ssbmv.c" />
+    <ClCompile Include="cblas\sscal.c" />
+    <ClCompile Include="cblas\sspmv.c" />
+    <ClCompile Include="cblas\sspr.c" />
+    <ClCompile Include="cblas\sspr2.c" />
+    <ClCompile Include="cblas\sswap.c" />
+    <ClCompile Include="cblas\ssymm.c" />
+    <ClCompile Include="cblas\ssymv.c" />
+    <ClCompile Include="cblas\ssyr.c" />
+    <ClCompile Include="cblas\ssyr2.c" />
+    <ClCompile Include="cblas\ssyr2k.c" />
+    <ClCompile Include="cblas\ssyrk.c" />
+    <ClCompile Include="cblas\stbmv.c" />
+    <ClCompile Include="cblas\stbsv.c" />
+    <ClCompile Include="cblas\stpmv.c" />
+    <ClCompile Include="cblas\stpsv.c" />
+    <ClCompile Include="cblas\strmm.c" />
+    <ClCompile Include="cblas\strmv.c" />
+    <ClCompile Include="cblas\strsm.c" />
+    <ClCompile Include="cblas\strsv.c" />
+    <ClCompile Include="cblas\dasum.c" />
+    <ClCompile Include="cblas\daxpy.c" />
+    <ClCompile Include="cblas\dcopy.c" />
+    <ClCompile Include="cblas\ddot.c" />
+    <ClCompile Include="cblas\dgbmv.c" />
+    <ClCompile Include="cblas\dgemm.c" />
+    <ClCompile Include="cblas\dgemv.c" />
+    <ClCompile Include="cblas\dger.c" />
+    <ClCompile Include="cblas\dnrm2.c" />
+    <ClCompile Include="cblas\drot.c" />
+    <ClCompile Include="cblas\drotg.c" />
+    <ClCompile Include="cblas\drotm.c" />
+    <ClCompile Include="cblas\drotmg.c" />
+    <ClCompile Include="cblas\dsbmv.c" />
+    <ClCompile Include="cblas\dscal.c" />
+    <ClCompile Include="cblas\dsdot.c" />
+    <ClCompile Include="cblas\dspmv.c" />
+    <ClCompile Include="cblas\dspr.c" />
+    <ClCompile Include="cblas\dspr2.c" />
+    <ClCompile Include="cblas\dswap.c" />
+    <ClCompile Include="cblas\dsymm.c" />
+    <ClCompile Include="cblas\dsymv.c" />
+    <ClCompile Include="cblas\dsyr.c" />
+    <ClCompile Include="cblas\dsyr2.c" />
+    <ClCompile Include="cblas\dsyr2k.c" />
+    <ClCompile Include="cblas\dsyrk.c" />
+    <ClCompile Include="cblas\dtbmv.c" />
+    <ClCompile Include="cblas\dtbsv.c" />
+    <ClCompile Include="cblas\dtpmv.c" />
+    <ClCompile Include="cblas\dtpsv.c" />
+    <ClCompile Include="cblas\dtrmm.c" />
+    <ClCompile Include="cblas\dtrmv.c" />
+    <ClCompile Include="cblas\dtrsm.c" />
+    <ClCompile Include="cblas\dtrsv.c" />
+    <ClCompile Include="cblas\dzasum.c" />
+    <ClCompile Include="cblas\dznrm2.c" />
+    <ClCompile Include="cblas\caxpy.c" />
+    <ClCompile Include="cblas\ccopy.c" />
+    <ClCompile Include="cblas\cdotc_sub.c" />
+    <ClCompile Include="cblas\cdotu_sub.c" />
+    <ClCompile Include="cblas\cgbmv.c" />
+    <ClCompile Include="cblas\cgemm.c" />
+    <ClCompile Include="cblas\cgemv.c" />
+    <ClCompile Include="cblas\cgerc.c" />
+    <ClCompile Include="cblas\cgeru.c" />
+    <ClCompile Include="cblas\chbmv.c" />
+    <ClCompile Include="cblas\chemm.c" />
+    <ClCompile Include="cblas\chemv.c" />
+    <ClCompile Include="cblas\cher.c" />
+    <ClCompile Include="cblas\cher2.c" />
+    <ClCompile Include="cblas\cher2k.c" />
+    <ClCompile Include="cblas\cherk.c" />
+    <ClCompile Include="cblas\chpmv.c" />
+    <ClCompile Include="cblas\chpr.c" />
+    <ClCompile Include="cblas\chpr2.c" />
+    <ClCompile Include="cblas\cscal.c" />
+    <ClCompile Include="cblas\csscal.c" />
+    <ClCompile Include="cblas\cswap.c" />
+    <ClCompile Include="cblas\csymm.c" />
+    <ClCompile Include="cblas\csyr2k.c" />
+    <ClCompile Include="cblas\csyrk.c" />
+    <ClCompile Include="cblas\ctbmv.c" />
+    <ClCompile Include="cblas\ctbsv.c" />
+    <ClCompile Include="cblas\ctpmv.c" />
+    <ClCompile Include="cblas\ctpsv.c" />
+    <ClCompile Include="cblas\ctrmm.c" />
+    <ClCompile Include="cblas\ctrmv.c" />
+    <ClCompile Include="cblas\ctrsm.c" />
+    <ClCompile Include="cblas\ctrsv.c" />
+    <ClCompile Include="cblas\zaxpy.c" />
+    <ClCompile Include="cblas\zcopy.c" />
+    <ClCompile Include="cblas\zdotc_sub.c" />
+    <ClCompile Include="cblas\zdotu_sub.c" />
+    <ClCompile Include="cblas\zdscal.c" />
+    <ClCompile Include="cblas\zgbmv.c" />
+    <ClCompile Include="cblas\zgemm.c" />
+    <ClCompile Include="cblas\zgemv.c" />
+    <ClCompile Include="cblas\zgerc.c" />
+    <ClCompile Include="cblas\zgeru.c" />
+    <ClCompile Include="cblas\zhbmv.c" />
+    <ClCompile Include="cblas\zhemm.c" />
+    <ClCompile Include="cblas\zhemv.c" />
+    <ClCompile Include="cblas\zher.c" />
+    <ClCompile Include="cblas\zher2.c" />
+    <ClCompile Include="cblas\zher2k.c" />
+    <ClCompile Include="cblas\zherk.c" />
+    <ClCompile Include="cblas\zhpmv.c" />
+    <ClCompile Include="cblas\zhpr.c" />
+    <ClCompile Include="cblas\zhpr2.c" />
+    <ClCompile Include="cblas\zscal.c" />
+    <ClCompile Include="cblas\zswap.c" />
+    <ClCompile Include="cblas\zsymm.c" />
+    <ClCompile Include="cblas\zsyr2k.c" />
+    <ClCompile Include="cblas\zsyrk.c" />
+    <ClCompile Include="cblas\ztbmv.c" />
+    <ClCompile Include="cblas\ztbsv.c" />
+    <ClCompile Include="cblas\ztpmv.c" />
+    <ClCompile Include="cblas\ztpsv.c" />
+    <ClCompile Include="cblas\ztrmm.c" />
+    <ClCompile Include="cblas\ztrmv.c" />
+    <ClCompile Include="cblas\ztrsm.c" />
+    <ClCompile Include="cblas\ztrsv.c" />
+    <ClCompile Include="cblas\icamax.c" />
+    <ClCompile Include="cblas\idamax.c" />
+    <ClCompile Include="cblas\isamax.c" />
+    <ClCompile Include="cblas\izamax.c" />
+    <ClCompile Include="cblas\xerbla.c" />
+    <ClInclude Include="cblas\error_cblas.h" />
+    <ClInclude Include="cblas\error_cblas_l2.h" />
+    <ClInclude Include="cblas\error_cblas_l3.h" />
+    <ClInclude Include="cblas\cblas.h" />
+    <ClInclude Include="cblas\source_asum_c.h" />
+    <ClInclude Include="cblas\source_asum_r.h" />
+    <ClInclude Include="cblas\source_axpy_c.h" />
+    <ClInclude Include="cblas\source_axpy_r.h" />
+    <ClInclude Include="cblas\source_copy_c.h" />
+    <ClInclude Include="cblas\source_copy_r.h" />
+    <ClInclude Include="cblas\source_dot_c.h" />
+    <ClInclude Include="cblas\source_dot_r.h" />
+    <ClInclude Include="cblas\source_gbmv_c.h" />
+    <ClInclude Include="cblas\source_gbmv_r.h" />
+    <ClInclude Include="cblas\source_gemm_c.h" />
+    <ClInclude Include="cblas\source_gemm_r.h" />
+    <ClInclude Include="cblas\source_gemv_c.h" />
+    <ClInclude Include="cblas\source_gemv_r.h" />
+    <ClInclude Include="cblas\source_ger.h" />
+    <ClInclude Include="cblas\source_gerc.h" />
+    <ClInclude Include="cblas\source_geru.h" />
+    <ClInclude Include="cblas\source_hbmv.h" />
+    <ClInclude Include="cblas\source_hemm.h" />
+    <ClInclude Include="cblas\source_hemv.h" />
+    <ClInclude Include="cblas\source_her.h" />
+    <ClInclude Include="cblas\source_her2.h" />
+    <ClInclude Include="cblas\source_her2k.h" />
+    <ClInclude Include="cblas\source_herk.h" />
+    <ClInclude Include="cblas\source_hpmv.h" />
+    <ClInclude Include="cblas\source_hpr.h" />
+    <ClInclude Include="cblas\source_hpr2.h" />
+    <ClInclude Include="cblas\source_iamax_c.h" />
+    <ClInclude Include="cblas\source_iamax_r.h" />
+    <ClInclude Include="cblas\source_nrm2_c.h" />
+    <ClInclude Include="cblas\source_nrm2_r.h" />
+    <ClInclude Include="cblas\source_rot.h" />
+    <ClInclude Include="cblas\source_rotg.h" />
+    <ClInclude Include="cblas\source_rotm.h" />
+    <ClInclude Include="cblas\source_rotmg.h" />
+    <ClInclude Include="cblas\source_sbmv.h" />
+    <ClInclude Include="cblas\source_scal_c.h" />
+    <ClInclude Include="cblas\source_scal_c_s.h" />
+    <ClInclude Include="cblas\source_scal_r.h" />
+    <ClInclude Include="cblas\source_spmv.h" />
+    <ClInclude Include="cblas\source_spr.h" />
+    <ClInclude Include="cblas\source_spr2.h" />
+    <ClInclude Include="cblas\source_swap_c.h" />
+    <ClInclude Include="cblas\source_swap_r.h" />
+    <ClInclude Include="cblas\source_symm_c.h" />
+    <ClInclude Include="cblas\source_symm_r.h" />
+    <ClInclude Include="cblas\source_symv.h" />
+    <ClInclude Include="cblas\source_syr.h" />
+    <ClInclude Include="cblas\source_syr2.h" />
+    <ClInclude Include="cblas\source_syr2k_c.h" />
+    <ClInclude Include="cblas\source_syr2k_r.h" />
+    <ClInclude Include="cblas\source_syrk_c.h" />
+    <ClInclude Include="cblas\source_syrk_r.h" />
+    <ClInclude Include="cblas\source_tbmv_c.h" />
+    <ClInclude Include="cblas\source_tbmv_r.h" />
+    <ClInclude Include="cblas\source_tbsv_c.h" />
+    <ClInclude Include="cblas\source_tbsv_r.h" />
+    <ClInclude Include="cblas\source_tpmv_c.h" />
+    <ClInclude Include="cblas\source_tpmv_r.h" />
+    <ClInclude Include="cblas\source_tpsv_c.h" />
+    <ClInclude Include="cblas\source_tpsv_r.h" />
+    <ClInclude Include="cblas\source_trmm_c.h" />
+    <ClInclude Include="cblas\source_trmm_r.h" />
+    <ClInclude Include="cblas\source_trmv_c.h" />
+    <ClInclude Include="cblas\source_trmv_r.h" />
+    <ClInclude Include="cblas\source_trsm_c.h" />
+    <ClInclude Include="cblas\source_trsm_r.h" />
+    <ClInclude Include="cblas\source_trsv_c.h" />
+    <ClInclude Include="cblas\source_trsv_r.h" />
+    <ClInclude Include="cblas\hypot.c" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="E:\study\cpp\gsl-demo\build\3rd_party\gsl\copy-headers.vcxproj">
+      <Project>{72203C6C-5875-3096-8E7A-AB4E62DEEC05}</Project>
+      <Name>copy-headers</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
