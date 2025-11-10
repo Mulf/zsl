@@ -8,7 +8,7 @@
 namespace _ {
 using namespace zsl;
 
-vector_d unary_func(const vector_d &x, double (*func)(double)) {
+static vector_d unary_func(const vector_d &x, double (*func)(double)) {
 	vector_d y(x.size());
 	std::transform(x.begin(), x.end(), y.begin(), [&](double x){
 		return func(x);
@@ -16,7 +16,7 @@ vector_d unary_func(const vector_d &x, double (*func)(double)) {
 	return y;
 }
 
-vector_c unary_func(const vector_c &x, complex_d (*func)(const complex_d &)) {
+static vector_c unary_func(const vector_c &x, complex_d (*func)(const complex_d &)) {
 	vector_c y(x.size());
 	std::transform(x.begin(), x.end(), y.begin(), [&](const complex_d &x){
 		return func(x);
@@ -24,7 +24,7 @@ vector_c unary_func(const vector_c &x, complex_d (*func)(const complex_d &)) {
 	return y;
 }
 
-vector_d unary_func(const vector_c &x, double (*func)(const complex_d &)) {
+static vector_d unary_func(const vector_c &x, double (*func)(const complex_d &)) {
 	vector_d y(x.size());
 	std::transform(x.begin(), x.end(), y.begin(), [&](const complex_d &x){
 		return func(x);
@@ -32,7 +32,7 @@ vector_d unary_func(const vector_c &x, double (*func)(const complex_d &)) {
 	return y;
 }
 
-vector2_d unary_func(const vector2_d &X, double (*func)(double)) {
+static vector2_d unary_func(const vector2_d &X, double (*func)(double)) {
 	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_d &x){
 		return unary_func(x, func);
@@ -40,7 +40,7 @@ vector2_d unary_func(const vector2_d &X, double (*func)(double)) {
 	return Y;
 }
 
-vector2_c unary_func(const vector2_c &X, complex_d (*func)(const complex_d &)) {
+static vector2_c unary_func(const vector2_c &X, complex_d (*func)(const complex_d &)) {
 	vector2_c Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
@@ -48,7 +48,7 @@ vector2_c unary_func(const vector2_c &X, complex_d (*func)(const complex_d &)) {
 	return Y;
 }
 
-vector2_d unary_func(const vector2_c &X, double (*func)(const complex_d &)) {
+static vector2_d unary_func(const vector2_c &X, double (*func)(const complex_d &)) {
 	vector2_d Y(X.size());
 	std::transform(X.begin(), X.end(), Y.begin(), [&](const vector_c &x){
 		return unary_func(x, func);
