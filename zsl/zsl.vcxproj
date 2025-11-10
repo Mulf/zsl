@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AC3E9C97-D3B8-348F-A37F-779EAF6A875C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>zsl</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\bin\$(Configuration)\$(ProjectName).dir</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">zsl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\bin\$(Configuration)\$(ProjectName).dir</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">zsl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;HAVE_INLINE;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;HAVE_INLINE;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;E:\zsl\zsl\3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_INLINE;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_INLINE;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\zsl\zsl\include;E:\zsl\zsl\3rd_party;E:\zsl\build\zsl\3rd_party\gsl;E:\zsl\zsl\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\zsl\zsl\include;E:\zsl\zsl\3rd_party;E:\zsl\build\zsl\3rd_party\gsl;E:\zsl\zsl\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\zsl.h" />
+    <ClInclude Include="include\basics\basics.h" />
+    <ClInclude Include="include\basics\check.h" />
+    <ClInclude Include="include\basics\copy_control.h" />
+    <ClInclude Include="include\basics\defines.h" />
+    <ClInclude Include="include\basics\ZException.h" />
+    <ClCompile Include="src\basics\ZException.cpp" />
+    <ClInclude Include="include\zatlab\language_fundamentals\matrices_and_arrays.h" />
+    <ClInclude Include="include\zatlab\language_fundamentals\operators_and_elementary_operations\arithmetic_operations.h" />
+    <ClInclude Include="include\zatlab\language_fundamentals\operators_and_elementary_operations\operators_and_elementary_operations.h" />
+    <ClCompile Include="src\zatlab\language_fundamentals\matrices_and_arrays.cpp" />
+    <ClCompile Include="src\zatlab\language_fundamentals\matrices_and_arrays_indexing.cpp" />
+    <ClCompile Include="src\zatlab\language_fundamentals\operators_and_elementary_operations\arithmetic_operations.cpp" />
+    <ClInclude Include="include\zatlab\data_import_and_analysis\data_import_and_export.h" />
+    <ClInclude Include="include\zatlab\data_import_and_analysis\data_process.h" />
+    <ClInclude Include="include\zatlab\data_import_and_analysis\descriptive_statistics.h" />
+    <ClCompile Include="src\zatlab\data_import_and_analysis\data_import_and_export.cpp" />
+    <ClCompile Include="src\zatlab\data_import_and_analysis\data_process.cpp" />
+    <ClCompile Include="src\zatlab\data_import_and_analysis\descriptive_statistics.cpp" />
+    <ClInclude Include="include\zatlab\mathematics\elementary_math\trigonometry.h" />
+    <ClInclude Include="include\zatlab\mathematics\elementary_math\exponents_and_logarithms.h" />
+    <ClInclude Include="include\zatlab\mathematics\elementary_math\constants_and_test_matrices.h" />
+    <ClInclude Include="include\zatlab\mathematics\elementary_math\complex_numbers.h" />
+    <ClInclude Include="include\zatlab\mathematics\random_number_generation.h" />
+    <ClInclude Include="include\zatlab\mathematics\fourier_analysis_and_filtering.h" />
+    <ClInclude Include="include\zatlab\mathematics\interpolation.h" />
+    <ClCompile Include="src\zatlab\mathematics\elementary_math\trigonometry.cpp" />
+    <ClCompile Include="src\zatlab\mathematics\elementary_math\exponents_and_logarithms.cpp" />
+    <ClCompile Include="src\zatlab\mathematics\elementary_math\constants_and_test_matrices.cpp" />
+    <ClCompile Include="src\zatlab\mathematics\elementary_math\complex_numbers.cpp" />
+    <ClCompile Include="src\zatlab\mathematics\random_number_generation.cpp" />
+    <ClCompile Include="src\zatlab\mathematics\fourier_analysis_and_filtering.cpp" />
+    <ClCompile Include="src\zatlab\mathematics\interpolation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="3rd_party\gsl\gsl.vcxproj">
+      <Project>{0439931C-A50B-348D-A5B2-447593DB17D3}</Project>
+      <Name>gsl</Name>
+    </ProjectReference>
+    <ProjectReference Include="3rd_party\gsl\gslcblas.vcxproj">
+      <Project>{1EBEC176-54B1-36C9-8E21-738E1AE67634}</Project>
+      <Name>gslcblas</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

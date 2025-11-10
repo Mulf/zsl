@@ -33,7 +33,7 @@ int main()
 		plot(Fs / L * colon(0, L - 1), abs(Y))->line_width(3);
 		title("Complex Magnitude of fft Spectrum");
 		xlabel("f (Hz)");
-		ylabel("|fft(X)|");
+ 		ylabel("|fft(X)|");
 	}
 
 	return 0;

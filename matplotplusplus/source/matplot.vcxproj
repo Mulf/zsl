@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{94C47456-1C22-3CF4-B437-046152A62F02}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>matplot</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\bin\$(Configuration)\$(ProjectName).dir</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">matplot</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\bin\$(Configuration)\$(ProjectName).dir</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">matplot</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <IncludePath>$(ProjectDir)\source;$(ProjectDir)\source\matplot;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)matplot\;$(ProjectDir)3rd_party\cimg\;$(ProjectDir)3rd_party\nodesoup\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "E:/zsl/matplotplusplus/source/3rd_party/cimg" /external:I "E:/zsl/matplotplusplus/source/3rd_party/nodesoup/include" /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NOMINMAX;MATPLOT_BUILD_HIGH_RESOLUTION_WORLD_MAP;cimg_display=2;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;NOMINMAX;MATPLOT_BUILD_HIGH_RESOLUTION_WORLD_MAP;cimg_display=2;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)matplotplusplus\source;$(SolutionDir)3rd_party\cimg;$(SolutionDir)3rd_party\nodesoup\include;%(AdditionalIncludeDirectories);$(SolutionDir)zsl\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)matplot\;$(ProjectDir)3rd_party\cimg\;$(ProjectDir)3rd_party\nodesoup\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "E:/zsl/matplotplusplus/source/3rd_party/cimg" /external:I "E:/zsl/matplotplusplus/source/3rd_party/nodesoup/include" /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;NOMINMAX;MATPLOT_BUILD_HIGH_RESOLUTION_WORLD_MAP;cimg_display=2;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;NOMINMAX;MATPLOT_BUILD_HIGH_RESOLUTION_WORLD_MAP;cimg_display=2;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\zsl\matplotplusplus\source;E:\zsl\build\matplotplusplus\source\matplot;E:\zsl\matplotplusplus\source\3rd_party\cimg;E:\zsl\matplotplusplus\source\3rd_party\nodesoup\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\zsl\matplotplusplus\source;E:\zsl\build\matplotplusplus\source\matplot;E:\zsl\matplotplusplus\source\3rd_party\cimg;E:\zsl\matplotplusplus\source\3rd_party\nodesoup\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="matplot\detail\exports.h" />
+    <ClInclude Include="matplot\matplot.h" />
+    <ClInclude Include="matplot\backend\backend_interface.h" />
+    <ClCompile Include="matplot\backend\backend_interface.cpp" />
+    <ClInclude Include="matplot\backend\gnuplot.h" />
+    <ClCompile Include="matplot\backend\gnuplot.cpp" />
+    <ClInclude Include="matplot\backend\backend_registry.h" />
+    <ClCompile Include="matplot\backend\backend_registry.cpp" />
+    <ClCompile Include="matplot\core\axes_type.cpp" />
+    <ClInclude Include="matplot\core\axes_type.h" />
+    <ClCompile Include="matplot\core\axes_object.cpp" />
+    <ClInclude Include="matplot\core\axes_object.h" />
+    <ClCompile Include="matplot\core\axis_type.cpp" />
+    <ClInclude Include="matplot\core\axis_type.h" />
+    <ClCompile Include="matplot\core\figure_type.cpp" />
+    <ClInclude Include="matplot\core\figure_type.h" />
+    <ClCompile Include="matplot\core\figure_registry.cpp" />
+    <ClInclude Include="matplot\core\figure_registry.h" />
+    <ClCompile Include="matplot\core\legend.cpp" />
+    <ClInclude Include="matplot\core\legend.h" />
+    <ClCompile Include="matplot\core\line_spec.cpp" />
+    <ClInclude Include="matplot\core\line_spec.h" />
+    <ClCompile Include="matplot\util\colors.cpp" />
+    <ClInclude Include="matplot\util\colors.h" />
+    <ClCompile Include="matplot\util\common.cpp" />
+    <ClInclude Include="matplot\util\common.h" />
+    <ClInclude Include="matplot\util\concepts.h" />
+    <ClCompile Include="matplot\util\contourc.cpp" />
+    <ClInclude Include="matplot\util\contourc.h" />
+    <ClInclude Include="matplot\util\geodata.h" />
+    <ClInclude Include="matplot\util\handle_types.h" />
+    <ClInclude Include="matplot\util\keywords.h" />
+    <ClInclude Include="matplot\util\popen.h" />
+    <ClCompile Include="matplot\util\popen.cpp" />
+    <ClInclude Include="matplot\util\type_traits.h" />
+    <ClCompile Include="matplot\util\world_cities.cpp" />
+    <ClCompile Include="matplot\util\world_map_10m.cpp" />
+    <ClCompile Include="matplot\util\world_map_50m.cpp" />
+    <ClCompile Include="matplot\util\world_map_110m.cpp" />
+    <ClCompile Include="matplot\axes_objects\bars.cpp" />
+    <ClInclude Include="matplot\axes_objects\bars.h" />
+    <ClCompile Include="matplot\axes_objects\box_chart.cpp" />
+    <ClInclude Include="matplot\axes_objects\box_chart.h" />
+    <ClCompile Include="matplot\axes_objects\circles.cpp" />
+    <ClInclude Include="matplot\axes_objects\circles.h" />
+    <ClCompile Include="matplot\axes_objects\contours.cpp" />
+    <ClInclude Include="matplot\axes_objects\contours.h" />
+    <ClCompile Include="matplot\axes_objects\error_bar.cpp" />
+    <ClInclude Include="matplot\axes_objects\error_bar.h" />
+    <ClCompile Include="matplot\axes_objects\filled_area.cpp" />
+    <ClInclude Include="matplot\axes_objects\filled_area.h" />
+    <ClCompile Include="matplot\axes_objects\function_line.cpp" />
+    <ClInclude Include="matplot\axes_objects\function_line.h" />
+    <ClCompile Include="matplot\axes_objects\histogram.cpp" />
+    <ClInclude Include="matplot\axes_objects\histogram.h" />
+    <ClCompile Include="matplot\axes_objects\labels.cpp" />
+    <ClInclude Include="matplot\axes_objects\labels.h" />
+    <ClCompile Include="matplot\axes_objects\line.cpp" />
+    <ClInclude Include="matplot\axes_objects\line.h" />
+    <ClCompile Include="matplot\axes_objects\matrix.cpp" />
+    <ClInclude Include="matplot\axes_objects\matrix.h" />
+    <ClCompile Include="matplot\axes_objects\network.cpp" />
+    <ClInclude Include="matplot\axes_objects\network.h" />
+    <ClCompile Include="matplot\axes_objects\parallel_lines.cpp" />
+    <ClInclude Include="matplot\axes_objects\parallel_lines.h" />
+    <ClCompile Include="matplot\axes_objects\stair.cpp" />
+    <ClInclude Include="matplot\axes_objects\stair.h" />
+    <ClCompile Include="matplot\axes_objects\string_function.cpp" />
+    <ClInclude Include="matplot\axes_objects\string_function.h" />
+    <ClCompile Include="matplot\axes_objects\surface.cpp" />
+    <ClInclude Include="matplot\axes_objects\surface.h" />
+    <ClCompile Include="matplot\axes_objects\vectors.cpp" />
+    <ClInclude Include="matplot\axes_objects\vectors.h" />
+    <ClCompile Include="matplot\freestanding\axes_functions.cpp" />
+    <ClInclude Include="matplot\freestanding\axes_functions.h" />
+    <ClInclude Include="matplot\freestanding\axes_lim.h" />
+    <ClInclude Include="matplot\freestanding\histcounts.h" />
+    <ClCompile Include="matplot\freestanding\histcounts.cpp" />
+    <ClInclude Include="matplot\freestanding\plot.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:\zsl\build\ZERO_CHECK.vcxproj">
+      <Project>{65F22BB3-A7EF-36A5-A84E-02DFCB12D0A8}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="E:\zsl\build\matplotplusplus\source\3rd_party\nodesoup.vcxproj">
+      <Project>{F1EE6F99-5353-3F42-8F77-FCF5991A2AE1}</Project>
+      <Name>nodesoup</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
