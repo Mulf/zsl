@@ -36,5 +36,6 @@ int main()
  		ylabel("|fft(X)|");
 	}
 
+	system("pause");
 	return 0;
 }

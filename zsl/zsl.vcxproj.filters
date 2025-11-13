@@ -104,7 +104,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\zsl\zsl\CMakeLists.txt" />
+    <CustomBuild Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

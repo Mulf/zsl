@@ -77,7 +77,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;NOMINMAX;MATPLOT_BUILD_HIGH_RESOLUTION_WORLD_MAP;cimg_display=2;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)matplotplusplus\source;$(SolutionDir)3rd_party\cimg;$(SolutionDir)3rd_party\nodesoup\include;%(AdditionalIncludeDirectories);$(SolutionDir)zsl\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)matplotplusplus\source;$(SolutionDir)3rd_party\cimg;$(SolutionDir)3rd_party\nodesoup\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -112,10 +112,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;NOMINMAX;MATPLOT_BUILD_HIGH_RESOLUTION_WORLD_MAP;cimg_display=2;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\zsl\matplotplusplus\source;E:\zsl\build\matplotplusplus\source\matplot;E:\zsl\matplotplusplus\source\3rd_party\cimg;E:\zsl\matplotplusplus\source\3rd_party\nodesoup\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)matplot\;$(ProjectDir)3rd_party\cimg\;$(ProjectDir)3rd_party\nodesoup\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\zsl\matplotplusplus\source;E:\zsl\build\matplotplusplus\source\matplot;E:\zsl\matplotplusplus\source\3rd_party\cimg;E:\zsl\matplotplusplus\source\3rd_party\nodesoup\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)matplot\;$(ProjectDir)3rd_party\cimg\;$(ProjectDir)3rd_party\nodesoup\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>

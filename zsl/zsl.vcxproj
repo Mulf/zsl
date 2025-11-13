@@ -75,7 +75,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;HAVE_INLINE;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;E:\zsl\zsl\3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -108,10 +108,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_INLINE;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\zsl\zsl\include;E:\zsl\zsl\3rd_party;E:\zsl\build\zsl\3rd_party\gsl;E:\zsl\zsl\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\zsl\zsl\include;E:\zsl\zsl\3rd_party;E:\zsl\build\zsl\3rd_party\gsl;E:\zsl\zsl\3rd_party\gsl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)3rd_party;$(ProjectDir)3rd_party\gsl;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
