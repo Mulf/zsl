@@ -1,0 +1,1333 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Number Generation &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quasi-Random Sequences" href="qrng.html" />
+    <link rel="prev" title="Numerical Integration" href="integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Random Number Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-comments-on-random-numbers">General comments on random numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-random-number-generator-interface">The Random Number Generator Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-number-generator-initialization">Random number generator initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sampling-from-a-random-number-generator">Sampling from a random number generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#auxiliary-random-number-generator-functions">Auxiliary random number generator functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-number-environment-variables">Random number environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#copying-random-number-generator-state">Copying random number generator state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-random-number-generator-state">Reading and writing random number generator state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-number-generator-algorithms">Random number generator algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unix-random-number-generators">Unix random number generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-random-number-generators">Other random number generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Random Number Generation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/rng.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="integration.html" class="btn btn-neutral float-left" title="Numerical Integration" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qrng.html" class="btn btn-neutral float-right" title="Quasi-Random Sequences" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="random-number-generation">
+<span id="index-0"></span><h1>Random Number Generation<a class="headerlink" href="#random-number-generation" title="Link to this heading">¶</a></h1>
+<p>The library provides a large collection of random number generators
+which can be accessed through a uniform interface.  Environment
+variables allow you to select different generators and seeds at runtime,
+so that you can easily switch between generators without needing to
+recompile your program.  Each instance of a generator keeps track of its
+own state, allowing the generators to be used in multi-threaded
+programs.  Additional functions are available for transforming uniform
+random numbers into samples from continuous or discrete probability
+distributions such as the Gaussian, log-normal or Poisson distributions.</p>
+<p>These functions are declared in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_rng.h</span></code>.</p>
+<section id="general-comments-on-random-numbers">
+<h2>General comments on random numbers<a class="headerlink" href="#general-comments-on-random-numbers" title="Link to this heading">¶</a></h2>
+<p>In 1988, Park and Miller wrote a paper entitled “Random number
+generators: good ones are hard to find.” [Commun.: ACM, 31, 1192–1201].
+Fortunately, some excellent random number generators are available,
+though poor ones are still in common use.  You may be happy with the
+system-supplied random number generator on your computer, but you should
+be aware that as computers get faster, requirements on random number
+generators increase.  Nowadays, a simulation that calls a random number
+generator millions of times can often finish before you can make it down
+the hall to the coffee machine and back.</p>
+<p>A very nice review of random number generators was written by Pierre
+L’Ecuyer, as Chapter 4 of the book: Handbook on Simulation, Jerry Banks,
+ed. (Wiley, 1997).  The chapter is available in postscript from
+L’Ecuyer’s ftp site (see references).  Knuth’s volume on Seminumerical
+Algorithms (originally published in 1968) devotes 170 pages to random
+number generators, and has recently been updated in its 3rd edition
+(1997).
+It is brilliant, a classic.  If you don’t own it, you should stop reading
+right now, run to the nearest bookstore, and buy it.</p>
+<p>A good random number generator will satisfy both theoretical and
+statistical properties.  Theoretical properties are often hard to obtain
+(they require real math!), but one prefers a random number generator
+with a long period, low serial correlation, and a tendency <strong>not</strong> to
+“fall mainly on the planes.”  Statistical tests are performed with
+numerical simulations.  Generally, a random number generator is used to
+estimate some quantity for which the theory of probability provides an
+exact answer.  Comparison to this exact answer provides a measure of
+“randomness”.</p>
+</section>
+<section id="the-random-number-generator-interface">
+<h2>The Random Number Generator Interface<a class="headerlink" href="#the-random-number-generator-interface" title="Link to this heading">¶</a></h2>
+<p>It is important to remember that a random number generator is not a
+“real” function like sine or cosine.  Unlike real functions, successive
+calls to a random number generator yield different return values.  Of
+course that is just what you want for a random number generator, but to
+achieve this effect, the generator must keep track of some kind of
+“state” variable.  Sometimes this state is just an integer (sometimes
+just the value of the previously generated random number), but often it
+is more complicated than that and may involve a whole array of numbers,
+possibly with some indices thrown in.  To use the random number
+generators, you do not need to know the details of what comprises the
+state, and besides that varies from algorithm to algorithm.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_rng_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_type</span></span></span><a class="headerlink" href="#c.gsl_rng_type" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng</span></span></span><a class="headerlink" href="#c.gsl_rng" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The random number generator library uses two special structs,
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_rng_type</span></code></a> which holds static information about each type of
+generator and <a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_rng</span></code></a> which describes an instance of a generator
+created from a given <a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_rng_type</span></code></a>.</p>
+</dd></dl>
+
+<p>The functions described in this section are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_rng.h</span></code>.</p>
+</section>
+<section id="random-number-generator-initialization">
+<h2>Random number generator initialization<a class="headerlink" href="#random-number-generator-initialization" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_alloc">
+<a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly-created
+instance of a random number generator of type <a class="reference internal" href="#c.gsl_rng_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a>.
+For example, the following code creates an instance of the Tausworthe
+generator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">gsl_rng_taus</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If there is insufficient memory to create the generator then the
+function returns a null pointer and the error handler is invoked with an
+error code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+<p>The generator is automatically initialized with the default seed,
+<a class="reference internal" href="#c.gsl_rng_default_seed" title="gsl_rng_default_seed"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_default_seed</span></code></a>.  This is zero by default but can be changed
+either directly or by using the environment variable <a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a>.</p>
+<p>The details of the available generator types are
+described later in this chapter.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_set">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_set" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes (or “seeds”) the random number generator.  If
+the generator is seeded with the same value of <a class="reference internal" href="#c.gsl_rng_set" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> on two different
+runs, the same stream of random numbers will be generated by successive
+calls to the routines below.  If different values of <img class="math" src="_images/math/d9f57d35cad4c0a5dc53998b2c2a1c0d647a41a2.png" alt="s \geq 1"/>
+are supplied, then the generated streams of random
+numbers should be completely different.  If the seed <a class="reference internal" href="#c.gsl_rng_set" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> is zero
+then the standard seed from the original implementation is used
+instead.  For example, the original Fortran source code for the
+<code class="code docutils literal notranslate"><span class="pre">ranlux</span></code> generator used a seed of 314159265, and so choosing
+<a class="reference internal" href="#c.gsl_rng_set" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> equal to zero reproduces this when using
+<a class="reference internal" href="#c.gsl_rng_ranlux" title="gsl_rng_ranlux"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_ranlux</span></code></a>.</p>
+<p>When using multiple seeds with the same generator, choose seed values
+greater than zero to avoid collisions with the default setting.</p>
+<p>Note that the most generators only accept 32-bit seeds, with higher
+values being reduced modulo <img class="math" src="_images/math/70780ab13e3b8c51dcd772fc171f325c0f557f12.png" alt="2^{32}"/>.
+For generators with smaller ranges the maximum seed value will typically be lower.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the generator
+<a class="reference internal" href="#c.gsl_rng_free" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="sampling-from-a-random-number-generator">
+<h2>Sampling from a random number generator<a class="headerlink" href="#sampling-from-a-random-number-generator" title="Link to this heading">¶</a></h2>
+<p>The following functions return uniformly distributed random numbers,
+either as integers or double precision floating point numbers.  Inline versions of these functions are used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.
+To obtain non-uniform distributions, see <a class="reference internal" href="randist.html#chap-random-number-distributions"><span class="std std-ref">Random Number Distributions</span></a>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_get">
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a random integer from the generator <a class="reference internal" href="#c.gsl_rng_get" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>.  The
+minimum and maximum values depend on the algorithm used, but all
+integers in the range [<code class="xref c c-data docutils literal notranslate"><span class="pre">min</span></code>, <code class="xref c c-data docutils literal notranslate"><span class="pre">max</span></code>] are equally likely.  The
+values of <code class="xref c c-data docutils literal notranslate"><span class="pre">min</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">max</span></code> can be determined using the auxiliary
+functions <a class="reference internal" href="#c.gsl_rng_max" title="gsl_rng_max"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_max()</span></code></a> and <a class="reference internal" href="#c.gsl_rng_min" title="gsl_rng_min"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_min()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_uniform">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_uniform</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_uniform" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a double precision floating point number uniformly
+distributed in the range [0,1).  The range includes 0.0 but excludes 1.0.
+The value is typically obtained by dividing the result of
+<code class="code docutils literal notranslate"><span class="pre">gsl_rng_get(r)</span></code> by <code class="code docutils literal notranslate"><span class="pre">gsl_rng_max(r)</span> <span class="pre">+</span> <span class="pre">1.0</span></code> in double
+precision.  Some generators compute this ratio internally so that they
+can provide floating point numbers with more than 32 bits of randomness
+(the maximum number of bits that can be portably represented in a single
+<code class="code docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">int</span></code>).</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_uniform_pos">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_uniform_pos</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_uniform_pos" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a positive double precision floating point number
+uniformly distributed in the range (0,1), excluding both 0.0 and 1.0.
+The number is obtained by sampling the generator with the algorithm of
+<a class="reference internal" href="#c.gsl_rng_uniform" title="gsl_rng_uniform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_uniform()</span></code></a> until a non-zero value is obtained.  You can use
+this function if you need to avoid a singularity at 0.0.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_uniform_int">
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_uniform_int</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_uniform_int" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a random integer from 0 to <img class="math" src="_images/math/148b550abf206bf92c3b91882cf27375074a57d7.png" alt="n-1"/> inclusive
+by scaling down and/or discarding samples from the generator <a class="reference internal" href="#c.gsl_rng_uniform_int" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>.
+All integers in the range <img class="math" src="_images/math/edb4a7fb07fa73cdae2a073bc507db8cef3dfbe8.png" alt="[0,n-1]"/> are produced with equal
+probability.  For generators with a non-zero minimum value an offset
+is applied so that zero is returned with the correct probability.</p>
+<p>Note that this function is designed for sampling from ranges smaller
+than the range of the underlying generator.  The parameter <a class="reference internal" href="#c.gsl_rng_uniform_int" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>
+must be less than or equal to the range of the generator <a class="reference internal" href="#c.gsl_rng_uniform_int" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>.
+If <a class="reference internal" href="#c.gsl_rng_uniform_int" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is larger than the range of the generator then the function
+calls the error handler with an error code of <a class="reference internal" href="err.html#c.GSL_EINVAL" title="GSL_EINVAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EINVAL</span></code></a> and
+returns zero.</p>
+<p>In particular, this function is not intended for generating the full range of
+unsigned integer values <img class="math" src="_images/math/4aebd369e5e4d76268f3740c38ce02bb179998f8.png" alt="[0,2^{32}-1]"/>.
+Instead choose a generator with the maximal integer range and zero minimum
+value, such as <a class="reference internal" href="#c.gsl_rng_ranlxd1" title="gsl_rng_ranlxd1"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_ranlxd1</span></code></a>, <a class="reference internal" href="#c.gsl_rng_mt19937" title="gsl_rng_mt19937"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_mt19937</span></code></a> or
+<a class="reference internal" href="#c.gsl_rng_taus" title="gsl_rng_taus"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_taus</span></code></a>, and sample it directly using
+<a class="reference internal" href="#c.gsl_rng_get" title="gsl_rng_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_get()</span></code></a>.  The range of each generator can be found using
+the auxiliary functions described in the next section.</p>
+</dd></dl>
+
+</section>
+<section id="auxiliary-random-number-generator-functions">
+<h2>Auxiliary random number generator functions<a class="headerlink" href="#auxiliary-random-number-generator-functions" title="Link to this heading">¶</a></h2>
+<p>The following functions provide information about an existing
+generator.  You should use them in preference to hard-coding the generator
+parameters into your own code.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the name of the generator.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;r is a &#39;</span><span class="si">%s</span><span class="s2">&#39; generator</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_rng_name</span> <span class="p">(</span><span class="n">r</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>would print something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="ow">is</span> <span class="n">a</span> <span class="s1">&#39;taus&#39;</span> <span class="n">generator</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_max">
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_max" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the largest value that <a class="reference internal" href="#c.gsl_rng_get" title="gsl_rng_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_get()</span></code></a>
+can return.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_min">
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_min</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_min" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the smallest value that <a class="reference internal" href="#c.gsl_rng_get" title="gsl_rng_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_get()</span></code></a>
+can return.  Usually this value is zero.  There are some generators with
+algorithms that cannot return zero, and for these generators the minimum
+value is 1.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_state">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_state" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_size">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_size</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_size" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return a pointer to the state of generator <a class="reference internal" href="#c.gsl_rng_size" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a> and
+its size.  You can use this information to access the state directly.  For
+example, the following code will write the state of a generator to a
+stream:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="o">*</span> <span class="n">state</span> <span class="o">=</span> <span class="n">gsl_rng_state</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+<span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">gsl_rng_size</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+<span class="n">fwrite</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_types_setup">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_types_setup</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_types_setup" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to an array of all the available
+generator types, terminated by a null pointer. The function should be
+called once at the start of the program, if needed.  The following code
+fragment shows how to iterate over the array of generator types to print
+the names of the available algorithms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">**</span><span class="n">t</span><span class="p">,</span> <span class="o">**</span><span class="n">t0</span><span class="p">;</span>
+
+<span class="n">t0</span> <span class="o">=</span> <span class="n">gsl_rng_types_setup</span> <span class="p">();</span>
+
+<span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Available generators:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">t0</span><span class="p">;</span> <span class="o">*</span><span class="n">t</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">t</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="random-number-environment-variables">
+<h2>Random number environment variables<a class="headerlink" href="#random-number-environment-variables" title="Link to this heading">¶</a></h2>
+<p>The library allows you to choose a default generator and seed from the
+environment variables <a class="reference internal" href="#c.GSL_RNG_TYPE" title="GSL_RNG_TYPE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_TYPE</span></code></a> and <a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a> and
+the function <a class="reference internal" href="#c.gsl_rng_env_setup" title="gsl_rng_env_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_env_setup()</span></code></a>.  This makes it easy try out
+different generators and seeds without having to recompile your program.</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_RNG_TYPE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_RNG_TYPE</span></span></span><a class="headerlink" href="#c.GSL_RNG_TYPE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This environment variable specifies the default random number generator.
+It should be the name of a generator, such as <code class="code docutils literal notranslate"><span class="pre">taus</span></code> or <code class="code docutils literal notranslate"><span class="pre">mt19937</span></code>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_RNG_SEED">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_RNG_SEED</span></span></span><a class="headerlink" href="#c.GSL_RNG_SEED" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This environment variable specifies the default seed for the random
+number generator</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_default">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_default</span></span></span><a class="headerlink" href="#c.gsl_rng_default" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This global library variable specifies the default random number generator,
+and can be initialized from <a class="reference internal" href="#c.GSL_RNG_TYPE" title="GSL_RNG_TYPE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_TYPE</span></code></a> using <a class="reference internal" href="#c.gsl_rng_env_setup" title="gsl_rng_env_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_env_setup()</span></code></a>.
+It is defined as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span><span class="n">gsl_rng_default</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_default_seed">
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_default_seed</span></span></span><a class="headerlink" href="#c.gsl_rng_default_seed" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This global library variable specifies the seed for the default random number generator,
+and can be initialized from <a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a> using <a class="reference internal" href="#c.gsl_rng_env_setup" title="gsl_rng_env_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_env_setup()</span></code></a>.
+It is set to zero by default and is defined as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="nb">int</span> <span class="n">gsl_rng_default_seed</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_env_setup">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_env_setup</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_env_setup" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads the environment variables <a class="reference internal" href="#c.GSL_RNG_TYPE" title="GSL_RNG_TYPE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_TYPE</span></code></a> and
+<a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a> and uses their values to set the corresponding
+library variables <a class="reference internal" href="#c.gsl_rng_default" title="gsl_rng_default"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_default</span></code></a> and
+<a class="reference internal" href="#c.gsl_rng_default_seed" title="gsl_rng_default_seed"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_default_seed</span></code></a>.</p>
+<p>The value of <a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a> is converted to an <code class="code docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">int</span></code>
+using the C library function <code class="xref c c-func docutils literal notranslate"><span class="pre">strtoul()</span></code>.</p>
+<p>If you don’t specify a generator for <a class="reference internal" href="#c.GSL_RNG_TYPE" title="GSL_RNG_TYPE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_TYPE</span></code></a> then
+<a class="reference internal" href="#c.gsl_rng_mt19937" title="gsl_rng_mt19937"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_mt19937</span></code></a> is used as the default.  The initial value of
+<a class="reference internal" href="#c.gsl_rng_default_seed" title="gsl_rng_default_seed"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_default_seed</span></code></a> is zero.</p>
+</dd></dl>
+
+<p>Here is a short program which shows how to create a global
+generator using the environment variables <a class="reference internal" href="#c.GSL_RNG_TYPE" title="GSL_RNG_TYPE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_TYPE</span></code></a> and
+<a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a>,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+
+<span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>  <span class="o">/*</span> <span class="k">global</span> <span class="n">generator</span> <span class="o">*/</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span>
+
+  <span class="n">gsl_rng_env_setup</span><span class="p">();</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;generator type: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_rng_name</span> <span class="p">(</span><span class="n">r</span><span class="p">));</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;seed = </span><span class="si">%lu</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_rng_default_seed</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;first value = </span><span class="si">%lu</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_rng_get</span> <span class="p">(</span><span class="n">r</span><span class="p">));</span>
+
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Running the program without any environment variables uses the initial
+defaults, an <code class="code docutils literal notranslate"><span class="pre">mt19937</span></code> generator with a seed of 0,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generator</span> <span class="nb">type</span><span class="p">:</span> <span class="n">mt19937</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">first</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">4293858116</span>
+</pre></div>
+</div>
+<p>By setting the two variables on the command line we can
+change the default generator and the seed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ GSL_RNG_TYPE=&quot;taus&quot; GSL_RNG_SEED=123 ./a.out
+GSL_RNG_TYPE=taus
+GSL_RNG_SEED=123
+generator type: taus
+seed = 123
+first value = 2720986350
+</pre></div>
+</div>
+</section>
+<section id="copying-random-number-generator-state">
+<h2>Copying random number generator state<a class="headerlink" href="#copying-random-number-generator-state" title="Link to this heading">¶</a></h2>
+<p>The above methods do not expose the random number state which changes
+from call to call.  It is often useful to be able to save and restore
+the state.  To permit these practices, a few somewhat more advanced
+functions are supplied.  These include:</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the random number generator <a class="reference internal" href="#c.gsl_rng_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the
+pre-existing generator <a class="reference internal" href="#c.gsl_rng_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>, making <a class="reference internal" href="#c.gsl_rng_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a> into an exact copy
+of <a class="reference internal" href="#c.gsl_rng_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>.  The two generators must be of the same type.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_clone">
+<a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_clone" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly created generator which is an
+exact copy of the generator <a class="reference internal" href="#c.gsl_rng_clone" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="reading-and-writing-random-number-generator-state">
+<h2>Reading and writing random number generator state<a class="headerlink" href="#reading-and-writing-random-number-generator-state" title="Link to this heading">¶</a></h2>
+<p>The library provides functions for reading and writing the random
+number state to a file as binary data.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_fwrite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_fwrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_fwrite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the random number state of the random number
+generator <a class="reference internal" href="#c.gsl_rng_fwrite" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a> to the stream <a class="reference internal" href="#c.gsl_rng_fwrite" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The
+return value is 0 for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a
+problem writing to the file.  Since the data is written in the native
+binary format it may not be portable between different architectures.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_rng_fread">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_fread</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_rng_fread" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads the random number state into the random number
+generator <a class="reference internal" href="#c.gsl_rng_fread" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a> from the open stream <a class="reference internal" href="#c.gsl_rng_fread" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.
+The random number generator <a class="reference internal" href="#c.gsl_rng_fread" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a> must be preinitialized with the
+correct random number generator type since type information is not
+saved.  The return value is 0 for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if
+there was a problem reading from the file.  The data is assumed to
+have been written in the native binary format on the same
+architecture.</p>
+</dd></dl>
+
+</section>
+<section id="random-number-generator-algorithms">
+<h2>Random number generator algorithms<a class="headerlink" href="#random-number-generator-algorithms" title="Link to this heading">¶</a></h2>
+<p>The functions described above make no reference to the actual algorithm
+used.  This is deliberate so that you can switch algorithms without
+having to change any of your application source code.  The library
+provides a large number of generators of different types, including
+simulation quality generators, generators provided for compatibility
+with other libraries and historical generators from the past.</p>
+<p>The following generators are recommended for use in simulation.  They
+have extremely long periods, low correlation and pass most statistical
+tests.  For the most reliable source of uncorrelated numbers, the
+second-generation RANLUX generators have the strongest proof of
+randomness.</p>
+<dl class="c var" id="index-1">
+<dt class="sig sig-object c" id="c.gsl_rng_mt19937">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_mt19937</span></span></span><a class="headerlink" href="#c.gsl_rng_mt19937" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The MT19937 generator of Makoto Matsumoto and Takuji Nishimura is a
+variant of the twisted generalized feedback shift-register algorithm,
+and is known as the “Mersenne Twister” generator.  It has a Mersenne
+prime period of <img class="math" src="_images/math/3e02cf2a654539b9133a4cd83056eb9cff785606.png" alt="2^{19937} - 1"/>
+(about <img class="math" src="_images/math/f351f81d653e3bfe51ceb60ffe5f1646d94acb03.png" alt="10^{6000}"/>) and is
+equi-distributed in 623 dimensions.  It has passed the DIEHARD
+statistical tests.  It uses 624 words of state per generator and is
+comparable in speed to the other generators.  The original generator used
+a default seed of 4357 and choosing <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code> equal to zero in
+<a class="reference internal" href="#c.gsl_rng_set" title="gsl_rng_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_set()</span></code></a> reproduces this.  Later versions switched to 5489
+as the default seed, you can choose this explicitly via <a class="reference internal" href="#c.gsl_rng_set" title="gsl_rng_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_set()</span></code></a>
+instead if you require it.</p>
+<p>For more information see,</p>
+<ul class="simple">
+<li><p>Makoto Matsumoto and Takuji Nishimura, “Mersenne Twister: A
+623-dimensionally equidistributed uniform pseudorandom number
+generator”. ACM Transactions on Modeling and Computer
+Simulation, Vol.: 8, No.: 1 (Jan. 1998), Pages 3–30</p></li>
+</ul>
+<p>The generator <a class="reference internal" href="#c.gsl_rng_mt19937" title="gsl_rng_mt19937"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_mt19937</span></code></a> uses the second revision of the
+seeding procedure published by the two authors above in 2002.  The
+original seeding procedures could cause spurious artifacts for some seed
+values. They are still available through the alternative generators
+<code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_mt19937_1999</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_mt19937_1998</span></code>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_rng_ranlxs0">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlxs0</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlxs0" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_ranlxs1">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlxs1</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlxs1" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_ranlxs2">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlxs2</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlxs2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The generator <code class="code docutils literal notranslate"><span class="pre">ranlxs0</span></code> is a second-generation version of the
+RANLUX algorithm of Luscher, which produces “luxury random
+numbers”.  This generator provides single precision output (24 bits) at
+three luxury levels <code class="code docutils literal notranslate"><span class="pre">ranlxs0</span></code>, <code class="code docutils literal notranslate"><span class="pre">ranlxs1</span></code> and <code class="code docutils literal notranslate"><span class="pre">ranlxs2</span></code>,
+in increasing order of strength.
+It uses double-precision floating point arithmetic internally and can be
+significantly faster than the integer version of <code class="code docutils literal notranslate"><span class="pre">ranlux</span></code>,
+particularly on 64-bit architectures.  The period of the generator is
+about <img class="math" src="_images/math/ea92fc2765f6a6708b547641cc217c127079d561.png" alt="10^{171}"/>.
+The algorithm has mathematically proven properties and
+can provide truly decorrelated numbers at a known level of randomness.
+The higher luxury levels provide increased decorrelation between samples
+as an additional safety margin.</p>
+<p>Note that the range of allowed seeds for this generator is <img class="math" src="_images/math/be126fc66bfcd48a626f5c2be119ab06c77ab55b.png" alt="[0,2^{31}-1]"/>.
+Higher seed values are wrapped modulo <img class="math" src="_images/math/906edaff502b5cb6850f0f261480d86a1904a54b.png" alt="2^{31}"/>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_rng_ranlxd1">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlxd1</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlxd1" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_ranlxd2">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlxd2</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlxd2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These generators produce double precision output (48 bits) from the
+RANLXS generator.  The library provides two luxury levels
+<code class="code docutils literal notranslate"><span class="pre">ranlxd1</span></code> and <code class="code docutils literal notranslate"><span class="pre">ranlxd2</span></code>, in increasing order of strength.</p>
+</dd></dl>
+
+<dl class="c var" id="index-4">
+<dt class="sig sig-object c" id="c.gsl_rng_ranlux">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlux</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlux" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_ranlux389">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranlux389</span></span></span><a class="headerlink" href="#c.gsl_rng_ranlux389" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The <code class="code docutils literal notranslate"><span class="pre">ranlux</span></code> generator is an implementation of the original
+algorithm developed by Luscher.  It uses a
+lagged-fibonacci-with-skipping algorithm to produce “luxury random
+numbers”.  It is a 24-bit generator, originally designed for
+single-precision IEEE floating point numbers.  This implementation is
+based on integer arithmetic, while the second-generation versions
+RANLXS and RANLXD described above provide floating-point
+implementations which will be faster on many platforms.
+The period of the generator is about <img class="math" src="_images/math/ea92fc2765f6a6708b547641cc217c127079d561.png" alt="10^{171}"/>.
+The algorithm has mathematically proven properties and
+it can provide truly decorrelated numbers at a known level of
+randomness.  The default level of decorrelation recommended by Luscher
+is provided by <a class="reference internal" href="#c.gsl_rng_ranlux" title="gsl_rng_ranlux"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_ranlux</span></code></a>, while <a class="reference internal" href="#c.gsl_rng_ranlux389" title="gsl_rng_ranlux389"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_ranlux389</span></code></a>
+gives the highest level of randomness, with all 24 bits decorrelated.
+Both types of generator use 24 words of state per generator.</p>
+<p>For more information see,</p>
+<ul class="simple">
+<li><p>M. Luscher, “A portable high-quality random number generator for
+lattice field theory calculations”, Computer Physics
+Communications, 79 (1994) 100–110.</p></li>
+<li><p>F. James, “RANLUX: A Fortran implementation of the high-quality
+pseudo-random number generator of Luscher”, Computer Physics
+Communications, 79 (1994) 111–114</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_rng_cmrg">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_cmrg</span></span></span><a class="headerlink" href="#c.gsl_rng_cmrg" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a combined multiple recursive generator by L’Ecuyer.
+Its sequence is,</p>
+<div class="math">
+<p><img src="_images/math/b318a2fd2d06d68fe8492ba56252ffa1a3d4ffd8.png" alt="z_n = (x_n - y_n) \mod m_1"/></p>
+</div><p>where the two underlying generators <img class="math" src="_images/math/e6ef00520aef7763ed9eee8215bf827a194a863e.png" alt="x_n"/> and <img class="math" src="_images/math/4ffcd87c1370fb7e9313836545d5e1bc3f51ccff.png" alt="y_n"/> are,</p>
+<div class="math">
+<p><img src="_images/math/39504d45db3116800292c7a918ac6d09c667c6f1.png" alt="x_n &amp; = (a_1 x_{n-1} + a_2 x_{n-2} + a_3 x_{n-3}) \mod m_1 \\
+y_n &amp; = (b_1 y_{n-1} + b_2 y_{n-2} + b_3 y_{n-3}) \mod m_2"/></p>
+</div><p>with coefficients
+<img class="math" src="_images/math/7b3a473e0f8e816922f2a010164bffa7d0dd7601.png" alt="a_1 = 0"/>,
+<img class="math" src="_images/math/760cdb25e307cab5ca7455391ea677493f7bd5ba.png" alt="a_2 = 63308"/>,
+<img class="math" src="_images/math/8472fe6c298bb0918e7f28034b0c55cabeedd1c3.png" alt="a_3 = -183326"/>,
+<img class="math" src="_images/math/3030dea023df1ab4b0bc6f856f474f23c72fb080.png" alt="b_1 = 86098"/>,
+<img class="math" src="_images/math/f3ef150d9da21504edd7aa0a52ad61ee07b28d5c.png" alt="b_2 = 0"/>,
+<img class="math" src="_images/math/82fedf8611ef20dc38ff3e2325e0aeb200b4f9a8.png" alt="b_3 = -539608"/>,
+and moduli
+<img class="math" src="_images/math/d1238fefb9a47e248d16623457afb8e488a3c975.png" alt="m_1 = 2^{31} - 1 = 2147483647"/>
+and
+<img class="math" src="_images/math/26a2a492f769a827d8ce71d018906952c36ad229.png" alt="m_2 = 2145483479"/>.</p>
+<p>The period of this generator is
+<img class="math" src="_images/math/a4f298309c81a645550b2ac323ff5c97b9019843.png" alt="\hbox{lcm}(m_1^3-1, m_2^3-1)"/>,
+which is approximately
+<img class="math" src="_images/math/dc53ca5a5d7b81c2dee7fc9eed99bb1ae18a62e0.png" alt="2^{185}"/>
+(about <img class="math" src="_images/math/d2d43aaba4bc02a3e321143e00861a7c491561b8.png" alt="10^{56}"/>).
+It uses 6 words of state per generator.  For more information see,</p>
+<ul class="simple">
+<li><p>P. L’Ecuyer, “Combined Multiple Recursive Random Number
+Generators”, Operations Research, 44, 5 (1996), 816–822.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var" id="index-6">
+<dt class="sig sig-object c" id="c.gsl_rng_mrg">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_mrg</span></span></span><a class="headerlink" href="#c.gsl_rng_mrg" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a fifth-order multiple recursive generator by L’Ecuyer, Blouin
+and Coutre.  Its sequence is,</p>
+<div class="math">
+<p><img src="_images/math/3897f6786731aa55286ff34ef5ce3dfefc0605ad.png" alt="x_n = (a_1 x_{n-1} + a_5 x_{n-5}) \mod m"/></p>
+</div><p>with
+<img class="math" src="_images/math/013835b5878b78e2b5d3d98d7da3f9dac1e37c4c.png" alt="a_1 = 107374182"/>,
+<img class="math" src="_images/math/8554cc3897fe5b371f1b78073e3894023f9199d4.png" alt="a_2 = a_3 = a_4 = 0"/>,
+<img class="math" src="_images/math/11f329d6fc9a152333a65ccf6c68d031a0ba6a35.png" alt="a_5 = 104480"/>
+and
+<img class="math" src="_images/math/e109fbb39d4789e794331b6597e4eb38c9fbd5d7.png" alt="m = 2^{31}-1"/>.</p>
+<p>The period of this generator is about
+<img class="math" src="_images/math/89689f58985dc16563fe0d35c6adb542f8926ce0.png" alt="10^{46}"/>.
+It uses 5 words
+of state per generator.  More information can be found in the following
+paper,</p>
+<ul class="simple">
+<li><p>P. L’Ecuyer, F. Blouin, and R. Coutre, “A search for good multiple
+recursive random number generators”, ACM Transactions on Modeling and
+Computer Simulation 3, 87–98 (1993).</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var" id="index-7">
+<dt class="sig sig-object c" id="c.gsl_rng_taus">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_taus</span></span></span><a class="headerlink" href="#c.gsl_rng_taus" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_taus2">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_taus2</span></span></span><a class="headerlink" href="#c.gsl_rng_taus2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a maximally equidistributed combined Tausworthe generator by
+L’Ecuyer.  The sequence is,</p>
+<div class="math">
+<p><img src="_images/math/bcf8c143699da04d77760b7093c7f9db2c986114.png" alt="x_n = (s^1_n \oplus s^2_n \oplus s^3_n)"/></p>
+</div><p>where,</p>
+<div class="math">
+<p><img src="_images/math/7db15fbe0ff4528f457a6e4ed7a4d25c55f63aab.png" alt="s^1_{n+1} &amp;= (((s^1_n \&amp; 4294967294)\ll 12) \oplus (((s^1_n\ll 13) \oplus s^1_n)\gg 19)) \\
+s^2_{n+1} &amp;= (((s^2_n \&amp; 4294967288)\ll 4) \oplus (((s^2_n\ll 2) \oplus s^2_n)\gg 25)) \\
+s^3_{n+1} &amp;= (((s^3_n \&amp; 4294967280)\ll 17) \oplus (((s^3_n\ll 3) \oplus s^3_n)\gg 11))"/></p>
+</div><p>computed modulo
+<img class="math" src="_images/math/70780ab13e3b8c51dcd772fc171f325c0f557f12.png" alt="2^{32}"/>.
+In the formulas above
+<img class="math" src="_images/math/ab9bb2cada3e9a83a24f504fcf8d1493c961d12a.png" alt="\oplus"/>
+denotes <em>exclusive-or</em>.  Note that the algorithm relies on the properties
+of 32-bit unsigned integers and has been implemented using a bitmask
+of <code class="code docutils literal notranslate"><span class="pre">0xFFFFFFFF</span></code> to make it work on 64 bit machines.</p>
+<p>The period of this generator is <img class="math" src="_images/math/0f624e6b321c9909fd546c37854285c97ba9af40.png" alt="2^{88}"/>
+(about <img class="math" src="_images/math/0320235400cbb45c325ca14e0c8907d8ec406d89.png" alt="10^{26}"/>).
+It uses 3 words of state per generator.  For more
+information see,</p>
+<ul class="simple">
+<li><p>P. L’Ecuyer, “Maximally Equidistributed Combined Tausworthe
+Generators”, Mathematics of Computation, 65, 213 (1996), 203–213.</p></li>
+</ul>
+<p>The generator <a class="reference internal" href="#c.gsl_rng_taus2" title="gsl_rng_taus2"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_taus2</span></code></a> uses the same algorithm as
+<a class="reference internal" href="#c.gsl_rng_taus" title="gsl_rng_taus"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_taus</span></code></a> but with an improved seeding procedure described in
+the paper,</p>
+<ul class="simple">
+<li><p>P. L’Ecuyer, “Tables of Maximally Equidistributed Combined LFSR
+Generators”, Mathematics of Computation, 68, 225 (1999), 261–269</p></li>
+</ul>
+<p>The generator <a class="reference internal" href="#c.gsl_rng_taus2" title="gsl_rng_taus2"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_taus2</span></code></a> should now be used in preference to
+<a class="reference internal" href="#c.gsl_rng_taus" title="gsl_rng_taus"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_taus</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-8">
+<dt class="sig sig-object c" id="c.gsl_rng_gfsr4">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_gfsr4</span></span></span><a class="headerlink" href="#c.gsl_rng_gfsr4" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The <code class="code docutils literal notranslate"><span class="pre">gfsr4</span></code> generator is like a lagged-fibonacci generator, and
+produces each number as an <code class="code docutils literal notranslate"><span class="pre">xor</span></code>’d sum of four previous values.</p>
+<div class="math">
+<p><img src="_images/math/0bbddc689618e58b868cc4de5a8fd51d704c2cce.png" alt="r_n = r_{n-A} \oplus r_{n-B} \oplus r_{n-C} \oplus r_{n-D}"/></p>
+</div><p>Ziff (ref below) notes that “it is now widely known” that two-tap
+registers (such as R250, which is described below)
+have serious flaws, the most obvious one being the three-point
+correlation that comes from the definition of the generator.  Nice
+mathematical properties can be derived for GFSR’s, and numerics bears
+out the claim that 4-tap GFSR’s with appropriately chosen offsets are as
+random as can be measured, using the author’s test.</p>
+<p>This implementation uses the values suggested the example on p392 of
+Ziff’s article: <img class="math" src="_images/math/e19ee89962c640c6603bcf8b4b70661100eb7df4.png" alt="A=471"/>, <img class="math" src="_images/math/81da7a3e9656849123ffdc0b5ec6414627c89d18.png" alt="B=1586"/>, <img class="math" src="_images/math/f9145c2edcc0d44dbf89165a076d48d6d44464b8.png" alt="C=6988"/>, <img class="math" src="_images/math/2877f0a8cc47cf7052083f45494de7e0053bb8e6.png" alt="D=9689"/>.</p>
+<p>If the offsets are appropriately chosen (such as the one ones in this
+implementation), then the sequence is said to be maximal; that means
+that the period is <img class="math" src="_images/math/78b5b89d18bdf1dcfb508f3e466cd248bc8b92c1.png" alt="2^D - 1"/>, where <img class="math" src="_images/math/63d10e84cf24903abdb7a8b5e36b743c831a7040.png" alt="D"/> is the longest lag.
+(It is one less than <img class="math" src="_images/math/6088498a0ef5fdadbbed55de69ec93d63b04a78f.png" alt="2^D"/> because it is not permitted to have all
+zeros in the <code class="code docutils literal notranslate"><span class="pre">ra[]</span></code> array.)  For this implementation with
+<img class="math" src="_images/math/2877f0a8cc47cf7052083f45494de7e0053bb8e6.png" alt="D=9689"/> that works out to about <img class="math" src="_images/math/d85956e67e956ecd813efb5d79aa1d4cfe11a088.png" alt="10^{2917}"/>.</p>
+<p>Note that the implementation of this generator using a 32-bit
+integer amounts to 32 parallel implementations of one-bit
+generators.  One consequence of this is that the period of this
+32-bit generator is the same as for the one-bit generator.
+Moreover, this independence means that all 32-bit patterns are
+equally likely, and in particular that 0 is an allowed random
+value.  (We are grateful to Heiko Bauke for clarifying for us these
+properties of GFSR random number generators.)</p>
+<p>For more information see,</p>
+<ul class="simple">
+<li><p>Robert M. Ziff, “Four-tap shift-register-sequence random-number
+generators”, Computers in Physics, 12(4), Jul/Aug
+1998, pp 385–392.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="unix-random-number-generators">
+<h2>Unix random number generators<a class="headerlink" href="#unix-random-number-generators" title="Link to this heading">¶</a></h2>
+<p>The standard Unix random number generators <code class="code docutils literal notranslate"><span class="pre">rand</span></code>, <code class="code docutils literal notranslate"><span class="pre">random</span></code>
+and <code class="code docutils literal notranslate"><span class="pre">rand48</span></code> are provided as part of GSL. Although these
+generators are widely available individually often they aren’t all
+available on the same platform.  This makes it difficult to write
+portable code using them and so we have included the complete set of
+Unix generators in GSL for convenience.  Note that these generators
+don’t produce high-quality randomness and aren’t suitable for work
+requiring accurate statistics.  However, if you won’t be measuring
+statistical quantities and just want to introduce some variation into
+your program then these generators are quite acceptable.</p>
+<dl class="c var" id="index-10">
+<span id="index-9"></span><dt class="sig sig-object c" id="c.gsl_rng_rand">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_rand</span></span></span><a class="headerlink" href="#c.gsl_rng_rand" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the BSD <code class="code docutils literal notranslate"><span class="pre">rand</span></code> generator.  Its sequence is</p>
+<div class="math">
+<p><img src="_images/math/e726c0510b41ed37bc8f8a71a4a49e7752e0f917.png" alt="x_{n+1} = (a x_n + c) \mod m"/></p>
+</div><p>with
+<img class="math" src="_images/math/c79705bba888707e6ffb0a4a17583125ba205a04.png" alt="a = 1103515245"/>,
+<img class="math" src="_images/math/0eaed84beeae086ede7710c83211b18468816d74.png" alt="c = 12345"/> and
+<img class="math" src="_images/math/6cffd369615c8ce3c8930bf26f1a6c419c477c6c.png" alt="m = 2^{31}"/>.
+The seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.  The period of this
+generator is
+<img class="math" src="_images/math/906edaff502b5cb6850f0f261480d86a1904a54b.png" alt="2^{31}"/>,
+and it uses 1 word of storage per generator.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_random_bsd">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_random_bsd</span></span></span><a class="headerlink" href="#c.gsl_rng_random_bsd" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_random_libc5">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_random_libc5</span></span></span><a class="headerlink" href="#c.gsl_rng_random_libc5" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_random_glibc2">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_random_glibc2</span></span></span><a class="headerlink" href="#c.gsl_rng_random_glibc2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These generators implement the <code class="code docutils literal notranslate"><span class="pre">random</span></code> family of functions, a
+set of linear feedback shift register generators originally used in BSD
+Unix.  There are several versions of <code class="code docutils literal notranslate"><span class="pre">random</span></code> in use today: the
+original BSD version (e.g. on SunOS4), a libc5 version (found on
+older GNU/Linux systems) and a glibc2 version.  Each version uses a
+different seeding procedure, and thus produces different sequences.</p>
+<p>The original BSD routines accepted a variable length buffer for the
+generator state, with longer buffers providing higher-quality
+randomness.  The <code class="code docutils literal notranslate"><span class="pre">random</span></code> function implemented algorithms for
+buffer lengths of 8, 32, 64, 128 and 256 bytes, and the algorithm with
+the largest length that would fit into the user-supplied buffer was
+used.  To support these algorithms additional generators are available
+with the following names:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_rng_random8_bsd</span>
+<span class="n">gsl_rng_random32_bsd</span>
+<span class="n">gsl_rng_random64_bsd</span>
+<span class="n">gsl_rng_random128_bsd</span>
+<span class="n">gsl_rng_random256_bsd</span>
+</pre></div>
+</div>
+<p>where the numeric suffix indicates the buffer length.  The original BSD
+<code class="code docutils literal notranslate"><span class="pre">random</span></code> function used a 128-byte default buffer and so
+<a class="reference internal" href="#c.gsl_rng_random_bsd" title="gsl_rng_random_bsd"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_random_bsd</span></code></a> has been made equivalent to
+<code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_random128_bsd</span></code>.  Corresponding versions of the <code class="code docutils literal notranslate"><span class="pre">libc5</span></code>
+and <code class="code docutils literal notranslate"><span class="pre">glibc2</span></code> generators are also available, with the names
+<code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_random8_libc5</span></code>, <code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_random8_glibc2</span></code>, etc.</p>
+</dd></dl>
+
+<dl class="c var" id="index-11">
+<dt class="sig sig-object c" id="c.gsl_rng_rand48">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_rand48</span></span></span><a class="headerlink" href="#c.gsl_rng_rand48" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the Unix <code class="code docutils literal notranslate"><span class="pre">rand48</span></code> generator.  Its sequence is</p>
+<div class="math">
+<p><img src="_images/math/e726c0510b41ed37bc8f8a71a4a49e7752e0f917.png" alt="x_{n+1} = (a x_n + c) \mod m"/></p>
+</div><p>defined on 48-bit unsigned integers with
+<img class="math" src="_images/math/7325dbb00eacb65d64ab49a74bba0f5639da0d56.png" alt="a = 25214903917"/>,
+<img class="math" src="_images/math/ccff678b58ade17dfff4aea64ad15acede4340ba.png" alt="c = 11"/> and
+<img class="math" src="_images/math/23c3adfc93bd3cac73a6a12b5df00094d819db59.png" alt="m = 2^{48}"/>.
+The seed specifies the upper 32 bits of the initial value, <img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>,
+with the lower 16 bits set to <code class="code docutils literal notranslate"><span class="pre">0x330E</span></code>.  The function
+<a class="reference internal" href="#c.gsl_rng_get" title="gsl_rng_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_get()</span></code></a> returns the upper 32 bits from each term of the
+sequence.  This does not have a direct parallel in the original
+<code class="code docutils literal notranslate"><span class="pre">rand48</span></code> functions, but forcing the result to type <code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">int</span></code>
+reproduces the output of <code class="code docutils literal notranslate"><span class="pre">mrand48</span></code>.  The function
+<a class="reference internal" href="#c.gsl_rng_uniform" title="gsl_rng_uniform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_uniform()</span></code></a> uses the full 48 bits of internal state to return
+the double precision number <img class="math" src="_images/math/8aeec1c40c0ef5a507b9d608f18a17e3d3987053.png" alt="x_n/m"/>, which is equivalent to the
+function <code class="code docutils literal notranslate"><span class="pre">drand48</span></code>.  Note that some versions of the GNU C Library
+contained a bug in <code class="code docutils literal notranslate"><span class="pre">mrand48</span></code> function which caused it to produce
+different results (only the lower 16-bits of the return value were set).</p>
+</dd></dl>
+
+</section>
+<section id="other-random-number-generators">
+<h2>Other random number generators<a class="headerlink" href="#other-random-number-generators" title="Link to this heading">¶</a></h2>
+<p>The generators in this section are provided for compatibility with
+existing libraries.  If you are converting an existing program to use GSL
+then you can select these generators to check your new implementation
+against the original one, using the same random number generator.  After
+verifying that your new program reproduces the original results you can
+then switch to a higher-quality generator.</p>
+<p>Note that most of the generators in this section are based on single
+linear congruence relations, which are the least sophisticated type of
+generator.  In particular, linear congruences have poor properties when
+used with a non-prime modulus, as several of these routines do (e.g.
+with a power of two modulus,
+<img class="math" src="_images/math/906edaff502b5cb6850f0f261480d86a1904a54b.png" alt="2^{31}"/> or
+<img class="math" src="_images/math/70780ab13e3b8c51dcd772fc171f325c0f557f12.png" alt="2^{32}"/>).
+This leads to periodicity in the least significant bits of each number,
+with only the higher bits having any randomness.  Thus if you want to
+produce a random bitstream it is best to avoid using the least
+significant bits.</p>
+<dl class="c var" id="index-12">
+<dt class="sig sig-object c" id="c.gsl_rng_ranf">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranf</span></span></span><a class="headerlink" href="#c.gsl_rng_ranf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the CRAY random number generator <code class="code docutils literal notranslate"><span class="pre">RANF</span></code>.  Its sequence is</p>
+<div class="math">
+<p><img src="_images/math/041a23475ec4664427aef86b2ed64d26a4f9c358.png" alt="x_{n+1} = (a x_n) \mod m"/></p>
+</div><p>defined on 48-bit unsigned integers with <img class="math" src="_images/math/8782399ddbad18b6fd92f1973a350be3ef153891.png" alt="a = 44485709377909"/> and
+<img class="math" src="_images/math/23c3adfc93bd3cac73a6a12b5df00094d819db59.png" alt="m = 2^{48}"/>.
+The seed specifies the lower 32 bits of the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>, with the lowest bit set to
+prevent the seed taking an even value.  The upper 16 bits of
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>
+are set to 0. A consequence of this procedure is that the pairs of seeds
+2 and 3, 4 and 5, etc.: produce the same sequences.</p>
+<p>The generator compatible with the CRAY MATHLIB routine RANF. It
+produces double precision floating point numbers which should be
+identical to those from the original RANF.</p>
+<p>There is a subtlety in the implementation of the seeding.  The initial
+state is reversed through one step, by multiplying by the modular
+inverse of <img class="math" src="_images/math/ab8ec5d5a907c2d63aba6be0e2e1abbe131f208c.png" alt="a"/> mod <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/>.  This is done for compatibility with
+the original CRAY implementation.</p>
+<p>Note that you can only seed the generator with integers up to
+<img class="math" src="_images/math/70780ab13e3b8c51dcd772fc171f325c0f557f12.png" alt="2^{32}"/>,
+while the original CRAY implementation uses
+non-portable wide integers which can cover all
+<img class="math" src="_images/math/9908dd6ccc2f3ce64ae42e7f145047f986dee293.png" alt="2^{48}"/>
+states of the generator.</p>
+<p>The function <a class="reference internal" href="#c.gsl_rng_get" title="gsl_rng_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_get()</span></code></a> returns the upper 32 bits from each term
+of the sequence.  The function <a class="reference internal" href="#c.gsl_rng_uniform" title="gsl_rng_uniform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_rng_uniform()</span></code></a> uses the full 48
+bits to return the double precision number <img class="math" src="_images/math/8aeec1c40c0ef5a507b9d608f18a17e3d3987053.png" alt="x_n/m"/>.</p>
+<p>The period of this generator is <img class="math" src="_images/math/9a254cac41d4dde19a0e18e89bb3f68824541c51.png" alt="2^{46}"/>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-13">
+<dt class="sig sig-object c" id="c.gsl_rng_ranmar">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_ranmar</span></span></span><a class="headerlink" href="#c.gsl_rng_ranmar" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the RANMAR lagged-fibonacci generator of Marsaglia, Zaman and
+Tsang.  It is a 24-bit generator, originally designed for
+single-precision IEEE floating point numbers.  It was included in the
+CERNLIB high-energy physics library.</p>
+</dd></dl>
+
+<dl class="c var" id="index-14">
+<dt class="sig sig-object c" id="c.gsl_rng_r250">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_r250</span></span></span><a class="headerlink" href="#c.gsl_rng_r250" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the shift-register generator of Kirkpatrick and Stoll.  The
+sequence is based on the recurrence</p>
+<div class="math">
+<p><img src="_images/math/6a7a1bf88206a19990a12c83e26268fda2844367.png" alt="x_n = x_{n-103} \oplus x_{n-250}"/></p>
+</div><p>where
+<img class="math" src="_images/math/ab9bb2cada3e9a83a24f504fcf8d1493c961d12a.png" alt="\oplus"/>
+denotes <em>exclusive-or</em>, defined on
+32-bit words.  The period of this generator is about <img class="math" src="_images/math/2d4a6684b9192aa6bfd6ce315fbdb40b20ec1a22.png" alt="2^{250}"/> and it
+uses 250 words of state per generator.</p>
+<p>For more information see,</p>
+<ul class="simple">
+<li><p>S. Kirkpatrick and E. Stoll, “A very fast shift-register sequence random
+number generator”, Journal of Computational Physics, 40, 517–526
+(1981)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var" id="index-15">
+<dt class="sig sig-object c" id="c.gsl_rng_tt800">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_tt800</span></span></span><a class="headerlink" href="#c.gsl_rng_tt800" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is an earlier version of the twisted generalized feedback
+shift-register generator, and has been superseded by the development of
+MT19937.  However, it is still an acceptable generator in its own
+right.  It has a period of
+<img class="math" src="_images/math/bce9d2411cc74525a06cb129fb048aef75523083.png" alt="2^{800}"/>
+and uses 33 words of storage per generator.</p>
+<p>For more information see,</p>
+<ul class="simple">
+<li><p>Makoto Matsumoto and Yoshiharu Kurita, “Twisted GFSR Generators
+II”, ACM Transactions on Modelling and Computer Simulation,
+Vol.: 4, No.: 3, 1994, pages 254–266.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var" id="index-16">
+<dt class="sig sig-object c" id="c.gsl_rng_vax">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_vax</span></span></span><a class="headerlink" href="#c.gsl_rng_vax" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the VAX generator <code class="code docutils literal notranslate"><span class="pre">MTH$RANDOM</span></code>.  Its sequence is,</p>
+<div class="math">
+<p><img src="_images/math/e726c0510b41ed37bc8f8a71a4a49e7752e0f917.png" alt="x_{n+1} = (a x_n + c) \mod m"/></p>
+</div><p>with
+<img class="math" src="_images/math/484ec210cf4f0051bbb4d219d4a6ff9ef98a5ea1.png" alt="a = 69069"/>, <img class="math" src="_images/math/43cb59c460acd4b894e8d23b2b56e84e918d2ae0.png" alt="c = 1"/> and
+<img class="math" src="_images/math/8c708a6545feb36060fc118839e5534cee08d6a0.png" alt="m = 2^{32}"/>.
+The seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.  The
+period of this generator is
+<img class="math" src="_images/math/70780ab13e3b8c51dcd772fc171f325c0f557f12.png" alt="2^{32}"/>
+and it uses 1 word of storage per
+generator.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_transputer">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_transputer</span></span></span><a class="headerlink" href="#c.gsl_rng_transputer" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the random number generator from the INMOS Transputer
+Development system.  Its sequence is,</p>
+<div class="math">
+<p><img src="_images/math/041a23475ec4664427aef86b2ed64d26a4f9c358.png" alt="x_{n+1} = (a x_n) \mod m"/></p>
+</div><p>with <img class="math" src="_images/math/79765a95f8c26d00cbe4b4f9e8a408900cfaf6a3.png" alt="a = 1664525"/> and
+<img class="math" src="_images/math/8c708a6545feb36060fc118839e5534cee08d6a0.png" alt="m = 2^{32}"/>.
+The seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-17">
+<dt class="sig sig-object c" id="c.gsl_rng_randu">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_randu</span></span></span><a class="headerlink" href="#c.gsl_rng_randu" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the IBM <code class="code docutils literal notranslate"><span class="pre">RANDU</span></code> generator.  Its sequence is</p>
+<div class="math">
+<p><img src="_images/math/041a23475ec4664427aef86b2ed64d26a4f9c358.png" alt="x_{n+1} = (a x_n) \mod m"/></p>
+</div><p>with <img class="math" src="_images/math/64000c7c36629a91a79accffd2dabf7a9a3770fe.png" alt="a = 65539"/> and
+<img class="math" src="_images/math/6cffd369615c8ce3c8930bf26f1a6c419c477c6c.png" alt="m = 2^{31}"/>. The
+seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.  The period of this
+generator was only
+<img class="math" src="_images/math/932e10cf4cd217344c53cd0494b8b43f4bc5307e.png" alt="2^{29}"/>.
+It has become a textbook example of a poor generator.</p>
+</dd></dl>
+
+<dl class="c var" id="index-18">
+<dt class="sig sig-object c" id="c.gsl_rng_minstd">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_minstd</span></span></span><a class="headerlink" href="#c.gsl_rng_minstd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is Park and Miller’s “minimal standard” MINSTD generator, a
+simple linear congruence which takes care to avoid the major pitfalls of
+such algorithms.  Its sequence is,</p>
+<div class="math">
+<p><img src="_images/math/041a23475ec4664427aef86b2ed64d26a4f9c358.png" alt="x_{n+1} = (a x_n) \mod m"/></p>
+</div><p>with <img class="math" src="_images/math/548afd28e2b8f97485dd3fe28c3baa3314aebe24.png" alt="a = 16807"/> and
+<img class="math" src="_images/math/d9029fd3b05c17f454ecb738fc53232fb6f4f680.png" alt="m = 2^{31} - 1 = 2147483647"/>.
+The seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.  The period of this
+generator is about
+<img class="math" src="_images/math/906edaff502b5cb6850f0f261480d86a1904a54b.png" alt="2^{31}"/>.</p>
+<p>This generator was used in the IMSL Library (subroutine RNUN) and in
+MATLAB (the RAND function) in the past.  It is also sometimes known by
+the acronym “GGL” (I’m not sure what that stands for).</p>
+<p>For more information see,</p>
+<ul class="simple">
+<li><p>Park and Miller, “Random Number Generators: Good ones are hard to find”,
+Communications of the ACM, October 1988, Volume 31, No 10, pages
+1192–1201.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_uni">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_uni</span></span></span><a class="headerlink" href="#c.gsl_rng_uni" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_uni32">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_uni32</span></span></span><a class="headerlink" href="#c.gsl_rng_uni32" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a reimplementation of the 16-bit SLATEC random number generator
+RUNIF. A generalization of the generator to 32 bits is provided by
+<a class="reference internal" href="#c.gsl_rng_uni32" title="gsl_rng_uni32"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_uni32</span></code></a>.  The original source code is available from NETLIB.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_slatec">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_slatec</span></span></span><a class="headerlink" href="#c.gsl_rng_slatec" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the SLATEC random number generator RAND. It is ancient.  The
+original source code is available from NETLIB.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_zuf">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_zuf</span></span></span><a class="headerlink" href="#c.gsl_rng_zuf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the ZUFALL lagged Fibonacci series generator of Peterson.  Its
+sequence is,</p>
+<div class="math">
+<p><img src="_images/math/9189785d945ed489f6ba3e05345c284e8a8c82e6.png" alt="t &amp;= u_{n-273} + u_{n-607} \\
+u_n  &amp;= t - \hbox{floor}(t)"/></p>
+</div><p>The original source code is available from NETLIB.  For more information
+see,</p>
+<ul class="simple">
+<li><p>W. Petersen, “Lagged Fibonacci Random Number Generators for the NEC
+SX-3”, International Journal of High Speed Computing (1994).</p></li>
+</ul>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_knuthran2">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_knuthran2</span></span></span><a class="headerlink" href="#c.gsl_rng_knuthran2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a second-order multiple recursive generator described by Knuth
+in Seminumerical Algorithms, 3rd Ed., page 108.  Its sequence is,</p>
+<div class="math">
+<p><img src="_images/math/13ba56457ba06508a3fc04cb82ada4970e6fa610.png" alt="x_n = (a_1 x_{n-1} + a_2 x_{n-2}) \mod m"/></p>
+</div><p>with
+<img class="math" src="_images/math/90bee75f95179f78b25b3a0ccd1deec19ce000c9.png" alt="a_1 = 271828183"/>,
+<img class="math" src="_images/math/bf82e6571c51f5efb2cb718107759bd893d193bd.png" alt="a_2 = 314159269"/>,
+and
+<img class="math" src="_images/math/e109fbb39d4789e794331b6597e4eb38c9fbd5d7.png" alt="m = 2^{31}-1"/>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_knuthran2002">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_knuthran2002</span></span></span><a class="headerlink" href="#c.gsl_rng_knuthran2002" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_knuthran">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_knuthran</span></span></span><a class="headerlink" href="#c.gsl_rng_knuthran" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a second-order multiple recursive generator described by Knuth
+in Seminumerical Algorithms, 3rd Ed., Section 3.6.  Knuth
+provides its C code.  The updated routine <a class="reference internal" href="#c.gsl_rng_knuthran2002" title="gsl_rng_knuthran2002"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_knuthran2002</span></code></a>
+is from the revised 9th printing and corrects some weaknesses in the
+earlier version, which is implemented as <a class="reference internal" href="#c.gsl_rng_knuthran" title="gsl_rng_knuthran"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_rng_knuthran</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_borosh13">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_borosh13</span></span></span><a class="headerlink" href="#c.gsl_rng_borosh13" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_fishman18">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_fishman18</span></span></span><a class="headerlink" href="#c.gsl_rng_fishman18" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_fishman20">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_fishman20</span></span></span><a class="headerlink" href="#c.gsl_rng_fishman20" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_lecuyer21">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_lecuyer21</span></span></span><a class="headerlink" href="#c.gsl_rng_lecuyer21" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_rng_waterman14">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_waterman14</span></span></span><a class="headerlink" href="#c.gsl_rng_waterman14" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These multiplicative generators are taken from Knuth’s
+Seminumerical Algorithms, 3rd Ed., pages 106–108. Their sequence
+is,</p>
+<div class="math">
+<p><img src="_images/math/041a23475ec4664427aef86b2ed64d26a4f9c358.png" alt="x_{n+1} = (a x_n) \mod m"/></p>
+</div><p>where the seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.
+The parameters <img class="math" src="_images/math/ab8ec5d5a907c2d63aba6be0e2e1abbe131f208c.png" alt="a"/> and <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/> are as follows,
+Borosh-Niederreiter:
+<img class="math" src="_images/math/80fee606389cfab48f4d9608a276c6942ce76935.png" alt="a = 1812433253"/>, <img class="math" src="_images/math/8c708a6545feb36060fc118839e5534cee08d6a0.png" alt="m = 2^{32}"/>,
+Fishman18:
+<img class="math" src="_images/math/c060807026097a5afa74e37833a1435e02b1db3f.png" alt="a = 62089911"/>,
+<img class="math" src="_images/math/e109fbb39d4789e794331b6597e4eb38c9fbd5d7.png" alt="m = 2^{31}-1"/>,
+Fishman20:
+<img class="math" src="_images/math/3ca7b7277f09c0e47cb3abe4c838556b24d31747.png" alt="a = 48271"/>,
+<img class="math" src="_images/math/e109fbb39d4789e794331b6597e4eb38c9fbd5d7.png" alt="m = 2^{31}-1"/>,
+L’Ecuyer:
+<img class="math" src="_images/math/e2e8aece2888bd2c72270e6e2d93f627df8ed91d.png" alt="a = 40692"/>,
+<img class="math" src="_images/math/6454e195ec39ba69153d35c710a68097e2379f26.png" alt="m = 2^{31}-249"/>,
+Waterman:
+<img class="math" src="_images/math/fb710abd5f3b4454170195882cc786f9c23f474c.png" alt="a = 1566083941"/>,
+<img class="math" src="_images/math/8c708a6545feb36060fc118839e5534cee08d6a0.png" alt="m = 2^{32}"/>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_fishman2x">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_fishman2x</span></span></span><a class="headerlink" href="#c.gsl_rng_fishman2x" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the L’Ecuyer–Fishman random number generator. It is taken from
+Knuth’s Seminumerical Algorithms, 3rd Ed., page 108. Its sequence
+is,</p>
+<div class="math">
+<p><img src="_images/math/1a9b8049a569119750b2b9ac5467d5fcb5b9b905.png" alt="z_{n+1} = (x_n - y_n) \mod m"/></p>
+</div><p>with <img class="math" src="_images/math/e109fbb39d4789e794331b6597e4eb38c9fbd5d7.png" alt="m = 2^{31}-1"/>.
+<img class="math" src="_images/math/e6ef00520aef7763ed9eee8215bf827a194a863e.png" alt="x_n"/> and <img class="math" src="_images/math/4ffcd87c1370fb7e9313836545d5e1bc3f51ccff.png" alt="y_n"/> are given by the <code class="code docutils literal notranslate"><span class="pre">fishman20</span></code>
+and <code class="code docutils literal notranslate"><span class="pre">lecuyer21</span></code> algorithms.
+The seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_rng_coveyou">
+<a class="reference internal" href="#c.gsl_rng_type" title="gsl_rng_type"><span class="n"><span class="pre">gsl_rng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_rng_coveyou</span></span></span><a class="headerlink" href="#c.gsl_rng_coveyou" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the Coveyou random number generator. It is taken from Knuth’s
+Seminumerical Algorithms, 3rd Ed., Section 3.2.2. Its sequence
+is,</p>
+<div class="math">
+<p><img src="_images/math/b8e53ee8b4a650488c3459a9ee79be02636126fa.png" alt="x_{n+1} = (x_n (x_n + 1)) \mod m"/></p>
+</div><p>with <img class="math" src="_images/math/8c708a6545feb36060fc118839e5534cee08d6a0.png" alt="m = 2^{32}"/>.
+The seed specifies the initial value,
+<img class="math" src="_images/math/24602676470d1b68669ee2c8c4d27881b06c2bfb.png" alt="x_1"/>.</p>
+</dd></dl>
+
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading">¶</a></h2>
+<p>The following table shows the relative performance of a selection the
+available random number generators.  The fastest simulation quality
+generators are <code class="code docutils literal notranslate"><span class="pre">taus</span></code>, <code class="code docutils literal notranslate"><span class="pre">gfsr4</span></code> and <code class="code docutils literal notranslate"><span class="pre">mt19937</span></code>.  The
+generators which offer the best mathematically-proven quality are those
+based on the RANLUX algorithm:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1754</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">870</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">taus</span>
+<span class="mi">1613</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">855</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">gfsr4</span>
+<span class="mi">1370</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">769</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">mt19937</span>
+ <span class="mi">565</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">571</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlxs0</span>
+ <span class="mi">400</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">405</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlxs1</span>
+ <span class="mi">490</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">389</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">mrg</span>
+ <span class="mi">407</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">297</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlux</span>
+ <span class="mi">243</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">254</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlxd1</span>
+ <span class="mi">251</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">253</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlxs2</span>
+ <span class="mi">238</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">215</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">cmrg</span>
+ <span class="mi">247</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">198</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlux389</span>
+ <span class="mi">141</span> <span class="n">k</span> <span class="n">ints</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span>    <span class="mi">140</span> <span class="n">k</span> <span class="n">doubles</span><span class="o">/</span><span class="n">sec</span><span class="p">,</span> <span class="n">ranlxd2</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following program demonstrates the use of a random number generator
+to produce uniform random numbers in the range [0.0, 1.0),</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+
+  <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+  <span class="n">gsl_rng_env_setup</span><span class="p">();</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">u</span> <span class="o">=</span> <span class="n">gsl_rng_uniform</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.5f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output of the program,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.99974</span>
+<span class="mf">0.16291</span>
+<span class="mf">0.28262</span>
+<span class="mf">0.94720</span>
+<span class="mf">0.23166</span>
+<span class="mf">0.48497</span>
+<span class="mf">0.95748</span>
+<span class="mf">0.74431</span>
+<span class="mf">0.54004</span>
+<span class="mf">0.73995</span>
+</pre></div>
+</div>
+<p>The numbers depend on the seed used by the generator.  The default seed
+can be changed with the <a class="reference internal" href="#c.GSL_RNG_SEED" title="GSL_RNG_SEED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_SEED</span></code></a> environment variable to
+produce a different stream of numbers.  The generator itself can be
+changed using the environment variable <a class="reference internal" href="#c.GSL_RNG_TYPE" title="GSL_RNG_TYPE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_RNG_TYPE</span></code></a>.  Here is the
+output of the program using a seed value of 123 and the
+multiple-recursive generator <code class="code docutils literal notranslate"><span class="pre">mrg</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ GSL_RNG_SEED=123 GSL_RNG_TYPE=mrg ./a.out
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.33050</span>
+<span class="mf">0.86631</span>
+<span class="mf">0.32982</span>
+<span class="mf">0.67620</span>
+<span class="mf">0.53391</span>
+<span class="mf">0.06457</span>
+<span class="mf">0.16847</span>
+<span class="mf">0.70229</span>
+<span class="mf">0.04371</span>
+<span class="mf">0.86374</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The subject of random number generation and testing is reviewed
+extensively in Knuth’s <em>Seminumerical Algorithms</em>.</p>
+<ul class="simple">
+<li><p>Donald E. Knuth, The Art of Computer Programming: Seminumerical
+Algorithms (Vol 2, 3rd Ed, 1997), Addison-Wesley, ISBN 0201896842.</p></li>
+</ul>
+<p>Further information is available in the review paper written by Pierre
+L’Ecuyer,</p>
+<ul class="simple">
+<li><p>P. L’Ecuyer, “Random Number Generation”, Chapter 4 of the
+Handbook on Simulation, Jerry Banks Ed., Wiley, 1998, 93–137.</p></li>
+<li><p><a class="reference external" href="http://www.iro.umontreal.ca/~lecuyer/papers.html">http://www.iro.umontreal.ca/~lecuyer/papers.html</a> in the file <code class="file docutils literal notranslate"><span class="pre">handsim.ps</span></code>.</p></li>
+</ul>
+<p>The source code for the DIEHARD random number generator tests is also
+available online,</p>
+<ul class="simple">
+<li><p>DIEHARD source code, G. Marsaglia, <a class="reference external" href="http://stat.fsu.edu/pub/diehard/">http://stat.fsu.edu/pub/diehard/</a></p></li>
+</ul>
+<p>A comprehensive set of random number generator tests is available from
+NIST,</p>
+<ul class="simple">
+<li><p>NIST Special Publication 800-22, “A Statistical Test Suite for the
+Validation of Random Number Generators and Pseudo Random Number
+Generators for Cryptographic Applications”.</p></li>
+<li><p><a class="reference external" href="http://csrc.nist.gov/rng/">http://csrc.nist.gov/rng/</a></p></li>
+</ul>
+</section>
+<section id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">¶</a></h2>
+<p>Thanks to Makoto Matsumoto, Takuji Nishimura and Yoshiharu Kurita for
+making the source code to their generators (MT19937, MM&amp;TN; TT800,
+MM&amp;YK) available under the GNU General Public License.  Thanks to Martin
+Luscher for providing notes and source code for the RANLXS and
+RANLXD generators.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="integration.html" class="btn btn-neutral float-left" title="Numerical Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qrng.html" class="btn btn-neutral float-right" title="Quasi-Random Sequences" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

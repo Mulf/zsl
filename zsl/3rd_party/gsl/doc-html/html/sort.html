@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BLAS Support" href="blas.html" />
+    <link rel="prev" title="Multisets" href="multiset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sorting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sorting-objects">Sorting objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sorting-vectors">Sorting vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selecting-the-k-smallest-or-largest-elements">Selecting the k smallest or largest elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computing-the-rank">Computing the rank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sorting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sort.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="multiset.html" class="btn btn-neutral float-left" title="Multisets" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blas.html" class="btn btn-neutral float-right" title="BLAS Support" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sorting">
+<span id="index-0"></span><h1>Sorting<a class="headerlink" href="#sorting" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for sorting data, both directly and
+indirectly (using an index).  All the functions use the <em>heapsort</em>
+algorithm.  Heapsort is an <img class="math" src="_images/math/3b993a525106eca0722a032283c499f5e7dfa6dd.png" alt="O(N \log N)"/> algorithm which operates
+in-place and does not require any additional storage.  It also provides
+consistent performance, the running time for its worst-case (ordered
+data) being not significantly longer than the average and best cases.
+Note that the heapsort algorithm does not preserve the relative ordering
+of equal elements—it is an <em>unstable</em> sort.  However the resulting
+order of equal elements will be consistent across different platforms
+when using these functions.</p>
+<section id="sorting-objects">
+<h2>Sorting objects<a class="headerlink" href="#sorting-objects" title="Link to this heading">¶</a></h2>
+<p>The following function provides a simple alternative to the standard
+library function <code class="xref c c-func docutils literal notranslate"><span class="pre">qsort()</span></code>.  It is intended for systems lacking
+<code class="xref c c-func docutils literal notranslate"><span class="pre">qsort()</span></code>, not as a replacement for it.  The function <code class="xref c c-func docutils literal notranslate"><span class="pre">qsort()</span></code>
+should be used whenever possible, as it will be faster and can provide
+stable ordering of equal elements.  Documentation for <code class="xref c c-func docutils literal notranslate"><span class="pre">qsort()</span></code> is
+available in the GNU C Library Reference Manual.</p>
+<p>The functions described in this section are defined in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_heapsort.h</span></code>.</p>
+<dl class="c function" id="index-1">
+<dt class="sig sig-object c" id="c.gsl_heapsort">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_heapsort</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">array</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">count</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <a class="reference internal" href="#c.gsl_heapsort.gsl_comparison_fn_t" title="gsl_comparison_fn_t"><span class="n"><span class="pre">gsl_comparison_fn_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">compare</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_heapsort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sorts the <a class="reference internal" href="#c.gsl_heapsort" title="count"><code class="xref c c-data docutils literal notranslate"><span class="pre">count</span></code></a> elements of the array <a class="reference internal" href="#c.gsl_heapsort" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a>,
+each of size <a class="reference internal" href="#c.gsl_heapsort" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>, into ascending order using the comparison
+function <a class="reference internal" href="#c.gsl_heapsort" title="compare"><code class="xref c c-data docutils literal notranslate"><span class="pre">compare</span></code></a>.  The type of the comparison function is defined by</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_heapsort.gsl_comparison_fn_t">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_comparison_fn_t</span></span></span><a class="headerlink" href="#c.gsl_heapsort.gsl_comparison_fn_t" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">gsl_comparison_fn_t</span><span class="p">)</span> <span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">const</span> <span class="n">void</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>A comparison function should return a negative integer if the first
+argument is less than the second argument, <code class="code docutils literal notranslate"><span class="pre">0</span></code> if the two arguments
+are equal and a positive integer if the first argument is greater than
+the second argument.</p>
+<p>For example, the following function can be used to sort doubles into
+ascending numerical order.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">compare_doubles</span> <span class="p">(</span><span class="n">const</span> <span class="n">double</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">const</span> <span class="n">double</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">a</span> <span class="o">&gt;</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The appropriate function call to perform the sort is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_heapsort</span> <span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">double</span><span class="p">),</span> <span class="n">compare_doubles</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that unlike <code class="xref c c-func docutils literal notranslate"><span class="pre">qsort()</span></code> the heapsort algorithm cannot be made into
+a stable sort by pointer arithmetic.  The trick of comparing pointers for
+equal elements in the comparison function does not work for the heapsort
+algorithm.  The heapsort algorithm performs an internal rearrangement of
+the data which destroys its initial ordering.</p>
+</dd></dl>
+
+<dl class="c function" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_heapsort_index">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_heapsort_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">array</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">count</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="n"><span class="pre">gsl_comparison_fn_t</span></span><span class="w"> </span><span class="n"><span class="pre">compare</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_heapsort_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function indirectly sorts the <a class="reference internal" href="#c.gsl_heapsort_index" title="count"><code class="xref c c-data docutils literal notranslate"><span class="pre">count</span></code></a> elements of the array
+<a class="reference internal" href="#c.gsl_heapsort_index" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a>, each of size <a class="reference internal" href="#c.gsl_heapsort_index" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>, into ascending order using the
+comparison function <a class="reference internal" href="#c.gsl_heapsort_index" title="compare"><code class="xref c c-data docutils literal notranslate"><span class="pre">compare</span></code></a>.  The resulting permutation is stored
+in <a class="reference internal" href="#c.gsl_heapsort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>, an array of length <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>.  The elements of <a class="reference internal" href="#c.gsl_heapsort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> give the
+index of the array element which would have been stored in that position
+if the array had been sorted in place.  The first element of <a class="reference internal" href="#c.gsl_heapsort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>
+gives the index of the least element in <a class="reference internal" href="#c.gsl_heapsort_index" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a>, and the last
+element of <a class="reference internal" href="#c.gsl_heapsort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> gives the index of the greatest element in
+<a class="reference internal" href="#c.gsl_heapsort_index" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a>.  The array itself is not changed.</p>
+</dd></dl>
+
+</section>
+<section id="sorting-vectors">
+<h2>Sorting vectors<a class="headerlink" href="#sorting-vectors" title="Link to this heading">¶</a></h2>
+<p>The following functions will sort the elements of an array or vector,
+either directly or indirectly.  They are defined for all real and integer
+types using the normal suffix rules.  For example, the <code class="code docutils literal notranslate"><span class="pre">float</span></code>
+versions of the array functions are <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort_float()</span></code> and
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort_float_index()</span></code>.  The corresponding vector functions are
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort_vector_float()</span></code> and <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort_vector_float_index()</span></code>.  The
+prototypes are available in the header files <code class="file docutils literal notranslate"><span class="pre">gsl_sort_float.h</span></code>
+<code class="file docutils literal notranslate"><span class="pre">gsl_sort_vector_float.h</span></code>.  The complete set of prototypes can be
+included using the header files <code class="file docutils literal notranslate"><span class="pre">gsl_sort.h</span></code> and
+<code class="file docutils literal notranslate"><span class="pre">gsl_sort_vector.h</span></code>.</p>
+<p>There are no functions for sorting complex arrays or vectors, since the
+ordering of complex numbers is not uniquely defined.  To sort a complex
+vector by magnitude compute a real vector containing the magnitudes
+of the complex elements, and sort this vector indirectly.  The resulting
+index gives the appropriate ordering of the original complex vector.</p>
+<dl class="c function" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_sort">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sorts the <a class="reference internal" href="#c.gsl_sort" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> elements of the array <a class="reference internal" href="#c.gsl_sort" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> with
+stride <a class="reference internal" href="#c.gsl_sort" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> into ascending numerical order.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort2">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort2</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride2</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sorts the <a class="reference internal" href="#c.gsl_sort2" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> elements of the array <a class="reference internal" href="#c.gsl_sort2" title="data1"><code class="xref c c-data docutils literal notranslate"><span class="pre">data1</span></code></a> with
+stride <a class="reference internal" href="#c.gsl_sort2" title="stride1"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride1</span></code></a> into ascending numerical order, while making the
+same rearrangement of the array <a class="reference internal" href="#c.gsl_sort2" title="data2"><code class="xref c c-data docutils literal notranslate"><span class="pre">data2</span></code></a> with stride <a class="reference internal" href="#c.gsl_sort2" title="stride2"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride2</span></code></a>,
+also of size <a class="reference internal" href="#c.gsl_sort2" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_vector">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sorts the elements of the vector <a class="reference internal" href="#c.gsl_sort_vector" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> into ascending
+numerical order.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_vector2">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector2</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v1</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sorts the elements of the vector <a class="reference internal" href="#c.gsl_sort_vector2" title="v1"><code class="xref c c-data docutils literal notranslate"><span class="pre">v1</span></code></a> into ascending
+numerical order, while making the same rearrangement of the vector <a class="reference internal" href="#c.gsl_sort_vector2" title="v2"><code class="xref c c-data docutils literal notranslate"><span class="pre">v2</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-4">
+<dt class="sig sig-object c" id="c.gsl_sort_index">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function indirectly sorts the <a class="reference internal" href="#c.gsl_sort_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> elements of the array
+<a class="reference internal" href="#c.gsl_sort_index" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> with stride <a class="reference internal" href="#c.gsl_sort_index" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> into ascending order, storing the
+resulting permutation in <a class="reference internal" href="#c.gsl_sort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  The array <a class="reference internal" href="#c.gsl_sort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> must be allocated with
+a sufficient length to store the <a class="reference internal" href="#c.gsl_sort_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> elements of the permutation.
+The elements of <a class="reference internal" href="#c.gsl_sort_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> give the index of the array element which would
+have been stored in that position if the array had been sorted in place.
+The array <a class="reference internal" href="#c.gsl_sort_index" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> is not changed.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_vector_index">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector_index</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="permutation.html#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function indirectly sorts the elements of the vector <a class="reference internal" href="#c.gsl_sort_vector_index" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> into
+ascending order, storing the resulting permutation in <a class="reference internal" href="#c.gsl_sort_vector_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  The
+elements of <a class="reference internal" href="#c.gsl_sort_vector_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> give the index of the vector element which would
+have been stored in that position if the vector had been sorted in
+place.  The first element of <a class="reference internal" href="#c.gsl_sort_vector_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> gives the index of the least element
+in <a class="reference internal" href="#c.gsl_sort_vector_index" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a>, and the last element of <a class="reference internal" href="#c.gsl_sort_vector_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> gives the index of the
+greatest element in <a class="reference internal" href="#c.gsl_sort_vector_index" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a>.  The vector <a class="reference internal" href="#c.gsl_sort_vector_index" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> is not changed.</p>
+</dd></dl>
+
+</section>
+<section id="selecting-the-k-smallest-or-largest-elements">
+<h2>Selecting the k smallest or largest elements<a class="headerlink" href="#selecting-the-k-smallest-or-largest-elements" title="Link to this heading">¶</a></h2>
+<p>The functions described in this section select the <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> smallest
+or largest elements of a data set of size <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/>.  The routines use an
+<img class="math" src="_images/math/d26cd8e9fb77c241d5440e421fb9ae8dec0b3f89.png" alt="O(kN)"/> direct insertion algorithm which is suited to subsets that
+are small compared with the total size of the dataset. For example, the
+routines are useful for selecting the 10 largest values from one million
+data points, but not for selecting the largest 100,000 values.  If the
+subset is a significant part of the total dataset it may be faster
+to sort all the elements of the dataset directly with an <img class="math" src="_images/math/3b993a525106eca0722a032283c499f5e7dfa6dd.png" alt="O(N \log N)"/>
+algorithm and obtain the smallest or largest values that way.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_smallest">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_smallest</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_smallest" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the <a class="reference internal" href="#c.gsl_sort_smallest" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> smallest elements of the array
+<a class="reference internal" href="#c.gsl_sort_smallest" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>, of size <a class="reference internal" href="#c.gsl_sort_smallest" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_sort_smallest" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>, in ascending
+numerical order into the array <a class="reference internal" href="#c.gsl_sort_smallest" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>.  The size <a class="reference internal" href="#c.gsl_sort_smallest" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> of the subset must be
+less than or equal to <a class="reference internal" href="#c.gsl_sort_smallest" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.  The data <a class="reference internal" href="#c.gsl_sort_smallest" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> is not modified by
+this operation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_largest">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_largest</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_largest" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the <a class="reference internal" href="#c.gsl_sort_largest" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> largest elements of the array
+<a class="reference internal" href="#c.gsl_sort_largest" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>, of size <a class="reference internal" href="#c.gsl_sort_largest" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_sort_largest" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>, in descending
+numerical order into the array <a class="reference internal" href="#c.gsl_sort_largest" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>. <a class="reference internal" href="#c.gsl_sort_largest" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> must be
+less than or equal to <a class="reference internal" href="#c.gsl_sort_largest" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>. The data <a class="reference internal" href="#c.gsl_sort_largest" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> is not modified by
+this operation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_vector_smallest">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector_smallest</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector_smallest" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_sort_vector_largest">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector_largest</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector_largest" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions copy the <a class="reference internal" href="#c.gsl_sort_vector_largest" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> smallest or largest elements of the
+vector <a class="reference internal" href="#c.gsl_sort_vector_largest" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> into the array <a class="reference internal" href="#c.gsl_sort_vector_largest" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>. <a class="reference internal" href="#c.gsl_sort_vector_largest" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a>
+must be less than or equal to the length of the vector <a class="reference internal" href="#c.gsl_sort_vector_largest" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a>.</p>
+</dd></dl>
+
+<p>The following functions find the indices of the <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> smallest or
+largest elements of a dataset.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_smallest_index">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_smallest_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_smallest_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function stores the indices of the <a class="reference internal" href="#c.gsl_sort_smallest_index" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> smallest elements of
+the array <a class="reference internal" href="#c.gsl_sort_smallest_index" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>, of size <a class="reference internal" href="#c.gsl_sort_smallest_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_sort_smallest_index" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>, in the
+array <a class="reference internal" href="#c.gsl_sort_smallest_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  The indices are chosen so that the corresponding data is
+in ascending numerical order.  <a class="reference internal" href="#c.gsl_sort_smallest_index" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> must be
+less than or equal to <a class="reference internal" href="#c.gsl_sort_smallest_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>. The data <a class="reference internal" href="#c.gsl_sort_smallest_index" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> is not modified by
+this operation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_largest_index">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_largest_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_largest_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function stores the indices of the <a class="reference internal" href="#c.gsl_sort_largest_index" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> largest elements of
+the array <a class="reference internal" href="#c.gsl_sort_largest_index" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>, of size <a class="reference internal" href="#c.gsl_sort_largest_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_sort_largest_index" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>, in the
+array <a class="reference internal" href="#c.gsl_sort_largest_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  The indices are chosen so that the corresponding data is
+in descending numerical order.  <a class="reference internal" href="#c.gsl_sort_largest_index" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> must be
+less than or equal to <a class="reference internal" href="#c.gsl_sort_largest_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>. The data <a class="reference internal" href="#c.gsl_sort_largest_index" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> is not modified by
+this operation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sort_vector_smallest_index">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector_smallest_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector_smallest_index" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_sort_vector_largest_index">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sort_vector_largest_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sort_vector_largest_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions store the indices of the <a class="reference internal" href="#c.gsl_sort_vector_largest_index" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> smallest or largest
+elements of the vector <a class="reference internal" href="#c.gsl_sort_vector_largest_index" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> in the array <a class="reference internal" href="#c.gsl_sort_vector_largest_index" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>. <a class="reference internal" href="#c.gsl_sort_vector_largest_index" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> must be less than or equal to the length of the vector
+<a class="reference internal" href="#c.gsl_sort_vector_largest_index" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="computing-the-rank">
+<h2>Computing the rank<a class="headerlink" href="#computing-the-rank" title="Link to this heading">¶</a></h2>
+<p>The <em>rank</em> of an element is its order in the sorted data.  The rank
+is the inverse of the index permutation, <img class="math" src="_images/math/fb0d29f420855f76f8e9deaf5ff8c5580e97a4f0.png" alt="p"/>.  It can be computed
+using the following algorithm:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">size_t</span> <span class="n">pi</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">rank</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>This can be computed directly from the function
+<code class="code docutils literal notranslate"><span class="pre">gsl_permutation_inverse(rank,p)</span></code>.</p>
+<p>The following function will print the rank of each element of the vector
+<img class="math" src="_images/math/5fdec03022aa06df18d924e8a33c9d7c6db2ebc8.png" alt="v"/>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span>
+<span class="n">print_rank</span> <span class="p">(</span><span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+  <span class="n">gsl_permutation</span> <span class="o">*</span> <span class="n">perm</span> <span class="o">=</span> <span class="n">gsl_permutation_alloc</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">gsl_permutation</span> <span class="o">*</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">gsl_permutation_alloc</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">gsl_sort_vector_index</span> <span class="p">(</span><span class="n">perm</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+  <span class="n">gsl_permutation_inverse</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">perm</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">vi</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;element = </span><span class="si">%d</span><span class="s2">, value = </span><span class="si">%g</span><span class="s2">, rank = </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+               <span class="n">i</span><span class="p">,</span> <span class="n">vi</span><span class="p">,</span> <span class="n">rank</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_permutation_free</span> <span class="p">(</span><span class="n">perm</span><span class="p">);</span>
+  <span class="n">gsl_permutation_free</span> <span class="p">(</span><span class="n">rank</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following example shows how to use the permutation <img class="math" src="_images/math/fb0d29f420855f76f8e9deaf5ff8c5580e97a4f0.png" alt="p"/> to print
+the elements of the vector <img class="math" src="_images/math/5fdec03022aa06df18d924e8a33c9d7c6db2ebc8.png" alt="v"/> in ascending order:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_sort_vector_index</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">double</span> <span class="n">vpi</span> <span class="o">=</span> <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;order = </span><span class="si">%d</span><span class="s2">, value = </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">vpi</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>The next example uses the function <a class="reference internal" href="#c.gsl_sort_smallest" title="gsl_sort_smallest"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort_smallest()</span></code></a> to select
+the 5 smallest numbers from 100000 uniform random variates stored in an
+array,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_sort_double.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">100000</span><span class="p">;</span>
+
+  <span class="n">double</span> <span class="o">*</span> <span class="n">x</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">double</span><span class="p">));</span>
+  <span class="n">double</span> <span class="o">*</span> <span class="n">small</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">double</span><span class="p">));</span>
+
+  <span class="n">gsl_rng_env_setup</span><span class="p">();</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gsl_rng_uniform</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_sort_smallest</span> <span class="p">(</span><span class="n">small</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;%zu smallest values from %zu</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;%zu: </span><span class="si">%.18f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">small</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">free</span> <span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">free</span> <span class="p">(</span><span class="n">small</span><span class="p">);</span>
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output lists the 5 smallest values, in ascending order,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">5</span> <span class="n">smallest</span> <span class="n">values</span> <span class="kn">from</span><span class="w"> </span><span class="mi">100000</span>
+<span class="mi">0</span><span class="p">:</span> <span class="mf">0.000003489200025797</span>
+<span class="mi">1</span><span class="p">:</span> <span class="mf">0.000008199829608202</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mf">0.000008953968062997</span>
+<span class="mi">3</span><span class="p">:</span> <span class="mf">0.000010712770745158</span>
+<span class="mi">4</span><span class="p">:</span> <span class="mf">0.000033531803637743</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The subject of sorting is covered extensively in the following,</p>
+<ul class="simple">
+<li><p>Donald E. Knuth, The Art of Computer Programming: Sorting and
+Searching (Vol 3, 3rd Ed, 1997), Addison-Wesley, ISBN 0201896850.</p></li>
+</ul>
+<p>The Heapsort algorithm is described in the following book,</p>
+<ul class="simple">
+<li><p>Robert Sedgewick, Algorithms in C, Addison-Wesley,
+ISBN 0201514257.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="multiset.html" class="btn btn-neutral float-left" title="Multisets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blas.html" class="btn btn-neutral float-right" title="BLAS Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

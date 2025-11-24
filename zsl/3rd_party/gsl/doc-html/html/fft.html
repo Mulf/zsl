@@ -1,0 +1,1102 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Fourier Transforms (FFTs) &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Numerical Integration" href="integration.html" />
+    <link rel="prev" title="Eigensystems" href="eigen.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Fast Fourier Transforms (FFTs)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mathematical-definitions">Mathematical Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-complex-data-ffts">Overview of complex data FFTs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#radix-2-fft-routines-for-complex-data">Radix-2 FFT routines for complex data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mixed-radix-fft-routines-for-complex-data">Mixed-radix FFT routines for complex data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-real-data-ffts">Overview of real data FFTs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#radix-2-fft-routines-for-real-data">Radix-2 FFT routines for real data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mixed-radix-fft-routines-for-real-data">Mixed-radix FFT routines for real data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Fast Fourier Transforms (FFTs)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/fft.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="eigen.html" class="btn btn-neutral float-left" title="Eigensystems" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="integration.html" class="btn btn-neutral float-right" title="Numerical Integration" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fast-fourier-transforms-ffts">
+<span id="index-0"></span><h1>Fast Fourier Transforms (FFTs)<a class="headerlink" href="#fast-fourier-transforms-ffts" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for performing Fast Fourier Transforms
+(FFTs).  The library includes radix-2 routines (for lengths which are a
+power of two) and mixed-radix routines (which work for any length).  For
+efficiency there are separate versions of the routines for real data and
+for complex data.  The mixed-radix routines are a reimplementation of the
+FFTPACK library of Paul Swarztrauber.  Fortran code for FFTPACK is
+available on Netlib (FFTPACK also includes some routines for sine and
+cosine transforms but these are currently not available in GSL).  For
+details and derivations of the underlying algorithms consult the
+document “GSL FFT Algorithms” (see <a class="reference internal" href="#fft-references"><span class="std std-ref">References and Further Reading</span></a>)</p>
+<section id="mathematical-definitions">
+<span id="index-1"></span><h2>Mathematical Definitions<a class="headerlink" href="#mathematical-definitions" title="Link to this heading">¶</a></h2>
+<p>Fast Fourier Transforms are efficient algorithms for
+calculating the discrete Fourier transform (DFT),</p>
+<div class="math">
+<p><img src="_images/math/eea2839a3ba4872dd70d01e71bde66988058ec02.png" alt="x_j = \sum_{k=0}^{n-1} z_k \exp(-2 \pi i j k / n)"/></p>
+</div><p>The DFT usually arises as an approximation to the continuous Fourier
+transform when functions are sampled at discrete intervals in space or
+time.  The naive evaluation of the discrete Fourier transform is a
+matrix-vector multiplication <img class="math" src="_images/math/c08cc618461492ae31fc7e8b4d0f6ba4aa3d179f.png" alt="W\vec{z}"/>.
+A general matrix-vector multiplication takes
+<img class="math" src="_images/math/9c476ea9b9a18f375d5c2062e6376b87e4d54911.png" alt="O(n^2)"/> operations for <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> data-points.  Fast Fourier
+transform algorithms use a divide-and-conquer strategy to factorize the
+matrix <img class="math" src="_images/math/3e0a087f1ba0411943c6deb7302825e47c187635.png" alt="W"/> into smaller sub-matrices, corresponding to the integer
+factors of the length <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>.  If <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> can be factorized into a
+product of integers <img class="math" src="_images/math/dad1331f54c3388bd8d651cc2e26e71fef3b872a.png" alt="f_1 f_2 \ldots f_m"/>
+then the DFT can be computed in <img class="math" src="_images/math/bb9a4f328d51ae0d3df6a81a975ec693070b6943.png" alt="O(n \sum f_i)"/>
+operations.  For a radix-2 FFT this gives an operation count of
+<img class="math" src="_images/math/874191a77b23c0f9bb94403f794e8bb81d72ad3e.png" alt="O(n \log_2 n)"/>.</p>
+<p>All the FFT functions offer three types of transform: forwards, inverse
+and backwards, based on the same mathematical definitions.  The
+definition of the <em>forward Fourier transform</em>,
+<img class="math" src="_images/math/4adcbe27f3008087482a1c6ee0522d4411bf3490.png" alt="x = \hbox{FFT}(z)"/>, is,</p>
+<div class="math">
+<p><img src="_images/math/eea2839a3ba4872dd70d01e71bde66988058ec02.png" alt="x_j = \sum_{k=0}^{n-1} z_k \exp(-2 \pi i j k / n)"/></p>
+</div><p>and the definition of the <em>inverse Fourier transform</em>,
+<img class="math" src="_images/math/50f459748fd5985098cb3a2af93b09cc561649d3.png" alt="x = \hbox{IFFT}(z)"/>, is,</p>
+<div class="math">
+<p><img src="_images/math/8396d0166aef59d73a82e393625b7fbdbb455609.png" alt="z_j = {1 \over n} \sum_{k=0}^{n-1} x_k \exp(2 \pi i j k / n)."/></p>
+</div><p>The factor of <img class="math" src="_images/math/fed25831f65f6a1bde4cc65323b82a27d84297e2.png" alt="1/n"/> makes this a true inverse.  For example, a call
+to <a class="reference internal" href="#c.gsl_fft_complex_forward" title="gsl_fft_complex_forward"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_forward()</span></code></a> followed by a call to
+<a class="reference internal" href="#c.gsl_fft_complex_inverse" title="gsl_fft_complex_inverse"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_inverse()</span></code></a> should return the original data (within
+numerical errors).</p>
+<p>In general there are two possible choices for the sign of the
+exponential in the transform/ inverse-transform pair. GSL follows the
+same convention as FFTPACK, using a negative exponential for the forward
+transform.  The advantage of this convention is that the inverse
+transform recreates the original function with simple Fourier
+synthesis.  Numerical Recipes uses the opposite convention, a positive
+exponential in the forward transform.</p>
+<p>The <em>backwards FFT</em> is simply our terminology for an unscaled
+version of the inverse FFT,</p>
+<div class="math">
+<p><img src="_images/math/6104fefd302e3b28b9959200666f53dd30a39114.png" alt="z^{backwards}_j = \sum_{k=0}^{n-1} x_k \exp(2 \pi i j k / n)"/></p>
+</div><p>When the overall scale of the result is unimportant it is often
+convenient to use the backwards FFT instead of the inverse to save
+unnecessary divisions.</p>
+</section>
+<section id="overview-of-complex-data-ffts">
+<span id="index-2"></span><h2>Overview of complex data FFTs<a class="headerlink" href="#overview-of-complex-data-ffts" title="Link to this heading">¶</a></h2>
+<p>The inputs and outputs for the complex FFT routines are <em>packed arrays</em>
+of floating point numbers.  In a packed array the real and
+imaginary parts of each complex number are placed in alternate
+neighboring elements.  For example, the following definition of a packed
+array of length 6:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">double</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">];</span>
+<span class="n">gsl_complex_packed_array</span> <span class="n">data</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>can be used to hold an array of three complex numbers, <code class="code docutils literal notranslate"><span class="pre">z[3]</span></code>, in
+the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Im</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Im</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">Im</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The array indices for the data have the same ordering as those
+in the definition of the DFT—i.e. there are no index transformations
+or permutations of the data.</p>
+<p>A <em>stride</em> parameter allows the user to perform transforms on the
+elements <code class="code docutils literal notranslate"><span class="pre">z[stride*i]</span></code> instead of <code class="code docutils literal notranslate"><span class="pre">z[i]</span></code>.  A stride greater
+than 1 can be used to take an in-place FFT of the column of a matrix. A
+stride of 1 accesses the array without any additional spacing between
+elements.</p>
+<p>To perform an FFT on a vector argument, such as <code class="code docutils literal notranslate"><span class="pre">gsl_vector_complex</span> <span class="pre">*</span> <span class="pre">v</span></code>,
+use the following definitions (or their equivalents) when calling
+the functions described in this chapter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_complex_packed_array</span> <span class="n">data</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+<span class="n">size_t</span> <span class="n">stride</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">stride</span><span class="p">;</span>
+<span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>For physical applications it is important to remember that the index
+appearing in the DFT does not correspond directly to a physical
+frequency.  If the time-step of the DFT is <img class="math" src="_images/math/037efa4a293dc4166e1eb41a9cd2f35d7c197859.png" alt="\Delta"/> then the
+frequency-domain includes both positive and negative frequencies,
+ranging from <img class="math" src="_images/math/0c3452df6f96ce6e4d063112fa4559afbbbca896.png" alt="-1/(2\Delta)"/> through 0 to <img class="math" src="_images/math/4c35b5d557d810ab645236e9b33183c9be9f2669.png" alt="+1/(2\Delta)"/>.  The
+positive frequencies are stored from the beginning of the array up to
+the middle, and the negative frequencies are stored backwards from the
+end of the array.</p>
+<p>Here is a table which shows the layout of the array <code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code>, and the
+correspondence between the time-domain data <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/>, and the
+frequency-domain data <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">index</span>    <span class="n">z</span>               <span class="n">x</span> <span class="o">=</span> <span class="n">FFT</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+<span class="mi">0</span>        <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>        <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mi">1</span>        <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>        <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span> <span class="n">Delta</span><span class="p">))</span>
+<span class="mi">2</span>        <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>        <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">n</span> <span class="n">Delta</span><span class="p">))</span>
+<span class="o">.</span>        <span class="o">........</span>        <span class="o">..................</span>
+<span class="n">n</span><span class="o">/</span><span class="mi">2</span>      <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>      <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="n">Delta</span><span class="p">),</span>
+                               <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="n">Delta</span><span class="p">))</span>
+<span class="o">.</span>        <span class="o">........</span>        <span class="o">..................</span>
+<span class="n">n</span><span class="o">-</span><span class="mi">3</span>      <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>      <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">n</span> <span class="n">Delta</span><span class="p">))</span>
+<span class="n">n</span><span class="o">-</span><span class="mi">2</span>      <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>      <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">n</span> <span class="n">Delta</span><span class="p">))</span>
+<span class="n">n</span><span class="o">-</span><span class="mi">1</span>      <span class="n">z</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>      <span class="n">x</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span> <span class="n">Delta</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> is even the location <img class="math" src="_images/math/f17c95769a10212bfeb05e0bef6fc83dbfc76499.png" alt="n/2"/> contains the most positive
+and negative frequencies (<img class="math" src="_images/math/48b891b769c2c46e8e65eb6d4271bde4ab30b789.png" alt="+1/(2 \Delta)"/>, <img class="math" src="_images/math/558b2ec773ea1fb282a3a64bfac54936b5546ba8.png" alt="-1/(2 \Delta)"/>)
+which are equivalent.  If <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> is odd then general structure of the
+table above still applies, but <img class="math" src="_images/math/f17c95769a10212bfeb05e0bef6fc83dbfc76499.png" alt="n/2"/> does not appear.</p>
+</section>
+<section id="radix-2-fft-routines-for-complex-data">
+<span id="index-3"></span><h2>Radix-2 FFT routines for complex data<a class="headerlink" href="#radix-2-fft-routines-for-complex-data" title="Link to this heading">¶</a></h2>
+<p>The radix-2 algorithms described in this section are simple and compact,
+although not necessarily the most efficient.  They use the Cooley-Tukey
+algorithm to compute in-place complex FFTs for lengths which are a power
+of 2—no additional storage is required.  The corresponding
+self-sorting mixed-radix routines offer better performance at the
+expense of requiring additional working space.</p>
+<p>All the functions described in this section are declared in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_fft_complex.h</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_forward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_transform</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">gsl_fft_direction</span></span><span class="w"> </span><span class="n"><span class="pre">sign</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_transform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_backward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_backward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute forward, backward and inverse FFTs of length
+<a class="reference internal" href="#c.gsl_fft_complex_radix2_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_fft_complex_radix2_inverse" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>, on the packed complex array <a class="reference internal" href="#c.gsl_fft_complex_radix2_inverse" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>
+using an in-place radix-2 decimation-in-time algorithm.  The length of
+the transform <a class="reference internal" href="#c.gsl_fft_complex_radix2_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is restricted to powers of two.  For the
+<code class="code docutils literal notranslate"><span class="pre">transform</span></code> version of the function the <code class="xref c c-data docutils literal notranslate"><span class="pre">sign</span></code> argument can be
+either <code class="code docutils literal notranslate"><span class="pre">forward</span></code> (<img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>) or <code class="code docutils literal notranslate"><span class="pre">backward</span></code> (<img class="math" src="_images/math/7d8e38d31bf43630815fde9e3f56c37b74f0fc51.png" alt="+1"/>).</p>
+<p>The functions return a value of <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if no errors were
+detected, or <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> if the length of the data <a class="reference internal" href="#c.gsl_fft_complex_radix2_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is not a
+power of two.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_dif_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_dif_forward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_dif_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_dif_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_dif_transform</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">gsl_fft_direction</span></span><span class="w"> </span><span class="n"><span class="pre">sign</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_dif_transform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_dif_backward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_dif_backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_dif_backward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_radix2_dif_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_radix2_dif_inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_radix2_dif_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These are decimation-in-frequency versions of the radix-2 FFT functions.</p>
+</dd></dl>
+
+<p>Here is an example program which computes the FFT of a short pulse in a
+sample of length 128.  To make the resulting Fourier transform real the
+pulse is defined for equal positive and negative times (<img class="math" src="_images/math/8aa6eb89a2e08073b28d7019f4700aa7035aec99.png" alt="-10 \dots 10"/>),
+where the negative times wrap around the end of the array.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_errno.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_fft_complex.h&gt;</span>
+
+<span class="c1">#define REAL(z,i) ((z)[2*(i)])</span>
+<span class="c1">#define IMAG(z,i) ((z)[2*(i)+1])</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">;</span> <span class="n">double</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="mi">128</span><span class="p">];</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+       <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span> <span class="n">IMAG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+       <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="mi">128</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="si">%e</span><span class="s2"> </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span>
+              <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">),</span> <span class="n">IMAG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">gsl_fft_complex_radix2_forward</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">128</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="si">%e</span><span class="s2"> </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span>
+              <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span>
+              <span class="n">IMAG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">128</span><span class="p">));</span>
+    <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that we have assumed that the program is using the default error
+handler (which calls <code class="xref c c-func docutils literal notranslate"><span class="pre">abort()</span></code> for any errors).  If you are not using
+a safe error handler you would need to check the return status of
+<a class="reference internal" href="#c.gsl_fft_complex_radix2_forward" title="gsl_fft_complex_radix2_forward"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_radix2_forward()</span></code></a>.</p>
+<p>The transformed data is rescaled by <img class="math" src="_images/math/569c92ea1136c869c5584534bfb917d5f6035695.png" alt="1/\sqrt n"/> so that it fits on
+the same plot as the input.  Only the real part is shown, by the choice
+of the input data the imaginary part is zero.  Allowing for the
+wrap-around of negative times at <img class="math" src="_images/math/0e04ac8531da3426446a53a5812514a554cef554.png" alt="t=128"/>, and working in units of
+<img class="math" src="_images/math/f6380298bc153cc01cf385a6e3dfeeabebdb1722.png" alt="k/n"/>, the DFT approximates the continuum Fourier transform, giving
+a modulated sine function.</p>
+<div class="math">
+<p><img src="_images/math/1ff1d601d9118088e0ad4983465922c286a81294.png" alt="\int_{-a}^{+a} e^{-2 \pi i k x} dx = {\sin(2\pi k a) \over\pi k}"/></p>
+</div><p>The output of the example program is plotted in <a class="reference internal" href="#fig-fft-complex-radix2"><span class="std std-numref">Fig. 2</span></a>.</p>
+<figure class="align-default" id="id1">
+<span id="fig-fft-complex-radix2"></span><a class="reference internal image-reference" href="_images/fft-complex-radix2.png"><img alt="_images/fft-complex-radix2.png" src="_images/fft-complex-radix2.png" style="width: 360.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">A pulse and its discrete Fourier transform, output from
+the example program.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="mixed-radix-fft-routines-for-complex-data">
+<span id="index-4"></span><h2>Mixed-radix FFT routines for complex data<a class="headerlink" href="#mixed-radix-fft-routines-for-complex-data" title="Link to this heading">¶</a></h2>
+<p>This section describes mixed-radix FFT algorithms for complex data.  The
+mixed-radix functions work for FFTs of any length.  They are a
+reimplementation of Paul Swarztrauber’s Fortran FFTPACK library.
+The theory is explained in the review article “Self-sorting
+Mixed-radix FFTs” by Clive Temperton.  The routines here use the same
+indexing scheme and basic algorithms as FFTPACK.</p>
+<p>The mixed-radix algorithm is based on sub-transform modules—highly
+optimized small length FFTs which are combined to create larger FFTs.
+There are efficient modules for factors of 2, 3, 4, 5, 6 and 7.  The
+modules for the composite factors of 4 and 6 are faster than combining
+the modules for <img class="math" src="_images/math/e85c66e146a5e150cab0220581312de58269441d.png" alt="2*2"/> and <img class="math" src="_images/math/392339f7b151effa3d360d3b0ad340cc5aa4db7d.png" alt="2*3"/>.</p>
+<p>For factors which are not implemented as modules there is a fall-back to
+a general length-<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> module which uses Singleton’s method for
+efficiently computing a DFT. This module is <img class="math" src="_images/math/9c476ea9b9a18f375d5c2062e6376b87e4d54911.png" alt="O(n^2)"/>, and slower
+than a dedicated module would be but works for any length <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>.  Of
+course, lengths which use the general length-<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> module will still
+be factorized as much as possible.  For example, a length of 143 will be
+factorized into <img class="math" src="_images/math/39634cda3b1fb7b177404c1c84519d2a2e845a62.png" alt="11*13"/>.  Large prime factors are the worst case
+scenario, e.g. as found in <img class="math" src="_images/math/fc1f9cd04455b49dbf4c58e2b0955da299cac052.png" alt="n=2*3*99991"/>, and should be avoided
+because their <img class="math" src="_images/math/9c476ea9b9a18f375d5c2062e6376b87e4d54911.png" alt="O(n^2)"/> scaling will dominate the run-time (consult
+the document “GSL FFT Algorithms” included in the GSL distribution
+if you encounter this problem).</p>
+<p>The mixed-radix initialization function <a class="reference internal" href="#c.gsl_fft_complex_wavetable_alloc" title="gsl_fft_complex_wavetable_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_wavetable_alloc()</span></code></a>
+returns the list of factors chosen by the library for a given length
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>.  It can be used to check how well the length has been
+factorized, and estimate the run-time.  To a first approximation the
+run-time scales as <img class="math" src="_images/math/ded7e9cad728dc90e50908b97a1f62da8e8ccff4.png" alt="n \sum f_i"/>, where the <img class="math" src="_images/math/b7524c4d67379a7045021fd157d0fc7c890ce138.png" alt="f_i"/> are the
+factors of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>.  For programs under user control you may wish to
+issue a warning that the transform will be slow when the length is
+poorly factorized.  If you frequently encounter data lengths which
+cannot be factorized using the existing small-prime modules consult
+“GSL FFT Algorithms” for details on adding support for other
+factors.</p>
+<p>All the functions described in this section are declared in the header
+file <code class="file docutils literal notranslate"><span class="pre">gsl_fft_complex.h</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_wavetable_alloc">
+<a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_wavetable_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_wavetable_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function prepares a trigonometric lookup table for a complex FFT of
+length <a class="reference internal" href="#c.gsl_fft_complex_wavetable_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>. The function returns a pointer to the newly allocated
+<a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_fft_complex_wavetable</span></code></a> if no errors were detected, and a null
+pointer in the case of error.  The length <a class="reference internal" href="#c.gsl_fft_complex_wavetable_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is factorized into a
+product of subtransforms, and the factors and their trigonometric
+coefficients are stored in the wavetable. The trigonometric coefficients
+are computed using direct calls to <code class="code docutils literal notranslate"><span class="pre">sin</span></code> and <code class="code docutils literal notranslate"><span class="pre">cos</span></code>, for
+accuracy.  Recursion relations could be used to compute the lookup table
+faster, but if an application performs many FFTs of the same length then
+this computation is a one-off overhead which does not affect the final
+throughput.</p>
+<p>The wavetable structure can be used repeatedly for any transform of the
+same length.  The table is not modified by calls to any of the other FFT
+functions.  The same wavetable can be used for both forward and backward
+(or inverse) transforms of a given length.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_wavetable_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_wavetable_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_wavetable_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the wavetable
+<a class="reference internal" href="#c.gsl_fft_complex_wavetable_free" title="wavetable"><code class="xref c c-data docutils literal notranslate"><span class="pre">wavetable</span></code></a>.  The wavetable can be freed if no further FFTs of the
+same length will be needed.</p>
+</dd></dl>
+
+<p>These functions operate on a <a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_fft_complex_wavetable</span></code></a> structure
+which contains internal parameters for the FFT.  It is not necessary to
+set any of the components directly but it can sometimes be useful to
+examine them.  For example, the chosen factorization of the FFT length
+is given and can be used to provide an estimate of the run-time or
+numerical error. The wavetable structure is declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_fft_complex.h</span></code>.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_wavetable">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></span><a class="headerlink" href="#c.gsl_fft_complex_wavetable" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a structure that holds the factorization and trigonometric
+lookup tables for the mixed radix fft algorithm.  It has the following
+components:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">n</span></code></p></td>
+<td><p>This is the number of complex data points</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">nf</span></code></p></td>
+<td><p>This is the number of factors that the length <code class="code docutils literal notranslate"><span class="pre">n</span></code> was decomposed into.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">factor[64]</span></code></p></td>
+<td><p>This is the array of factors.  Only the first <code class="code docutils literal notranslate"><span class="pre">nf</span></code> elements are used.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">gsl_complex</span> <span class="pre">*</span> <span class="pre">trig</span></code></p></td>
+<td><p>This is a pointer to a preallocated trigonometric lookup table of <code class="code docutils literal notranslate"><span class="pre">n</span></code> complex elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">gsl_complex</span> <span class="pre">*</span> <span class="pre">twiddle[64]</span></code></p></td>
+<td><p>This is an array of pointers into <code class="code docutils literal notranslate"><span class="pre">trig</span></code>, giving the twiddle factors for each pass.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></span><a class="headerlink" href="#c.gsl_fft_complex_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mixed radix algorithms require additional working space to hold
+the intermediate steps of the transform.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_workspace_alloc">
+<a class="reference internal" href="#c.gsl_fft_complex_workspace" title="gsl_fft_complex_workspace"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_workspace_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_workspace_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for a complex transform of length
+<a class="reference internal" href="#c.gsl_fft_complex_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_workspace_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_workspace_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_fft_complex_workspace" title="gsl_fft_complex_workspace"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">workspace</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_workspace_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace
+<a class="reference internal" href="#c.gsl_fft_complex_workspace_free" title="workspace"><code class="xref c c-data docutils literal notranslate"><span class="pre">workspace</span></code></a>. The workspace can be freed if no further FFTs of the
+same length will be needed.</p>
+</dd></dl>
+
+<p>The following functions compute the transform,</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_complex_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_forward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span>, <a class="reference internal" href="#c.gsl_fft_complex_workspace" title="gsl_fft_complex_workspace"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_transform</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span>, <a class="reference internal" href="#c.gsl_fft_complex_workspace" title="gsl_fft_complex_workspace"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span>, <span class="n"><span class="pre">gsl_fft_direction</span></span><span class="w"> </span><span class="n"><span class="pre">sign</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_transform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_backward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_backward</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span>, <a class="reference internal" href="#c.gsl_fft_complex_workspace" title="gsl_fft_complex_workspace"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_backward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_complex_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_complex_inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_fft_complex_wavetable" title="gsl_fft_complex_wavetable"><span class="n"><span class="pre">gsl_fft_complex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span>, <a class="reference internal" href="#c.gsl_fft_complex_workspace" title="gsl_fft_complex_workspace"><span class="n"><span class="pre">gsl_fft_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_complex_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute forward, backward and inverse FFTs of length
+<a class="reference internal" href="#c.gsl_fft_complex_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>, on the packed complex array
+<a class="reference internal" href="#c.gsl_fft_complex_inverse" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, using a mixed radix decimation-in-frequency algorithm.
+There is no restriction on the length <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.  Efficient modules are
+provided for subtransforms of length 2, 3, 4, 5, 6 and 7.  Any remaining
+factors are computed with a slow, <img class="math" src="_images/math/9c476ea9b9a18f375d5c2062e6376b87e4d54911.png" alt="O(n^2)"/>, general-<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>
+module. The caller must supply a <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="wavetable"><code class="xref c c-data docutils literal notranslate"><span class="pre">wavetable</span></code></a> containing the
+trigonometric lookup tables and a workspace <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a>.  For the
+<code class="code docutils literal notranslate"><span class="pre">transform</span></code> version of the function the <code class="xref c c-data docutils literal notranslate"><span class="pre">sign</span></code> argument can be
+either <code class="code docutils literal notranslate"><span class="pre">forward</span></code> (<img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>) or <code class="code docutils literal notranslate"><span class="pre">backward</span></code> (<img class="math" src="_images/math/7d8e38d31bf43630815fde9e3f56c37b74f0fc51.png" alt="+1"/>).</p>
+<p>The functions return a value of <code class="code docutils literal notranslate"><span class="pre">0</span></code> if no errors were detected. The
+following <code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_errno</span></code> conditions are defined for these functions:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a></p></td>
+<td><p>The length of the data <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is not a positive integer (i.e. <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is zero).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="err.html#c.GSL_EINVAL" title="GSL_EINVAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EINVAL</span></code></a></p></td>
+<td><p>The length of the data <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and the length used to compute the given <a class="reference internal" href="#c.gsl_fft_complex_inverse" title="wavetable"><code class="xref c c-data docutils literal notranslate"><span class="pre">wavetable</span></code></a> do not match.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Here is an example program which computes the FFT of a short pulse in a
+sample of length 630 (<img class="math" src="_images/math/3f18352be475da8becd7ed7727b17b1149c74bc7.png" alt="=2*3*3*5*7"/>) using the mixed-radix
+algorithm.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_errno.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_fft_complex.h&gt;</span>
+
+<span class="c1">#define REAL(z,i) ((z)[2*(i)])</span>
+<span class="c1">#define IMAG(z,i) ((z)[2*(i)+1])</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">const</span> <span class="nb">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">630</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">];</span>
+
+  <span class="n">gsl_fft_complex_wavetable</span> <span class="o">*</span> <span class="n">wavetable</span><span class="p">;</span>
+  <span class="n">gsl_fft_complex_workspace</span> <span class="o">*</span> <span class="n">workspace</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+      <span class="n">IMAG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">: </span><span class="si">%e</span><span class="s2"> </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">),</span>
+                                <span class="n">IMAG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">wavetable</span> <span class="o">=</span> <span class="n">gsl_fft_complex_wavetable_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">workspace</span> <span class="o">=</span> <span class="n">gsl_fft_complex_workspace_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="n">wavetable</span><span class="o">-&gt;</span><span class="n">nf</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+       <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;# factor </span><span class="si">%d</span><span class="s2">: %zu</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span>
+               <span class="n">wavetable</span><span class="o">-&gt;</span><span class="n">factor</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_fft_complex_forward</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span>
+                           <span class="n">wavetable</span><span class="p">,</span> <span class="n">workspace</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">: </span><span class="si">%e</span><span class="s2"> </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">REAL</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">),</span>
+                                <span class="n">IMAG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">i</span><span class="p">));</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_fft_complex_wavetable_free</span> <span class="p">(</span><span class="n">wavetable</span><span class="p">);</span>
+  <span class="n">gsl_fft_complex_workspace_free</span> <span class="p">(</span><span class="n">workspace</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that we have assumed that the program is using the default
+<code class="code docutils literal notranslate"><span class="pre">gsl</span></code> error handler (which calls <code class="xref c c-func docutils literal notranslate"><span class="pre">abort()</span></code> for any errors).  If
+you are not using a safe error handler you would need to check the
+return status of all the <code class="code docutils literal notranslate"><span class="pre">gsl</span></code> routines.</p>
+</section>
+<section id="overview-of-real-data-ffts">
+<span id="index-5"></span><h2>Overview of real data FFTs<a class="headerlink" href="#overview-of-real-data-ffts" title="Link to this heading">¶</a></h2>
+<p>The functions for real data are similar to those for complex data.
+However, there is an important difference between forward and inverse
+transforms.  The Fourier transform of a real sequence is not real.  It is
+a complex sequence with a special symmetry:</p>
+<div class="math">
+<p><img src="_images/math/01e6dfe04b074a05c3a37a87c507e3c14c569c37.png" alt="z_k = z_{n-k}^*"/></p>
+</div><p>A sequence with this symmetry is called <em>conjugate-complex</em> or
+<em>half-complex</em>.  This different structure requires different
+storage layouts for the forward transform (from real to half-complex)
+and inverse transform (from half-complex back to real).  As a
+consequence the routines are divided into two sets: functions in
+<code class="code docutils literal notranslate"><span class="pre">gsl_fft_real</span></code> which operate on real sequences and functions in
+<code class="code docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex</span></code> which operate on half-complex sequences.</p>
+<p>Functions in <code class="code docutils literal notranslate"><span class="pre">gsl_fft_real</span></code> compute the frequency coefficients of a
+real sequence.  The half-complex coefficients <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/> of a real sequence
+<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> are given by Fourier analysis,</p>
+<div class="math">
+<p><img src="_images/math/ff3ee4965d168c9f51bbe07e85e6c798ead46325.png" alt="c_k = \sum_{j=0}^{n-1} x_j \exp(-2 \pi i j k /n)"/></p>
+</div><p>Functions in <code class="code docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex</span></code> compute inverse or backwards
+transforms.  They reconstruct real sequences by Fourier synthesis from
+their half-complex frequency coefficients, <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/>,</p>
+<div class="math">
+<p><img src="_images/math/688680c0b1ced7e5290dde60999b47da1148dbd0.png" alt="x_j = {1 \over n} \sum_{k=0}^{n-1} c_k \exp(2 \pi i j k /n)"/></p>
+</div><p>The symmetry of the half-complex sequence implies that only half of the
+complex numbers in the output need to be stored.  The remaining half can
+be reconstructed using the half-complex symmetry condition. This works
+for all lengths, even and odd—when the length is even the middle value
+where <img class="math" src="_images/math/da3428d14c19f39b21f7cc905df6d0b0b6c11f15.png" alt="k=n/2"/> is also real.  Thus only <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> real numbers are
+required to store the half-complex sequence, and the transform of a real
+sequence can be stored in the same size array as the original data.</p>
+<p>The precise storage arrangements depend on the algorithm, and are
+different for radix-2 and mixed-radix routines.  The radix-2 function
+operates in-place, which constrains the locations where each element can
+be stored.  The restriction forces real and imaginary parts to be stored
+far apart.  The mixed-radix algorithm does not have this restriction, and
+it stores the real and imaginary parts of a given term in neighboring
+locations (which is desirable for better locality of memory accesses).</p>
+</section>
+<section id="radix-2-fft-routines-for-real-data">
+<span id="index-6"></span><h2>Radix-2 FFT routines for real data<a class="headerlink" href="#radix-2-fft-routines-for-real-data" title="Link to this heading">¶</a></h2>
+<p>This section describes radix-2 FFT algorithms for real data.  They use
+the Cooley-Tukey algorithm to compute in-place FFTs for lengths which
+are a power of 2.</p>
+<p>The radix-2 FFT functions for real data are declared in the header files
+<code class="file docutils literal notranslate"><span class="pre">gsl_fft_real.h</span></code></p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_radix2_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_radix2_transform</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_radix2_transform" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes an in-place radix-2 FFT of length <a class="reference internal" href="#c.gsl_fft_real_radix2_transform" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and
+stride <a class="reference internal" href="#c.gsl_fft_real_radix2_transform" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> on the real array <a class="reference internal" href="#c.gsl_fft_real_radix2_transform" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.  The output is a
+half-complex sequence, which is stored in-place.  The arrangement of the
+half-complex terms uses the following scheme: for <img class="math" src="_images/math/efdf0e92bdccb71ce4814d15283586b848bf382c.png" alt="k &lt; n/2"/> the
+real part of the <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-th term is stored in location <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>, and
+the corresponding imaginary part is stored in location <img class="math" src="_images/math/9426651f99b5fa789a64a194c17f2a8b58938fac.png" alt="n-k"/>.  Terms
+with <img class="math" src="_images/math/0f2ad2c0e7ac36d8730664b9024e2a9df5c8c566.png" alt="k &gt; n/2"/> can be reconstructed using the symmetry
+<img class="math" src="_images/math/93802eabdc3a424521f9676152db6defc4fc3367.png" alt="z_k = z^*_{n-k}"/>.
+The terms for <img class="math" src="_images/math/fb0c0843ba0ba5272497af0d177110243a168263.png" alt="k=0"/> and <img class="math" src="_images/math/da3428d14c19f39b21f7cc905df6d0b0b6c11f15.png" alt="k=n/2"/> are both purely
+real, and count as a special case.  Their real parts are stored in
+locations <img class="math" src="_images/math/77bfa83830305fac291e4e73b780e4cc9458b293.png" alt="0"/> and <img class="math" src="_images/math/f17c95769a10212bfeb05e0bef6fc83dbfc76499.png" alt="n/2"/> respectively, while their imaginary
+parts which are zero are not stored.</p>
+<p>The following table shows the correspondence between the output
+<a class="reference internal" href="#c.gsl_fft_real_radix2_transform" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> and the equivalent results obtained by considering the input
+data as a complex sequence with zero imaginary part (assuming <a class="reference internal" href="#c.gsl_fft_real_radix2_transform" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> = 1}):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">complex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>    <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>    <span class="o">=</span>    <span class="mi">0</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>    <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>    <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">...............</span>         <span class="o">................</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>    <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>    <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">]</span>
+<span class="o">...............</span>         <span class="o">................</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>    <span class="mi">0</span>
+<span class="o">...............</span>         <span class="o">................</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">k</span><span class="s1">&#39;].real   =    data[k]        k&#39;</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">k</span><span class="s1">&#39;].imag   =   -data[n-k]</span>
+<span class="o">...............</span>         <span class="o">................</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>   <span class="o">-</span><span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that the output data can be converted into the full complex
+sequence using the function <a class="reference internal" href="#c.gsl_fft_halfcomplex_radix2_unpack" title="gsl_fft_halfcomplex_radix2_unpack"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex_radix2_unpack()</span></code></a>
+described below.</p>
+</dd></dl>
+
+<p>The radix-2 FFT functions for halfcomplex data are declared in the
+header file <code class="file docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex.h</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_radix2_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_radix2_inverse</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_radix2_inverse" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_radix2_backward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_radix2_backward</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_radix2_backward" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute the inverse or backwards in-place radix-2 FFT of
+length <a class="reference internal" href="#c.gsl_fft_halfcomplex_radix2_backward" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_fft_halfcomplex_radix2_backward" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> on the half-complex sequence
+<a class="reference internal" href="#c.gsl_fft_halfcomplex_radix2_backward" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> stored according the output scheme used by
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_radix2()</span></code>.  The result is a real array stored in natural
+order.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_radix2_unpack">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_radix2_unpack</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">halfcomplex_coefficient</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">complex_coefficient</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_radix2_unpack" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function converts <a class="reference internal" href="#c.gsl_fft_halfcomplex_radix2_unpack" title="halfcomplex_coefficient"><code class="xref c c-data docutils literal notranslate"><span class="pre">halfcomplex_coefficient</span></code></a>, an array of
+half-complex coefficients as returned by <a class="reference internal" href="#c.gsl_fft_real_radix2_transform" title="gsl_fft_real_radix2_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_radix2_transform()</span></code></a>, into an ordinary complex array, <a class="reference internal" href="#c.gsl_fft_halfcomplex_radix2_unpack" title="complex_coefficient"><code class="xref c c-data docutils literal notranslate"><span class="pre">complex_coefficient</span></code></a>.  It fills in the
+complex array using the symmetry <img class="math" src="_images/math/2eba6dc28ffde2b85e4110c33a4d03fb11f842f3.png" alt="z_k = z_{n-k}^*"/>
+to reconstruct the redundant elements.  The algorithm for the conversion
+is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">complex_coefficient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">complex_coefficient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">double</span> <span class="n">hc_real</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">double</span> <span class="n">hc_imag</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[(</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">hc_real</span><span class="p">;</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="n">hc_imag</span><span class="p">;</span>
+    <span class="n">complex_coefficient</span><span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">hc_real</span><span class="p">;</span>
+    <span class="n">complex_coefficient</span><span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="o">-</span><span class="n">hc_imag</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="mixed-radix-fft-routines-for-real-data">
+<span id="index-7"></span><h2>Mixed-radix FFT routines for real data<a class="headerlink" href="#mixed-radix-fft-routines-for-real-data" title="Link to this heading">¶</a></h2>
+<p>This section describes mixed-radix FFT algorithms for real data.  The
+mixed-radix functions work for FFTs of any length.  They are a
+reimplementation of the real-FFT routines in the Fortran FFTPACK library
+by Paul Swarztrauber.  The theory behind the algorithm is explained in
+the article “Fast Mixed-Radix Real Fourier Transforms” by Clive
+Temperton.  The routines here use the same indexing scheme and basic
+algorithms as FFTPACK.</p>
+<p>The functions use the FFTPACK storage convention for half-complex
+sequences.  In this convention the half-complex transform of a real
+sequence is stored with frequencies in increasing order, starting at
+zero, with the real and imaginary parts of each frequency in neighboring
+locations.  When a value is known to be real the imaginary part is not
+stored.  The imaginary part of the zero-frequency component is never
+stored.  It is known to be zero (since the zero frequency component is
+simply the sum of the input data (all real)).  For a sequence of even
+length the imaginary part of the frequency <img class="math" src="_images/math/f17c95769a10212bfeb05e0bef6fc83dbfc76499.png" alt="n/2"/> is not stored
+either, since the symmetry <img class="math" src="_images/math/2eba6dc28ffde2b85e4110c33a4d03fb11f842f3.png" alt="z_k = z_{n-k}^*"/>
+implies that this is purely real too.</p>
+<p>The storage scheme is best shown by some examples.  The table below
+shows the output for an odd-length sequence, <img class="math" src="_images/math/907e4040e16c635671083bc7e599a0bd213d6157.png" alt="n=5"/>.  The two columns
+give the correspondence between the 5 values in the half-complex
+sequence returned by <a class="reference internal" href="#c.gsl_fft_real_transform" title="gsl_fft_real_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_transform()</span></code></a>, <code class="code docutils literal notranslate"><span class="pre">halfcomplex[]</span></code> and the
+values <code class="code docutils literal notranslate"><span class="pre">complex[]</span></code> that would be returned if the same real input
+sequence were passed to <a class="reference internal" href="#c.gsl_fft_complex_backward" title="gsl_fft_complex_backward"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_backward()</span></code></a> as a complex
+sequence (with imaginary parts set to <code class="code docutils literal notranslate"><span class="pre">0</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">complex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="mi">0</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span> <span class="o">-</span><span class="n">halfcomplex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span> <span class="o">-</span><span class="n">halfcomplex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The upper elements of the <code class="code docutils literal notranslate"><span class="pre">complex</span></code> array, <code class="code docutils literal notranslate"><span class="pre">complex[3]</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">complex[4]</span></code> are filled in using the symmetry condition.  The
+imaginary part of the zero-frequency term <code class="code docutils literal notranslate"><span class="pre">complex[0].imag</span></code> is
+known to be zero by the symmetry.</p>
+<p>The next table shows the output for an even-length sequence, <img class="math" src="_images/math/99062d5f8943c554bd76b4bd87a7bc5541a801d0.png" alt="n=6"/>.
+In the even case there are two values which are purely real:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">complex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="mi">0</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span>  <span class="mi">0</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span> <span class="o">-</span><span class="n">halfcomplex</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>  <span class="o">=</span>  <span class="n">halfcomplex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">complex</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span>  <span class="o">=</span> <span class="o">-</span><span class="n">halfcomplex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The upper elements of the <code class="code docutils literal notranslate"><span class="pre">complex</span></code> array, <code class="code docutils literal notranslate"><span class="pre">complex[4]</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">complex[5]</span></code> are filled in using the symmetry condition.  Both
+<code class="code docutils literal notranslate"><span class="pre">complex[0].imag</span></code> and <code class="code docutils literal notranslate"><span class="pre">complex[3].imag</span></code> are known to be zero.</p>
+<p>All these functions are declared in the header files
+<code class="file docutils literal notranslate"><span class="pre">gsl_fft_real.h</span></code> and <code class="file docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex.h</span></code>.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_fft_real_wavetable">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_wavetable</span></span></span><a class="headerlink" href="#c.gsl_fft_real_wavetable" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_wavetable">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_wavetable</span></span></span><a class="headerlink" href="#c.gsl_fft_halfcomplex_wavetable" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These data structures contain lookup tables for an FFT of a fixed size.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_wavetable_alloc">
+<a class="reference internal" href="#c.gsl_fft_real_wavetable" title="gsl_fft_real_wavetable"><span class="n"><span class="pre">gsl_fft_real_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_wavetable_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_wavetable_alloc" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_wavetable_alloc">
+<a class="reference internal" href="#c.gsl_fft_halfcomplex_wavetable" title="gsl_fft_halfcomplex_wavetable"><span class="n"><span class="pre">gsl_fft_halfcomplex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_wavetable_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_wavetable_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions prepare trigonometric lookup tables for an FFT of size
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> real elements.  The functions return a pointer to the newly
+allocated struct if no errors were detected, and a null pointer in the
+case of error.  The length <a class="reference internal" href="#c.gsl_fft_halfcomplex_wavetable_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is factorized into a product of
+subtransforms, and the factors and their trigonometric coefficients are
+stored in the wavetable. The trigonometric coefficients are computed
+using direct calls to <code class="code docutils literal notranslate"><span class="pre">sin</span></code> and <code class="code docutils literal notranslate"><span class="pre">cos</span></code>, for accuracy.
+Recursion relations could be used to compute the lookup table faster,
+but if an application performs many FFTs of the same length then
+computing the wavetable is a one-off overhead which does not affect the
+final throughput.</p>
+<p>The wavetable structure can be used repeatedly for any transform of the
+same length.  The table is not modified by calls to any of the other FFT
+functions.  The appropriate type of wavetable must be used for forward
+real or inverse half-complex transforms.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_wavetable_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_wavetable_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_fft_real_wavetable" title="gsl_fft_real_wavetable"><span class="n"><span class="pre">gsl_fft_real_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_wavetable_free" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_wavetable_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_wavetable_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_fft_halfcomplex_wavetable" title="gsl_fft_halfcomplex_wavetable"><span class="n"><span class="pre">gsl_fft_halfcomplex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_wavetable_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions free the memory associated with the wavetable
+<a class="reference internal" href="#c.gsl_fft_halfcomplex_wavetable_free" title="wavetable"><code class="xref c c-data docutils literal notranslate"><span class="pre">wavetable</span></code></a>. The wavetable can be freed if no further FFTs of the
+same length will be needed.</p>
+</dd></dl>
+
+<p>The mixed radix algorithms require additional working space to hold
+the intermediate steps of the transform,</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_fft_real_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_workspace</span></span></span><a class="headerlink" href="#c.gsl_fft_real_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains parameters needed to compute a real FFT.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_workspace_alloc">
+<a class="reference internal" href="#c.gsl_fft_real_workspace" title="gsl_fft_real_workspace"><span class="n"><span class="pre">gsl_fft_real_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_workspace_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_workspace_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for a real transform of length
+<a class="reference internal" href="#c.gsl_fft_real_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.  The same workspace can be used for both forward real and inverse
+halfcomplex transforms.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_workspace_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_workspace_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_fft_real_workspace" title="gsl_fft_real_workspace"><span class="n"><span class="pre">gsl_fft_real_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">workspace</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_workspace_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace
+<a class="reference internal" href="#c.gsl_fft_real_workspace_free" title="workspace"><code class="xref c c-data docutils literal notranslate"><span class="pre">workspace</span></code></a>. The workspace can be freed if no further FFTs of the
+same length will be needed.</p>
+</dd></dl>
+
+<p>The following functions compute the transforms of real and half-complex
+data,</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_transform</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_fft_real_wavetable" title="gsl_fft_real_wavetable"><span class="n"><span class="pre">gsl_fft_real_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span>, <a class="reference internal" href="#c.gsl_fft_real_workspace" title="gsl_fft_real_workspace"><span class="n"><span class="pre">gsl_fft_real_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_transform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_transform</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_fft_halfcomplex_wavetable" title="gsl_fft_halfcomplex_wavetable"><span class="n"><span class="pre">gsl_fft_halfcomplex_wavetable</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wavetable</span></span>, <a class="reference internal" href="#c.gsl_fft_real_workspace" title="gsl_fft_real_workspace"><span class="n"><span class="pre">gsl_fft_real_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_transform" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute the FFT of <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a real or half-complex
+array of length <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>, using a mixed radix decimation-in-frequency
+algorithm.  For <a class="reference internal" href="#c.gsl_fft_real_transform" title="gsl_fft_real_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_transform()</span></code></a> <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> is an array of
+time-ordered real data.  For <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="gsl_fft_halfcomplex_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex_transform()</span></code></a>
+<a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> contains Fourier coefficients in the half-complex ordering
+described above.  There is no restriction on the length <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.
+Efficient modules are provided for subtransforms of length 2, 3, 4 and
+5.  Any remaining factors are computed with a slow, <img class="math" src="_images/math/9c476ea9b9a18f375d5c2062e6376b87e4d54911.png" alt="O(n^2)"/>,
+general-n module.  The caller must supply a <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="wavetable"><code class="xref c c-data docutils literal notranslate"><span class="pre">wavetable</span></code></a> containing
+trigonometric lookup tables and a workspace <a class="reference internal" href="#c.gsl_fft_halfcomplex_transform" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_real_unpack">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_real_unpack</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">real_coefficient</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">complex_coefficient</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_real_unpack" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function converts a single real array, <a class="reference internal" href="#c.gsl_fft_real_unpack" title="real_coefficient"><code class="xref c c-data docutils literal notranslate"><span class="pre">real_coefficient</span></code></a> into
+an equivalent complex array, <a class="reference internal" href="#c.gsl_fft_real_unpack" title="complex_coefficient"><code class="xref c c-data docutils literal notranslate"><span class="pre">complex_coefficient</span></code></a>, (with imaginary
+part set to zero), suitable for <code class="code docutils literal notranslate"><span class="pre">gsl_fft_complex</span></code> routines.  The
+algorithm for the conversion is simply:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">real_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_fft_halfcomplex_unpack">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fft_halfcomplex_unpack</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">halfcomplex_coefficient</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">gsl_complex_packed_array</span></span><span class="w"> </span><span class="n"><span class="pre">complex_coefficient</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fft_halfcomplex_unpack" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function converts <a class="reference internal" href="#c.gsl_fft_halfcomplex_unpack" title="halfcomplex_coefficient"><code class="xref c c-data docutils literal notranslate"><span class="pre">halfcomplex_coefficient</span></code></a>, an array of
+half-complex coefficients as returned by <a class="reference internal" href="#c.gsl_fft_real_transform" title="gsl_fft_real_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_transform()</span></code></a>, into an
+ordinary complex array, <a class="reference internal" href="#c.gsl_fft_halfcomplex_unpack" title="complex_coefficient"><code class="xref c c-data docutils literal notranslate"><span class="pre">complex_coefficient</span></code></a>.  It fills in the
+complex array using the symmetry <img class="math" src="_images/math/2eba6dc28ffde2b85e4110c33a4d03fb11f842f3.png" alt="z_k = z_{n-k}^*"/>
+to reconstruct the redundant elements.  The algorithm for the conversion
+is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">complex_coefficient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">complex_coefficient</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">double</span> <span class="n">hc_real</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">double</span> <span class="n">hc_imag</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">hc_real</span><span class="p">;</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="n">hc_imag</span><span class="p">;</span>
+    <span class="n">complex_coefficient</span><span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">hc_real</span><span class="p">;</span>
+    <span class="n">complex_coefficient</span><span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="o">-</span><span class="n">hc_imag</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">halfcomplex_coefficient</span><span class="p">[(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">stride</span><span class="p">];</span>
+    <span class="n">complex_coefficient</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">stride</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>Here is an example program using <a class="reference internal" href="#c.gsl_fft_real_transform" title="gsl_fft_real_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_transform()</span></code></a> and
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_halfcomplex_inverse()</span></code>.  It generates a real signal in the
+shape of a square pulse.  The pulse is Fourier transformed to frequency
+space, and all but the lowest ten frequency components are removed from
+the array of Fourier coefficients returned by
+<a class="reference internal" href="#c.gsl_fft_real_transform" title="gsl_fft_real_transform"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_real_transform()</span></code></a>.</p>
+<p>The remaining Fourier coefficients are transformed back to the
+time-domain, to give a filtered version of the square pulse.  Since
+Fourier coefficients are stored using the half-complex symmetry both
+positive and negative frequencies are removed and the final filtered
+signal is also real.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_errno.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_fft_real.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_fft_halfcomplex.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+
+  <span class="n">gsl_fft_real_wavetable</span> <span class="o">*</span> <span class="n">real</span><span class="p">;</span>
+  <span class="n">gsl_fft_halfcomplex_wavetable</span> <span class="o">*</span> <span class="n">hc</span><span class="p">;</span>
+  <span class="n">gsl_fft_real_workspace</span> <span class="o">*</span> <span class="n">work</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">3</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">3</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">: </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">work</span> <span class="o">=</span> <span class="n">gsl_fft_real_workspace_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">real</span> <span class="o">=</span> <span class="n">gsl_fft_real_wavetable_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">gsl_fft_real_transform</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span>
+                          <span class="n">real</span><span class="p">,</span> <span class="n">work</span><span class="p">);</span>
+
+  <span class="n">gsl_fft_real_wavetable_free</span> <span class="p">(</span><span class="n">real</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="n">hc</span> <span class="o">=</span> <span class="n">gsl_fft_halfcomplex_wavetable_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">gsl_fft_halfcomplex_inverse</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span>
+                               <span class="n">hc</span><span class="p">,</span> <span class="n">work</span><span class="p">);</span>
+  <span class="n">gsl_fft_halfcomplex_wavetable_free</span> <span class="p">(</span><span class="n">hc</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">: </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_fft_real_workspace_free</span> <span class="p">(</span><span class="n">work</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The program output is shown in <a class="reference internal" href="#fig-fft-real-mixedradix"><span class="std std-numref">Fig. 3</span></a>.</p>
+<figure class="align-default" id="id2">
+<span id="fig-fft-real-mixedradix"></span><a class="reference internal image-reference" href="_images/fft-real-mixedradix.png"><img alt="_images/fft-real-mixedradix.png" src="_images/fft-real-mixedradix.png" style="width: 640.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Low-pass filtered version of a real pulse, output from the example program.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="references-and-further-reading">
+<span id="fft-references"></span><h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>A good starting point for learning more about the FFT is the following review
+article,</p>
+<ul class="simple">
+<li><p>P. Duhamel and M. Vetterli.
+Fast Fourier transforms: A tutorial review and a state of the art.
+Signal Processing, 19:259–299, 1990.</p></li>
+</ul>
+<p>To find out about the algorithms used in the GSL routines you may want
+to consult the document “GSL FFT Algorithms” (it is included
+in GSL, as <code class="file docutils literal notranslate"><span class="pre">doc/fftalgorithms.tex</span></code>).  This has general information
+on FFTs and explicit derivations of the implementation for each
+routine.  There are also references to the relevant literature.  For
+convenience some of the more important references are reproduced below.</p>
+<p>There are several introductory books on the FFT with example programs,
+such as “The Fast Fourier Transform” by Brigham and “DFT/FFT
+and Convolution Algorithms” by Burrus and Parks,</p>
+<ul class="simple">
+<li><ol class="upperalpha simple" start="5">
+<li><p>Oran Brigham. “The Fast Fourier Transform”.  Prentice Hall, 1974.</p></li>
+</ol>
+</li>
+<li><p>C. S. Burrus and T. W. Parks.  “DFT/FFT and Convolution Algorithms”,
+Wiley, 1984.</p></li>
+</ul>
+<p>Both these introductory books cover the radix-2 FFT in some detail.
+The mixed-radix algorithm at the heart of the FFTPACK routines is
+reviewed in Clive Temperton’s paper,</p>
+<ul class="simple">
+<li><p>Clive Temperton, Self-sorting mixed-radix fast Fourier transforms,
+Journal of Computational Physics, 52(1):1–23, 1983.</p></li>
+</ul>
+<p>The derivation of FFTs for real-valued data is explained in the
+following two articles,</p>
+<ul class="simple">
+<li><p>Henrik V. Sorenson, Douglas L. Jones, Michael T. Heideman, and C. Sidney
+Burrus.  Real-valued fast Fourier transform algorithms.
+“IEEE Transactions on Acoustics, Speech, and Signal Processing”,
+ASSP-35(6):849–863, 1987.</p></li>
+<li><p>Clive Temperton.  Fast mixed-radix real Fourier transforms.
+“Journal of Computational Physics”, 52:340–350, 1983.</p></li>
+</ul>
+<p>In 1979 the IEEE published a compendium of carefully-reviewed Fortran
+FFT programs in “Programs for Digital Signal Processing”.  It is a
+useful reference for implementations of many different FFT
+algorithms,</p>
+<ul class="simple">
+<li><p>Digital Signal Processing Committee and IEEE Acoustics, Speech, and Signal
+Processing Committee, editors.
+Programs for Digital Signal Processing. IEEE Press, 1979.</p></li>
+</ul>
+<p>For large-scale FFT work we recommend the use of the dedicated FFTW library
+by Frigo and Johnson.  The FFTW library is self-optimizing—it
+automatically tunes itself for each hardware platform in order to
+achieve maximum performance.  It is available under the GNU GPL.</p>
+<ul class="simple">
+<li><p>FFTW Website, <a class="reference external" href="http://www.fftw.org/">http://www.fftw.org/</a></p></li>
+</ul>
+<p>The source code for FFTPACK is available from <a class="reference external" href="http://www.netlib.org/fftpack/">http://www.netlib.org/fftpack/</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="eigen.html" class="btn btn-neutral float-left" title="Eigensystems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="integration.html" class="btn btn-neutral float-right" title="Numerical Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

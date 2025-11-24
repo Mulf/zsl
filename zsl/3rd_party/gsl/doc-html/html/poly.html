@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polynomials &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Special Functions" href="specfunc.html" />
+    <link rel="prev" title="Complex Numbers" href="complex.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Polynomials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#polynomial-evaluation">Polynomial Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#divided-difference-representation-of-polynomials">Divided Difference Representation of Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-equations">Quadratic Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cubic-equations">Cubic Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-polynomial-equations">General Polynomial Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Polynomials</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/poly.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="complex.html" class="btn btn-neutral float-left" title="Complex Numbers" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specfunc.html" class="btn btn-neutral float-right" title="Special Functions" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="polynomials">
+<span id="index-0"></span><h1>Polynomials<a class="headerlink" href="#polynomials" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for evaluating and solving polynomials.
+There are routines for finding real and complex roots of quadratic and
+cubic equations using analytic methods.  An iterative polynomial solver
+is also available for finding the roots of general polynomials with real
+coefficients (of any order).  The functions are declared in the header
+file <code class="file docutils literal notranslate"><span class="pre">gsl_poly.h</span></code>.</p>
+<section id="polynomial-evaluation">
+<span id="index-1"></span><h2>Polynomial Evaluation<a class="headerlink" href="#polynomial-evaluation" title="Link to this heading">¶</a></h2>
+<p>The functions described here evaluate the polynomial</p>
+<div class="math">
+<p><img src="_images/math/0ed719660ec0bc4c62de433fbc116dabaf16582a.png" alt="P(x) = c[0] + c[1] x + c[2] x^2 + \dots + c[len-1] x^{len-1}"/></p>
+</div><p>using Horner’s method for stability. Inline versions of these functions are used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_eval">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_eval</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_eval" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evaluates a polynomial with real coefficients for the real variable <a class="reference internal" href="#c.gsl_poly_eval" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_eval">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_eval</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_complex_eval" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evaluates a polynomial with real coefficients for the complex variable <a class="reference internal" href="#c.gsl_poly_complex_eval" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_poly_complex_eval">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_poly_complex_eval</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_poly_complex_eval" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evaluates a polynomial with complex coefficients for the complex variable <a class="reference internal" href="#c.gsl_complex_poly_complex_eval" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_eval_derivs">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_eval_derivs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">lenc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">res</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">lenres</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_eval_derivs" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evaluates a polynomial and its derivatives storing the
+results in the array <a class="reference internal" href="#c.gsl_poly_eval_derivs" title="res"><code class="xref c c-data docutils literal notranslate"><span class="pre">res</span></code></a> of size <a class="reference internal" href="#c.gsl_poly_eval_derivs" title="lenres"><code class="xref c c-data docutils literal notranslate"><span class="pre">lenres</span></code></a>.  The output array
+contains the values of <img class="math" src="_images/math/c6cf8bf84f953f2a73fea018b8fd8bd50779cb9f.png" alt="d^k P(x)/d x^k"/> for the specified value of
+<a class="reference internal" href="#c.gsl_poly_eval_derivs" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> starting with <img class="math" src="_images/math/096990ff4402ac7fda003fd71b68c00f313706e7.png" alt="k = 0"/>.</p>
+</dd></dl>
+
+</section>
+<section id="divided-difference-representation-of-polynomials">
+<span id="index-2"></span><h2>Divided Difference Representation of Polynomials<a class="headerlink" href="#divided-difference-representation-of-polynomials" title="Link to this heading">¶</a></h2>
+<p>The functions described here manipulate polynomials stored in Newton’s
+divided-difference representation.  The use of divided-differences is
+described in Abramowitz &amp; Stegun sections 25.1.4 and 25.2.26, and
+Burden and Faires, chapter 3, and discussed briefly below.</p>
+<p>Given a function <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/>, an <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>th degree interpolating polynomial <img class="math" src="_images/math/0948c41e9f2230c811709275e7e0699005ae2039.png" alt="P_{n}(x)"/>
+can be constructed which agrees with <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> at <img class="math" src="_images/math/e24d3b323d3f607ef26dc368283596f63f2d103a.png" alt="n+1"/> distinct points
+<img class="math" src="_images/math/ad7a3b0ddf0dfcbe9be16f2f57a4294b37c56d4a.png" alt="x_0,x_1,...,x_{n}"/>. This polynomial can be written in a
+form known as Newton’s divided-difference representation</p>
+<div class="math">
+<p><img src="_images/math/62761dcd4a61014ea535a4b0ad1e502778e229eb.png" alt="P_{n}(x) = f(x_0) + \sum_{k=1}^n [x_0,x_1,...,x_k] (x-x_0)(x-x_1) \cdots (x-x_{k-1})"/></p>
+</div><p>where the divided differences <img class="math" src="_images/math/9955770384d1f1ed85657c9d5053d080bfd77930.png" alt="[x_0,x_1,...,x_k]"/> are defined in section 25.1.4 of
+Abramowitz and Stegun. Additionally, it is possible to construct an interpolating
+polynomial of degree <img class="math" src="_images/math/f5fb465cae8d10f3d0aa456e189cedd2aacb890e.png" alt="2n+1"/> which also matches the first derivatives of <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>
+at the points <img class="math" src="_images/math/e98ae6ec12af3d0ccd4cc1834b97755dae89bc4a.png" alt="x_0,x_1,...,x_n"/>. This is called the Hermite interpolating
+polynomial and is defined as</p>
+<div class="math">
+<p><img src="_images/math/76ec26181839f844c45932ec8cb17e6dfcdbb705.png" alt="H_{2n+1}(x) = f(z_0) + \sum_{k=1}^{2n+1} [z_0,z_1,...,z_k] (x-z_0)(x-z_1) \cdots (x-z_{k-1})"/></p>
+</div><p>where the elements of <img class="math" src="_images/math/ba901d79d0422a13bbc3619cca0eb7a23d70fe56.png" alt="z = \{x_0,x_0,x_1,x_1,...,x_n,x_n\}"/> are defined by
+<img class="math" src="_images/math/6edf4b5a38b3753cc26954d516e1750b8a9b5a4a.png" alt="z_{2k} = z_{2k+1} = x_k"/>. The divided-differences <img class="math" src="_images/math/2b0559e8558e5a8e0508ff7984a576c1904d81bf.png" alt="[z_0,z_1,...,z_k]"/>
+are discussed in Burden and Faires, section 3.4.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_dd_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_dd_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dd</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xa</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">ya</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_dd_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes a divided-difference representation of the
+interpolating polynomial for the points <img class="math" src="_images/math/c71b20eac2667e5025df5f11f5fe0b00ea21663d.png" alt="(x, y)"/> stored in
+the arrays <a class="reference internal" href="#c.gsl_poly_dd_init" title="xa"><code class="xref c c-data docutils literal notranslate"><span class="pre">xa</span></code></a> and <a class="reference internal" href="#c.gsl_poly_dd_init" title="ya"><code class="xref c c-data docutils literal notranslate"><span class="pre">ya</span></code></a> of length <a class="reference internal" href="#c.gsl_poly_dd_init" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>.  On output the
+divided-differences of (<a class="reference internal" href="#c.gsl_poly_dd_init" title="xa"><code class="xref c c-data docutils literal notranslate"><span class="pre">xa</span></code></a>, <a class="reference internal" href="#c.gsl_poly_dd_init" title="ya"><code class="xref c c-data docutils literal notranslate"><span class="pre">ya</span></code></a>) are stored in the array
+<a class="reference internal" href="#c.gsl_poly_dd_init" title="dd"><code class="xref c c-data docutils literal notranslate"><span class="pre">dd</span></code></a>, also of length <a class="reference internal" href="#c.gsl_poly_dd_init" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>. Using the notation above,
+<img class="math" src="_images/math/24ded95985f878fdc980d866e99f361308a3d909.png" alt="dd[k] = [x_0,x_1,...,x_k]"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_dd_eval">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_dd_eval</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dd</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xa</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_dd_eval" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evaluates the polynomial stored in divided-difference form
+in the arrays <a class="reference internal" href="#c.gsl_poly_dd_eval" title="dd"><code class="xref c c-data docutils literal notranslate"><span class="pre">dd</span></code></a> and <a class="reference internal" href="#c.gsl_poly_dd_eval" title="xa"><code class="xref c c-data docutils literal notranslate"><span class="pre">xa</span></code></a> of length <a class="reference internal" href="#c.gsl_poly_dd_eval" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a> at the point
+<a class="reference internal" href="#c.gsl_poly_dd_eval" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>. An inline version of this function is used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_dd_taylor">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_dd_taylor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dd</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xa</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_dd_taylor" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function converts the divided-difference representation of a
+polynomial to a Taylor expansion.  The divided-difference representation
+is supplied in the arrays <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="dd"><code class="xref c c-data docutils literal notranslate"><span class="pre">dd</span></code></a> and <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="xa"><code class="xref c c-data docutils literal notranslate"><span class="pre">xa</span></code></a> of length <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>.
+On output the Taylor coefficients of the polynomial expanded about the
+point <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="xp"><code class="xref c c-data docutils literal notranslate"><span class="pre">xp</span></code></a> are stored in the array <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> also of length
+<a class="reference internal" href="#c.gsl_poly_dd_taylor" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>.  A workspace of length <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a> must be provided in the
+array <a class="reference internal" href="#c.gsl_poly_dd_taylor" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_dd_hermite_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_dd_hermite_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dd</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">za</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xa</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">ya</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dya</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_dd_hermite_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes a divided-difference representation of the
+interpolating Hermite polynomial for the points <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> stored in
+the arrays <a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="xa"><code class="xref c c-data docutils literal notranslate"><span class="pre">xa</span></code></a> and <a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="ya"><code class="xref c c-data docutils literal notranslate"><span class="pre">ya</span></code></a> of length <a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>. Hermite interpolation
+constructs polynomials which also match first derivatives <img class="math" src="_images/math/51ba1e5f25bf38bfac38b66bb7a42c8642297cb3.png" alt="dy/dx"/> which are
+provided in the array <a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="dya"><code class="xref c c-data docutils literal notranslate"><span class="pre">dya</span></code></a> also of length <a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>. The first derivatives can be
+incorported into the usual divided-difference algorithm by forming a new
+dataset <img class="math" src="_images/math/63cc7061e80b08b092523a408ead51cc05b0f03c.png" alt="z = \{x_0,x_0,x_1,x_1,...\}"/>, which is stored in the array
+<a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="za"><code class="xref c c-data docutils literal notranslate"><span class="pre">za</span></code></a> of length 2*<a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a> on output. On output the
+divided-differences of the Hermite representation are stored in the array
+<a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="dd"><code class="xref c c-data docutils literal notranslate"><span class="pre">dd</span></code></a>, also of length 2*<a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>. Using the notation above,
+<img class="math" src="_images/math/aac00dffdd3a0c37ef6e43082ca276e7ba65fa5d.png" alt="dd[k] = [z_0,z_1,...,z_k]"/>. The resulting Hermite polynomial
+can be evaluated by calling <a class="reference internal" href="#c.gsl_poly_dd_eval" title="gsl_poly_dd_eval"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_poly_dd_eval()</span></code></a> and using
+<a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="za"><code class="xref c c-data docutils literal notranslate"><span class="pre">za</span></code></a> for the input argument <a class="reference internal" href="#c.gsl_poly_dd_hermite_init" title="xa"><code class="xref c c-data docutils literal notranslate"><span class="pre">xa</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="quadratic-equations">
+<span id="index-3"></span><h2>Quadratic Equations<a class="headerlink" href="#quadratic-equations" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_solve_quadratic">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_solve_quadratic</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x0</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_solve_quadratic" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the real roots of the quadratic equation,</p>
+<div class="math">
+<p><img src="_images/math/79121e9530d1e0a469f0c07f1c5562732dc9d398.png" alt="a x^2 + b x + c = 0"/></p>
+</div><p>The number of real roots (either zero, one or two) is returned, and
+their locations are stored in <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a> and <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x1"><code class="xref c c-data docutils literal notranslate"><span class="pre">x1</span></code></a>.  If no real roots
+are found then <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a> and <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x1"><code class="xref c c-data docutils literal notranslate"><span class="pre">x1</span></code></a> are not modified.  If one real root
+is found (i.e. if <img class="math" src="_images/math/62b8e80bf23d9f723ddd4243c1102349152d78bf.png" alt="a=0"/>) then it is stored in <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a>.  When two
+real roots are found they are stored in <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a> and <a class="reference internal" href="#c.gsl_poly_solve_quadratic" title="x1"><code class="xref c c-data docutils literal notranslate"><span class="pre">x1</span></code></a> in
+ascending order.  The case of coincident roots is not considered
+special.  For example <img class="math" src="_images/math/7bb602b468cd334966c0ab33e123449270402e0c.png" alt="(x-1)^2=0"/> will have two roots, which happen
+to have exactly equal values.</p>
+<p>The number of roots found depends on the sign of the discriminant
+<img class="math" src="_images/math/050b25668fa221d2f07d5d725f3cc5728e335fbf.png" alt="b^2 - 4 a c"/>.  This will be subject to rounding and cancellation
+errors when computed in double precision, and will also be subject to
+errors if the coefficients of the polynomial are inexact.  These errors
+may cause a discrete change in the number of roots.  However, for
+polynomials with small integer coefficients the discriminant can always
+be computed exactly.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_solve_quadratic">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_solve_quadratic</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">z0</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">z1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_complex_solve_quadratic" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the complex roots of the quadratic equation,</p>
+<div class="math">
+<p><img src="_images/math/e8cea97eccadfb3dd87dfc2ffa9948eff12b3dad.png" alt="a z^2 + b z + c = 0"/></p>
+</div><p>The number of complex roots is returned (either one or two) and the
+locations of the roots are stored in <a class="reference internal" href="#c.gsl_poly_complex_solve_quadratic" title="z0"><code class="xref c c-data docutils literal notranslate"><span class="pre">z0</span></code></a> and <a class="reference internal" href="#c.gsl_poly_complex_solve_quadratic" title="z1"><code class="xref c c-data docutils literal notranslate"><span class="pre">z1</span></code></a>.  The roots
+are returned in ascending order, sorted first by their real components
+and then by their imaginary components.  If only one real root is found
+(i.e. if <img class="math" src="_images/math/62b8e80bf23d9f723ddd4243c1102349152d78bf.png" alt="a=0"/>) then it is stored in <a class="reference internal" href="#c.gsl_poly_complex_solve_quadratic" title="z0"><code class="xref c c-data docutils literal notranslate"><span class="pre">z0</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="cubic-equations">
+<span id="index-4"></span><h2>Cubic Equations<a class="headerlink" href="#cubic-equations" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_solve_cubic">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_solve_cubic</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x0</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_solve_cubic" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the real roots of the cubic equation,</p>
+<div class="math">
+<p><img src="_images/math/dcead1cca2f3a295ea3edf2f502dd8fad9c606eb.png" alt="x^3 + a x^2 + b x + c = 0"/></p>
+</div><p>with a leading coefficient of unity.  The number of real roots (either
+one or three) is returned, and their locations are stored in <a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a>,
+<a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x1"><code class="xref c c-data docutils literal notranslate"><span class="pre">x1</span></code></a> and <a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x2"><code class="xref c c-data docutils literal notranslate"><span class="pre">x2</span></code></a>.  If one real root is found then only <a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a>
+is modified.  When three real roots are found they are stored in
+<a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x0"><code class="xref c c-data docutils literal notranslate"><span class="pre">x0</span></code></a>, <a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x1"><code class="xref c c-data docutils literal notranslate"><span class="pre">x1</span></code></a> and <a class="reference internal" href="#c.gsl_poly_solve_cubic" title="x2"><code class="xref c c-data docutils literal notranslate"><span class="pre">x2</span></code></a> in ascending order.  The case of
+coincident roots is not considered special.  For example, the equation
+<img class="math" src="_images/math/9d34d48c4db6bf5a2c5f06d5a7fbe582faba4a52.png" alt="(x-1)^3=0"/> will have three roots with exactly equal values.  As
+in the quadratic case, finite precision may cause equal or
+closely-spaced real roots to move off the real axis into the complex
+plane, leading to a discrete change in the number of real roots.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_solve_cubic">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_solve_cubic</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">c</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">z0</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">z1</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">z2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_complex_solve_cubic" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the complex roots of the cubic equation,</p>
+<div class="math">
+<p><img src="_images/math/24d3e6769c91c634f6c239cd0e9878a4c3d60452.png" alt="z^3 + a z^2 + b z + c = 0"/></p>
+</div><p>The number of complex roots is returned (always three) and the locations
+of the roots are stored in <a class="reference internal" href="#c.gsl_poly_complex_solve_cubic" title="z0"><code class="xref c c-data docutils literal notranslate"><span class="pre">z0</span></code></a>, <a class="reference internal" href="#c.gsl_poly_complex_solve_cubic" title="z1"><code class="xref c c-data docutils literal notranslate"><span class="pre">z1</span></code></a> and <a class="reference internal" href="#c.gsl_poly_complex_solve_cubic" title="z2"><code class="xref c c-data docutils literal notranslate"><span class="pre">z2</span></code></a>.  The roots
+are returned in ascending order, sorted first by their real components
+and then by their imaginary components.</p>
+</dd></dl>
+
+</section>
+<section id="general-polynomial-equations">
+<span id="index-5"></span><h2>General Polynomial Equations<a class="headerlink" href="#general-polynomial-equations" title="Link to this heading">¶</a></h2>
+<p>The roots of polynomial equations cannot be found analytically beyond
+the special cases of the quadratic, cubic and quartic equation.  The
+algorithm described in this section uses an iterative method to find the
+approximate locations of roots of higher order polynomials.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_workspace</span></span></span><a class="headerlink" href="#c.gsl_poly_complex_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains parameters used for finding roots of general polynomials</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_workspace_alloc">
+<a class="reference internal" href="#c.gsl_poly_complex_workspace" title="gsl_poly_complex_workspace"><span class="n"><span class="pre">gsl_poly_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_workspace_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_complex_workspace_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates space for a <a class="reference internal" href="#c.gsl_poly_complex_workspace" title="gsl_poly_complex_workspace"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_poly_complex_workspace</span></code></a>
+struct and a workspace suitable for solving a polynomial with <a class="reference internal" href="#c.gsl_poly_complex_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>
+coefficients using the routine <a class="reference internal" href="#c.gsl_poly_complex_solve" title="gsl_poly_complex_solve"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_poly_complex_solve()</span></code></a>.</p>
+<p>The function returns a pointer to the newly allocated
+<a class="reference internal" href="#c.gsl_poly_complex_workspace" title="gsl_poly_complex_workspace"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_poly_complex_workspace</span></code></a> if no errors were detected, and a null
+pointer in the case of error.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_workspace_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_workspace_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_poly_complex_workspace" title="gsl_poly_complex_workspace"><span class="n"><span class="pre">gsl_poly_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_complex_workspace_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the workspace
+<a class="reference internal" href="#c.gsl_poly_complex_workspace_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_poly_complex_solve">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_poly_complex_solve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <a class="reference internal" href="#c.gsl_poly_complex_workspace" title="gsl_poly_complex_workspace"><span class="n"><span class="pre">gsl_poly_complex_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="n"><span class="pre">gsl_complex_packed_ptr</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_poly_complex_solve" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the roots of the general polynomial</p>
+<div class="math">
+<p><img src="_images/math/f2ede15d33363459b5154b4121ec37d9f592942f.png" alt="P(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_{n-1} x^{n-1}"/></p>
+</div><p>using balanced-QR reduction of the companion matrix.  The parameter <a class="reference internal" href="#c.gsl_poly_complex_solve" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>
+specifies the length of the coefficient array.  The coefficient of the
+highest order term must be non-zero.  The function requires a workspace
+<a class="reference internal" href="#c.gsl_poly_complex_solve" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a> of the appropriate size.  The <img class="math" src="_images/math/148b550abf206bf92c3b91882cf27375074a57d7.png" alt="n-1"/> roots are returned in
+the packed complex array <a class="reference internal" href="#c.gsl_poly_complex_solve" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a> of length <img class="math" src="_images/math/df750e5ec8b5b790f734e3b3836b3919e354e1b5.png" alt="2(n-1)"/>, alternating
+real and imaginary parts.</p>
+<p>The function returns <code class="xref c c-data docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if all the roots are found. If
+the QR reduction does not converge, the error handler is invoked with
+an error code of <code class="xref c c-data docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code>.  Note that due to finite precision,
+roots of higher multiplicity are returned as a cluster of simple roots
+with reduced accuracy.  The solution of polynomials with higher-order
+roots requires specialized algorithms that take the multiplicity
+structure into account (see e.g. Z. Zeng, Algorithm 835, ACM
+Transactions on Mathematical Software, Volume 30, Issue 2 (2004), pp
+218–236).</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>To demonstrate the use of the general polynomial solver we will take the
+polynomial <img class="math" src="_images/math/49e8710839952e16b8fd32c811e39f180a54683b.png" alt="P(x) = x^5 - 1"/> which has these roots:</p>
+<div class="math">
+<p><img src="_images/math/0992b3fd493f0ba76b10763426b824d020d25ebc.png" alt="1, e^{2\pi i / 5}, e^{4\pi i / 5}, e^{6\pi i / 5}, e^{8\pi i / 5}"/></p>
+</div><p>The following program will find these roots.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_poly.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="o">/*</span> <span class="n">coefficients</span> <span class="n">of</span> <span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span>  <span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="o">^</span><span class="mi">5</span>  <span class="o">*/</span>
+  <span class="n">double</span> <span class="n">a</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">};</span>
+  <span class="n">double</span> <span class="n">z</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+
+  <span class="n">gsl_poly_complex_workspace</span> <span class="o">*</span> <span class="n">w</span>
+      <span class="o">=</span> <span class="n">gsl_poly_complex_workspace_alloc</span> <span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+
+  <span class="n">gsl_poly_complex_solve</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+
+  <span class="n">gsl_poly_complex_workspace_free</span> <span class="p">(</span><span class="n">w</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;z</span><span class="si">%d</span><span class="s2"> = </span><span class="si">%+.18f</span><span class="s2"> </span><span class="si">%+.18f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+              <span class="n">i</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">],</span> <span class="n">z</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output of the program is</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.809016994374947673</span> <span class="o">+</span><span class="mf">0.587785252292473359</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.809016994374947673</span> <span class="o">-</span><span class="mf">0.587785252292473359</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.309016994374947507</span> <span class="o">+</span><span class="mf">0.951056516295152976</span>
+<span class="n">z3</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.309016994374947507</span> <span class="o">-</span><span class="mf">0.951056516295152976</span>
+<span class="n">z4</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.999999999999999889</span> <span class="o">+</span><span class="mf">0.000000000000000000</span>
+</pre></div>
+</div>
+<p>which agrees with the analytic result, <img class="math" src="_images/math/c87e9d000490532b42c0f779fccdabf923622af0.png" alt="z_n = \exp(2 \pi n i/5)"/>.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The balanced-QR method and its error analysis are described in the
+following papers,</p>
+<ul class="simple">
+<li><p>R.S. Martin, G. Peters and J.H. Wilkinson, “The QR Algorithm for Real
+Hessenberg Matrices”, Numerische Mathematik, 14 (1970), 219–231.</p></li>
+<li><p>B.N. Parlett and C. Reinsch, “Balancing a Matrix for Calculation of
+Eigenvalues and Eigenvectors”, Numerische Mathematik, 13 (1969),
+293–304.</p></li>
+<li><p>A. Edelman and H. Murakami, “Polynomial roots from companion matrix
+eigenvalues”, Mathematics of Computation, Vol.: 64, No.: 210
+(1995), 763–776.</p></li>
+</ul>
+<p>The formulas for divided differences are given in the following texts,</p>
+<ul class="simple">
+<li><p>Abramowitz and Stegun, Handbook of Mathematical Functions,
+Sections 25.1.4 and 25.2.26.</p></li>
+<li><p>R. L. Burden and J. D. Faires, Numerical Analysis, 9th edition,
+ISBN 0-538-73351-9, 2011.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="complex.html" class="btn btn-neutral float-left" title="Complex Numbers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specfunc.html" class="btn btn-neutral float-right" title="Special Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

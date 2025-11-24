@@ -1,0 +1,1374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Histograms &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="N-tuples" href="ntuple.html" />
+    <link rel="prev" title="Digital Filtering" href="filter.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Histograms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-histogram-struct">The histogram struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#histogram-allocation">Histogram allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#copying-histograms">Copying Histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-and-accessing-histogram-elements">Updating and accessing histogram elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#searching-histogram-ranges">Searching histogram ranges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#histogram-statistics">Histogram Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#histogram-operations">Histogram Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-histograms">Reading and writing histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resampling-from-histograms">Resampling from histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-histogram-probability-distribution-struct">The histogram probability distribution struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-programs-for-histograms">Example programs for histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#two-dimensional-histograms">Two dimensional histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-2d-histogram-struct">The 2D histogram struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-histogram-allocation">2D Histogram allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#copying-2d-histograms">Copying 2D Histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-and-accessing-2d-histogram-elements">Updating and accessing 2D histogram elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#searching-2d-histogram-ranges">Searching 2D histogram ranges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-histogram-statistics">2D Histogram Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-histogram-operations">2D Histogram Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-2d-histograms">Reading and writing 2D histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resampling-from-2d-histograms">Resampling from 2D histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-programs-for-2d-histograms">Example programs for 2D histograms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Histograms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/histogram.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="filter.html" class="btn btn-neutral float-left" title="Digital Filtering" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ntuple.html" class="btn btn-neutral float-right" title="N-tuples" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="histograms">
+<span id="index-0"></span><h1>Histograms<a class="headerlink" href="#histograms" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for creating histograms.  Histograms
+provide a convenient way of summarizing the distribution of a set of
+data. A histogram consists of a set of <em>bins</em> which count the number
+of events falling into a given range of a continuous variable <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>.
+In GSL the bins of a histogram contain floating-point numbers, so they
+can be used to record both integer and non-integer distributions.  The
+bins can use arbitrary sets of ranges (uniformly spaced bins are the
+default).  Both one and two-dimensional histograms are supported.</p>
+<p>Once a histogram has been created it can also be converted into a
+probability distribution function.  The library provides efficient
+routines for selecting random samples from probability distributions.
+This can be useful for generating simulations based on real data.</p>
+<p>The functions are declared in the header files <code class="file docutils literal notranslate"><span class="pre">gsl_histogram.h</span></code>
+and <code class="file docutils literal notranslate"><span class="pre">gsl_histogram2d.h</span></code>.</p>
+<section id="the-histogram-struct">
+<h2>The histogram struct<a class="headerlink" href="#the-histogram-struct" title="Link to this heading">¶</a></h2>
+<p>A histogram is defined by the following struct,</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_histogram">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram</span></span></span><a class="headerlink" href="#c.gsl_histogram" title="Link to this definition">¶</a><br /></dt>
+<dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>size_t n</p></td>
+<td><p>This is the number of histogram bins</p></td>
+</tr>
+<tr class="row-even"><td><p>double * range</p></td>
+<td><p>The ranges of the bins are stored in an array of <code class="code docutils literal notranslate"><span class="pre">n+1</span></code> elements
+pointed to by range.</p></td>
+</tr>
+<tr class="row-odd"><td><p>double * bin</p></td>
+<td><p>The counts for each bin are stored in an array of <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> elements
+pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">bin</span></code>.  The bins are floating-point numbers, so you can
+increment them by non-integer values if necessary.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The range for <code class="code docutils literal notranslate"><span class="pre">bin[i]</span></code> is given by <code class="code docutils literal notranslate"><span class="pre">range[i]</span></code> to
+<code class="code docutils literal notranslate"><span class="pre">range[i+1]</span></code>.  For <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> bins there are <code class="code docutils literal notranslate"><span class="pre">n+1</span></code> entries in the
+array <code class="xref c c-data docutils literal notranslate"><span class="pre">range</span></code>.  Each bin is inclusive at the lower end and exclusive
+at the upper end.  Mathematically this means that the bins are defined by
+the following inequality,</p>
+<div class="math">
+<p><img src="_images/math/8a68a9515b1644d85adf82d16850d7734cab9ae3.png" alt="\hbox{bin[i] corresponds to range[i]} \le x &lt; \hbox{range[i+1]}"/></p>
+</div><p>Here is a diagram of the correspondence between ranges and bins on the
+number-line for <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="p">[</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)[</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)[</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)[</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">)[</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="p">)</span>
+<span class="o">---|---------|---------|---------|---------|---------|---</span>  <span class="n">x</span>
+ <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>      <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>      <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>      <span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>      <span class="n">r</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>      <span class="n">r</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In this picture the values of the <code class="xref c c-data docutils literal notranslate"><span class="pre">range</span></code> array are denoted by
+<img class="math" src="_images/math/532311b00f74167e01e5b4d047f2c07f678dd321.png" alt="r"/>.  On the left-hand side of each bin the square bracket
+<code class="code docutils literal notranslate"><span class="pre">[</span></code> denotes an inclusive lower bound
+(<img class="math" src="_images/math/026734b85702447a987e876b7565226987382603.png" alt="r \le x"/>),
+and the round parentheses <code class="code docutils literal notranslate"><span class="pre">)</span></code> on the right-hand
+side denote an exclusive upper bound (<img class="math" src="_images/math/3f61609026c56f04209fa1fa5f9c698541e6eb3a.png" alt="x &lt; r"/>).  Thus any samples
+which fall on the upper end of the histogram are excluded.  If you want
+to include this value for the last bin you will need to add an extra bin
+to your histogram.</p>
+<p>The <a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram</span></code></a> struct and its associated functions are defined
+in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_histogram.h</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="histogram-allocation">
+<h2>Histogram allocation<a class="headerlink" href="#histogram-allocation" title="Link to this heading">¶</a></h2>
+<p>The functions for allocating memory to a histogram follow the style of
+<code class="xref c c-func docutils literal notranslate"><span class="pre">malloc()</span></code> and <code class="xref c c-func docutils literal notranslate"><span class="pre">free()</span></code>.  In addition they also perform their own
+error checking.  If there is insufficient memory available to allocate a
+histogram then the functions call the error handler (with an error
+number of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>) in addition to returning a null pointer.
+Thus if you use the library error handler to abort your program then it
+isn’t necessary to check every histogram <code class="code docutils literal notranslate"><span class="pre">alloc</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_alloc">
+<a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a histogram with <a class="reference internal" href="#c.gsl_histogram_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> bins, and
+returns a pointer to a newly created <a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram</span></code></a> struct.  If
+insufficient memory is available a null pointer is returned and the
+error handler is invoked with an error code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>. The
+bins and ranges are not initialized, and should be prepared using one of
+the range-setting functions below in order to make the histogram ready
+for use.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_set_ranges">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_set_ranges</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">range</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_set_ranges" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets the ranges of the existing histogram <a class="reference internal" href="#c.gsl_histogram_set_ranges" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> using
+the array <a class="reference internal" href="#c.gsl_histogram_set_ranges" title="range"><code class="xref c c-data docutils literal notranslate"><span class="pre">range</span></code></a> of size <a class="reference internal" href="#c.gsl_histogram_set_ranges" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>.  The values of the histogram
+bins are reset to zero.  The <a class="reference internal" href="#c.gsl_histogram_set_ranges" title="range"><code class="xref c c-data docutils literal notranslate"><span class="pre">range</span></code></a> array should contain the
+desired bin limits.  The ranges can be arbitrary, subject to the
+restriction that they are monotonically increasing.</p>
+<p>The following example shows how to create a histogram with logarithmic
+bins with ranges [1,10), [10,100) and [100,1000):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_histogram</span> <span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="n">gsl_histogram_alloc</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="o">/*</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">covers</span> <span class="n">the</span> <span class="nb">range</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">*/</span>
+<span class="o">/*</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">covers</span> <span class="n">the</span> <span class="nb">range</span> <span class="mi">10</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="o">*/</span>
+<span class="o">/*</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">covers</span> <span class="n">the</span> <span class="nb">range</span> <span class="mi">100</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="o">*/</span>
+
+<span class="n">double</span> <span class="nb">range</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">1000.0</span> <span class="p">};</span>
+
+<span class="n">gsl_histogram_set_ranges</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that the size of the <a class="reference internal" href="#c.gsl_histogram_set_ranges" title="range"><code class="xref c c-data docutils literal notranslate"><span class="pre">range</span></code></a> array should be defined to be one
+element bigger than the number of bins.  The additional element is
+required for the upper value of the final bin.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_set_ranges_uniform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_set_ranges_uniform</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xmin</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xmax</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_set_ranges_uniform" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets the ranges of the existing histogram <a class="reference internal" href="#c.gsl_histogram_set_ranges_uniform" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to cover
+the range <a class="reference internal" href="#c.gsl_histogram_set_ranges_uniform" title="xmin"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmin</span></code></a> to <a class="reference internal" href="#c.gsl_histogram_set_ranges_uniform" title="xmax"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmax</span></code></a> uniformly.  The values of the
+histogram bins are reset to zero.  The bin ranges are shown in the table
+below,</p>
+<div class="math">
+<p><img src="_images/math/a3f709b101d638acc24b901512dfc42e1fcbf55a.png" alt="\begin{array}{ccc}
+  \hbox{bin[0]}&amp;\hbox{corresponds to}&amp; xmin \le  x &lt; xmin + d \\
+  \hbox{bin[1]} &amp;\hbox{corresponds to}&amp; xmin + d \le  x &lt; xmin + 2 d \\
+  \dots&amp;\dots&amp;\dots \\
+  \hbox{bin[n-1]} &amp; \hbox{corresponds to}&amp; xmin + (n-1)d \le  x &lt; xmax
+\end{array}"/></p>
+</div><p>where <img class="math" src="_images/math/92f093ef8e67b2293db7509b06c7817f327f445c.png" alt="d"/> is the bin spacing, <img class="math" src="_images/math/8b80ad74ab945ec84d4b3178fe91dff10761e4b4.png" alt="d = (xmax-xmin)/n"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the histogram <a class="reference internal" href="#c.gsl_histogram_free" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> and all of the memory
+associated with it.</p>
+</dd></dl>
+
+</section>
+<section id="copying-histograms">
+<h2>Copying Histograms<a class="headerlink" href="#copying-histograms" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the histogram <a class="reference internal" href="#c.gsl_histogram_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the pre-existing
+histogram <a class="reference internal" href="#c.gsl_histogram_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>, making <a class="reference internal" href="#c.gsl_histogram_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a> into an exact copy of <a class="reference internal" href="#c.gsl_histogram_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>.
+The two histograms must be of the same size.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_clone">
+<a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_clone" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly created histogram which is an
+exact copy of the histogram <a class="reference internal" href="#c.gsl_histogram_clone" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="updating-and-accessing-histogram-elements">
+<h2>Updating and accessing histogram elements<a class="headerlink" href="#updating-and-accessing-histogram-elements" title="Link to this heading">¶</a></h2>
+<p>There are two ways to access histogram bins, either by specifying an
+<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> coordinate or by using the bin-index directly.  The functions
+for accessing the histogram through <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> coordinates use a binary
+search to identify the bin which covers the appropriate range.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_increment">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_increment</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_increment" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function updates the histogram <a class="reference internal" href="#c.gsl_histogram_increment" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> by adding one (1.0) to the
+bin whose range contains the coordinate <a class="reference internal" href="#c.gsl_histogram_increment" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.</p>
+<p>If <a class="reference internal" href="#c.gsl_histogram_increment" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> lies in the valid range of the histogram then the function
+returns zero to indicate success.  If <a class="reference internal" href="#c.gsl_histogram_increment" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is less than the lower
+limit of the histogram then the function returns <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a>, and
+none of bins are modified.  Similarly, if the value of <a class="reference internal" href="#c.gsl_histogram_increment" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is greater
+than or equal to the upper limit of the histogram then the function
+returns <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a>, and none of the bins are modified.  The error
+handler is not called, however, since it is often necessary to compute
+histograms for a small range of a larger dataset, ignoring the values
+outside the range of interest.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_accumulate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_accumulate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">weight</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_accumulate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is similar to <a class="reference internal" href="#c.gsl_histogram_increment" title="gsl_histogram_increment"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_histogram_increment()</span></code></a> but increases
+the value of the appropriate bin in the histogram <a class="reference internal" href="#c.gsl_histogram_accumulate" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> by the
+floating-point number <a class="reference internal" href="#c.gsl_histogram_accumulate" title="weight"><code class="xref c c-data docutils literal notranslate"><span class="pre">weight</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_get">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the contents of the <a class="reference internal" href="#c.gsl_histogram_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>-th bin of the histogram
+<a class="reference internal" href="#c.gsl_histogram_get" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  If <a class="reference internal" href="#c.gsl_histogram_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> lies outside the valid range of indices for the
+histogram then the error handler is called with an error code of
+<a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> and the function returns 0.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_get_range">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_get_range</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lower</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">upper</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_get_range" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the upper and lower range limits of the <a class="reference internal" href="#c.gsl_histogram_get_range" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>-th
+bin of the histogram <a class="reference internal" href="#c.gsl_histogram_get_range" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  If the index <a class="reference internal" href="#c.gsl_histogram_get_range" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> is valid then the
+corresponding range limits are stored in <a class="reference internal" href="#c.gsl_histogram_get_range" title="lower"><code class="xref c c-data docutils literal notranslate"><span class="pre">lower</span></code></a> and <a class="reference internal" href="#c.gsl_histogram_get_range" title="upper"><code class="xref c c-data docutils literal notranslate"><span class="pre">upper</span></code></a>.
+The lower limit is inclusive (i.e. events with this coordinate are
+included in the bin) and the upper limit is exclusive (i.e. events with
+the coordinate of the upper limit are excluded and fall in the
+neighboring higher bin, if it exists).  The function returns 0 to
+indicate success.  If <a class="reference internal" href="#c.gsl_histogram_get_range" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> lies outside the valid range of indices for
+the histogram then the error handler is called and the function returns
+an error code of <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_max">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_max" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram_min">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_min</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_min" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram_bins">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_bins</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_bins" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the maximum upper and minimum lower range limits
+and the number of bins of the histogram <a class="reference internal" href="#c.gsl_histogram_bins" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  They provide a way of
+determining these values without accessing the <a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram</span></code></a>
+struct directly.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_reset">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_reset</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_reset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function resets all the bins in the histogram <a class="reference internal" href="#c.gsl_histogram_reset" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to zero.</p>
+</dd></dl>
+
+</section>
+<section id="searching-histogram-ranges">
+<h2>Searching histogram ranges<a class="headerlink" href="#searching-histogram-ranges" title="Link to this heading">¶</a></h2>
+<p>The following functions are used by the access and update routines to
+locate the bin which corresponds to a given <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> coordinate.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_find">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_find</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_find" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds and sets the index <a class="reference internal" href="#c.gsl_histogram_find" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> to the bin number which
+covers the coordinate <a class="reference internal" href="#c.gsl_histogram_find" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> in the histogram <a class="reference internal" href="#c.gsl_histogram_find" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  The bin is
+located using a binary search. The search includes an optimization for
+histograms with uniform range, and will return the correct bin
+immediately in this case.  If <a class="reference internal" href="#c.gsl_histogram_find" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is found in the range of the
+histogram then the function sets the index <a class="reference internal" href="#c.gsl_histogram_find" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> and returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If <a class="reference internal" href="#c.gsl_histogram_find" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> lies outside the valid range of the
+histogram then the function returns <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> and the error
+handler is invoked.</p>
+</dd></dl>
+
+</section>
+<section id="histogram-statistics">
+<span id="index-1"></span><h2>Histogram Statistics<a class="headerlink" href="#histogram-statistics" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_max_val">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_max_val</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_max_val" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the maximum value contained in the histogram bins.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_max_bin">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_max_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_max_bin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the index of the bin containing the maximum
+value. In the case where several bins contain the same maximum value the
+smallest index is returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_min_val">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_min_val</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_min_val" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the minimum value contained in the histogram bins.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_min_bin">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_min_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_min_bin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the index of the bin containing the minimum
+value. In the case where several bins contain the same minimum value the
+smallest index is returned.</p>
+</dd></dl>
+
+<dl class="c function" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_histogram_mean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the mean of the histogrammed variable, where the
+histogram is regarded as a probability distribution. Negative bin values
+are ignored for the purposes of this calculation.  The accuracy of the
+result is limited by the bin width.</p>
+</dd></dl>
+
+<dl class="c function" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_histogram_sigma">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_sigma</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_sigma" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the standard deviation of the histogrammed
+variable, where the histogram is regarded as a probability
+distribution. Negative bin values are ignored for the purposes of this
+calculation. The accuracy of the result is limited by the bin width.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_sum">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_sum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_sum" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the sum of all bin values. Negative bin values
+are included in the sum.</p>
+</dd></dl>
+
+</section>
+<section id="histogram-operations">
+<h2>Histogram Operations<a class="headerlink" href="#histogram-operations" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_equal_bins_p">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_equal_bins_p</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_equal_bins_p" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns 1 if the all of the individual bin
+ranges of the two histograms are identical, and 0
+otherwise.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_add">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_add</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_add" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function adds the contents of the bins in histogram <a class="reference internal" href="#c.gsl_histogram_add" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a> to the
+corresponding bins of histogram <a class="reference internal" href="#c.gsl_histogram_add" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>,  i.e. <img class="math" src="_images/math/0dde0e843285932675a3180418e9aed6d35a33d5.png" alt="h'_1(i) = h_1(i) + h_2(i)"/>.
+The two histograms must have identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_sub">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_sub</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_sub" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function subtracts the contents of the bins in histogram <a class="reference internal" href="#c.gsl_histogram_sub" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a>
+from the corresponding bins of histogram <a class="reference internal" href="#c.gsl_histogram_sub" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>, i.e. <img class="math" src="_images/math/a9dc6783d68901b051819f3ffe495aed3adac66f.png" alt="h'_1(i) = h_1(i) - h_2(i)"/>.
+The two histograms must have identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_mul">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_mul</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_mul" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function multiplies the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram_mul" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>
+by the contents of the corresponding bins in histogram <a class="reference internal" href="#c.gsl_histogram_mul" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a>,
+i.e. <img class="math" src="_images/math/86ba8dc1b4347bd3409697a92708307206d116e1.png" alt="h'_1(i) = h_1(i) * h_2(i)"/>.  The two histograms must have
+identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_div">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_div</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_div" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function divides the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram_div" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a> by
+the contents of the corresponding bins in histogram <a class="reference internal" href="#c.gsl_histogram_div" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a>,
+i.e. <img class="math" src="_images/math/78514939b625742b3be2be137a3e86e14b28a164.png" alt="h'_1(i) = h_1(i) / h_2(i)"/>.  The two histograms must have
+identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_scale">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_scale</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_scale" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function multiplies the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram_scale" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>
+by the constant <a class="reference internal" href="#c.gsl_histogram_scale" title="scale"><code class="xref c c-data docutils literal notranslate"><span class="pre">scale</span></code></a>, i.e.</p>
+<div class="math">
+<p><img src="_images/math/91fedfe30dd9029b9650fcaa8af60633507e45b6.png" alt="h'_1(i) = h_1(i) * \hbox{\it scale}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_shift">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_shift</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_shift" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function shifts the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram_shift" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> by
+the constant <a class="reference internal" href="#c.gsl_histogram_shift" title="offset"><code class="xref c c-data docutils literal notranslate"><span class="pre">offset</span></code></a>, i.e.</p>
+<div class="math">
+<p><img src="_images/math/eb55e00b356ca6504b51a81a906c57bbe928ccfa.png" alt="h'_1(i) = h_1(i) + \hbox{\it offset}"/></p>
+</div></dd></dl>
+
+</section>
+<section id="reading-and-writing-histograms">
+<h2>Reading and writing histograms<a class="headerlink" href="#reading-and-writing-histograms" title="Link to this heading">¶</a></h2>
+<p>The library provides functions for reading and writing histograms to a file
+as binary data or formatted text.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_fwrite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_fwrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_fwrite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the ranges and bins of the histogram <a class="reference internal" href="#c.gsl_histogram_fwrite" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to the
+stream <a class="reference internal" href="#c.gsl_histogram_fwrite" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The return value is 0 for success
+and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.  Since
+the data is written in the native binary format it may not be portable
+between different architectures.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_fread">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_fread</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_fread" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads into the histogram <a class="reference internal" href="#c.gsl_histogram_fread" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> from the open stream
+<a class="reference internal" href="#c.gsl_histogram_fread" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The histogram <a class="reference internal" href="#c.gsl_histogram_fread" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> must be
+preallocated with the correct size since the function uses the number of
+bins in <a class="reference internal" href="#c.gsl_histogram_fread" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to determine how many bytes to read.  The return value is
+0 for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from
+the file.  The data is assumed to have been written in the native binary
+format on the same architecture.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_fprintf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_fprintf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">range_format</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bin_format</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_fprintf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the ranges and bins of the histogram <a class="reference internal" href="#c.gsl_histogram_fprintf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>
+line-by-line to the stream <a class="reference internal" href="#c.gsl_histogram_fprintf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> using the format specifiers
+<a class="reference internal" href="#c.gsl_histogram_fprintf" title="range_format"><code class="xref c c-data docutils literal notranslate"><span class="pre">range_format</span></code></a> and <a class="reference internal" href="#c.gsl_histogram_fprintf" title="bin_format"><code class="xref c c-data docutils literal notranslate"><span class="pre">bin_format</span></code></a>.  These should be one of the
+<code class="code docutils literal notranslate"><span class="pre">%g</span></code>, <code class="code docutils literal notranslate"><span class="pre">%e</span></code> or <code class="code docutils literal notranslate"><span class="pre">%f</span></code> formats for floating point
+numbers.  The function returns 0 for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if
+there was a problem writing to the file.  The histogram output is
+formatted in three columns, and the columns are separated by spaces,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="nb">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nb">range</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">range</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">range</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="nb">bin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="o">....</span>
+<span class="nb">range</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="nb">range</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="nb">bin</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The values of the ranges are formatted using <a class="reference internal" href="#c.gsl_histogram_fprintf" title="range_format"><code class="xref c c-data docutils literal notranslate"><span class="pre">range_format</span></code></a> and the
+value of the bins are formatted using <a class="reference internal" href="#c.gsl_histogram_fprintf" title="bin_format"><code class="xref c c-data docutils literal notranslate"><span class="pre">bin_format</span></code></a>.  Each line
+contains the lower and upper limit of the range of the bins and the
+value of the bin itself.  Since the upper limit of one bin is the lower
+limit of the next there is duplication of these values between lines but
+this allows the histogram to be manipulated with line-oriented tools.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_fscanf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_fscanf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_fscanf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads formatted data from the stream <a class="reference internal" href="#c.gsl_histogram_fscanf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+histogram <a class="reference internal" href="#c.gsl_histogram_fscanf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  The data is assumed to be in the three-column format
+used by <a class="reference internal" href="#c.gsl_histogram_fprintf" title="gsl_histogram_fprintf"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_histogram_fprintf()</span></code></a>.  The histogram <a class="reference internal" href="#c.gsl_histogram_fscanf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> must be
+preallocated with the correct length since the function uses the size of
+<a class="reference internal" href="#c.gsl_histogram_fscanf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to determine how many numbers to read.  The function returns 0
+for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from
+the file.</p>
+</dd></dl>
+
+</section>
+<section id="resampling-from-histograms">
+<span id="index-4"></span><h2>Resampling from histograms<a class="headerlink" href="#resampling-from-histograms" title="Link to this heading">¶</a></h2>
+<p>A histogram made by counting events can be regarded as a measurement of
+a probability distribution.  Allowing for statistical error, the height
+of each bin represents the probability of an event where the value of
+<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> falls in the range of that bin.  The probability distribution
+function has the one-dimensional form <img class="math" src="_images/math/99b0ba31c5a2cf9a3247b7ebfea620d2f0e91bf3.png" alt="p(x)dx"/> where,</p>
+<div class="math">
+<p><img src="_images/math/7b6f2a949c2b99f3a858208be56eb200c6328c48.png" alt="p(x) = n_i / (N w_i)"/></p>
+</div><p>In this equation <img class="math" src="_images/math/64914c5176137f3e7b8fbde0ac1b8362b35ad7e9.png" alt="n_i"/> is the number of events in the bin which
+contains <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>, <img class="math" src="_images/math/ece130da0e1e9c9e66b0053903b5cffae6299256.png" alt="w_i"/> is the width of the bin and <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/> is
+the total number of events.  The distribution of events within each bin
+is assumed to be uniform.</p>
+</section>
+<section id="the-histogram-probability-distribution-struct">
+<span id="index-5"></span><h2>The histogram probability distribution struct<a class="headerlink" href="#the-histogram-probability-distribution-struct" title="Link to this heading">¶</a></h2>
+<p>The probability distribution function for a histogram consists of a set
+of <em>bins</em> which measure the probability of an event falling into a
+given range of a continuous variable <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>. A probability
+distribution function is defined by the following struct, which actually
+stores the cumulative probability distribution function.  This is the
+natural quantity for generating samples via the inverse transform
+method, because there is a one-to-one mapping between the cumulative
+probability distribution and the range [0,1].  It can be shown that by
+taking a uniform random number in this range and finding its
+corresponding coordinate in the cumulative probability distribution we
+obtain samples with the desired probability distribution.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_histogram_pdf">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_pdf</span></span></span><a class="headerlink" href="#c.gsl_histogram_pdf" title="Link to this definition">¶</a><br /></dt>
+<dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">n</span></code></p></td>
+<td><p>This is the number of bins used to approximate the probability
+distribution function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">range</span></code></p></td>
+<td><p>The ranges of the bins are stored in an array of <img class="math" src="_images/math/ba26b8f5ab30e6c554bfb631fad5f88f04c201f5.png" alt="n + 1"/>
+elements pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">range</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">sum</span></code></p></td>
+<td><p>The cumulative probability for the bins is stored in an array of
+<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> elements pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">sum</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The following functions allow you to create a <a class="reference internal" href="#c.gsl_histogram_pdf" title="gsl_histogram_pdf"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram_pdf</span></code></a>
+struct which represents this probability distribution and generate
+random samples from it.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_pdf_alloc">
+<a class="reference internal" href="#c.gsl_histogram_pdf" title="gsl_histogram_pdf"><span class="n"><span class="pre">gsl_histogram_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_pdf_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_pdf_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a probability distribution with
+<a class="reference internal" href="#c.gsl_histogram_pdf_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> bins and returns a pointer to a newly initialized
+<a class="reference internal" href="#c.gsl_histogram_pdf" title="gsl_histogram_pdf"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram_pdf</span></code></a> struct. If insufficient memory is available a
+null pointer is returned and the error handler is invoked with an error
+code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_pdf_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_pdf_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram_pdf" title="gsl_histogram_pdf"><span class="n"><span class="pre">gsl_histogram_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_pdf_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the probability distribution <a class="reference internal" href="#c.gsl_histogram_pdf_init" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> with
+the contents of the histogram <a class="reference internal" href="#c.gsl_histogram_pdf_init" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. If any of the bins of <a class="reference internal" href="#c.gsl_histogram_pdf_init" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> are
+negative then the error handler is invoked with an error code of
+<a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> because a probability distribution cannot contain
+negative values.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_pdf_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_pdf_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram_pdf" title="gsl_histogram_pdf"><span class="n"><span class="pre">gsl_histogram_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_pdf_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the probability distribution function <a class="reference internal" href="#c.gsl_histogram_pdf_free" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> and
+all of the memory associated with it.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram_pdf_sample">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram_pdf_sample</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram_pdf" title="gsl_histogram_pdf"><span class="n"><span class="pre">gsl_histogram_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram_pdf_sample" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function uses <a class="reference internal" href="#c.gsl_histogram_pdf_sample" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>, a uniform random number between zero and
+one, to compute a single random sample from the probability distribution
+<a class="reference internal" href="#c.gsl_histogram_pdf_sample" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  The algorithm used to compute the sample <img class="math" src="_images/math/00a0fb0ee72dd3b299c67c64d624f2cc01335d59.png" alt="s"/> is given by
+the following formula,</p>
+<div class="math">
+<p><img src="_images/math/06e608def6c7aee441a3e6b01db97fa13ce951e1.png" alt="s = \hbox{range}[i] + \delta * (\hbox{range}[i+1] - \hbox{range}[i])"/></p>
+</div><p>where <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/> is the index which satisfies
+<img class="math" src="_images/math/1d635d7e2dce99cd8a753c01aaeabac2a79020cf.png" alt="sum[i] \le  r &lt; sum[i+1]"/>
+and <img class="math" src="_images/math/bdcc174d5d4e0c8cdd24a48afffab843f5e58399.png" alt="delta"/> is
+<img class="math" src="_images/math/636a640dc7c55b91ab459b36573dfd3fc9f54bf0.png" alt="(r - sum[i])/(sum[i+1] - sum[i])"/>.</p>
+</dd></dl>
+
+</section>
+<section id="example-programs-for-histograms">
+<h2>Example programs for histograms<a class="headerlink" href="#example-programs-for-histograms" title="Link to this heading">¶</a></h2>
+<p>The following program shows how to make a simple histogram of a column
+of numerical data supplied on <code class="code docutils literal notranslate"><span class="pre">stdin</span></code>.  The program takes three
+arguments, specifying the upper and lower bounds of the histogram and
+the number of bins.  It then reads numbers from <code class="code docutils literal notranslate"><span class="pre">stdin</span></code>, one line at
+a time, and adds them to the histogram.  When there is no more data to
+read it prints out the accumulated histogram using
+<a class="reference internal" href="#c.gsl_histogram_fprintf" title="gsl_histogram_fprintf"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_histogram_fprintf()</span></code></a>.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_histogram.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">n</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Usage: gsl-histogram xmin xmax n</span><span class="se">\n</span><span class="s2">&quot;</span>
+              <span class="s2">&quot;Computes a histogram of the data &quot;</span>
+              <span class="s2">&quot;on stdin using n bins from xmin &quot;</span>
+              <span class="s2">&quot;to xmax</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+      <span class="n">exit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">a</span> <span class="o">=</span> <span class="n">atof</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">atof</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">atoi</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+
+  <span class="p">{</span>
+    <span class="n">double</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">gsl_histogram</span> <span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="n">gsl_histogram_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="n">gsl_histogram_set_ranges_uniform</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">fscanf</span> <span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%lg</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="n">gsl_histogram_increment</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="n">gsl_histogram_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%g</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%g</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="n">gsl_histogram_free</span> <span class="p">(</span><span class="n">h</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">exit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is an example of the program in use.  We generate 10000 random
+samples from a Cauchy distribution with a width of 30 and histogram
+them over the range -100 to 100, using 200 bins:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gsl-randist 0 10000 cauchy 30
+   | gsl-histogram -- -100 100 200 &gt; histogram.dat
+</pre></div>
+</div>
+<p><a class="reference internal" href="#fig-histogram"><span class="std std-numref">Fig. 13</span></a> shows the familiar shape of the
+Cauchy distribution and the fluctuations caused by the finite sample
+size.</p>
+<figure class="align-default" id="id1">
+<span id="fig-histogram"></span><a class="reference internal image-reference" href="_images/histogram.png"><img alt="_images/histogram.png" src="_images/histogram.png" style="width: 384.0px; height: 288.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Histogram output from example program</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="two-dimensional-histograms">
+<span id="index-6"></span><h2>Two dimensional histograms<a class="headerlink" href="#two-dimensional-histograms" title="Link to this heading">¶</a></h2>
+<p>A two dimensional histogram consists of a set of <em>bins</em> which count
+the number of events falling in a given area of the <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/>
+plane.  The simplest way to use a two dimensional histogram is to record
+two-dimensional position information, <img class="math" src="_images/math/8137631ac9a824bdc2022605c29e82f302024ebe.png" alt="n(x,y)"/>.  Another possibility
+is to form a <em>joint distribution</em> by recording related
+variables.  For example a detector might record both the position of an
+event (<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>) and the amount of energy it deposited <img class="math" src="_images/math/ea7a3b09fb6f7ffe70ef3cf67781ce887438a668.png" alt="E"/>.  These
+could be histogrammed as the joint distribution <img class="math" src="_images/math/020790064459a4cd0887c5440f00f6871e582e39.png" alt="n(x,E)"/>.</p>
+</section>
+<section id="the-2d-histogram-struct">
+<h2>The 2D histogram struct<a class="headerlink" href="#the-2d-histogram-struct" title="Link to this heading">¶</a></h2>
+<p>Two dimensional histograms are defined by the following struct,</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_histogram2d">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d</span></span></span><a class="headerlink" href="#c.gsl_histogram2d" title="Link to this definition">¶</a><br /></dt>
+<dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">nx,</span> <span class="pre">ny</span></code></p></td>
+<td><p>This is the number of histogram bins in the x and y directions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">xrange</span></code></p></td>
+<td><p>The ranges of the bins in the x-direction are stored in an array of
+<code class="code docutils literal notranslate"><span class="pre">nx</span> <span class="pre">+</span> <span class="pre">1</span></code> elements pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">xrange</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">yrange</span></code></p></td>
+<td><p>The ranges of the bins in the y-direction are stored in an array of
+<code class="code docutils literal notranslate"><span class="pre">ny</span> <span class="pre">+</span> <span class="pre">1</span></code> elements pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">yrange</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">bin</span></code></p></td>
+<td><p>The counts for each bin are stored in an array pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">bin</span></code>.
+The bins are floating-point numbers, so you can increment them by
+non-integer values if necessary.  The array <code class="xref c c-data docutils literal notranslate"><span class="pre">bin</span></code> stores the two
+dimensional array of bins in a single block of memory according to the
+mapping <code class="code docutils literal notranslate"><span class="pre">bin(i,j)</span></code> = <code class="code docutils literal notranslate"><span class="pre">bin[i</span> <span class="pre">*</span> <span class="pre">ny</span> <span class="pre">+</span> <span class="pre">j]</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The range for <code class="code docutils literal notranslate"><span class="pre">bin(i,j)</span></code> is given by <code class="code docutils literal notranslate"><span class="pre">xrange[i]</span></code> to
+<code class="code docutils literal notranslate"><span class="pre">xrange[i+1]</span></code> in the x-direction and <code class="code docutils literal notranslate"><span class="pre">yrange[j]</span></code> to
+<code class="code docutils literal notranslate"><span class="pre">yrange[j+1]</span></code> in the y-direction.  Each bin is inclusive at the lower
+end and exclusive at the upper end.  Mathematically this means that the
+bins are defined by the following inequality,</p>
+<div class="math">
+<p><img src="_images/math/7e5a61bf55a07459810d9a17f35f4c51757c9463.png" alt="\begin{array}{cc}
+  \hbox{bin(i,j) corresponds to} &amp; \hbox{\it xrange}[i] \le x &lt; \hbox{\it xrange}[i+1] \\
+  \hbox{and} &amp; \hbox{\it yrange}[j] \le y &lt; \hbox{\it yrange}[j+1]
+\end{array}"/></p>
+</div><p>Note that any samples which fall on the upper sides of the histogram are
+excluded.  If you want to include these values for the side bins you will
+need to add an extra row or column to your histogram.</p>
+<p>The <a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram2d</span></code></a> struct and its associated functions are
+defined in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_histogram2d.h</span></code>.</p>
+</section>
+<section id="d-histogram-allocation">
+<h2>2D Histogram allocation<a class="headerlink" href="#d-histogram-allocation" title="Link to this heading">¶</a></h2>
+<p>The functions for allocating memory to a 2D histogram follow the style
+of <code class="xref c c-func docutils literal notranslate"><span class="pre">malloc()</span></code> and <code class="xref c c-func docutils literal notranslate"><span class="pre">free()</span></code>.  In addition they also perform their
+own error checking.  If there is insufficient memory available to
+allocate a histogram then the functions call the error handler (with
+an error number of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>) in addition to returning a null
+pointer.  Thus if you use the library error handler to abort your program
+then it isn’t necessary to check every 2D histogram <code class="code docutils literal notranslate"><span class="pre">alloc</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_alloc">
+<a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nx</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">ny</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a two-dimensional histogram with
+<a class="reference internal" href="#c.gsl_histogram2d_alloc" title="nx"><code class="xref c c-data docutils literal notranslate"><span class="pre">nx</span></code></a> bins in the x direction and <a class="reference internal" href="#c.gsl_histogram2d_alloc" title="ny"><code class="xref c c-data docutils literal notranslate"><span class="pre">ny</span></code></a> bins in the y direction.
+The function returns a pointer to a newly created <a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram2d</span></code></a>
+struct. If insufficient memory is available a null pointer is returned
+and the error handler is invoked with an error code of
+<a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>. The bins and ranges must be initialized with one of
+the functions below before the histogram is ready for use.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_set_ranges">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_set_ranges</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xrange</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">xsize</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">yrange</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">ysize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_set_ranges" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets the ranges of the existing histogram <a class="reference internal" href="#c.gsl_histogram2d_set_ranges" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> using
+the arrays <a class="reference internal" href="#c.gsl_histogram2d_set_ranges" title="xrange"><code class="xref c c-data docutils literal notranslate"><span class="pre">xrange</span></code></a> and <a class="reference internal" href="#c.gsl_histogram2d_set_ranges" title="yrange"><code class="xref c c-data docutils literal notranslate"><span class="pre">yrange</span></code></a> of size <a class="reference internal" href="#c.gsl_histogram2d_set_ranges" title="xsize"><code class="xref c c-data docutils literal notranslate"><span class="pre">xsize</span></code></a> and
+<a class="reference internal" href="#c.gsl_histogram2d_set_ranges" title="ysize"><code class="xref c c-data docutils literal notranslate"><span class="pre">ysize</span></code></a> respectively.  The values of the histogram bins are reset to
+zero.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_set_ranges_uniform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_set_ranges_uniform</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xmin</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xmax</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">ymin</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">ymax</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_set_ranges_uniform" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets the ranges of the existing histogram <a class="reference internal" href="#c.gsl_histogram2d_set_ranges_uniform" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to cover
+the ranges <a class="reference internal" href="#c.gsl_histogram2d_set_ranges_uniform" title="xmin"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmin</span></code></a> to <a class="reference internal" href="#c.gsl_histogram2d_set_ranges_uniform" title="xmax"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmax</span></code></a> and <a class="reference internal" href="#c.gsl_histogram2d_set_ranges_uniform" title="ymin"><code class="xref c c-data docutils literal notranslate"><span class="pre">ymin</span></code></a> to <a class="reference internal" href="#c.gsl_histogram2d_set_ranges_uniform" title="ymax"><code class="xref c c-data docutils literal notranslate"><span class="pre">ymax</span></code></a>
+uniformly.  The values of the histogram bins are reset to zero.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the 2D histogram <a class="reference internal" href="#c.gsl_histogram2d_free" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> and all of the memory
+associated with it.</p>
+</dd></dl>
+
+</section>
+<section id="copying-2d-histograms">
+<h2>Copying 2D Histograms<a class="headerlink" href="#copying-2d-histograms" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the histogram <a class="reference internal" href="#c.gsl_histogram2d_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the pre-existing
+histogram <a class="reference internal" href="#c.gsl_histogram2d_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>, making <a class="reference internal" href="#c.gsl_histogram2d_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a> into an exact copy of <a class="reference internal" href="#c.gsl_histogram2d_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>.
+The two histograms must be of the same size.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_clone">
+<a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_clone" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly created histogram which is an
+exact copy of the histogram <a class="reference internal" href="#c.gsl_histogram2d_clone" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="updating-and-accessing-2d-histogram-elements">
+<h2>Updating and accessing 2D histogram elements<a class="headerlink" href="#updating-and-accessing-2d-histogram-elements" title="Link to this heading">¶</a></h2>
+<p>You can access the bins of a two-dimensional histogram either by
+specifying a pair of <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> coordinates or by using the bin
+indices <img class="math" src="_images/math/92807ade5bf57ca25e8e9ad6a1d3169b9081d66d.png" alt="(i,j)"/> directly.  The functions for accessing the histogram
+through <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> coordinates use binary searches in the x and y
+directions to identify the bin which covers the appropriate range.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_increment">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_increment</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_increment" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function updates the histogram <a class="reference internal" href="#c.gsl_histogram2d_increment" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> by adding one (1.0) to the
+bin whose x and y ranges contain the coordinates (<a class="reference internal" href="#c.gsl_histogram2d_increment" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_increment" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>).</p>
+<p>If the point <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> lies inside the valid ranges of the
+histogram then the function returns zero to indicate success.  If
+<img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> lies outside the limits of the histogram then the
+function returns <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a>, and none of the bins are modified.  The
+error handler is not called, since it is often necessary to compute
+histograms for a small range of a larger dataset, ignoring any
+coordinates outside the range of interest.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_accumulate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_accumulate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">weight</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_accumulate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is similar to <a class="reference internal" href="#c.gsl_histogram2d_increment" title="gsl_histogram2d_increment"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_histogram2d_increment()</span></code></a> but increases
+the value of the appropriate bin in the histogram <a class="reference internal" href="#c.gsl_histogram2d_accumulate" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> by the
+floating-point number <a class="reference internal" href="#c.gsl_histogram2d_accumulate" title="weight"><code class="xref c c-data docutils literal notranslate"><span class="pre">weight</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_get">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">j</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the contents of the (<a class="reference internal" href="#c.gsl_histogram2d_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_get" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>)-th bin of the
+histogram <a class="reference internal" href="#c.gsl_histogram2d_get" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  If (<a class="reference internal" href="#c.gsl_histogram2d_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_get" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>) lies outside the valid range of
+indices for the histogram then the error handler is called with an error
+code of <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> and the function returns 0.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_get_xrange">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_get_xrange</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xlower</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xupper</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_get_xrange" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram2d_get_yrange">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_get_yrange</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">j</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ylower</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">yupper</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_get_yrange" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions find the upper and lower range limits of the <code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code>-th
+and <a class="reference internal" href="#c.gsl_histogram2d_get_yrange" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>-th bins in the x and y directions of the histogram <a class="reference internal" href="#c.gsl_histogram2d_get_yrange" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.
+The range limits are stored in <code class="xref c c-data docutils literal notranslate"><span class="pre">xlower</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">xupper</span></code> or
+<a class="reference internal" href="#c.gsl_histogram2d_get_yrange" title="ylower"><code class="xref c c-data docutils literal notranslate"><span class="pre">ylower</span></code></a> and <a class="reference internal" href="#c.gsl_histogram2d_get_yrange" title="yupper"><code class="xref c c-data docutils literal notranslate"><span class="pre">yupper</span></code></a>.  The lower limits are inclusive
+(i.e. events with these coordinates are included in the bin) and the
+upper limits are exclusive (i.e. events with the value of the upper
+limit are not included and fall in the neighboring higher bin, if it
+exists).  The functions return 0 to indicate success.  If <code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code> or
+<a class="reference internal" href="#c.gsl_histogram2d_get_yrange" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a> lies outside the valid range of indices for the histogram then
+the error handler is called with an error code of <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_xmax">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_xmax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_xmax" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram2d_xmin">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_xmin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_xmin" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram2d_nx">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_nx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_nx" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram2d_ymax">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_ymax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_ymax" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram2d_ymin">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_ymin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_ymin" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_histogram2d_ny">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_ny</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_ny" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the maximum upper and minimum lower range limits
+and the number of bins for the x and y directions of the histogram
+<a class="reference internal" href="#c.gsl_histogram2d_ny" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  They provide a way of determining these values without
+accessing the <a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram2d</span></code></a> struct directly.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_reset">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_reset</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_reset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function resets all the bins of the histogram <a class="reference internal" href="#c.gsl_histogram2d_reset" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to zero.</p>
+</dd></dl>
+
+</section>
+<section id="searching-2d-histogram-ranges">
+<h2>Searching 2D histogram ranges<a class="headerlink" href="#searching-2d-histogram-ranges" title="Link to this heading">¶</a></h2>
+<p>The following functions are used by the access and update routines to
+locate the bin which corresponds to a given <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> coordinate.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_find">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_find</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">i</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">j</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_find" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds and sets the indices <a class="reference internal" href="#c.gsl_histogram2d_find" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> and <a class="reference internal" href="#c.gsl_histogram2d_find" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a> to
+the bin which covers the coordinates (<a class="reference internal" href="#c.gsl_histogram2d_find" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_find" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>). The bin is
+located using a binary search.  The search includes an optimization for
+histograms with uniform ranges, and will return the correct bin immediately
+in this case. If <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> is found then the function sets the
+indices (<a class="reference internal" href="#c.gsl_histogram2d_find" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_find" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>) and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If
+<img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> lies outside the valid range of the histogram then the
+function returns <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> and the error handler is invoked.</p>
+</dd></dl>
+
+</section>
+<section id="d-histogram-statistics">
+<h2>2D Histogram Statistics<a class="headerlink" href="#d-histogram-statistics" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_max_val">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_max_val</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_max_val" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the maximum value contained in the histogram bins.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_max_bin">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_max_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">i</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">j</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_max_bin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the indices of the bin containing the maximum value
+in the histogram <a class="reference internal" href="#c.gsl_histogram2d_max_bin" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> and stores the result in (<a class="reference internal" href="#c.gsl_histogram2d_max_bin" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_max_bin" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>). In
+the case where several bins contain the same maximum value the first bin
+found is returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_min_val">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_min_val</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_min_val" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the minimum value contained in the histogram bins.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_min_bin">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_min_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">i</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">j</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_min_bin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the indices of the bin containing the minimum value
+in the histogram <a class="reference internal" href="#c.gsl_histogram2d_min_bin" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> and stores the result in (<a class="reference internal" href="#c.gsl_histogram2d_min_bin" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>, <a class="reference internal" href="#c.gsl_histogram2d_min_bin" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>). In
+the case where several bins contain the same maximum value the first bin
+found is returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_xmean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_xmean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_xmean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the mean of the histogrammed x variable, where the
+histogram is regarded as a probability distribution. Negative bin values
+are ignored for the purposes of this calculation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_ymean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_ymean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_ymean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the mean of the histogrammed y variable, where the
+histogram is regarded as a probability distribution. Negative bin values
+are ignored for the purposes of this calculation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_xsigma">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_xsigma</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_xsigma" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the standard deviation of the histogrammed
+x variable, where the histogram is regarded as a probability
+distribution. Negative bin values are ignored for the purposes of this
+calculation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_ysigma">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_ysigma</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_ysigma" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the standard deviation of the histogrammed
+y variable, where the histogram is regarded as a probability
+distribution. Negative bin values are ignored for the purposes of this
+calculation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_cov">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_cov</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_cov" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the covariance of the histogrammed x and y
+variables, where the histogram is regarded as a probability
+distribution. Negative bin values are ignored for the purposes of this
+calculation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_sum">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_sum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_sum" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the sum of all bin values. Negative bin values
+are included in the sum.</p>
+</dd></dl>
+
+</section>
+<section id="d-histogram-operations">
+<h2>2D Histogram Operations<a class="headerlink" href="#d-histogram-operations" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_equal_bins_p">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_equal_bins_p</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_equal_bins_p" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns 1 if all the individual bin ranges of the two
+histograms are identical, and 0 otherwise.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_add">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_add</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_add" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function adds the contents of the bins in histogram <a class="reference internal" href="#c.gsl_histogram2d_add" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a> to the
+corresponding bins of histogram <a class="reference internal" href="#c.gsl_histogram2d_add" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>,
+i.e. <img class="math" src="_images/math/f0af20149648931a75d14975d3011355ea9e5dea.png" alt="h'_1(i,j) = h_1(i,j) + h_2(i,j)"/>.
+The two histograms must have identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_sub">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_sub</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_sub" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function subtracts the contents of the bins in histogram <a class="reference internal" href="#c.gsl_histogram2d_sub" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a> from the
+corresponding bins of histogram <a class="reference internal" href="#c.gsl_histogram2d_sub" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>,
+i.e. <img class="math" src="_images/math/eee1585c5389e171616fe5485c8e2ae40d0de201.png" alt="h'_1(i,j) = h_1(i,j) - h_2(i,j)"/>.
+The two histograms must have identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_mul">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_mul</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_mul" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function multiplies the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram2d_mul" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>
+by the contents of the corresponding bins in histogram <a class="reference internal" href="#c.gsl_histogram2d_mul" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a>,
+i.e. <img class="math" src="_images/math/089377af8a1c60bd89381488c8fa9590bd1f963f.png" alt="h'_1(i,j) = h_1(i,j) * h_2(i,j)"/>.
+The two histograms must have identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_div">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_div</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_div" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function divides the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram2d_div" title="h1"><code class="xref c c-data docutils literal notranslate"><span class="pre">h1</span></code></a>
+by the contents of the corresponding bins in histogram <a class="reference internal" href="#c.gsl_histogram2d_div" title="h2"><code class="xref c c-data docutils literal notranslate"><span class="pre">h2</span></code></a>,
+i.e. <img class="math" src="_images/math/8c80b10ffb70f9c0085383460d5ac6c793dca6d0.png" alt="h'_1(i,j) = h_1(i,j) / h_2(i,j)"/>.
+The two histograms must have identical bin ranges.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_scale">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_scale</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">scale</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_scale" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function multiplies the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram2d_scale" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>
+by the constant <a class="reference internal" href="#c.gsl_histogram2d_scale" title="scale"><code class="xref c c-data docutils literal notranslate"><span class="pre">scale</span></code></a>, i.e.</p>
+<div class="math">
+<p><img src="_images/math/3b587e87e0959692178b344b429eed5f35ea53b2.png" alt="h'_1(i,j) = h_1(i,j) * \hbox{\it scale}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_shift">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_shift</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_shift" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function shifts the contents of the bins of histogram <a class="reference internal" href="#c.gsl_histogram2d_shift" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>
+by the constant <a class="reference internal" href="#c.gsl_histogram2d_shift" title="offset"><code class="xref c c-data docutils literal notranslate"><span class="pre">offset</span></code></a>, i.e.</p>
+<div class="math">
+<p><img src="_images/math/ee9ee1dea5c986540bcb87c048b1170fd3734cbf.png" alt="h'_1(i,j) = h_1(i,j) + \hbox{\it offset}"/></p>
+</div></dd></dl>
+
+</section>
+<section id="reading-and-writing-2d-histograms">
+<h2>Reading and writing 2D histograms<a class="headerlink" href="#reading-and-writing-2d-histograms" title="Link to this heading">¶</a></h2>
+<p>The library provides functions for reading and writing two dimensional
+histograms to a file as binary data or formatted text.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_fwrite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_fwrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_fwrite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the ranges and bins of the histogram <a class="reference internal" href="#c.gsl_histogram2d_fwrite" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to the
+stream <a class="reference internal" href="#c.gsl_histogram2d_fwrite" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The return value is 0 for success
+and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.  Since
+the data is written in the native binary format it may not be portable
+between different architectures.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_fread">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_fread</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_fread" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads into the histogram <a class="reference internal" href="#c.gsl_histogram2d_fread" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> from the stream
+<a class="reference internal" href="#c.gsl_histogram2d_fread" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The histogram <a class="reference internal" href="#c.gsl_histogram2d_fread" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> must be
+preallocated with the correct size since the function uses the number of
+x and y bins in <a class="reference internal" href="#c.gsl_histogram2d_fread" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to determine how many bytes to read.  The return
+value is 0 for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem
+reading from the file.  The data is assumed to have been written in the
+native binary format on the same architecture.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_fprintf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_fprintf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">range_format</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bin_format</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_fprintf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the ranges and bins of the histogram <a class="reference internal" href="#c.gsl_histogram2d_fprintf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>
+line-by-line to the stream <a class="reference internal" href="#c.gsl_histogram2d_fprintf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> using the format specifiers
+<a class="reference internal" href="#c.gsl_histogram2d_fprintf" title="range_format"><code class="xref c c-data docutils literal notranslate"><span class="pre">range_format</span></code></a> and <a class="reference internal" href="#c.gsl_histogram2d_fprintf" title="bin_format"><code class="xref c c-data docutils literal notranslate"><span class="pre">bin_format</span></code></a>.  These should be one of the
+<code class="code docutils literal notranslate"><span class="pre">%g</span></code>, <code class="code docutils literal notranslate"><span class="pre">%e</span></code> or <code class="code docutils literal notranslate"><span class="pre">%f</span></code> formats for floating point
+numbers.  The function returns 0 for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if
+there was a problem writing to the file.  The histogram output is
+formatted in five columns, and the columns are separated by spaces,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">....</span>
+<span class="n">xrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="n">ny</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">....</span>
+<span class="n">xrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="n">ny</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="o">....</span>
+
+<span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">....</span>
+<span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">xrange</span><span class="p">[</span><span class="n">nx</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="n">yrange</span><span class="p">[</span><span class="n">ny</span><span class="p">]</span> <span class="nb">bin</span><span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each line contains the lower and upper limits of the bin and the
+contents of the bin.  Since the upper limits of the each bin are the
+lower limits of the neighboring bins there is duplication of these
+values but this allows the histogram to be manipulated with
+line-oriented tools.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_fscanf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_fscanf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_fscanf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads formatted data from the stream <a class="reference internal" href="#c.gsl_histogram2d_fscanf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+histogram <a class="reference internal" href="#c.gsl_histogram2d_fscanf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  The data is assumed to be in the five-column format
+used by <a class="reference internal" href="#c.gsl_histogram2d_fprintf" title="gsl_histogram2d_fprintf"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_histogram2d_fprintf()</span></code></a>.  The histogram <a class="reference internal" href="#c.gsl_histogram2d_fscanf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> must be
+preallocated with the correct lengths since the function uses the sizes
+of <a class="reference internal" href="#c.gsl_histogram2d_fscanf" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to determine how many numbers to read.  The function returns 0
+for success and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from
+the file.</p>
+</dd></dl>
+
+</section>
+<section id="resampling-from-2d-histograms">
+<h2>Resampling from 2D histograms<a class="headerlink" href="#resampling-from-2d-histograms" title="Link to this heading">¶</a></h2>
+<p>As in the one-dimensional case, a two-dimensional histogram made by
+counting events can be regarded as a measurement of a probability
+distribution.  Allowing for statistical error, the height of each bin
+represents the probability of an event where (<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>, <img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/>) falls in
+the range of that bin.  For a two-dimensional histogram the probability
+distribution takes the form <img class="math" src="_images/math/4d3e73c2f4157dd238594c0b491337c8818f4d94.png" alt="p(x,y) dx dy"/> where,</p>
+<div class="math">
+<p><img src="_images/math/e9af42c49f92f7829563df6a086fad8a34a6a649.png" alt="p(x,y) = n_{ij} / (N A_{ij})"/></p>
+</div><p>In this equation <img class="math" src="_images/math/ce63ff7549d69d6db370ef3105919afef992c737.png" alt="n_{ij}"/>
+is the number of events in the bin which
+contains <img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/>, <img class="math" src="_images/math/3139afbafbae7f0e8da587e95383c3cc0000d66b.png" alt="A_{ij}"/>
+is the area of the bin and <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/> is
+the total number of events.  The distribution of events within each bin
+is assumed to be uniform.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_pdf">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_pdf</span></span></span><a class="headerlink" href="#c.gsl_histogram2d_pdf" title="Link to this definition">¶</a><br /></dt>
+<dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">nx,</span> <span class="pre">ny</span></code></p></td>
+<td><p>This is the number of histogram bins used to approximate the probability
+distribution function in the x and y directions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">xrange</span></code></p></td>
+<td><p>The ranges of the bins in the x-direction are stored in an array of
+<code class="code docutils literal notranslate"><span class="pre">nx</span> <span class="pre">+</span> <span class="pre">1</span></code> elements pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">xrange</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">yrange</span></code></p></td>
+<td><p>The ranges of the bins in the y-direction are stored in an array of
+<code class="code docutils literal notranslate"><span class="pre">ny</span> <span class="pre">+</span> <span class="pre">1</span></code> pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">yrange</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">*</span> <span class="pre">sum</span></code></p></td>
+<td><p>The cumulative probability for the bins is stored in an array of
+<code class="xref c c-data docutils literal notranslate"><span class="pre">nx</span></code> * <code class="xref c c-data docutils literal notranslate"><span class="pre">ny</span></code> elements pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">sum</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The following functions allow you to create a <a class="reference internal" href="#c.gsl_histogram2d_pdf" title="gsl_histogram2d_pdf"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram2d_pdf</span></code></a>
+struct which represents a two dimensional probability distribution and
+generate random samples from it.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_pdf_alloc">
+<a class="reference internal" href="#c.gsl_histogram2d_pdf" title="gsl_histogram2d_pdf"><span class="n"><span class="pre">gsl_histogram2d_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_pdf_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nx</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">ny</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_pdf_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a two-dimensional probability
+distribution of size <a class="reference internal" href="#c.gsl_histogram2d_pdf_alloc" title="nx"><code class="xref c c-data docutils literal notranslate"><span class="pre">nx</span></code></a>-by-<a class="reference internal" href="#c.gsl_histogram2d_pdf_alloc" title="ny"><code class="xref c c-data docutils literal notranslate"><span class="pre">ny</span></code></a> and returns a pointer to a
+newly initialized <a class="reference internal" href="#c.gsl_histogram2d_pdf" title="gsl_histogram2d_pdf"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_histogram2d_pdf</span></code></a> struct. If insufficient
+memory is available a null pointer is returned and the error handler is
+invoked with an error code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_pdf_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_pdf_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d_pdf" title="gsl_histogram2d_pdf"><span class="n"><span class="pre">gsl_histogram2d_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d" title="gsl_histogram2d"><span class="n"><span class="pre">gsl_histogram2d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_pdf_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the two-dimensional probability distribution
+calculated <a class="reference internal" href="#c.gsl_histogram2d_pdf_init" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> from the histogram <a class="reference internal" href="#c.gsl_histogram2d_pdf_init" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.  If any of the bins of
+<a class="reference internal" href="#c.gsl_histogram2d_pdf_init" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> are negative then the error handler is invoked with an error
+code of <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> because a probability distribution cannot
+contain negative values.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_pdf_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_pdf_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_histogram2d_pdf" title="gsl_histogram2d_pdf"><span class="n"><span class="pre">gsl_histogram2d_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_pdf_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the two-dimensional probability distribution
+function <a class="reference internal" href="#c.gsl_histogram2d_pdf_free" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> and all of the memory associated with it.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_histogram2d_pdf_sample">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_histogram2d_pdf_sample</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_histogram2d_pdf" title="gsl_histogram2d_pdf"><span class="n"><span class="pre">gsl_histogram2d_pdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">r1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">r2</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_histogram2d_pdf_sample" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function uses two uniform random numbers between zero and one,
+<a class="reference internal" href="#c.gsl_histogram2d_pdf_sample" title="r1"><code class="xref c c-data docutils literal notranslate"><span class="pre">r1</span></code></a> and <a class="reference internal" href="#c.gsl_histogram2d_pdf_sample" title="r2"><code class="xref c c-data docutils literal notranslate"><span class="pre">r2</span></code></a>, to compute a single random sample from the
+two-dimensional probability distribution <a class="reference internal" href="#c.gsl_histogram2d_pdf_sample" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="example-programs-for-2d-histograms">
+<h2>Example programs for 2D histograms<a class="headerlink" href="#example-programs-for-2d-histograms" title="Link to this heading">¶</a></h2>
+<p>This program demonstrates two features of two-dimensional histograms.
+First a 10-by-10 two-dimensional histogram is created with x and y running
+from 0 to 1.  Then a few sample points are added to the histogram, at
+(0.3,0.3) with a height of 1, at (0.8,0.1) with a height of 5 and at
+(0.7,0.9) with a height of 0.5.  This histogram with three events is
+used to generate a random sample of 1000 simulated events, which are
+printed out.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_histogram2d.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+
+  <span class="n">gsl_histogram2d</span> <span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="n">gsl_histogram2d_alloc</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+  <span class="n">gsl_histogram2d_set_ranges_uniform</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span>
+                                      <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+                                      <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+
+  <span class="n">gsl_histogram2d_accumulate</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">gsl_histogram2d_accumulate</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+  <span class="n">gsl_histogram2d_accumulate</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+
+  <span class="n">gsl_rng_env_setup</span> <span class="p">();</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">gsl_histogram2d_pdf</span> <span class="o">*</span> <span class="n">p</span>
+      <span class="o">=</span> <span class="n">gsl_histogram2d_pdf_alloc</span> <span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">nx</span><span class="p">,</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">ny</span><span class="p">);</span>
+
+    <span class="n">gsl_histogram2d_pdf_init</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+      <span class="n">double</span> <span class="n">u</span> <span class="o">=</span> <span class="n">gsl_rng_uniform</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">v</span> <span class="o">=</span> <span class="n">gsl_rng_uniform</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+      <span class="n">gsl_histogram2d_pdf_sample</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">);</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%g</span><span class="s2"> </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">gsl_histogram2d_pdf_free</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">gsl_histogram2d_free</span> <span class="p">(</span><span class="n">h</span><span class="p">);</span>
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The following plot shows the distribution of the simulated events.  Using
+a higher resolution grid we can see the original underlying histogram
+and also the statistical fluctuations caused by the events being
+uniformly distributed over the area of the original bins.</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="_images/histogram2d.png"><img alt="_images/histogram2d.png" src="_images/histogram2d.png" style="width: 384.0px; height: 288.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Distribution of simulated events from example program</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="filter.html" class="btn btn-neutral float-left" title="Digital Filtering" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ntuple.html" class="btn btn-neutral float-right" title="N-tuples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

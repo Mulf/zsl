@@ -1,0 +1,589 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using the Library &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Error Handling" href="err.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#an-example-program">An Example Program</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compiling-and-linking">Compiling and Linking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linking-programs-with-the-library">Linking programs with the library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linking-with-an-alternative-blas-library">Linking with an alternative BLAS library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#shared-libraries">Shared Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ansi-c-compliance">ANSI C Compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inline-functions">Inline functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#long-double">Long double</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#portability-functions">Portability functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-optimized-functions">Alternative optimized functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support-for-different-numeric-types">Support for different numeric types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compatibility-with-c">Compatibility with C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aliasing-of-arrays">Aliasing of arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thread-safety">Thread-safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deprecated-functions">Deprecated Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-reuse">Code Reuse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using the Library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="err.html" class="btn btn-neutral float-right" title="Error Handling" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-the-library">
+<span id="index-0"></span><h1>Using the Library<a class="headerlink" href="#using-the-library" title="Link to this heading">¶</a></h1>
+<p>This chapter describes how to compile programs that use GSL, and
+introduces its conventions.</p>
+<section id="an-example-program">
+<h2>An Example Program<a class="headerlink" href="#an-example-program" title="Link to this heading">¶</a></h2>
+<p>The following short program demonstrates the use of the library by
+computing the value of the Bessel function <img class="math" src="_images/math/596c757495a55561b57f4fb478ab0041f951a151.png" alt="J_0(x)"/> for <img class="math" src="_images/math/c158196c0cb5f1739bb160d3e045f74ea3ed88fc.png" alt="x=5"/>:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_sf_bessel.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">x</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">y</span> <span class="o">=</span> <span class="n">gsl_sf_bessel_J0</span> <span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;J0(</span><span class="si">%g</span><span class="s2">) = </span><span class="si">%.18e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output is shown below, and should be correct to double-precision
+accuracy <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">J0</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.775967713143382642e-01</span>
+</pre></div>
+</div>
+<p>The steps needed to compile this program are described
+in the following sections.</p>
+</section>
+<section id="compiling-and-linking">
+<span id="index-1"></span><h2>Compiling and Linking<a class="headerlink" href="#compiling-and-linking" title="Link to this heading">¶</a></h2>
+<p>The library header files are installed in their own <code class="file docutils literal notranslate"><span class="pre">gsl</span></code>
+directory.  You should write any preprocessor include statements with a
+<code class="file docutils literal notranslate"><span class="pre">gsl/</span></code> directory prefix thus:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+</pre></div>
+</div>
+<p>If the directory is not installed on the standard search path of your
+compiler you will also need to provide its location to the preprocessor
+as a command line flag.  The default location of the <code class="file docutils literal notranslate"><span class="pre">gsl</span></code>
+directory is <code class="file docutils literal notranslate"><span class="pre">/usr/local/include/gsl</span></code>.  A typical compilation
+command for a source file <code class="file docutils literal notranslate"><span class="pre">example.c</span></code> with the GNU C compiler
+<code class="code docutils literal notranslate"><span class="pre">gcc</span></code> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gcc -Wall -I/usr/local/include -c example.c
+</pre></div>
+</div>
+<p>This results in an object file <code class="file docutils literal notranslate"><span class="pre">example.o</span></code>. The default
+include path for <code class="code docutils literal notranslate"><span class="pre">gcc</span></code> searches <code class="file docutils literal notranslate"><span class="pre">/usr/local/include</span></code> automatically so
+the <code class="code docutils literal notranslate"><span class="pre">-I</span></code> option can actually be omitted when GSL is installed
+in its default location.</p>
+<section id="linking-programs-with-the-library">
+<span id="index-2"></span><h3>Linking programs with the library<a class="headerlink" href="#linking-programs-with-the-library" title="Link to this heading">¶</a></h3>
+<p>The library is installed as a single file, <code class="file docutils literal notranslate"><span class="pre">libgsl.a</span></code>.  A shared
+version of the library <code class="file docutils literal notranslate"><span class="pre">libgsl.so</span></code> is also installed on systems
+that support shared libraries.  The default location of these files is
+<code class="file docutils literal notranslate"><span class="pre">/usr/local/lib</span></code>.  If this directory is not on the standard search
+path of your linker you will also need to provide its location as a
+command line flag.</p>
+<p>To link against the library you need to specify
+both the main library and a supporting CBLAS library, which
+provides standard basic linear algebra subroutines.  A suitable
+CBLAS implementation is provided in the library
+<code class="file docutils literal notranslate"><span class="pre">libgslcblas.a</span></code> if your system does not provide one.  The following
+example shows how to link an application with the library:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gcc -L/usr/local/lib example.o -lgsl -lgslcblas -lm
+</pre></div>
+</div>
+<p>The default library path for <code class="code docutils literal notranslate"><span class="pre">gcc</span></code> searches <code class="file docutils literal notranslate"><span class="pre">/usr/local/lib</span></code>
+automatically so the <code class="code docutils literal notranslate"><span class="pre">-L</span></code> option can be omitted when GSL is
+installed in its default location.</p>
+<p>The option <code class="code docutils literal notranslate"><span class="pre">-lm</span></code> links with the system math library. On some
+systems it is not needed. <a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>For a tutorial introduction to the GNU C Compiler and related programs,
+see “An Introduction to GCC” (ISBN 0954161793). <a class="footnote-reference brackets" href="#f3" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+</section>
+<section id="linking-with-an-alternative-blas-library">
+<h3>Linking with an alternative BLAS library<a class="headerlink" href="#linking-with-an-alternative-blas-library" title="Link to this heading">¶</a></h3>
+<p>The following command line shows how you would link the same application
+with an alternative CBLAS library <code class="file docutils literal notranslate"><span class="pre">libcblas.a</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gcc example.o -lgsl -lcblas -lm
+</pre></div>
+</div>
+<p>For the best performance an optimized platform-specific CBLAS
+library should be used for <code class="code docutils literal notranslate"><span class="pre">-lcblas</span></code>.  The library must conform to
+the CBLAS standard.  The ATLAS package provides a portable
+high-performance BLAS library with a CBLAS interface.  It is
+free software and should be installed for any work requiring fast vector
+and matrix operations.  The following command line will link with the
+ATLAS library and its CBLAS interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gcc example.o -lgsl -lcblas -latlas -lm
+</pre></div>
+</div>
+<p>If the ATLAS library is installed in a non-standard directory use
+the <code class="code docutils literal notranslate"><span class="pre">-L</span></code> option to add it to the search path, as described above.</p>
+<p>For more information about BLAS functions see <a class="reference internal" href="blas.html#chap-blas-support"><span class="std std-ref">BLAS Support</span></a>.</p>
+</section>
+</section>
+<section id="shared-libraries">
+<span id="index-3"></span><h2>Shared Libraries<a class="headerlink" href="#shared-libraries" title="Link to this heading">¶</a></h2>
+<p>To run a program linked with the shared version of the library the
+operating system must be able to locate the corresponding <code class="file docutils literal notranslate"><span class="pre">.so</span></code>
+file at runtime.  If the library cannot be found, the following error
+will occur:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out
+./a.out: error while loading shared libraries:
+libgsl.so.0: cannot open shared object file: No such file or directory
+</pre></div>
+</div>
+<p>To avoid this error, either modify the system dynamic linker
+configuration <a class="footnote-reference brackets" href="#f4" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> or
+define the shell variable <code class="code docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code> to include the
+directory where the library is installed.</p>
+<p>For example, in the Bourne shell (<code class="code docutils literal notranslate"><span class="pre">/bin/sh</span></code> or <code class="code docutils literal notranslate"><span class="pre">/bin/bash</span></code>),
+the library search path can be set with the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ LD_LIBRARY_PATH=/usr/local/lib
+$ export LD_LIBRARY_PATH
+$ ./example
+</pre></div>
+</div>
+<p>In the C-shell (<code class="code docutils literal notranslate"><span class="pre">/bin/csh</span></code> or <code class="code docutils literal notranslate"><span class="pre">/bin/tcsh</span></code>) the equivalent
+command is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">setenv</span> <span class="n">LD_LIBRARY_PATH</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+</div>
+<p>The standard prompt for the C-shell in the example above is the percent
+character %, and should not be typed as part of the command.</p>
+<p>To save retyping these commands each session they can be placed in an
+individual or system-wide login file.</p>
+<p>To compile a statically linked version of the program, use the
+<code class="code docutils literal notranslate"><span class="pre">-static</span></code> flag in <code class="code docutils literal notranslate"><span class="pre">gcc</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gcc -static example.o -lgsl -lgslcblas -lm
+</pre></div>
+</div>
+</section>
+<section id="ansi-c-compliance">
+<h2>ANSI C Compliance<a class="headerlink" href="#ansi-c-compliance" title="Link to this heading">¶</a></h2>
+<p>The library is written in ANSI C and is intended to conform to the ANSI
+C standard (C89).  It should be portable to any system with a working
+ANSI C compiler.</p>
+<p>The library does not rely on any non-ANSI extensions in the interface it
+exports to the user.  Programs you write using GSL can be ANSI
+compliant.  Extensions which can be used in a way compatible with pure
+ANSI C are supported, however, via conditional compilation.  This allows
+the library to take advantage of compiler extensions on those platforms
+which support them.</p>
+<p>When an ANSI C feature is known to be broken on a particular system the
+library will exclude any related functions at compile-time.  This should
+make it impossible to link a program that would use these functions and
+give incorrect results.</p>
+<p>To avoid namespace conflicts all exported function names and variables
+have the prefix <code class="code docutils literal notranslate"><span class="pre">gsl_</span></code>, while exported macros have the prefix
+<code class="code docutils literal notranslate"><span class="pre">GSL_</span></code>.</p>
+</section>
+<section id="inline-functions">
+<span id="sec-inline-functions"></span><span id="index-4"></span><h2>Inline functions<a class="headerlink" href="#inline-functions" title="Link to this heading">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">inline</span></code> keyword is not part of the original ANSI C standard
+(C89) so the library does not export any inline function definitions
+by default.  Inline functions were introduced officially in the newer
+C99 standard but most C89 compilers have also included <code class="code docutils literal notranslate"><span class="pre">inline</span></code> as
+an extension for a long time.</p>
+<p>To allow the use of inline functions, the library provides optional
+inline versions of performance-critical routines by conditional
+compilation in the exported header files.  The inline versions of these
+functions can be included by defining the macro <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code>
+when compiling an application:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gcc -Wall -c -DHAVE_INLINE example.c
+</pre></div>
+</div>
+<p>If you use <code class="code docutils literal notranslate"><span class="pre">autoconf</span></code> this macro can be defined automatically.  If
+you do not define the macro <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> then the slower
+non-inlined versions of the functions will be used instead.</p>
+<p>By default, the actual form of the inline keyword is <code class="code docutils literal notranslate"><span class="pre">extern</span>
+<span class="pre">inline</span></code>, which is a <code class="code docutils literal notranslate"><span class="pre">gcc</span></code> extension that eliminates unnecessary
+function definitions.  If the form <code class="code docutils literal notranslate"><span class="pre">extern</span> <span class="pre">inline</span></code> causes
+problems with other compilers a stricter autoconf test can be used,
+see <a class="reference internal" href="autoconf.html#chap-autoconf-macros"><span class="std std-ref">Autoconf Macros</span></a>.</p>
+<p>When compiling with <code class="code docutils literal notranslate"><span class="pre">gcc</span></code> in C99 mode (<code class="code docutils literal notranslate"><span class="pre">gcc</span> <span class="pre">-std=c99</span></code>) the
+header files automatically switch to C99-compatible inline function
+declarations instead of <code class="code docutils literal notranslate"><span class="pre">extern</span> <span class="pre">inline</span></code>.  With other C99
+compilers, define the macro <code class="code docutils literal notranslate"><span class="pre">GSL_C99_INLINE</span></code> to use these
+declarations.</p>
+</section>
+<section id="long-double">
+<h2>Long double<a class="headerlink" href="#long-double" title="Link to this heading">¶</a></h2>
+<p>In general, the algorithms in the library are written for double
+precision only.  The <code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code> type is not supported for
+actual computation.</p>
+<p>One reason for this choice is that the precision of <code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code>
+is platform dependent.  The IEEE standard only specifies the minimum
+precision of extended precision numbers, while the precision of
+<code class="code docutils literal notranslate"><span class="pre">double</span></code> is the same on all platforms.</p>
+<p>However, it is sometimes necessary to interact with external data in
+long-double format, so the vector and matrix datatypes include
+long-double versions.</p>
+<p>It should be noted that in some system libraries the <code class="code docutils literal notranslate"><span class="pre">stdio.h</span></code>
+formatted input/output functions <code class="code docutils literal notranslate"><span class="pre">printf</span></code> and <code class="code docutils literal notranslate"><span class="pre">scanf</span></code> are
+not implemented correctly for <code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code>.  Undefined or
+incorrect results are avoided by testing these functions during the
+<code class="code docutils literal notranslate"><span class="pre">configure</span></code> stage of library compilation and eliminating certain
+GSL functions which depend on them if necessary.  The corresponding
+line in the <code class="code docutils literal notranslate"><span class="pre">configure</span></code> output looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">checking</span> <span class="n">whether</span> <span class="n">printf</span> <span class="n">works</span> <span class="k">with</span> <span class="n">long</span> <span class="n">double</span><span class="o">...</span> <span class="n">no</span>
+</pre></div>
+</div>
+<p>Consequently when <code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code> formatted input/output does not
+work on a given system it should be impossible to link a program which
+uses GSL functions dependent on this.</p>
+<p>If it is necessary to work on a system which does not support formatted
+<code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code> input/output then the options are to use binary
+formats or to convert <code class="code docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code> results into <code class="code docutils literal notranslate"><span class="pre">double</span></code> for
+reading and writing.</p>
+</section>
+<section id="portability-functions">
+<span id="id5"></span><h2>Portability functions<a class="headerlink" href="#portability-functions" title="Link to this heading">¶</a></h2>
+<p>To help in writing portable applications GSL provides some
+implementations of functions that are found in other libraries, such as
+the BSD math library.  You can write your application to use the native
+versions of these functions, and substitute the GSL versions via a
+preprocessor macro if they are unavailable on another platform.</p>
+<p>For example, after determining whether the BSD function <code class="xref c c-func docutils literal notranslate"><span class="pre">hypot()</span></code> is
+available you can include the following macro definitions in a file
+<code class="file docutils literal notranslate"><span class="pre">config.h</span></code> with your application:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Substitute</span> <span class="n">gsl_hypot</span> <span class="k">for</span> <span class="n">missing</span> <span class="n">system</span> <span class="n">hypot</span> <span class="o">*/</span>
+
+<span class="c1">#ifndef HAVE_HYPOT</span>
+<span class="c1">#define hypot gsl_hypot</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p>The application source files can then use the include command
+<code class="code docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;config.h&gt;</span></code> to replace each occurrence of <code class="xref c c-func docutils literal notranslate"><span class="pre">hypot()</span></code> by
+<a class="reference internal" href="math.html#c.gsl_hypot" title="gsl_hypot"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_hypot()</span></code></a> when <code class="xref c c-func docutils literal notranslate"><span class="pre">hypot()</span></code> is not available.  This substitution
+can be made automatically if you use <code class="code docutils literal notranslate"><span class="pre">autoconf</span></code>, see <a class="reference internal" href="autoconf.html#chap-autoconf-macros"><span class="std std-ref">Autoconf Macros</span></a>.</p>
+<p>In most circumstances the best strategy is to use the native versions of
+these functions when available, and fall back to GSL versions otherwise,
+since this allows your application to take advantage of any
+platform-specific optimizations in the system library.  This is the
+strategy used within GSL itself.</p>
+</section>
+<section id="alternative-optimized-functions">
+<span id="index-5"></span><h2>Alternative optimized functions<a class="headerlink" href="#alternative-optimized-functions" title="Link to this heading">¶</a></h2>
+<p>The main implementation of some functions in the library will not be
+optimal on all architectures.  For example, there are several ways to
+compute a Gaussian random variate and their relative speeds are
+platform-dependent.  In cases like this the library provides alternative
+implementations of these functions with the same interface.  If you
+write your application using calls to the standard implementation you
+can select an alternative version later via a preprocessor definition.
+It is also possible to introduce your own optimized functions this way
+while retaining portability.  The following lines demonstrate the use of
+a platform-dependent choice of methods for sampling from the Gaussian
+distribution:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef SPARC</span>
+<span class="c1">#define gsl_ran_gaussian gsl_ran_gaussian_ratio_method</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef INTEL</span>
+<span class="c1">#define gsl_ran_gaussian my_gaussian</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p>These lines would be placed in the configuration header file
+<code class="file docutils literal notranslate"><span class="pre">config.h</span></code> of the application, which should then be included by all
+the source files.  Note that the alternative implementations will not
+produce bit-for-bit identical results, and in the case of random number
+distributions will produce an entirely different stream of random
+variates.</p>
+</section>
+<section id="support-for-different-numeric-types">
+<h2>Support for different numeric types<a class="headerlink" href="#support-for-different-numeric-types" title="Link to this heading">¶</a></h2>
+<p>Many functions in the library are defined for different numeric types.
+This feature is implemented by varying the name of the function with a
+type-related modifier—a primitive form of C++ templates.  The
+modifier is inserted into the function name after the initial module
+prefix.  The following table shows the function names defined for all
+the numeric types of an imaginary module <code class="code docutils literal notranslate"><span class="pre">gsl_foo</span></code> with function
+<code class="xref c c-func docutils literal notranslate"><span class="pre">fn()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_foo_fn</span>               <span class="n">double</span>
+<span class="n">gsl_foo_long_double_fn</span>   <span class="n">long</span> <span class="n">double</span>
+<span class="n">gsl_foo_float_fn</span>         <span class="nb">float</span>
+<span class="n">gsl_foo_long_fn</span>          <span class="n">long</span>
+<span class="n">gsl_foo_ulong_fn</span>         <span class="n">unsigned</span> <span class="n">long</span>
+<span class="n">gsl_foo_int_fn</span>           <span class="nb">int</span>
+<span class="n">gsl_foo_uint_fn</span>          <span class="n">unsigned</span> <span class="nb">int</span>
+<span class="n">gsl_foo_short_fn</span>         <span class="n">short</span>
+<span class="n">gsl_foo_ushort_fn</span>        <span class="n">unsigned</span> <span class="n">short</span>
+<span class="n">gsl_foo_char_fn</span>          <span class="n">char</span>
+<span class="n">gsl_foo_uchar_fn</span>         <span class="n">unsigned</span> <span class="n">char</span>
+</pre></div>
+</div>
+<p>The normal numeric precision <code class="code docutils literal notranslate"><span class="pre">double</span></code> is considered the default and
+does not require a suffix.  For example, the function
+<a class="reference internal" href="statistics.html#c.gsl_stats_mean" title="gsl_stats_mean"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_mean()</span></code></a> computes the mean of double precision numbers,
+while the function <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_int_mean()</span></code> computes the mean of
+integers.</p>
+<p>A corresponding scheme is used for library defined types, such as
+<code class="code docutils literal notranslate"><span class="pre">gsl_vector</span></code> and <code class="code docutils literal notranslate"><span class="pre">gsl_matrix</span></code>.  In this case the modifier is
+appended to the type name.  For example, if a module defines a new
+type-dependent struct or typedef <code class="code docutils literal notranslate"><span class="pre">gsl_foo</span></code> it is modified for other
+types in the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_foo</span>                  <span class="n">double</span>
+<span class="n">gsl_foo_long_double</span>      <span class="n">long</span> <span class="n">double</span>
+<span class="n">gsl_foo_float</span>            <span class="nb">float</span>
+<span class="n">gsl_foo_long</span>             <span class="n">long</span>
+<span class="n">gsl_foo_ulong</span>            <span class="n">unsigned</span> <span class="n">long</span>
+<span class="n">gsl_foo_int</span>              <span class="nb">int</span>
+<span class="n">gsl_foo_uint</span>             <span class="n">unsigned</span> <span class="nb">int</span>
+<span class="n">gsl_foo_short</span>            <span class="n">short</span>
+<span class="n">gsl_foo_ushort</span>           <span class="n">unsigned</span> <span class="n">short</span>
+<span class="n">gsl_foo_char</span>             <span class="n">char</span>
+<span class="n">gsl_foo_uchar</span>            <span class="n">unsigned</span> <span class="n">char</span>
+</pre></div>
+</div>
+<p>When a module contains type-dependent definitions the library provides
+individual header files for each type.  The filenames are modified as
+shown in the below.  For convenience the default header includes the
+definitions for all the types.  To include only the double precision
+header file, or any other specific type, use its individual filename:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;gsl/gsl_foo.h&gt;               All types</span>
+<span class="c1">#include &lt;gsl/gsl_foo_double.h&gt;        double</span>
+<span class="c1">#include &lt;gsl/gsl_foo_long_double.h&gt;   long double</span>
+<span class="c1">#include &lt;gsl/gsl_foo_float.h&gt;         float</span>
+<span class="c1">#include &lt;gsl/gsl_foo_long.h&gt;          long</span>
+<span class="c1">#include &lt;gsl/gsl_foo_ulong.h&gt;         unsigned long</span>
+<span class="c1">#include &lt;gsl/gsl_foo_int.h&gt;           int</span>
+<span class="c1">#include &lt;gsl/gsl_foo_uint.h&gt;          unsigned int</span>
+<span class="c1">#include &lt;gsl/gsl_foo_short.h&gt;         short</span>
+<span class="c1">#include &lt;gsl/gsl_foo_ushort.h&gt;        unsigned short</span>
+<span class="c1">#include &lt;gsl/gsl_foo_char.h&gt;          char</span>
+<span class="c1">#include &lt;gsl/gsl_foo_uchar.h&gt;         unsigned char</span>
+</pre></div>
+</div>
+</section>
+<section id="compatibility-with-c">
+<span id="index-6"></span><h2>Compatibility with C++<a class="headerlink" href="#compatibility-with-c" title="Link to this heading">¶</a></h2>
+<p>The library header files automatically define functions to have
+<code class="code docutils literal notranslate"><span class="pre">extern</span> <span class="pre">&quot;C&quot;</span></code> linkage when included in C++ programs.  This allows
+the functions to be called directly from C++.</p>
+<p>To use C++ exception handling within user-defined functions passed to
+the library as parameters, the library must be built with the
+additional <code class="code docutils literal notranslate"><span class="pre">CFLAGS</span></code> compilation option <code class="code docutils literal notranslate"><span class="pre">-fexceptions</span></code>.</p>
+</section>
+<section id="aliasing-of-arrays">
+<span id="index-7"></span><span id="id6"></span><h2>Aliasing of arrays<a class="headerlink" href="#aliasing-of-arrays" title="Link to this heading">¶</a></h2>
+<p>The library assumes that arrays, vectors and matrices passed as
+modifiable arguments are not aliased and do not overlap with each other.
+This removes the need for the library to handle overlapping memory
+regions as a special case, and allows additional optimizations to be
+used.  If overlapping memory regions are passed as modifiable arguments
+then the results of such functions will be undefined.  If the arguments
+will not be modified (for example, if a function prototype declares them
+as <code class="code docutils literal notranslate"><span class="pre">const</span></code> arguments) then overlapping or aliased memory regions
+can be safely used.</p>
+</section>
+<section id="thread-safety">
+<h2>Thread-safety<a class="headerlink" href="#thread-safety" title="Link to this heading">¶</a></h2>
+<p>The library can be used in multi-threaded programs.  All the functions
+are thread-safe, in the sense that they do not use static variables.
+Memory is always associated with objects and not with functions.  For
+functions which use <em>workspace</em> objects as temporary storage the
+workspaces should be allocated on a per-thread basis.  For functions
+which use <em>table</em> objects as read-only memory the tables can be used
+by multiple threads simultaneously.  Table arguments are always declared
+<code class="code docutils literal notranslate"><span class="pre">const</span></code> in function prototypes, to indicate that they may be
+safely accessed by different threads.</p>
+<p>There are a small number of static global variables which are used to
+control the overall behavior of the library (e.g. whether to use
+range-checking, the function to call on fatal error, etc).  These
+variables are set directly by the user, so they should be initialized
+once at program startup and not modified by different threads.</p>
+</section>
+<section id="deprecated-functions">
+<span id="index-8"></span><h2>Deprecated Functions<a class="headerlink" href="#deprecated-functions" title="Link to this heading">¶</a></h2>
+<p>From time to time, it may be necessary for the definitions of some
+functions to be altered or removed from the library.  In these
+circumstances the functions will first be declared <em>deprecated</em> and
+then removed from subsequent versions of the library.  Functions that
+are deprecated can be disabled in the current release by setting the
+preprocessor definition <code class="code docutils literal notranslate"><span class="pre">GSL_DISABLE_DEPRECATED</span></code>.  This allows
+existing code to be tested for forwards compatibility.</p>
+</section>
+<section id="code-reuse">
+<span id="index-9"></span><h2>Code Reuse<a class="headerlink" href="#code-reuse" title="Link to this heading">¶</a></h2>
+<p>Where possible the routines in the library have been written to avoid
+dependencies between modules and files.  This should make it possible to
+extract individual functions for use in your own applications, without
+needing to have the whole library installed.  You may need to define
+certain macros such as <code class="code docutils literal notranslate"><span class="pre">GSL_ERROR</span></code> and remove some <code class="code docutils literal notranslate"><span class="pre">#include</span></code>
+statements in order to compile the files as standalone units. Reuse of
+the library code in this way is encouraged, subject to the terms of the
+GNU General Public License.</p>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>The last few digits may vary slightly depending on the compiler and platform used—this is normal</p>
+</aside>
+<aside class="footnote brackets" id="f2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>It is not needed on MacOS X</p>
+</aside>
+<aside class="footnote brackets" id="f3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://www.network-theory.co.uk/gcc/intro/">http://www.network-theory.co.uk/gcc/intro/</a></p>
+</aside>
+<aside class="footnote brackets" id="f4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p><code class="file docutils literal notranslate"><span class="pre">/etc/ld.so.conf</span></code> on GNU/Linux systems</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="err.html" class="btn btn-neutral float-right" title="Error Handling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

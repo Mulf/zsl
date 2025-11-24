@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Combinations &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Multisets" href="multiset.html" />
+    <link rel="prev" title="Permutations" href="permutation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Combinations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-combination-struct">The Combination struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combination-allocation">Combination allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-combination-elements">Accessing combination elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combination-properties">Combination properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combination-functions">Combination functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-combinations">Reading and writing combinations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Combinations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/combination.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="permutation.html" class="btn btn-neutral float-left" title="Permutations" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multiset.html" class="btn btn-neutral float-right" title="Multisets" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="combinations">
+<span id="index-0"></span><h1>Combinations<a class="headerlink" href="#combinations" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for creating and manipulating
+combinations. A combination <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/> is represented by an array of
+<img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> integers in the range 0 to <img class="math" src="_images/math/20df0c4aec91444f204cfbfb831b4035081f410a.png" alt="n - 1"/>, where each value
+<img class="math" src="_images/math/8f3ed3aa23232b84b9d4f7e1d0068c62e5869384.png" alt="c_i"/> occurs at most once.  The combination <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/> corresponds to
+indices of <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> elements chosen from an <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> element vector.
+Combinations are useful for iterating over all <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-element subsets
+of a set.</p>
+<p>The functions described in this chapter are defined in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_combination.h</span></code>.</p>
+<section id="the-combination-struct">
+<h2>The Combination struct<a class="headerlink" href="#the-combination-struct" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_combination">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination</span></span></span><a class="headerlink" href="#c.gsl_combination" title="Link to this definition">¶</a><br /></dt>
+<dd><p>A combination is defined by a structure containing three components, the
+values of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>, and a pointer to the combination array.
+The elements of the combination array are all of type <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>, and
+are stored in increasing order.  The <a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_combination</span></code></a> structure
+looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+<span class="p">{</span>
+  <span class="n">size_t</span> <span class="n">n</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">k</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">gsl_combination</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="combination-allocation">
+<h2>Combination allocation<a class="headerlink" href="#combination-allocation" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_alloc">
+<a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a new combination with parameters
+<a class="reference internal" href="#c.gsl_combination_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>, <a class="reference internal" href="#c.gsl_combination_alloc" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a>.  The combination is not initialized and its elements
+are undefined.  Use the function <a class="reference internal" href="#c.gsl_combination_calloc" title="gsl_combination_calloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_combination_calloc()</span></code></a> if you
+want to create a combination which is initialized to the
+lexicographically first combination. A null pointer is returned if
+insufficient memory is available to create the combination.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_calloc">
+<a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_calloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_calloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a new combination with parameters
+<a class="reference internal" href="#c.gsl_combination_calloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>, <a class="reference internal" href="#c.gsl_combination_calloc" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> and initializes it to the lexicographically first
+combination. A null pointer is returned if insufficient memory is
+available to create the combination.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_init_first">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_init_first</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_init_first" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the combination <a class="reference internal" href="#c.gsl_combination_init_first" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the
+lexicographically first combination, i.e.  <img class="math" src="_images/math/0ac07538b963839223825e654b78328a0cf017d0.png" alt="(0, 1, 2, \dots, k - 1)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_init_last">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_init_last</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_init_last" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the combination <a class="reference internal" href="#c.gsl_combination_init_last" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the
+lexicographically last combination, i.e.  <img class="math" src="_images/math/b3d549ff7aafef08f8e4d5586c1fb073153112b0.png" alt="(n - k, n - k + 1, \dots, n - 1)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory used by the combination <a class="reference internal" href="#c.gsl_combination_free" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the elements of the combination <a class="reference internal" href="#c.gsl_combination_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the
+combination <a class="reference internal" href="#c.gsl_combination_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>.  The two combinations must have the same size.</p>
+</dd></dl>
+
+</section>
+<section id="accessing-combination-elements">
+<h2>Accessing combination elements<a class="headerlink" href="#accessing-combination-elements" title="Link to this heading">¶</a></h2>
+<p>The following function can be used to access the elements of a combination.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_get">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the value of the <a class="reference internal" href="#c.gsl_combination_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>-th element of the
+combination <a class="reference internal" href="#c.gsl_combination_get" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.  If <a class="reference internal" href="#c.gsl_combination_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> lies outside the allowed range of 0 to
+<img class="math" src="_images/math/f2a1956e91647c128c4dcf865b90a0ae4c09b08a.png" alt="k - 1"/> then the error handler is invoked and 0 is returned. An inline version of this function is used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.</p>
+</dd></dl>
+
+</section>
+<section id="combination-properties">
+<h2>Combination properties<a class="headerlink" href="#combination-properties" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_n">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_n</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_n" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the range (<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>) of the combination c.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_k">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_k</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_k" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the number of elements (<img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>) in the combination <a class="reference internal" href="#c.gsl_combination_k" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_data">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the array of elements in the
+combination <a class="reference internal" href="#c.gsl_combination_data" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-1">
+<dt class="sig sig-object c" id="c.gsl_combination_valid">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_valid</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_valid" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function checks that the combination <a class="reference internal" href="#c.gsl_combination_valid" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> is valid.  The <code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code>
+elements should lie in the range 0 to <img class="math" src="_images/math/20df0c4aec91444f204cfbfb831b4035081f410a.png" alt="n - 1"/>, with each
+value occurring once at most and in increasing order.</p>
+</dd></dl>
+
+</section>
+<section id="combination-functions">
+<h2>Combination functions<a class="headerlink" href="#combination-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_combination_next">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_next</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_next" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function advances the combination <a class="reference internal" href="#c.gsl_combination_next" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the next combination
+in lexicographic order and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If no further
+combinations are available it returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> and leaves
+<a class="reference internal" href="#c.gsl_combination_next" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> unmodified.  Starting with the first combination and
+repeatedly applying this function will iterate through all possible
+combinations of a given order.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_prev">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_prev</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_prev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function steps backwards from the combination <a class="reference internal" href="#c.gsl_combination_prev" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the
+previous combination in lexicographic order, returning
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If no previous combination is available it returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> and leaves <a class="reference internal" href="#c.gsl_combination_prev" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> unmodified.</p>
+</dd></dl>
+
+</section>
+<section id="reading-and-writing-combinations">
+<h2>Reading and writing combinations<a class="headerlink" href="#reading-and-writing-combinations" title="Link to this heading">¶</a></h2>
+<p>The library provides functions for reading and writing combinations to a
+file as binary data or formatted text.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_fwrite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_fwrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_fwrite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the elements of the combination <a class="reference internal" href="#c.gsl_combination_fwrite" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the
+stream <a class="reference internal" href="#c.gsl_combination_fwrite" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.  Since the
+data is written in the native binary format it may not be portable
+between different architectures.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_fread">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_fread</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_fread" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads elements from the open stream <a class="reference internal" href="#c.gsl_combination_fread" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+combination <a class="reference internal" href="#c.gsl_combination_fread" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> in binary format.  The combination <a class="reference internal" href="#c.gsl_combination_fread" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> must be
+preallocated with correct values of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> since the
+function uses the size of <a class="reference internal" href="#c.gsl_combination_fread" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to determine how many bytes to read.
+The function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading
+from the file.  The data is assumed to have been written in the native
+binary format on the same architecture.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_fprintf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_fprintf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">format</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_fprintf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the elements of the combination <a class="reference internal" href="#c.gsl_combination_fprintf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>
+line-by-line to the stream <a class="reference internal" href="#c.gsl_combination_fprintf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> using the format specifier
+<a class="reference internal" href="#c.gsl_combination_fprintf" title="format"><code class="xref c c-data docutils literal notranslate"><span class="pre">format</span></code></a>, which should be suitable for a type of <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>.
+In ISO C99 the type modifier <code class="code docutils literal notranslate"><span class="pre">z</span></code> represents <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>, so
+<code class="code docutils literal notranslate"><span class="pre">&quot;%zun&quot;</span></code> is a suitable format <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_combination_fscanf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_combination_fscanf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_combination" title="gsl_combination"><span class="n"><span class="pre">gsl_combination</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_combination_fscanf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads formatted data from the stream <a class="reference internal" href="#c.gsl_combination_fscanf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+combination <a class="reference internal" href="#c.gsl_combination_fscanf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.  The combination <a class="reference internal" href="#c.gsl_combination_fscanf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> must be preallocated with
+correct values of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> since the function uses the size of <a class="reference internal" href="#c.gsl_combination_fscanf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to
+determine how many numbers to read.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from the file.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The example program below prints all subsets of the set
+<img class="math" src="_images/math/835a1511e14b2486053aa20315a2388368f21746.png" alt="{0,1,2,3}"/> ordered by size.  Subsets of the same size are
+ordered lexicographically.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_combination.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">gsl_combination</span> <span class="o">*</span> <span class="n">c</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">;</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;All subsets of {0,1,2,3} by size:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="n">gsl_combination_calloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">do</span>
+        <span class="p">{</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">);</span>
+          <span class="n">gsl_combination_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="s2">&quot; </span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">);</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot; }</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">gsl_combination_next</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="n">GSL_SUCCESS</span><span class="p">);</span>
+      <span class="n">gsl_combination_free</span> <span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output from the program,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">All</span> <span class="n">subsets</span> <span class="n">of</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}</span> <span class="n">by</span> <span class="n">size</span><span class="p">:</span>
+<span class="p">{</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>All 16 subsets are generated, and the subsets of each size are sorted
+lexicographically.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>Further information on combinations can be found in,</p>
+<ul class="simple">
+<li><p>Donald L. Kreher, Douglas R. Stinson, Combinatorial Algorithms:
+Generation, Enumeration and Search, 1998, CRC Press LLC, ISBN
+084933988X</p></li>
+</ul>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>In versions of the GNU C library prior to the ISO C99 standard,
+the type modifier <code class="code docutils literal notranslate"><span class="pre">Z</span></code> was used instead.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="permutation.html" class="btn btn-neutral float-left" title="Permutations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multiset.html" class="btn btn-neutral float-right" title="Multisets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

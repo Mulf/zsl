@@ -1,0 +1,556 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wavelet Transforms &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Discrete Hankel Transforms" href="dht.html" />
+    <link rel="prev" title="Series Acceleration" href="sum.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wavelet Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transform-functions">Transform Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wavelet-transforms-in-one-dimension">Wavelet transforms in one dimension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavelet-transforms-in-two-dimension">Wavelet transforms in two dimension</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Wavelet Transforms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dwt.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="sum.html" class="btn btn-neutral float-left" title="Series Acceleration" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dht.html" class="btn btn-neutral float-right" title="Discrete Hankel Transforms" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wavelet-transforms">
+<span id="index-0"></span><h1>Wavelet Transforms<a class="headerlink" href="#wavelet-transforms" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for performing Discrete Wavelet
+Transforms (DWTs).  The library includes wavelets for real data in both
+one and two dimensions.  The wavelet functions are declared in the header
+files <code class="file docutils literal notranslate"><span class="pre">gsl_wavelet.h</span></code> and <code class="file docutils literal notranslate"><span class="pre">gsl_wavelet2d.h</span></code>.</p>
+<section id="definitions">
+<span id="index-1"></span><h2>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>
+<p>The continuous wavelet transform and its inverse are defined by
+the relations,</p>
+<div class="math">
+<p><img src="_images/math/d98f808d596fc50ad601aadd340d3e1a7dade56f.png" alt="w(s, \tau) = \int_{-\infty}^\infty f(t) * \psi^*_{s,\tau}(t) dt"/></p>
+</div><p>and,</p>
+<div class="math">
+<p><img src="_images/math/383f2e5b7a8e2e6b8a33ee0e36049d9b53f00954.png" alt="f(t) = \int_0^\infty ds \int_{-\infty}^\infty w(s, \tau) * \psi_{s,\tau}(t) d\tau"/></p>
+</div><p>where the basis functions <img class="math" src="_images/math/9211fd006bf6b064ad65f661ea989d5b8b66ffbc.png" alt="\psi_{s,\tau}"/>
+are obtained by scaling
+and translation from a single function, referred to as the <em>mother wavelet</em>.</p>
+<p>The discrete version of the wavelet transform acts on equally-spaced
+samples, with fixed scaling and translation steps (<img class="math" src="_images/math/00a0fb0ee72dd3b299c67c64d624f2cc01335d59.png" alt="s"/>,
+<img class="math" src="_images/math/44ce53ccf50bee9b4250121c0824e78dbf43c266.png" alt="\tau"/>).  The frequency and time axes are sampled <em>dyadically</em>
+on scales of <img class="math" src="_images/math/c9e8cfd0709d5603035a479579456cd3833db300.png" alt="2^j"/> through a level parameter <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>.</p>
+<p>The resulting family of functions <img class="math" src="_images/math/e06124facf9eb85123a54cc750c3f4e456705f12.png" alt="\{\psi_{j,n}\}"/>
+constitutes an orthonormal basis for square-integrable signals.
+The discrete wavelet transform is an <img class="math" src="_images/math/d7adb0d18071ae03d48f0e0bd45a7540149c398f.png" alt="O(N)"/> algorithm, and is also
+referred to as the <em>fast wavelet transform</em>.</p>
+</section>
+<section id="initialization">
+<span id="index-2"></span><h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_wavelet">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet</span></span></span><a class="headerlink" href="#c.gsl_wavelet" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This structure contains the filter coefficients
+defining the wavelet and any associated offset parameters.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet_alloc">
+<a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates and initializes a wavelet object of type
+<a class="reference internal" href="#c.gsl_wavelet_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a>.  The parameter <a class="reference internal" href="#c.gsl_wavelet_alloc" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> selects the specific member of the
+wavelet family.  A null pointer is returned if insufficient memory is
+available or if a unsupported member is selected.</p>
+</dd></dl>
+
+<p>The following wavelet types are implemented:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_wavelet_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_type</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="c var" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_wavelet_type.gsl_wavelet_daubechies">
+<a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_daubechies</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type.gsl_wavelet_daubechies" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet_type.gsl_wavelet_daubechies_centered">
+<a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_daubechies_centered</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type.gsl_wavelet_daubechies_centered" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the Daubechies wavelet family of maximum phase with <img class="math" src="_images/math/6ecd2dca98a81888118f28fe1c4f46c10eaaa96b.png" alt="k/2"/>
+vanishing moments.  The implemented wavelets are
+<img class="math" src="_images/math/d497826581c180251c851b3660af6e41a777da9a.png" alt="k=4, 6, \dots, 20"/>, with <code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code> even.</p>
+</dd></dl>
+
+<dl class="c var" id="index-4">
+<dt class="sig sig-object c" id="c.gsl_wavelet_type.gsl_wavelet_haar">
+<a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_haar</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type.gsl_wavelet_haar" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet_type.gsl_wavelet_haar_centered">
+<a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_haar_centered</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type.gsl_wavelet_haar_centered" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the Haar wavelet.  The only valid choice of <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> for the
+Haar wavelet is <img class="math" src="_images/math/50579128b8496c49765fdb6b3e5e4f1a52f1a239.png" alt="k=2"/>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_wavelet_type.gsl_wavelet_bspline">
+<a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_bspline</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type.gsl_wavelet_bspline" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet_type.gsl_wavelet_bspline_centered">
+<a class="reference internal" href="#c.gsl_wavelet_type" title="gsl_wavelet_type"><span class="n"><span class="pre">gsl_wavelet_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_bspline_centered</span></span></span><a class="headerlink" href="#c.gsl_wavelet_type.gsl_wavelet_bspline_centered" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the biorthogonal B-spline wavelet family of order <img class="math" src="_images/math/92807ade5bf57ca25e8e9ad6a1d3169b9081d66d.png" alt="(i,j)"/>.
+The implemented values of <img class="math" src="_images/math/6769254e1d3049703c5f58dfff532e5e70e33345.png" alt="k = 100*i + j"/> are 103, 105, 202, 204,
+206, 208, 301, 303, 305 307, 309.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The centered forms of the wavelets align the coefficients of the various
+sub-bands on edges.  Thus the resulting visualization of the
+coefficients of the wavelet transform in the phase plane is easier to
+understand.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the name of the wavelet family for
+<a class="reference internal" href="#c.gsl_wavelet_name" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the wavelet object <a class="reference internal" href="#c.gsl_wavelet_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_wavelet_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></span><a class="headerlink" href="#c.gsl_wavelet_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This structure contains scratch space of the
+same size as the input data and is used to hold intermediate results
+during the transform.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet_workspace_alloc">
+<a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_workspace_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_workspace_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for the discrete wavelet transform.
+To perform a one-dimensional transform on <a class="reference internal" href="#c.gsl_wavelet_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> elements, a workspace
+of size <a class="reference internal" href="#c.gsl_wavelet_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> must be provided.  For two-dimensional transforms of
+<a class="reference internal" href="#c.gsl_wavelet_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_wavelet_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> matrices it is sufficient to allocate a workspace of
+size <a class="reference internal" href="#c.gsl_wavelet_workspace_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>, since the transform operates on individual rows and
+columns. A null pointer is returned if insufficient memory is available.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet_workspace_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_workspace_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_workspace_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the allocated workspace <a class="reference internal" href="#c.gsl_wavelet_workspace_free" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="transform-functions">
+<h2>Transform Functions<a class="headerlink" href="#transform-functions" title="Link to this heading">¶</a></h2>
+<p>This sections describes the actual functions performing the discrete
+wavelet transform.  Note that the transforms use periodic boundary
+conditions.  If the signal is not periodic in the sample length then
+spurious coefficients will appear at the beginning and end of each level
+of the transform.</p>
+<section id="wavelet-transforms-in-one-dimension">
+<span id="index-6"></span><h3>Wavelet transforms in one dimension<a class="headerlink" href="#wavelet-transforms-in-one-dimension" title="Link to this heading">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_transform</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">gsl_wavelet_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_transform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet_transform_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_transform_forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_transform_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet_transform_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet_transform_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet_transform_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute in-place forward and inverse discrete wavelet
+transforms of length <a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> on the array
+<a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>. The length of the transform <a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is restricted to powers
+of two.  For the <code class="code docutils literal notranslate"><span class="pre">transform</span></code> version of the function the argument
+<code class="xref c c-data docutils literal notranslate"><span class="pre">dir</span></code> can be either <code class="code docutils literal notranslate"><span class="pre">forward</span></code> (<img class="math" src="_images/math/7d8e38d31bf43630815fde9e3f56c37b74f0fc51.png" alt="+1"/>) or <code class="code docutils literal notranslate"><span class="pre">backward</span></code>
+(<img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>).  A workspace <a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a> of length <a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> must be provided.</p>
+<p>For the forward transform, the elements of the original array are
+replaced by the discrete wavelet
+transform <img class="math" src="_images/math/e15618132acd2ec336dde5056d5b890142554080.png" alt="f_i \rightarrow w_{j,k}"/>
+in a packed triangular storage layout,
+where <code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code> is the index of the level
+<img class="math" src="_images/math/4b70dd6a9ab4b00f57fac74a3aa142c049d4ed1d.png" alt="j = 0 \dots J-1"/>
+and
+<code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code> is the index of the coefficient within each level,
+<img class="math" src="_images/math/815bb6d2d52d42df220b5271ada4ad6fc3707b2b.png" alt="k = 0 \dots 2^j - 1"/>.
+The total number of levels is <img class="math" src="_images/math/92868da816731c52be6eac12620b9419384e55fb.png" alt="J = \log_2(n)"/>.  The output data
+has the following form,</p>
+<div class="math">
+<p><img src="_images/math/93af4534e9029ccb7c51be4e803d1a863e4eab24.png" alt="(s_{-1,0}, d_{0,0}, d_{1,0}, d_{1,1}, d_{2,0},\cdots, d_{j,k},\cdots, d_{J-1,2^{J-1} - 1})"/></p>
+</div><p>where the first element is the smoothing coefficient <img class="math" src="_images/math/7f1f3b2fee554e3ea34182c35d697a7606208e9f.png" alt="s_{-1,0}"/>,
+followed by the detail coefficients <img class="math" src="_images/math/681aa69382cce7052fdc2e23c8df813071411b32.png" alt="d_{j,k}"/>
+for each level
+<img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>.  The backward transform inverts these coefficients to obtain
+the original data.</p>
+<p>These functions return a status of <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> upon successful
+completion.  <a class="reference internal" href="err.html#c.GSL_EINVAL" title="GSL_EINVAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EINVAL</span></code></a> is returned if <a class="reference internal" href="#c.gsl_wavelet_transform_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is not an integer
+power of 2 or if insufficient workspace is provided.</p>
+</dd></dl>
+
+</section>
+<section id="wavelet-transforms-in-two-dimension">
+<span id="index-7"></span><h3>Wavelet transforms in two dimension<a class="headerlink" href="#wavelet-transforms-in-two-dimension" title="Link to this heading">¶</a></h3>
+<p>The library provides functions to perform two-dimensional discrete
+wavelet transforms on square matrices.  The matrix dimensions must be an
+integer power of two.  There are two possible orderings of the rows and
+columns in the two-dimensional wavelet transform, referred to as the
+“standard” and “non-standard” forms.</p>
+<p>The “standard” transform performs a complete discrete wavelet
+transform on the rows of the matrix, followed by a separate complete
+discrete wavelet transform on the columns of the resulting
+row-transformed matrix.  This procedure uses the same ordering as a
+two-dimensional Fourier transform.</p>
+<p>The “non-standard” transform is performed in interleaved passes on the
+rows and columns of the matrix for each level of the transform.  The
+first level of the transform is applied to the matrix rows, and then to
+the matrix columns.  This procedure is then repeated across the rows and
+columns of the data for the subsequent levels of the transform, until
+the full discrete wavelet transform is complete.  The non-standard form
+of the discrete wavelet transform is typically used in image analysis.</p>
+<p>The functions described in this section are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_wavelet2d.h</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_transform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_transform</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">tda</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size1</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size2</span></span>, <span class="n"><span class="pre">gsl_wavelet_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_transform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_transform_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_transform_forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">tda</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size1</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size2</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_transform_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_transform_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_transform_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">tda</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size1</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size2</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_transform_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute two-dimensional in-place forward and inverse
+discrete wavelet transforms in standard form on the
+array <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> stored in row-major form with dimensions <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="size1"><code class="xref c c-data docutils literal notranslate"><span class="pre">size1</span></code></a>
+and <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="size2"><code class="xref c c-data docutils literal notranslate"><span class="pre">size2</span></code></a> and physical row length <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="tda"><code class="xref c c-data docutils literal notranslate"><span class="pre">tda</span></code></a>.  The dimensions must
+be equal (square matrix) and are restricted to powers of two.  For the
+<code class="code docutils literal notranslate"><span class="pre">transform</span></code> version of the function the argument <code class="xref c c-data docutils literal notranslate"><span class="pre">dir</span></code> can be
+either <code class="code docutils literal notranslate"><span class="pre">forward</span></code> (<img class="math" src="_images/math/7d8e38d31bf43630815fde9e3f56c37b74f0fc51.png" alt="+1"/>) or <code class="code docutils literal notranslate"><span class="pre">backward</span></code> (<img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>).  A
+workspace <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a> of the appropriate size must be provided.  On exit,
+the appropriate elements of the array <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> are replaced by their
+two-dimensional wavelet transform.</p>
+<p>The functions return a status of <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> upon successful
+completion.  <a class="reference internal" href="err.html#c.GSL_EINVAL" title="GSL_EINVAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EINVAL</span></code></a> is returned if <a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="size1"><code class="xref c c-data docutils literal notranslate"><span class="pre">size1</span></code></a> and
+<a class="reference internal" href="#c.gsl_wavelet2d_transform_inverse" title="size2"><code class="xref c c-data docutils literal notranslate"><span class="pre">size2</span></code></a> are not equal and integer powers of 2, or if insufficient
+workspace is provided.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_transform_matrix">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_transform_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">m</span></span>, <span class="n"><span class="pre">gsl_wavelet_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_transform_matrix" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_transform_matrix_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_transform_matrix_forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">m</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_transform_matrix_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_transform_matrix_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_transform_matrix_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">m</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_transform_matrix_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute the two-dimensional in-place wavelet transform
+on a matrix <a class="reference internal" href="#c.gsl_wavelet2d_transform_matrix_inverse" title="m"><code class="xref c c-data docutils literal notranslate"><span class="pre">m</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_nstransform">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_nstransform</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">tda</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size1</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size2</span></span>, <span class="n"><span class="pre">gsl_wavelet_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_nstransform" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_nstransform_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_nstransform_forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">tda</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size1</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size2</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_nstransform_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_nstransform_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_nstransform_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">tda</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size1</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size2</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_nstransform_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute the two-dimensional wavelet transform in
+non-standard form.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_nstransform_matrix">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_nstransform_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">m</span></span>, <span class="n"><span class="pre">gsl_wavelet_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_nstransform_matrix" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_nstransform_matrix_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_nstransform_matrix_forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">m</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_nstransform_matrix_forward" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_wavelet2d_nstransform_matrix_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_wavelet2d_nstransform_matrix_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_wavelet" title="gsl_wavelet"><span class="n"><span class="pre">gsl_wavelet</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">m</span></span>, <a class="reference internal" href="#c.gsl_wavelet_workspace" title="gsl_wavelet_workspace"><span class="n"><span class="pre">gsl_wavelet_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">work</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_wavelet2d_nstransform_matrix_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute the non-standard form of the two-dimensional
+in-place wavelet transform on a matrix <a class="reference internal" href="#c.gsl_wavelet2d_nstransform_matrix_inverse" title="m"><code class="xref c c-data docutils literal notranslate"><span class="pre">m</span></code></a>.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following program demonstrates the use of the one-dimensional
+wavelet transform functions.  It computes an approximation to an input
+signal (of length 256) using the 20 largest components of the wavelet
+transform, while setting the others to zero.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_sort.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_wavelet.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">argc</span><span class="p">);</span> <span class="o">/*</span> <span class="n">avoid</span> <span class="n">unused</span> <span class="n">parameter</span> <span class="n">warning</span> <span class="o">*/</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+  <span class="n">double</span> <span class="o">*</span><span class="n">orig_data</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">sizeof</span> <span class="p">(</span><span class="n">double</span><span class="p">));</span>
+  <span class="n">double</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">sizeof</span> <span class="p">(</span><span class="n">double</span><span class="p">));</span>
+  <span class="n">double</span> <span class="o">*</span><span class="n">abscoeff</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">sizeof</span> <span class="p">(</span><span class="n">double</span><span class="p">));</span>
+  <span class="n">size_t</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">malloc</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">sizeof</span> <span class="p">(</span><span class="n">size_t</span><span class="p">));</span>
+
+  <span class="n">FILE</span> <span class="o">*</span> <span class="n">f</span><span class="p">;</span>
+  <span class="n">gsl_wavelet</span> <span class="o">*</span><span class="n">w</span><span class="p">;</span>
+  <span class="n">gsl_wavelet_workspace</span> <span class="o">*</span><span class="n">work</span><span class="p">;</span>
+
+  <span class="n">w</span> <span class="o">=</span> <span class="n">gsl_wavelet_alloc</span> <span class="p">(</span><span class="n">gsl_wavelet_daubechies</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+  <span class="n">work</span> <span class="o">=</span> <span class="n">gsl_wavelet_workspace_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">f</span> <span class="o">=</span> <span class="n">fopen</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">fscanf</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%lg</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">orig_data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+      <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">orig_data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="n">fclose</span> <span class="p">(</span><span class="n">f</span><span class="p">);</span>
+
+  <span class="n">gsl_wavelet_transform_forward</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">work</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">abscoeff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fabs</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_sort_index</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">abscoeff</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">nc</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">gsl_wavelet_transform_inverse</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">work</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%g</span><span class="s2"> </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">orig_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_wavelet_free</span> <span class="p">(</span><span class="n">w</span><span class="p">);</span>
+  <span class="n">gsl_wavelet_workspace_free</span> <span class="p">(</span><span class="n">work</span><span class="p">);</span>
+
+  <span class="n">free</span> <span class="p">(</span><span class="n">data</span><span class="p">);</span>
+  <span class="n">free</span> <span class="p">(</span><span class="n">orig_data</span><span class="p">);</span>
+  <span class="n">free</span> <span class="p">(</span><span class="n">abscoeff</span><span class="p">);</span>
+  <span class="n">free</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output can be used with the GNU plotutils <code class="code docutils literal notranslate"><span class="pre">graph</span></code> program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out ecg.dat &gt; dwt.txt
+$ graph -T ps -x 0 256 32 -h 0.3 -a dwt.txt &gt; dwt.ps
+</pre></div>
+</div>
+<p><a class="reference internal" href="#fig-dwt"><span class="std std-numref">Fig. 27</span></a> shows an original and compressed version of a sample ECG
+recording from the MIT-BIH Arrhythmia Database, part of the PhysioNet
+archive of public-domain of medical datasets.</p>
+<figure class="align-default" id="id1">
+<span id="fig-dwt"></span><a class="reference internal image-reference" href="_images/dwt.png"><img alt="_images/dwt.png" src="_images/dwt.png" style="width: 384.0px; height: 288.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">Original (upper) and wavelet-compressed (lower) ECG signals, using the
+20 largest components of the Daubechies(4) discrete wavelet transform.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The mathematical background to wavelet transforms is covered in the
+original lectures by Daubechies,</p>
+<ul class="simple">
+<li><p>Ingrid Daubechies.
+Ten Lectures on Wavelets.
+<em>CBMS-NSF Regional Conference Series in Applied Mathematics</em> (1992),
+SIAM, ISBN 0898712742.</p></li>
+</ul>
+<p>An easy to read introduction to the subject with an emphasis on the
+application of the wavelet transform in various branches of science is,</p>
+<ul class="simple">
+<li><p>Paul S. Addison. <em>The Illustrated Wavelet Transform Handbook</em>.
+Institute of Physics Publishing (2002), ISBN 0750306920.</p></li>
+</ul>
+<p>For extensive coverage of signal analysis by wavelets, wavelet packets
+and local cosine bases see,</p>
+<ul class="simple">
+<li><p>S. G. Mallat. <em>A wavelet tour of signal processing</em> (Second
+edition). Academic Press (1999), ISBN 012466606X.</p></li>
+</ul>
+<p>The concept of multiresolution analysis underlying the wavelet transform
+is described in,</p>
+<ul class="simple">
+<li><p>S. G. Mallat.
+Multiresolution Approximations and Wavelet Orthonormal Bases of L^2(R).
+<em>Transactions of the American Mathematical Society</em>, 315(1), 1989, 69–87.</p></li>
+<li><p>S. G. Mallat.
+A Theory for Multiresolution Signal Decomposition—The Wavelet Representation.
+<em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 11, 1989,
+674–693.</p></li>
+</ul>
+<p>The coefficients for the individual wavelet families implemented by the
+library can be found in the following papers,</p>
+<ul class="simple">
+<li><p>I. Daubechies.
+Orthonormal Bases of Compactly Supported Wavelets.
+<em>Communications on Pure and Applied Mathematics</em>, 41 (1988) 909–996.</p></li>
+<li><p>A. Cohen, I. Daubechies, and J.-C. Feauveau.
+Biorthogonal Bases of Compactly Supported Wavelets.
+<em>Communications on Pure and Applied Mathematics</em>, 45 (1992)
+485–560.</p></li>
+</ul>
+<p>The PhysioNet archive of physiological datasets can be found online at
+<a class="reference external" href="http://www.physionet.org/">http://www.physionet.org/</a> and is described in the following
+paper,</p>
+<ul class="simple">
+<li><p>Goldberger et al.
+PhysioBank, PhysioToolkit, and PhysioNet: Components
+of a New Research Resource for Complex Physiologic
+Signals.
+<em>Circulation</em> 101(23):e215-e220 2000.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sum.html" class="btn btn-neutral float-left" title="Series Acceleration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dht.html" class="btn btn-neutral float-right" title="Discrete Hankel Transforms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,765 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complex Numbers &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polynomials" href="poly.html" />
+    <link rel="prev" title="Mathematical Functions" href="math.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Complex Numbers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#representation-of-complex-numbers">Representation of complex numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complex-number-macros">Complex number macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assigning-complex-numbers">Assigning complex numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#properties-of-complex-numbers">Properties of complex numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complex-arithmetic-operators">Complex arithmetic operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#elementary-complex-functions">Elementary Complex Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complex-trigonometric-functions">Complex Trigonometric Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inverse-complex-trigonometric-functions">Inverse Complex Trigonometric Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complex-hyperbolic-functions">Complex Hyperbolic Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inverse-complex-hyperbolic-functions">Inverse Complex Hyperbolic Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Complex Numbers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/complex.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="math.html" class="btn btn-neutral float-left" title="Mathematical Functions" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="poly.html" class="btn btn-neutral float-right" title="Polynomials" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="complex-numbers">
+<span id="index-0"></span><h1>Complex Numbers<a class="headerlink" href="#complex-numbers" title="Link to this heading">¶</a></h1>
+<p>The functions described in this chapter provide support for complex
+numbers.  The algorithms take care to avoid unnecessary intermediate
+underflows and overflows, allowing the functions to be evaluated over
+as much of the complex plane as possible.</p>
+<p>For multiple-valued functions the branch cuts have been chosen to follow
+the conventions of Abramowitz and Stegun.
+The functions return principal values which are
+the same as those in GNU Calc, which in turn are the same as those in
+“Common Lisp, The Language (Second Edition)” <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>
+and the HP-28/48 series of calculators.</p>
+<p>The complex types are defined in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_complex.h</span></code>,
+while the corresponding complex functions and arithmetic operations are
+defined in <code class="file docutils literal notranslate"><span class="pre">gsl_complex_math.h</span></code>.</p>
+<section id="representation-of-complex-numbers">
+<span id="index-1"></span><h2>Representation of complex numbers<a class="headerlink" href="#representation-of-complex-numbers" title="Link to this heading">¶</a></h2>
+<p>Complex numbers are represented using the type <code class="code docutils literal notranslate"><span class="pre">gsl_complex</span></code>. The
+default interface defines <code class="code docutils literal notranslate"><span class="pre">gsl_complex</span></code> as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">dat</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">gsl_complex</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The real and imaginary part are stored in contiguous elements of a two
+element array. This eliminates any padding between the real and
+imaginary parts, <code class="code docutils literal notranslate"><span class="pre">dat[0]</span></code> and <code class="code docutils literal notranslate"><span class="pre">dat[1]</span></code>, allowing the struct to
+be mapped correctly onto packed complex arrays.</p>
+<p>If a C compiler is available which supports the C11 standard,
+and the <code class="file docutils literal notranslate"><span class="pre">&lt;complex.h&gt;</span></code> header file is included <em>prior</em> to <code class="file docutils literal notranslate"><span class="pre">gsl_complex.h</span></code>,
+then <code class="code docutils literal notranslate"><span class="pre">gsl_complex</span></code> will be defined to be the native C complex type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">double</span> <span class="nb">complex</span> <span class="n">gsl_complex</span>
+</pre></div>
+</div>
+<p>This allows users to use <code class="code docutils literal notranslate"><span class="pre">gsl_complex</span></code> in ordinary operations such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_complex</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">I</span><span class="p">;</span>
+<span class="n">gsl_complex</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">I</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Native C support for complex numbers was introduced in the C99 standard,
+and additional functionality was added in C11. When <code class="file docutils literal notranslate"><span class="pre">&lt;complex.h&gt;</span></code>
+is included in a user’s program prior to <code class="file docutils literal notranslate"><span class="pre">gsl_complex.h</span></code>,
+GSL uses the new C11 functionality to define the <a class="reference internal" href="#c.GSL_REAL" title="GSL_REAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_REAL</span></code></a> and
+<a class="reference internal" href="#c.GSL_IMAG" title="GSL_IMAG"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IMAG</span></code></a> macros. It does not appear possible to properly define
+these macros using the C99 standard, and so using a C99 compiler will not define
+<code class="code docutils literal notranslate"><span class="pre">gsl_complex</span></code> to the native complex type.</p>
+<p>Some compilers, such as the gcc 4.8 series implement only a portion of the C11
+standard and so they may fail to correctly compile GSL code when a user tries
+to turn on native complex functionality. A workaround for this issue is to
+either remove <code class="file docutils literal notranslate"><span class="pre">&lt;complex.h&gt;</span></code> from the include list, or add
+<code class="code docutils literal notranslate"><span class="pre">-DGSL_COMPLEX_LEGACY</span></code> to the compiler flags, which will use the older
+struct-based definition of <code class="code docutils literal notranslate"><span class="pre">gsl_complex</span></code>.</p>
+</div>
+</section>
+<section id="complex-number-macros">
+<h2>Complex number macros<a class="headerlink" href="#complex-number-macros" title="Link to this heading">¶</a></h2>
+<p>The following C macros offer convenient ways to manipulate complex numbers.</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_REAL">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_REAL</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_REAL" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.GSL_IMAG">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_IMAG</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_IMAG" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These macros return a memory location (lvalue) corresponding to the real and imaginary
+parts respectively of the complex number <code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code>. This allows users to perform
+operations like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_complex</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+
+<span class="n">GSL_REAL</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="n">GSL_IMAG</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+<span class="n">GSL_REAL</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">GSL_REAL</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">GSL_IMAG</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">GSL_REAL</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In other words, these macros can both read and write to the real and imaginary
+parts of a complex variable.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_SET_COMPLEX">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_SET_COMPLEX</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">zp</span></span>, <span class="n"><span class="pre">x</span></span>, <span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_SET_COMPLEX" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro uses the Cartesian components (<code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>, <code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code>) to set the
+real and imaginary parts of the complex number pointed to by <code class="xref c c-data docutils literal notranslate"><span class="pre">zp</span></code>.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GSL_SET_COMPLEX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">z</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>sets <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/> to be <img class="math" src="_images/math/4e49603fa8cfec3abdbb62549cd51966f9f70065.png" alt="3 + 4i"/>.</p>
+</dd></dl>
+
+</section>
+<section id="assigning-complex-numbers">
+<h2>Assigning complex numbers<a class="headerlink" href="#assigning-complex-numbers" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_rect">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_rect</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_rect" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function uses the rectangular Cartesian components
+<img class="math" src="_images/math/3c19dfc48609e2f9aa0192505880bedbb90a72f3.png" alt="(x,y)"/> to return the complex number <img class="math" src="_images/math/f724fa010afece48abd0405677a4559263a3026f.png" alt="z = x + i y"/>.
+An inline version of this function is used when <code class="xref c c-macro docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code>
+is defined.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_polar">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_polar</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">r</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">theta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_polar" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex number <img class="math" src="_images/math/e422d88183874362654caffa6b371c90572fc08c.png" alt="z = r \exp(i \theta) = r
+(\cos(\theta) + i \sin(\theta))"/> from the polar representation
+(<a class="reference internal" href="#c.gsl_complex_polar" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>, <a class="reference internal" href="#c.gsl_complex_polar" title="theta"><code class="xref c c-data docutils literal notranslate"><span class="pre">theta</span></code></a>).</p>
+</dd></dl>
+
+</section>
+<section id="properties-of-complex-numbers">
+<h2>Properties of complex numbers<a class="headerlink" href="#properties-of-complex-numbers" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_complex_arg">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arg</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arg" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the argument of the complex number <a class="reference internal" href="#c.gsl_complex_arg" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/0ddf87649246f126d14c97096e73451cf00a02b7.png" alt="\arg(z)"/>, where <img class="math" src="_images/math/34d11a35c7ebc88bdb0a9faea068dd835e2521c3.png" alt="-\pi &lt; \arg(z) &lt;= \pi"/>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_complex_abs">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_abs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_abs" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the magnitude of the complex number <a class="reference internal" href="#c.gsl_complex_abs" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/5464c8d264836320dba23e5807e75dcac6acd38c.png" alt="|z|"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_abs2">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_abs2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_abs2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the squared magnitude of the complex number
+<a class="reference internal" href="#c.gsl_complex_abs2" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/c694e708eab28020d452b9081be2ff95d6cb7da3.png" alt="|z|^2"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_logabs">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_logabs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_logabs" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the natural logarithm of the magnitude of the
+complex number <a class="reference internal" href="#c.gsl_complex_logabs" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/b2e316afc7a0a491be467f7a9eda95143221f52d.png" alt="\log|z|"/>.  It allows an accurate
+evaluation of <img class="math" src="_images/math/b2e316afc7a0a491be467f7a9eda95143221f52d.png" alt="\log|z|"/> when <img class="math" src="_images/math/5464c8d264836320dba23e5807e75dcac6acd38c.png" alt="|z|"/> is close to one. The direct
+evaluation of <code class="code docutils literal notranslate"><span class="pre">log(gsl_complex_abs(z))</span></code> would lead to a loss of
+precision in this case.</p>
+</dd></dl>
+
+</section>
+<section id="complex-arithmetic-operators">
+<span id="index-4"></span><h2>Complex arithmetic operators<a class="headerlink" href="#complex-arithmetic-operators" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_add">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_add</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_add" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the sum of the complex numbers <a class="reference internal" href="#c.gsl_complex_add" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and
+<a class="reference internal" href="#c.gsl_complex_add" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a>, <img class="math" src="_images/math/6ae1d47396e01415edae5467d0506c0c6c4565bc.png" alt="z=a+b"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sub">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sub</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sub" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the difference of the complex numbers <a class="reference internal" href="#c.gsl_complex_sub" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and
+<a class="reference internal" href="#c.gsl_complex_sub" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a>, <img class="math" src="_images/math/8c3a523fad402d23d6ff3a23a97482caba4a1a3d.png" alt="z=a-b"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_mul">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_mul</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_mul" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the product of the complex numbers <a class="reference internal" href="#c.gsl_complex_mul" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and
+<a class="reference internal" href="#c.gsl_complex_mul" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a>, <img class="math" src="_images/math/43575ef254e8a69f7ece05d0fc001242210aa7eb.png" alt="z=ab"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_div">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_div</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_div" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the quotient of the complex numbers <a class="reference internal" href="#c.gsl_complex_div" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and
+<a class="reference internal" href="#c.gsl_complex_div" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a>, <img class="math" src="_images/math/b6658d6802260869c5ced8751c9f8d9650acf76c.png" alt="z=a/b"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_add_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_add_real</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_add_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the sum of the complex number <a class="reference internal" href="#c.gsl_complex_add_real" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+real number <a class="reference internal" href="#c.gsl_complex_add_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <img class="math" src="_images/math/6f6f552ebf42a8c1b02c4822e1838cfedeff0db2.png" alt="z=a+x"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sub_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sub_real</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sub_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the difference of the complex number <a class="reference internal" href="#c.gsl_complex_sub_real" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+real number <a class="reference internal" href="#c.gsl_complex_sub_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <img class="math" src="_images/math/746453542a16dbedefd1467cb8cc2b8f87a286f2.png" alt="z=a-x"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_mul_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_mul_real</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_mul_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the product of the complex number <a class="reference internal" href="#c.gsl_complex_mul_real" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+real number <a class="reference internal" href="#c.gsl_complex_mul_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <img class="math" src="_images/math/b3278351b0d85b07927aa5dc62acd6d4f81fd679.png" alt="z=ax"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_div_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_div_real</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_div_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the quotient of the complex number <a class="reference internal" href="#c.gsl_complex_div_real" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+real number <a class="reference internal" href="#c.gsl_complex_div_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <img class="math" src="_images/math/de5c4f5c2e424fe6357e143ed69698972236edc6.png" alt="z=a/x"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_add_imag">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_add_imag</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_add_imag" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the sum of the complex number <a class="reference internal" href="#c.gsl_complex_add_imag" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+imaginary number <img class="math" src="_images/math/1df353b417848a8e64771983ad748104fe933b23.png" alt="iy"/>, <img class="math" src="_images/math/f2a712c456c001c40da1903ce01a93fb99c7b619.png" alt="z=a+iy"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sub_imag">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sub_imag</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sub_imag" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the difference of the complex number <a class="reference internal" href="#c.gsl_complex_sub_imag" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+imaginary number <img class="math" src="_images/math/1df353b417848a8e64771983ad748104fe933b23.png" alt="iy"/>, <img class="math" src="_images/math/0db42d21e6c2a55ef4f98c8a66b18c4e232b8590.png" alt="z=a-iy"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_mul_imag">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_mul_imag</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_mul_imag" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the product of the complex number <a class="reference internal" href="#c.gsl_complex_mul_imag" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+imaginary number <img class="math" src="_images/math/1df353b417848a8e64771983ad748104fe933b23.png" alt="iy"/>, <img class="math" src="_images/math/04ad96bc108c15b426452b3b6a3acb5b24a24e9f.png" alt="z=a*(iy)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_div_imag">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_div_imag</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_div_imag" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the quotient of the complex number <a class="reference internal" href="#c.gsl_complex_div_imag" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and the
+imaginary number <img class="math" src="_images/math/1df353b417848a8e64771983ad748104fe933b23.png" alt="iy"/>, <img class="math" src="_images/math/62dfa107c825df287cccf4fbb374598db4f1dcbc.png" alt="z=a/(iy)"/>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_complex_conjugate">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_conjugate</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_conjugate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex conjugate of the complex number
+<a class="reference internal" href="#c.gsl_complex_conjugate" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/4e7b5b4cce54b9cb4d2d6a562fa96bf7451ba3b8.png" alt="z^* = x - i y"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_inverse">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the inverse, or reciprocal, of the complex number
+<a class="reference internal" href="#c.gsl_complex_inverse" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/60bb70117e9cc114f1612369017e80a0782a7aa7.png" alt="1/z = (x - i y)/(x^2 + y^2)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_negative">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_negative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_negative" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the negative of the complex number
+<a class="reference internal" href="#c.gsl_complex_negative" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/c4b526929f9eac3b050b1cfbb03f3e66be14b957.png" alt="-z = (-x) + i(-y)"/>.</p>
+</dd></dl>
+
+</section>
+<section id="elementary-complex-functions">
+<h2>Elementary Complex Functions<a class="headerlink" href="#elementary-complex-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-6">
+<dt class="sig sig-object c" id="c.gsl_complex_sqrt">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sqrt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sqrt" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the square root of the complex number <a class="reference internal" href="#c.gsl_complex_sqrt" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/a45260a5c99b2e409e5328bf02547161f23e9bf0.png" alt="\sqrt z"/>. The branch cut is the negative real axis. The result
+always lies in the right half of the complex plane.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sqrt_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sqrt_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sqrt_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex square root of the real number
+<a class="reference internal" href="#c.gsl_complex_sqrt_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, where <a class="reference internal" href="#c.gsl_complex_sqrt_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> may be negative.</p>
+</dd></dl>
+
+<dl class="c function" id="index-7">
+<dt class="sig sig-object c" id="c.gsl_complex_pow">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_pow</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_pow" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The function returns the complex number <a class="reference internal" href="#c.gsl_complex_pow" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a> raised to the complex
+power <a class="reference internal" href="#c.gsl_complex_pow" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a>, <img class="math" src="_images/math/4a12654971d7f8dc46f3a4624dc007521992863b.png" alt="z^a"/>. This is computed as <img class="math" src="_images/math/0853f0439e90a86946afc2acdfa2e37b899c5219.png" alt="\exp(\log(z)*a)"/>
+using complex logarithms and complex exponentials.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_pow_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_pow_real</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_pow_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex number <a class="reference internal" href="#c.gsl_complex_pow_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a> raised to the real
+power <a class="reference internal" href="#c.gsl_complex_pow_real" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <img class="math" src="_images/math/80e22e13b3449fd5b9469023e80be581187e444c.png" alt="z^x"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_exp">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_exp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_exp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex exponential of the complex number
+<a class="reference internal" href="#c.gsl_complex_exp" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/bf51372320f566b4006cee28ddbf5e0b2990a0a9.png" alt="\exp(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-8">
+<dt class="sig sig-object c" id="c.gsl_complex_log">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_log</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_log" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex natural logarithm (base <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>) of
+the complex number <a class="reference internal" href="#c.gsl_complex_log" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/35dfbe344468d94ac7662f74e06bbddce927bd2a.png" alt="\log(z)"/>.  The branch cut is the
+negative real axis.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_log10">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_log10</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_log10" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex base-10 logarithm of
+the complex number <a class="reference internal" href="#c.gsl_complex_log10" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/b58ca5631c0a195f0a0202c4520f14b9f3b7b6d8.png" alt="\log_{10} (z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_log_b">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_log_b</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span>, <span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_log_b" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex base-<a class="reference internal" href="#c.gsl_complex_log_b" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> logarithm of the complex
+number <a class="reference internal" href="#c.gsl_complex_log_b" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/d2fec5c12591a36266d4ce3262982c23a998d6cc.png" alt="\log_b(z)"/>. This quantity is computed as the ratio
+<img class="math" src="_images/math/dfcb166deb3d3ef422e7e50bc7e9a1c73da40b75.png" alt="\log(z)/\log(b)"/>.</p>
+</dd></dl>
+
+</section>
+<section id="complex-trigonometric-functions">
+<span id="index-9"></span><h2>Complex Trigonometric Functions<a class="headerlink" href="#complex-trigonometric-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-10">
+<dt class="sig sig-object c" id="c.gsl_complex_sin">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sin</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex sine of the complex number <a class="reference internal" href="#c.gsl_complex_sin" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/e46eaba3e48acf81c4ec2f414edc50c0ce6723a4.png" alt="\sin(z) = (\exp(iz) - \exp(-iz))/(2i)"/>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-11">
+<dt class="sig sig-object c" id="c.gsl_complex_cos">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_cos</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_cos" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex cosine of the complex number <a class="reference internal" href="#c.gsl_complex_cos" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/51661cf6704940f06b747f8a1fbdb940eb46b1b7.png" alt="\cos(z) = (\exp(iz) + \exp(-iz))/2"/>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-12">
+<dt class="sig sig-object c" id="c.gsl_complex_tan">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_tan</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_tan" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex tangent of the complex number <a class="reference internal" href="#c.gsl_complex_tan" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/06f8c0630dd0cf6665ba75810c8f87bb94b0739d.png" alt="\tan(z) = \sin(z)/\cos(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sec">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sec</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sec" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex secant of the complex number <a class="reference internal" href="#c.gsl_complex_sec" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/450f27715727584a8e73c87820f70f7ae95a74bc.png" alt="\sec(z) = 1/\cos(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_csc">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_csc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_csc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex cosecant of the complex number <a class="reference internal" href="#c.gsl_complex_csc" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/830b734d64b55092a74740b852d3eaa0017c544e.png" alt="\csc(z) = 1/\sin(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_cot">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_cot</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_cot" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex cotangent of the complex number <a class="reference internal" href="#c.gsl_complex_cot" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/ff4e6195ee47756cdef6d14f2ddb8ec413daab59.png" alt="\cot(z) = 1/\tan(z)"/>.</p>
+</dd></dl>
+
+</section>
+<section id="inverse-complex-trigonometric-functions">
+<span id="index-13"></span><h2>Inverse Complex Trigonometric Functions<a class="headerlink" href="#inverse-complex-trigonometric-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arcsin">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arcsin</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arcsin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arcsine of the complex number <a class="reference internal" href="#c.gsl_complex_arcsin" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/dd75f18a7f968a4aef763d490ac2c9f0cabb9805.png" alt="\arcsin(z)"/>. The branch cuts are on the real axis, less than <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>
+and greater than <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arcsin_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arcsin_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arcsin_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arcsine of the real number <a class="reference internal" href="#c.gsl_complex_arcsin_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/dd75f18a7f968a4aef763d490ac2c9f0cabb9805.png" alt="\arcsin(z)"/>. For <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/> between <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/> and <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>, the
+function returns a real value in the range <img class="math" src="_images/math/71670a6b0d66e6ed26712f0312a4b0ea5b28f467.png" alt="[-\pi/2,\pi/2]"/>. For
+<img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/> less than <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/> the result has a real part of <img class="math" src="_images/math/391131ad9e31ed88e8834abdf3e27ec5164cfdf7.png" alt="-\pi/2"/>
+and a positive imaginary part.  For <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/> greater than <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/> the
+result has a real part of <img class="math" src="_images/math/dff565f58034959da185d4f5881282682f747dd0.png" alt="\pi/2"/> and a negative imaginary part.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccos">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccos</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccos" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arccosine of the complex number <a class="reference internal" href="#c.gsl_complex_arccos" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/1413fa5e3ebda6ba904e639ee27ceb8a015a5e91.png" alt="\arccos(z)"/>. The branch cuts are on the real axis, less than <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>
+and greater than <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccos_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccos_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccos_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arccosine of the real number <a class="reference internal" href="#c.gsl_complex_arccos_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/1413fa5e3ebda6ba904e639ee27ceb8a015a5e91.png" alt="\arccos(z)"/>. For <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/> between <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/> and <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>, the
+function returns a real value in the range <img class="math" src="_images/math/ddfadf82cb98326a6692198ac64c3da6f7e2ac07.png" alt="[0,\pi]"/>. For <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/>
+less than <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/> the result has a real part of <img class="math" src="_images/math/38aa55829038d8edbd874969ca2af5ca133e5842.png" alt="\pi"/> and a
+negative imaginary part.  For <img class="math" src="_images/math/829b663a4308c3e70ecaf2414dd9d6ef233969e3.png" alt="z"/> greater than <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/> the result
+is purely imaginary and positive.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arctan">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arctan</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arctan" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arctangent of the complex number
+<a class="reference internal" href="#c.gsl_complex_arctan" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/5e0c14081712ae57a0ee7ffb763d3e0062226b81.png" alt="\arctan(z)"/>. The branch cuts are on the imaginary axis,
+below <img class="math" src="_images/math/6a75d94accbdd5ebe4cbbbef4bd1c2b824274b77.png" alt="-i"/> and above <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arcsec">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arcsec</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arcsec" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arcsecant of the complex number <a class="reference internal" href="#c.gsl_complex_arcsec" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/b00edf5e44f410287c02cf5e8a52307a8487f4e0.png" alt="\arcsec(z) = \arccos(1/z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arcsec_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arcsec_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arcsec_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arcsecant of the real number <a class="reference internal" href="#c.gsl_complex_arcsec_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/b00edf5e44f410287c02cf5e8a52307a8487f4e0.png" alt="\arcsec(z) = \arccos(1/z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccsc">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccsc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccsc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arccosecant of the complex number <a class="reference internal" href="#c.gsl_complex_arccsc" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/03277fa96101ab89dcb9da851130732e1807a40f.png" alt="\arccsc(z) = \arcsin(1/z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccsc_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccsc_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccsc_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arccosecant of the real number <a class="reference internal" href="#c.gsl_complex_arccsc_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/03277fa96101ab89dcb9da851130732e1807a40f.png" alt="\arccsc(z) = \arcsin(1/z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccot">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccot</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccot" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex arccotangent of the complex number <a class="reference internal" href="#c.gsl_complex_arccot" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>,
+<img class="math" src="_images/math/5c6a7898a9bfeb8ceb520bad2be00765587e53b4.png" alt="\arccot(z) = \arctan(1/z)"/>.</p>
+</dd></dl>
+
+</section>
+<section id="complex-hyperbolic-functions">
+<span id="index-14"></span><h2>Complex Hyperbolic Functions<a class="headerlink" href="#complex-hyperbolic-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sinh">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sinh</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sinh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic sine of the complex number
+<a class="reference internal" href="#c.gsl_complex_sinh" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/18390534eb59f64d67a25d5df00dfa3cf0bcbe2f.png" alt="\sinh(z) = (\exp(z) - \exp(-z))/2"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_cosh">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_cosh</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_cosh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic cosine of the complex number
+<a class="reference internal" href="#c.gsl_complex_cosh" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/578df6fa0e96c72fd40d6d9d9fd02541120f08a7.png" alt="\cosh(z) = (\exp(z) + \exp(-z))/2"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_tanh">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_tanh</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_tanh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic tangent of the complex number
+<a class="reference internal" href="#c.gsl_complex_tanh" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/d113e517d7bb809c0738f9a411fae6c577ab0fbf.png" alt="\tanh(z) = \sinh(z)/\cosh(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_sech">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_sech</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_sech" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic secant of the complex
+number <a class="reference internal" href="#c.gsl_complex_sech" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/49624f4c29e6ffdca1e1c010ab2264049aac1bdd.png" alt="\sech(z) = 1/\cosh(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_csch">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_csch</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_csch" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic cosecant of the complex
+number <a class="reference internal" href="#c.gsl_complex_csch" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/301b14cbecde4a429517ee923da1522412a1bba7.png" alt="\csch(z) = 1/\sinh(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_coth">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_coth</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_coth" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic cotangent of the complex
+number <a class="reference internal" href="#c.gsl_complex_coth" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/3a8f351179cdfec356e2cc39ed579927e660c852.png" alt="\coth(z) = 1/\tanh(z)"/>.</p>
+</dd></dl>
+
+</section>
+<section id="inverse-complex-hyperbolic-functions">
+<span id="index-15"></span><h2>Inverse Complex Hyperbolic Functions<a class="headerlink" href="#inverse-complex-hyperbolic-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arcsinh">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arcsinh</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arcsinh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arcsine of the
+complex number <a class="reference internal" href="#c.gsl_complex_arcsinh" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/6df6666299043c103d90ab870fd7a5b9cf8111c3.png" alt="\arcsinh(z)"/>.  The branch cuts are on the
+imaginary axis, below <img class="math" src="_images/math/6a75d94accbdd5ebe4cbbbef4bd1c2b824274b77.png" alt="-i"/> and above <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccosh">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccosh</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccosh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arccosine of the complex
+number <a class="reference internal" href="#c.gsl_complex_arccosh" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/c28957f5db14a19d4ddcc879607a3b286b77aec6.png" alt="\arccosh(z)"/>.  The branch cut is on the real
+axis, less than <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>.  Note that in this case we use the negative
+square root in formula 4.6.21 of Abramowitz &amp; Stegun giving
+<img class="math" src="_images/math/efaad17d94f373520bb857ce834a97869d953351.png" alt="\arccosh(z)=\log(z-\sqrt{z^2-1})"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccosh_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccosh_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccosh_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arccosine of
+the real number <a class="reference internal" href="#c.gsl_complex_arccosh_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/c28957f5db14a19d4ddcc879607a3b286b77aec6.png" alt="\arccosh(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arctanh">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arctanh</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arctanh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arctangent of the complex
+number <a class="reference internal" href="#c.gsl_complex_arctanh" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/97ac1cf0e25cf412a0c737bf1aaa3455a257ebb1.png" alt="\arctanh(z)"/>.  The branch cuts are on the real
+axis, less than <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/> and greater than <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arctanh_real">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arctanh_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arctanh_real" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arctangent of the real
+number <a class="reference internal" href="#c.gsl_complex_arctanh_real" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/97ac1cf0e25cf412a0c737bf1aaa3455a257ebb1.png" alt="\arctanh(z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arcsech">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arcsech</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arcsech" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arcsecant of the complex
+number <a class="reference internal" href="#c.gsl_complex_arcsech" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/208292a43db24b986675af1d20ceb5ccf60ceb89.png" alt="\arcsech(z) = \arccosh(1/z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccsch">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccsch</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccsch" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arccosecant of the complex
+number <a class="reference internal" href="#c.gsl_complex_arccsch" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/93a3744b5838b8a3f3030243e1b096bf5744e795.png" alt="\arccsch(z) = \arcsinh(1/z)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_complex_arccoth">
+<span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_complex_arccoth</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_complex</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_complex_arccoth" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the complex hyperbolic arccotangent of the complex
+number <a class="reference internal" href="#c.gsl_complex_arccoth" title="z"><code class="xref c c-data docutils literal notranslate"><span class="pre">z</span></code></a>, <img class="math" src="_images/math/757ac6f83817e23c0a33435e59707f9effaa2f5c.png" alt="\arccoth(z) = \arctanh(1/z)"/>.</p>
+</dd></dl>
+
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The implementations of the elementary and trigonometric functions are
+based on the following papers,</p>
+<ul class="simple">
+<li><p>T. E. Hull, Thomas F. Fairgrieve, Ping Tak Peter Tang,
+“Implementing Complex Elementary Functions Using Exception
+Handling”, ACM Transactions on Mathematical Software, Volume 20
+(1994), pp 215–244, Corrigenda, p553</p></li>
+<li><p>T. E. Hull, Thomas F. Fairgrieve, Ping Tak Peter Tang,
+“Implementing the complex arcsin and arccosine functions using exception
+handling”, ACM Transactions on Mathematical Software, Volume 23
+(1997) pp 299–335</p></li>
+</ul>
+<p>The general formulas and details of branch cuts can be found in the
+following books,</p>
+<ul class="simple">
+<li><p>Abramowitz and Stegun, Handbook of Mathematical Functions,
+“Circular Functions in Terms of Real and Imaginary Parts”, Formulas
+4.3.55–58,
+“Inverse Circular Functions in Terms of Real and Imaginary Parts”,
+Formulas 4.4.37–39,
+“Hyperbolic Functions in Terms of Real and Imaginary Parts”,
+Formulas 4.5.49–52,
+“Inverse Hyperbolic Functions—relation to Inverse Circular Functions”,
+Formulas 4.6.14–19.</p></li>
+<li><p>Dave Gillespie, Calc Manual, Free Software Foundation, ISBN
+1-882114-18-3</p></li>
+</ul>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Note that the first edition uses different definitions.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="math.html" class="btn btn-neutral float-left" title="Mathematical Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="poly.html" class="btn btn-neutral float-right" title="Polynomials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

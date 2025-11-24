@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEEE floating-point arithmetic &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Debugging Numerical Programs" href="debug.html" />
+    <link rel="prev" title="Physical Constants" href="const.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IEEE floating-point arithmetic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#representation-of-floating-point-numbers">Representation of floating point numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-your-ieee-environment">Setting up your IEEE environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">IEEE floating-point arithmetic</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ieee754.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="const.html" class="btn btn-neutral float-left" title="Physical Constants" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="debug.html" class="btn btn-neutral float-right" title="Debugging Numerical Programs" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ieee-floating-point-arithmetic">
+<span id="chap-ieee"></span><span id="index-0"></span><h1>IEEE floating-point arithmetic<a class="headerlink" href="#ieee-floating-point-arithmetic" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for examining the representation of
+floating point numbers and controlling the floating point environment of
+your program.  The functions described in this chapter are declared in
+the header file <code class="file docutils literal notranslate"><span class="pre">gsl_ieee_utils.h</span></code>.</p>
+<section id="representation-of-floating-point-numbers">
+<span id="index-1"></span><h2>Representation of floating point numbers<a class="headerlink" href="#representation-of-floating-point-numbers" title="Link to this heading">¶</a></h2>
+<p>The IEEE Standard for Binary Floating-Point Arithmetic defines binary
+formats for single and double precision numbers.  Each number is composed
+of three parts: a <em>sign bit</em> (<img class="math" src="_images/math/00a0fb0ee72dd3b299c67c64d624f2cc01335d59.png" alt="s"/>), an <em>exponent</em>
+(<img class="math" src="_images/math/ea7a3b09fb6f7ffe70ef3cf67781ce887438a668.png" alt="E"/>) and a <em>fraction</em> (<img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>).  The numerical value of the
+combination <img class="math" src="_images/math/b244cad3fc869510438cec18b79cb460115dec3b.png" alt="(s,E,f)"/> is given by the following formula,</p>
+<div class="math">
+<p><img src="_images/math/ddce98e3ba39f426e7e6d099be64492ac04d8372.png" alt="(-1)^s (1 \cdot fffff\dots) 2^E"/></p>
+</div><p id="index-2">The sign bit is either zero or one.  The exponent ranges from a minimum value
+<img class="math" src="_images/math/8ecbfa6823aeefb9ea322073027b285891d74e97.png" alt="E_{min}"/>
+to a maximum value
+<img class="math" src="_images/math/e51fbc9c34f6f50160219685ff18cfc78b86afbb.png" alt="E_{max}"/>
+depending on the precision.  The exponent is converted to an
+unsigned number
+<img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>, known as the <em>biased exponent</em>, for storage by adding a
+<em>bias</em> parameter,</p>
+<div class="math">
+<p><img src="_images/math/ccf3fae6a2c297e67aa4d980eb806a5139fd5767.png" alt="e = E + \hbox{\it bias}"/></p>
+</div><p>The sequence <img class="math" src="_images/math/e41ec37f2f83d41cd42fe34fea982a5d781c1780.png" alt="fffff..."/> represents the digits of the binary
+fraction <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>.  The binary digits are stored in <em>normalized
+form</em>, by adjusting the exponent to give a leading digit of <img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>.
+Since the leading digit is always 1 for normalized numbers it is
+assumed implicitly and does not have to be stored.
+Numbers smaller than
+<img class="math" src="_images/math/0bf4ed3dee2e0f40316ea108edc7a832c10d8cde.png" alt="2^{E_{min}}"/>
+are be stored in <em>denormalized form</em> with a leading zero,</p>
+<div class="math">
+<p><img src="_images/math/2caf8519cccc85b6ab6995d6f6a90ca9be726b1d.png" alt="(-1)^s (0 \cdot fffff\dots) 2^{E_{min}}"/></p>
+</div><p id="index-3">This allows gradual underflow down to
+<img class="math" src="_images/math/f24670db344409a259f4d24e9320cdc958674728.png" alt="2^{E_{min} - p}"/>
+for <img class="math" src="_images/math/fb0d29f420855f76f8e9deaf5ff8c5580e97a4f0.png" alt="p"/> bits of precision.
+A zero is encoded with the special exponent of
+<img class="math" src="_images/math/4abd552eadc86ffcb8778b1eeb95e06a6681522d.png" alt="2^{E_{min}-1}"/>
+and infinities with the exponent of
+<img class="math" src="_images/math/4193e73c9436e912e94275a5402cf3cbb671b70b.png" alt="2^{E_{max}+1}"/>.</p>
+<p id="index-4">The format for single precision numbers uses 32 bits divided in the
+following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">seeeeeeeefffffffffffffffffffffff</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">sign</span> <span class="n">bit</span><span class="p">,</span> <span class="mi">1</span> <span class="n">bit</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">exponent</span><span class="p">,</span> <span class="mi">8</span> <span class="n">bits</span>  <span class="p">(</span><span class="n">E_min</span><span class="o">=-</span><span class="mi">126</span><span class="p">,</span> <span class="n">E_max</span><span class="o">=</span><span class="mi">127</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="mi">127</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">fraction</span><span class="p">,</span> <span class="mi">23</span> <span class="n">bits</span>
+</pre></div>
+</div>
+<p id="index-5">The format for double precision numbers uses 64 bits divided in the
+following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">seeeeeeeeeeeffffffffffffffffffffffffffffffffffffffffffffffffffff</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">sign</span> <span class="n">bit</span><span class="p">,</span> <span class="mi">1</span> <span class="n">bit</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">exponent</span><span class="p">,</span> <span class="mi">11</span> <span class="n">bits</span>  <span class="p">(</span><span class="n">E_min</span><span class="o">=-</span><span class="mi">1022</span><span class="p">,</span> <span class="n">E_max</span><span class="o">=</span><span class="mi">1023</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="mi">1023</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">fraction</span><span class="p">,</span> <span class="mi">52</span> <span class="n">bits</span>
+</pre></div>
+</div>
+<p>It is often useful to be able to investigate the behavior of a
+calculation at the bit-level and the library provides functions for
+printing the IEEE representations in a human-readable form.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ieee_fprintf_float">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ieee_fprintf_float</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ieee_fprintf_float" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_ieee_fprintf_double">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ieee_fprintf_double</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ieee_fprintf_double" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions output a formatted version of the IEEE floating-point
+number pointed to by <a class="reference internal" href="#c.gsl_ieee_fprintf_double" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> to the stream <a class="reference internal" href="#c.gsl_ieee_fprintf_double" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a>. A pointer is
+used to pass the number indirectly, to avoid any undesired promotion
+from <code class="code docutils literal notranslate"><span class="pre">float</span></code> to <code class="code docutils literal notranslate"><span class="pre">double</span></code>.  The output takes one of the
+following forms,</p>
+<p><code class="code docutils literal notranslate"><span class="pre">NaN</span></code></p>
+<blockquote>
+<div><p>the Not-a-Number symbol</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">Inf,</span> <span class="pre">-Inf</span></code></p>
+<blockquote>
+<div><p>positive or negative infinity</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">1.fffff...*2^E,</span> <span class="pre">-1.fffff...*2^E</span></code></p>
+<blockquote>
+<div><p>a normalized floating point number</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">0.fffff...*2^E,</span> <span class="pre">-0.fffff...*2^E</span></code></p>
+<blockquote>
+<div><p>a denormalized floating point number</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">0,</span> <span class="pre">-0</span></code></p>
+<blockquote>
+<div><p>positive or negative zero</p>
+</div></blockquote>
+<p>The output can be used directly in GNU Emacs Calc mode by preceding it
+with <code class="code docutils literal notranslate"><span class="pre">2#</span></code> to indicate binary.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ieee_printf_float">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ieee_printf_float</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ieee_printf_float" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_ieee_printf_double">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ieee_printf_double</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ieee_printf_double" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions output a formatted version of the IEEE floating-point
+number pointed to by <a class="reference internal" href="#c.gsl_ieee_printf_double" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> to the stream <code class="code docutils literal notranslate"><span class="pre">stdout</span></code>.</p>
+</dd></dl>
+
+<p>The following program demonstrates the use of the functions by printing
+the single and double precision representations of the fraction
+<img class="math" src="_images/math/ec4cafc3271d3d226a1c4a00151845c643b85eb7.png" alt="1/3"/>.  For comparison the representation of the value promoted from
+single to double precision is also printed.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_ieee_utils.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nb">float</span> <span class="n">f</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">;</span>
+
+  <span class="n">double</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">f</span><span class="p">;</span> <span class="o">/*</span> <span class="n">promote</span> <span class="kn">from</span><span class="w"> </span><span class="nn">float</span> <span class="n">to</span> <span class="n">double</span> <span class="o">*/</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot; f=&quot;</span><span class="p">);</span> <span class="n">gsl_ieee_printf_float</span><span class="p">(</span><span class="o">&amp;</span><span class="n">f</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;fd=&quot;</span><span class="p">);</span> <span class="n">gsl_ieee_printf_double</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fd</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot; d=&quot;</span><span class="p">);</span> <span class="n">gsl_ieee_printf_double</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The binary representation of <img class="math" src="_images/math/ec4cafc3271d3d226a1c4a00151845c643b85eb7.png" alt="1/3"/> is <img class="math" src="_images/math/665e89510d606dc266bb2883affa1151b2ec998b.png" alt="0.01010101..."/>.  The
+output below shows that the IEEE format normalizes this fraction to give
+a leading digit of 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">f</span><span class="o">=</span> <span class="mf">1.01010101010101010101011</span><span class="o">*</span><span class="mi">2</span><span class="o">^-</span><span class="mi">2</span>
+<span class="n">fd</span><span class="o">=</span> <span class="mf">1.0101010101010101010101100000000000000000000000000000</span><span class="o">*</span><span class="mi">2</span><span class="o">^-</span><span class="mi">2</span>
+ <span class="n">d</span><span class="o">=</span> <span class="mf">1.0101010101010101010101010101010101010101010101010101</span><span class="o">*</span><span class="mi">2</span><span class="o">^-</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>The output also shows that a single-precision number is promoted to
+double-precision by adding zeros in the binary representation.</p>
+</section>
+<section id="setting-up-your-ieee-environment">
+<span id="index-6"></span><h2>Setting up your IEEE environment<a class="headerlink" href="#setting-up-your-ieee-environment" title="Link to this heading">¶</a></h2>
+<p>The IEEE standard defines several <em>modes</em> for controlling the
+behavior of floating point operations.  These modes specify the important
+properties of computer arithmetic: the direction used for rounding (e.g.
+whether numbers should be rounded up, down or to the nearest number),
+the rounding precision and how the program should handle arithmetic
+exceptions, such as division by zero.</p>
+<p>Many of these features can now be controlled via standard functions such
+as <code class="xref c c-func docutils literal notranslate"><span class="pre">fpsetround()</span></code>, which should be used whenever they are available.
+Unfortunately in the past there has been no universal API for
+controlling their behavior—each system has had its own low-level way
+of accessing them.  To help you write portable programs GSL allows you
+to specify modes in a platform-independent way using the environment
+variable <a class="reference internal" href="#c.GSL_IEEE_MODE" title="GSL_IEEE_MODE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IEEE_MODE</span></code></a>.  The library then takes care of all the
+necessary machine-specific initializations for you when you call the
+function <a class="reference internal" href="#c.gsl_ieee_env_setup" title="gsl_ieee_env_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_ieee_env_setup()</span></code></a>.</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_IEEE_MODE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_IEEE_MODE</span></span></span><a class="headerlink" href="#c.GSL_IEEE_MODE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Environment variable which specifies IEEE mode.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ieee_env_setup">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ieee_env_setup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ieee_env_setup" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads the environment variable <a class="reference internal" href="#c.GSL_IEEE_MODE" title="GSL_IEEE_MODE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IEEE_MODE</span></code></a> and
+attempts to set up the corresponding specified IEEE modes.  The
+environment variable should be a list of keywords, separated by
+commas, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GSL_IEEE_MODE</span> <span class="o">=</span> <span class="s2">&quot;keyword, keyword, ...&quot;</span>
+</pre></div>
+</div>
+<p>where <code class="xref c c-data docutils literal notranslate"><span class="pre">keyword</span></code> is one of the following mode-names:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">single</span><span class="o">-</span><span class="n">precision</span>
+<span class="n">double</span><span class="o">-</span><span class="n">precision</span>
+<span class="n">extended</span><span class="o">-</span><span class="n">precision</span>
+<span class="nb">round</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">nearest</span>
+<span class="nb">round</span><span class="o">-</span><span class="n">down</span>
+<span class="nb">round</span><span class="o">-</span><span class="n">up</span>
+<span class="nb">round</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">zero</span>
+<span class="n">mask</span><span class="o">-</span><span class="nb">all</span>
+<span class="n">mask</span><span class="o">-</span><span class="n">invalid</span>
+<span class="n">mask</span><span class="o">-</span><span class="n">denormalized</span>
+<span class="n">mask</span><span class="o">-</span><span class="n">division</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">zero</span>
+<span class="n">mask</span><span class="o">-</span><span class="n">overflow</span>
+<span class="n">mask</span><span class="o">-</span><span class="n">underflow</span>
+<span class="n">trap</span><span class="o">-</span><span class="n">inexact</span>
+<span class="n">trap</span><span class="o">-</span><span class="n">common</span>
+</pre></div>
+</div>
+<p>If <a class="reference internal" href="#c.GSL_IEEE_MODE" title="GSL_IEEE_MODE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IEEE_MODE</span></code></a> is empty or undefined then the function returns
+immediately and no attempt is made to change the system’s IEEE
+mode.  When the modes from <a class="reference internal" href="#c.GSL_IEEE_MODE" title="GSL_IEEE_MODE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IEEE_MODE</span></code></a> are turned on the
+function prints a short message showing the new settings to remind you
+that the results of the program will be affected.</p>
+<p>If the requested modes are not supported by the platform being used then
+the function calls the error handler and returns an error code of
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EUNSUP</span></code>.</p>
+<p>When options are specified using this method, the resulting mode is
+based on a default setting of the highest available precision (double
+precision or extended precision, depending on the platform) in
+round-to-nearest mode, with all exceptions enabled apart from the
+INEXACT exception.  The INEXACT exception is generated
+whenever rounding occurs, so it must generally be disabled in typical
+scientific calculations.  All other floating-point exceptions are
+enabled by default, including underflows and the use of denormalized
+numbers, for safety.  They can be disabled with the individual
+<code class="code docutils literal notranslate"><span class="pre">mask-</span></code> settings or together using <code class="code docutils literal notranslate"><span class="pre">mask-all</span></code>.</p>
+<p>The following adjusted combination of modes is convenient for many
+purposes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GSL_IEEE_MODE</span><span class="o">=</span><span class="s2">&quot;double-precision,&quot;</span>\
+                <span class="s2">&quot;mask-underflow,&quot;</span>\
+                  <span class="s2">&quot;mask-denormalized&quot;</span>
+</pre></div>
+</div>
+<p>This choice ignores any errors relating to small numbers (either
+denormalized, or underflowing to zero) but traps overflows, division by
+zero and invalid operations.</p>
+<p>Note that on the x86 series of processors this function sets both the
+original x87 mode and the newer MXCSR mode, which controls SSE
+floating-point operations.  The SSE floating-point units do not have a
+precision-control bit, and always work in double-precision.  The
+single-precision and extended-precision keywords have no effect in
+this case.</p>
+</dd></dl>
+
+<p>To demonstrate the effects of different rounding modes consider the
+following program which computes <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>, the base of natural
+logarithms, by summing a rapidly-decreasing series,</p>
+<div class="math">
+<p><img src="_images/math/758b1bd3212ab42b1329b7797ec9354703af814d.png" alt="e &amp;= {1 \over 0!} + {1 \over 1!} + {1 \over 2!} + {1 \over 3!} + {1 \over 4!} + \dots \\
+  &amp;= 2.71828182846..."/></p>
+</div><div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_ieee_utils.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">oldsum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">gsl_ieee_env_setup</span> <span class="p">();</span> <span class="o">/*</span> <span class="n">read</span> <span class="n">GSL_IEEE_MODE</span> <span class="o">*/</span>
+
+  <span class="n">do</span>
+    <span class="p">{</span>
+      <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+
+      <span class="n">oldsum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">;</span>
+      <span class="nb">sum</span> <span class="o">+=</span> <span class="n">x</span><span class="p">;</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">i</span><span class="p">;</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;i=</span><span class="si">%2d</span><span class="s2"> sum=</span><span class="si">%.18f</span><span class="s2"> error=</span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+              <span class="n">i</span><span class="p">,</span> <span class="nb">sum</span><span class="p">,</span> <span class="nb">sum</span> <span class="o">-</span> <span class="n">M_E</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">)</span>
+         <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span><span class="nb">sum</span> <span class="o">!=</span> <span class="n">oldsum</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here are the results of running the program in <code class="code docutils literal notranslate"><span class="pre">round-to-nearest</span></code>
+mode.  This is the IEEE default so it isn’t really necessary to specify
+it here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ GSL_IEEE_MODE=&quot;round-to-nearest&quot; ./a.out
+i= 1 sum=1.000000000000000000 error=-1.71828
+i= 2 sum=2.000000000000000000 error=-0.718282
+....
+i=18 sum=2.718281828459045535 error=4.44089e-16
+i=19 sum=2.718281828459045535 error=4.44089e-16
+</pre></div>
+</div>
+<p>After nineteen terms the sum converges to within <img class="math" src="_images/math/a019f03fe640843a36f601107d2cbd66ab3201bc.png" alt="4 \times 10^{-16}"/>
+of the correct value.
+If we now change the rounding mode to
+<code class="code docutils literal notranslate"><span class="pre">round-down</span></code> the final result is less accurate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ GSL_IEEE_MODE=&quot;round-down&quot; ./a.out
+i= 1 sum=1.000000000000000000 error=-1.71828
+....
+i=19 sum=2.718281828459041094 error=-3.9968e-15
+</pre></div>
+</div>
+<p>The result is about
+<img class="math" src="_images/math/910cb464b9813ec6d90b93ad8aaa32f1cb039832.png" alt="4 \times 10^{-15}"/>
+below the correct value, an order of magnitude worse than the result
+obtained in the <code class="code docutils literal notranslate"><span class="pre">round-to-nearest</span></code> mode.</p>
+<p>If we change to rounding mode to <code class="code docutils literal notranslate"><span class="pre">round-up</span></code> then the final result
+is higher than the correct value (when we add each term to the sum the
+final result is always rounded up, which increases the sum by at least
+one tick until the added term underflows to zero).  To avoid this
+problem we would need to use a safer converge criterion, such as
+<code class="code docutils literal notranslate"><span class="pre">while</span> <span class="pre">(fabs(sum</span> <span class="pre">-</span> <span class="pre">oldsum)</span> <span class="pre">&gt;</span> <span class="pre">epsilon)</span></code>, with a suitably chosen
+value of epsilon.</p>
+<p>Finally we can see the effect of computing the sum using
+single-precision rounding, in the default <code class="code docutils literal notranslate"><span class="pre">round-to-nearest</span></code>
+mode.  In this case the program thinks it is still using double precision
+numbers but the CPU rounds the result of each floating point operation
+to single-precision accuracy.  This simulates the effect of writing the
+program using single-precision <code class="code docutils literal notranslate"><span class="pre">float</span></code> variables instead of
+<code class="code docutils literal notranslate"><span class="pre">double</span></code> variables.  The iteration stops after about half the number
+of iterations and the final result is much less accurate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ GSL_IEEE_MODE=&quot;single-precision&quot; ./a.out
+....
+i=12 sum=2.718281984329223633 error=1.5587e-07
+</pre></div>
+</div>
+<p>with an error of
+<img class="math" src="_images/math/5796b8771b21288c0c511413ebf443e10bc297b6.png" alt="O(10^{-7})"/>,
+which corresponds to single
+precision accuracy (about 1 part in <img class="math" src="_images/math/4cd2646c081c89d11700c00d8cc5b9df6b00075a.png" alt="10^7"/>).  Continuing the
+iterations further does not decrease the error because all the
+subsequent results are rounded to the same value.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The reference for the IEEE standard is,</p>
+<ul class="simple">
+<li><p>ANSI/IEEE Std 754-1985, IEEE Standard for Binary Floating-Point Arithmetic.</p></li>
+</ul>
+<p>A more pedagogical introduction to the standard can be found in the
+following paper,</p>
+<ul class="simple">
+<li><p>David Goldberg: What Every Computer Scientist Should Know About
+Floating-Point Arithmetic. <em>ACM Computing Surveys</em>, Vol.: 23, No.: 1
+(March 1991), pages 5–48.</p></li>
+<li><p>Corrigendum: <em>ACM Computing Surveys</em>, Vol.: 23, No.: 3 (September
+1991), page 413. and see also the sections by B. A. Wichmann and Charles
+B. Dunham in Surveyor’s Forum: “What Every Computer Scientist Should
+Know About Floating-Point Arithmetic”. <em>ACM Computing Surveys</em>,
+Vol.: 24, No.: 3 (September 1992), page 319.</p></li>
+</ul>
+<p>A detailed textbook on IEEE arithmetic and its practical use is
+available from SIAM Press,</p>
+<ul class="simple">
+<li><p>Michael L. Overton, <em>Numerical Computing with IEEE Floating Point Arithmetic</em>,
+SIAM Press, ISBN 0898715717.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="const.html" class="btn btn-neutral float-left" title="Physical Constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="debug.html" class="btn btn-neutral float-right" title="Debugging Numerical Programs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1012 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multidimensional Root-Finding &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Multidimensional Minimization" href="multimin.html" />
+    <link rel="prev" title="One Dimensional Minimization" href="min.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multidimensional Root-Finding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initializing-the-solver">Initializing the Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#providing-the-function-to-solve">Providing the function to solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search-stopping-parameters">Search Stopping Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithms-using-derivatives">Algorithms using Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithms-without-derivatives">Algorithms without Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Multidimensional Root-Finding</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/multiroots.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="min.html" class="btn btn-neutral float-left" title="One Dimensional Minimization" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multimin.html" class="btn btn-neutral float-right" title="Multidimensional Minimization" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multidimensional-root-finding">
+<span id="index-0"></span><h1>Multidimensional Root-Finding<a class="headerlink" href="#multidimensional-root-finding" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for multidimensional root-finding
+(solving nonlinear systems with <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> equations in <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>
+unknowns).  The library provides low level components for a variety of
+iterative solvers and convergence tests.  These can be combined by the
+user to achieve the desired solution, with full access to the
+intermediate steps of the iteration.  Each class of methods uses the
+same framework, so that you can switch between solvers at runtime
+without needing to recompile your program.  Each instance of a solver
+keeps track of its own state, allowing the solvers to be used in
+multi-threaded programs.  The solvers are based on the original Fortran
+library MINPACK.</p>
+<p>The header file <code class="file docutils literal notranslate"><span class="pre">gsl_multiroots.h</span></code> contains prototypes for the
+multidimensional root finding functions and related declarations.</p>
+<section id="overview">
+<span id="index-1"></span><h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The problem of multidimensional root finding requires the simultaneous
+solution of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> equations, <img class="math" src="_images/math/b7524c4d67379a7045021fd157d0fc7c890ce138.png" alt="f_i"/>, in <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> variables,
+<img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>,</p>
+<div class="math">
+<p><img src="_images/math/96586f9083c928c03b12e25ebe4b019c0fce4d1d.png" alt="f_i (x_1, \dots, x_n) = 0 \qquad\hbox{for}~i = 1 \dots n."/></p>
+</div><p>In general there are no bracketing methods available for <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>
+dimensional systems, and no way of knowing whether any solutions
+exist.  All algorithms proceed from an initial guess using a variant of
+the Newton iteration,</p>
+<div class="math">
+<p><img src="_images/math/b271a2d83a524f920d1c0bed88e14ad3c46cd4cd.png" alt="x \to x' = x - J^{-1} f(x)"/></p>
+</div><p>where <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>, <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> are vector quantities and <img class="math" src="_images/math/aca80d18a77d5da4df841b8c57cc874974238dd5.png" alt="J"/> is the
+Jacobian matrix <img class="math" src="_images/math/57de59fb516762b919af57aab1c93208cb6f5ea7.png" alt="J_{ij} = \partial f_i / \partial x_j"/>.
+Additional strategies can be used to enlarge the region of
+convergence.  These include requiring a decrease in the norm <img class="math" src="_images/math/60d26adb295d0859ab47994d7762136fcbd9cf3b.png" alt="|f|"/> on
+each step proposed by Newton’s method, or taking steepest-descent steps in
+the direction of the negative gradient of <img class="math" src="_images/math/60d26adb295d0859ab47994d7762136fcbd9cf3b.png" alt="|f|"/>.</p>
+<p>Several root-finding algorithms are available within a single framework.
+The user provides a high-level driver for the algorithms, and the
+library provides the individual functions necessary for each of the
+steps.  There are three main phases of the iteration.  The steps are,</p>
+<ul class="simple">
+<li><p>initialize solver state, <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code>, for algorithm <code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></p></li>
+<li><p>update <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code> using the iteration <code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></p></li>
+<li><p>test <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code> for convergence, and repeat iteration if necessary</p></li>
+</ul>
+<p>The evaluation of the Jacobian matrix can be problematic, either because
+programming the derivatives is intractable or because computation of the
+<img class="math" src="_images/math/69b0a61d114e7de4cdd2d98d2780e9571d027d96.png" alt="n^2"/> terms of the matrix becomes too expensive.  For these reasons
+the algorithms provided by the library are divided into two classes according
+to whether the derivatives are available or not.</p>
+<p id="index-2">The state for solvers with an analytic Jacobian matrix is held in a
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multiroot_fdfsolver</span></code></a> struct.  The updating procedure requires
+both the function and its derivatives to be supplied by the user.</p>
+<p>The state for solvers which do not use an analytic Jacobian matrix is
+held in a <a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multiroot_fsolver</span></code></a> struct.  The updating procedure
+uses only function evaluations (not derivatives).  The algorithms
+estimate the matrix <img class="math" src="_images/math/aca80d18a77d5da4df841b8c57cc874974238dd5.png" alt="J"/> or <img class="math" src="_images/math/af2c8d0df530246d018e538e759e2389100dd192.png" alt="J^{-1}"/>
+by approximate methods.</p>
+</section>
+<section id="initializing-the-solver">
+<h2>Initializing the Solver<a class="headerlink" href="#initializing-the-solver" title="Link to this heading">¶</a></h2>
+<p>The following functions initialize a multidimensional solver, either
+with or without derivatives.  The solver itself depends only on the
+dimension of the problem and the algorithm and can be reused for
+different problems.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fsolver" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for multidimensional root-finding without derivatives.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for multidimensional root-finding with derivatives.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_alloc">
+<a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fsolver_type" title="gsl_multiroot_fsolver_type"><span class="n"><span class="pre">gsl_multiroot_fsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly allocated instance of a
+solver of type <a class="reference internal" href="#c.gsl_multiroot_fsolver_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a> for a system of <a class="reference internal" href="#c.gsl_multiroot_fsolver_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> dimensions.
+For example, the following code creates an instance of a hybrid solver,
+to solve a 3-dimensional system of equations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">gsl_multiroot_fsolver_type</span> <span class="o">*</span> <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_multiroot_fsolver_hybrid</span><span class="p">;</span>
+<span class="n">gsl_multiroot_fsolver</span> <span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_multiroot_fsolver_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If there is insufficient memory to create the solver then the function
+returns a null pointer and the error handler is invoked with an error
+code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_alloc">
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver_type" title="gsl_multiroot_fdfsolver_type"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly allocated instance of a
+derivative solver of type <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a> for a system of <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> dimensions.
+For example, the following code creates an instance of a Newton-Raphson solver,
+for a 2-dimensional system of equations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">gsl_multiroot_fdfsolver_type</span> <span class="o">*</span> <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_multiroot_fdfsolver_newton</span><span class="p">;</span>
+<span class="n">gsl_multiroot_fdfsolver</span> <span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_multiroot_fdfsolver_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If there is insufficient memory to create the solver then the function
+returns a null pointer and the error handler is invoked with an error
+code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_set">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <a class="reference internal" href="#c.gsl_multiroot_function" title="gsl_multiroot_function"><span class="n"><span class="pre">gsl_multiroot_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_set" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_set">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <a class="reference internal" href="#c.gsl_multiroot_function_fdf" title="gsl_multiroot_function_fdf"><span class="n"><span class="pre">gsl_multiroot_function_fdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fdf</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_set" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions set, or reset, an existing solver <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_set" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> to use the
+function <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code> or function and derivative <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_set" title="fdf"><code class="xref c c-data docutils literal notranslate"><span class="pre">fdf</span></code></a>, and the initial
+guess <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_set" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.  Note that the initial position is copied from <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_set" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, this
+argument is not modified by subsequent iterations.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_free" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions free all the memory associated with the solver <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_free" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_name" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return a pointer to the name of the solver.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;s is a &#39;</span><span class="si">%s</span><span class="s2">&#39; solver</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_multiroot_fdfsolver_name</span> <span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>would print something like <code class="code docutils literal notranslate"><span class="pre">s</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">'newton'</span> <span class="pre">solver</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="providing-the-function-to-solve">
+<span id="index-3"></span><h2>Providing the function to solve<a class="headerlink" href="#providing-the-function-to-solve" title="Link to this heading">¶</a></h2>
+<p>You must provide <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> functions of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> variables for the root
+finders to operate on.  In order to allow for general parameters the
+functions are defined by the following data types:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiroot_function">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_function</span></span></span><a class="headerlink" href="#c.gsl_multiroot_function" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type defines a general system of functions with parameters.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*</span> <span class="pre">f)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params,</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">f)</span></code></p>
+<blockquote>
+<div><p>this function should store the vector result
+<img class="math" src="_images/math/6dea37df222c0d9f1bcf0f1a4cf97b1913ac5cc7.png" alt="f(x,params)"/> in <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code> for argument <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>,
+returning an appropriate error code if the function cannot be computed.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">n</span></code></p>
+<blockquote>
+<div><p>the dimension of the system, i.e. the number of components of the
+vectors <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code>.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">params</span></code></p>
+<blockquote>
+<div><p>a pointer to the parameters of the function.</p>
+</div></blockquote>
+</dd></dl>
+
+<p>Here is an example using Powell’s test function,</p>
+<div class="math">
+<p><img src="_images/math/3979895121a4d024ce627f2804bf4d6bbdb52e75.png" alt="f_1(x) &amp;= A x_0 x_1 - 1 \\
+f_2(x) &amp;= \exp(-x_0) + \exp(-x_1) - (1 + 1/A)"/></p>
+</div><p>with <img class="math" src="_images/math/e80007fcc1bb7b6461f68d5980d933ed45acfe1b.png" alt="A = 10^4"/>.  The following code defines a
+<a class="reference internal" href="#c.gsl_multiroot_function" title="gsl_multiroot_function"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multiroot_function</span></code></a> system <code class="code docutils literal notranslate"><span class="pre">F</span></code> which you could pass to a
+solver:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">powell_params</span> <span class="p">{</span> <span class="n">double</span> <span class="n">A</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="nb">int</span>
+<span class="n">powell</span> <span class="p">(</span><span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">struct</span> <span class="n">powell_params</span> <span class="o">*</span> <span class="n">params</span>
+     <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">powell_params</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">;</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">A</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+   <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+   <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span>
+                          <span class="o">-</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">A</span><span class="p">)));</span>
+   <span class="k">return</span> <span class="n">GSL_SUCCESS</span>
+<span class="p">}</span>
+
+<span class="n">gsl_multiroot_function</span> <span class="n">F</span><span class="p">;</span>
+<span class="n">struct</span> <span class="n">powell_params</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">10000.0</span> <span class="p">};</span>
+
+<span class="n">F</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">powell</span><span class="p">;</span>
+<span class="n">F</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">F</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">;</span>
+</pre></div>
+</div>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiroot_function_fdf">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_function_fdf</span></span></span><a class="headerlink" href="#c.gsl_multiroot_function_fdf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type defines a general system of functions with parameters and
+the corresponding Jacobian matrix of derivatives,</p>
+<p><code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*</span> <span class="pre">f)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params,</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">f)</span></code></p>
+<blockquote>
+<div><p>this function should store the vector result
+<img class="math" src="_images/math/6dea37df222c0d9f1bcf0f1a4cf97b1913ac5cc7.png" alt="f(x,params)"/> in <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code> for argument <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>,
+returning an appropriate error code if the function cannot be computed.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*</span> <span class="pre">df)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params,</span> <span class="pre">gsl_matrix</span> <span class="pre">*</span> <span class="pre">J)</span></code></p>
+<blockquote>
+<div><p>this function should store the <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>-by-<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> matrix result</p>
+<div class="math">
+<p><img src="_images/math/a20e11b2a39e7f9c7503afe362ce619f247be463.png" alt="J_{ij} = \partial f_i(x,\hbox{\it params}) / \partial x_j"/></p>
+</div><p>in <code class="xref c c-data docutils literal notranslate"><span class="pre">J</span></code> for argument <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>
+and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>, returning an appropriate error code if the
+function cannot be computed.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*</span> <span class="pre">fdf)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params,</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">f,</span> <span class="pre">gsl_matrix</span> <span class="pre">*</span> <span class="pre">J)</span></code></p>
+<blockquote>
+<div><p>This function should set the values of the <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">J</span></code> as above,
+for arguments <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>.  This function
+provides an optimization of the separate functions for <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/> and
+<img class="math" src="_images/math/1654c1fca6c6dda9d183f01caf4821a3d2547b04.png" alt="J(x)"/>—it is always faster to compute the function and its
+derivative at the same time.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">n</span></code></p>
+<blockquote>
+<div><p>the dimension of the system, i.e. the number of components of the
+vectors <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code>.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">params</span></code></p>
+<blockquote>
+<div><p>a pointer to the parameters of the function.</p>
+</div></blockquote>
+</dd></dl>
+
+<p>The example of Powell’s test function defined above can be extended to
+include analytic derivatives using the following code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">powell_df</span> <span class="p">(</span><span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">gsl_matrix</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">struct</span> <span class="n">powell_params</span> <span class="o">*</span> <span class="n">params</span>
+     <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">powell_params</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">;</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">A</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x1</span><span class="p">);</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x0</span><span class="p">);</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x0</span><span class="p">));</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x1</span><span class="p">));</span>
+   <span class="k">return</span> <span class="n">GSL_SUCCESS</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">powell_fdf</span> <span class="p">(</span><span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">p</span><span class="p">,</span>
+            <span class="n">gsl_matrix</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">gsl_matrix</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">struct</span> <span class="n">powell_params</span> <span class="o">*</span> <span class="n">params</span>
+     <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">powell_params</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">;</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">A</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+   <span class="n">const</span> <span class="n">double</span> <span class="n">u0</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x0</span><span class="p">);</span>
+   <span class="n">const</span> <span class="n">double</span> <span class="n">u1</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x1</span><span class="p">);</span>
+
+   <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+   <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">u0</span> <span class="o">+</span> <span class="n">u1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="n">A</span><span class="p">));</span>
+
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x1</span><span class="p">);</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">x0</span><span class="p">);</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">u0</span><span class="p">);</span>
+   <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">u1</span><span class="p">);</span>
+   <span class="k">return</span> <span class="n">GSL_SUCCESS</span>
+<span class="p">}</span>
+
+<span class="n">gsl_multiroot_function_fdf</span> <span class="n">FDF</span><span class="p">;</span>
+
+<span class="n">FDF</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">powell_f</span><span class="p">;</span>
+<span class="n">FDF</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">powell_df</span><span class="p">;</span>
+<span class="n">FDF</span><span class="o">.</span><span class="n">fdf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">powell_fdf</span><span class="p">;</span>
+<span class="n">FDF</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">FDF</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that the function <code class="code docutils literal notranslate"><span class="pre">powell_fdf</span></code> is able to reuse existing terms
+from the function when calculating the Jacobian, thus saving time.</p>
+</section>
+<section id="iteration">
+<h2>Iteration<a class="headerlink" href="#iteration" title="Link to this heading">¶</a></h2>
+<p>The following functions drive the iteration of each algorithm.  Each
+function performs one iteration to update the state of any solver of the
+corresponding type.  The same functions work for all solvers so that
+different methods can be substituted at runtime without modifications to
+the code.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_iterate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_iterate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_iterate" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_iterate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_iterate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_iterate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions perform a single iteration of the solver <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_iterate" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.  If the
+iteration encounters an unexpected problem then an error code will be
+returned,</p>
+<p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EBADFUNC</span></code></p>
+<blockquote>
+<div><p>the iteration encountered a singular point where the function or its
+derivative evaluated to <code class="code docutils literal notranslate"><span class="pre">Inf</span></code> or <code class="code docutils literal notranslate"><span class="pre">NaN</span></code>.</p>
+</div></blockquote>
+<p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOPROG</span></code></p>
+<blockquote>
+<div><p>the iteration is not making any progress, preventing the algorithm from
+continuing.</p>
+</div></blockquote>
+</dd></dl>
+
+<p>The solver maintains a current best estimate of the root <code class="code docutils literal notranslate"><span class="pre">s-&gt;x</span></code>
+and its function value <code class="code docutils literal notranslate"><span class="pre">s-&gt;f</span></code> at all times.  This information can
+be accessed with the following auxiliary functions,</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_root">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_root</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_root" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_root">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_root</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_root" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the current estimate of the root for the solver <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_root" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>, given by <code class="code docutils literal notranslate"><span class="pre">s-&gt;x</span></code>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_f">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_f</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_f" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_f">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_f</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_f" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the function value <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/> at the current
+estimate of the root for the solver <a class="reference internal" href="#c.gsl_multiroot_fdfsolver_f" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>, given by <code class="code docutils literal notranslate"><span class="pre">s-&gt;f</span></code>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_dx">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_dx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fsolver" title="gsl_multiroot_fsolver"><span class="n"><span class="pre">gsl_multiroot_fsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fsolver_dx" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_dx">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_dx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiroot_fdfsolver" title="gsl_multiroot_fdfsolver"><span class="n"><span class="pre">gsl_multiroot_fdfsolver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_dx" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the last step <img class="math" src="_images/math/c50efd7e0cfc1e2815a499b9bdbf361c3973fd1a.png" alt="dx"/> taken by the solver
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver_dx" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>, given by <code class="code docutils literal notranslate"><span class="pre">s-&gt;dx</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="search-stopping-parameters">
+<span id="index-4"></span><h2>Search Stopping Parameters<a class="headerlink" href="#search-stopping-parameters" title="Link to this heading">¶</a></h2>
+<p>A root finding procedure should stop when one of the following conditions is
+true:</p>
+<ul class="simple">
+<li><p>A multidimensional root has been found to within the user-specified precision.</p></li>
+<li><p>A user-specified maximum number of iterations has been reached.</p></li>
+<li><p>An error has occurred.</p></li>
+</ul>
+<p>The handling of these conditions is under user control.  The functions
+below allow the user to test the precision of the current result in
+several standard ways.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiroot_test_delta">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_test_delta</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dx</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsrel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_test_delta" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function tests for the convergence of the sequence by comparing the
+last step <a class="reference internal" href="#c.gsl_multiroot_test_delta" title="dx"><code class="xref c c-data docutils literal notranslate"><span class="pre">dx</span></code></a> with the absolute error <a class="reference internal" href="#c.gsl_multiroot_test_delta" title="epsabs"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsabs</span></code></a> and relative
+error <a class="reference internal" href="#c.gsl_multiroot_test_delta" title="epsrel"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsrel</span></code></a> to the current position <a class="reference internal" href="#c.gsl_multiroot_test_delta" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.  The test returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if the following condition is achieved,</p>
+<div class="math">
+<p><img src="_images/math/412bcfb62c0e40908a8299ea16ac7a67e5edc435.png" alt="|dx_i| &lt; \hbox{\it epsabs} + \hbox{\it epsrel\/}\, |x_i|"/></p>
+</div><p>for each component of <a class="reference internal" href="#c.gsl_multiroot_test_delta" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_CONTINUE</span></code> otherwise.</p>
+</dd></dl>
+
+<dl class="c function" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_multiroot_test_residual">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_test_residual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiroot_test_residual" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function tests the residual value <a class="reference internal" href="#c.gsl_multiroot_test_residual" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> against the absolute
+error bound <a class="reference internal" href="#c.gsl_multiroot_test_residual" title="epsabs"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsabs</span></code></a>.  The test returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if the
+following condition is achieved,</p>
+<div class="math">
+<p><img src="_images/math/ff856a05aa54b9d9125e28b1725cc6cbe2a1e859.png" alt="\sum_i |f_i| &lt; \hbox{\it epsabs}"/></p>
+</div><p>and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_CONTINUE</span></code> otherwise.  This criterion is suitable
+for situations where the precise location of the root, <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>, is
+unimportant provided a value can be found where the residual is small
+enough.</p>
+</dd></dl>
+
+</section>
+<section id="algorithms-using-derivatives">
+<h2>Algorithms using Derivatives<a class="headerlink" href="#algorithms-using-derivatives" title="Link to this heading">¶</a></h2>
+<p>The root finding algorithms described in this section make use of both
+the function and its derivative.  They require an initial guess for the
+location of the root, but there is no absolute guarantee of
+convergence—the function must be suitable for this technique and the
+initial guess must be sufficiently close to the root for it to work.
+When the conditions are satisfied then convergence is quadratic.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_type</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_type" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The following are available algorithms for minimizing functions using
+derivatives.</p>
+<dl class="c var" id="index-7">
+<span id="index-6"></span><dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_hybridsj">
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver_type" title="gsl_multiroot_fdfsolver_type"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_hybridsj</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_hybridsj" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a modified version of Powell’s Hybrid method as implemented in
+the HYBRJ algorithm in MINPACK.  Minpack was written by Jorge
+J. Moré, Burton S. Garbow and Kenneth E. Hillstrom.  The Hybrid
+algorithm retains the fast convergence of Newton’s method but will also
+reduce the residual when Newton’s method is unreliable.</p>
+<p>The algorithm uses a generalized trust region to keep each step under
+control.  In order to be accepted a proposed new position <img class="math" src="_images/math/5f9daf987989e00316cb5fe482843f00ad0c6a92.png" alt="x'"/> must
+satisfy the condition <img class="math" src="_images/math/8782c99574671d793c9c31bed340b777220cb6f4.png" alt="|D (x' - x)| &lt; \delta"/>, where <img class="math" src="_images/math/63d10e84cf24903abdb7a8b5e36b743c831a7040.png" alt="D"/> is a
+diagonal scaling matrix and <img class="math" src="_images/math/e0991156a224047b35453a4d365526b09ffe5746.png" alt="\delta"/> is the size of the trust
+region.  The components of <img class="math" src="_images/math/63d10e84cf24903abdb7a8b5e36b743c831a7040.png" alt="D"/> are computed internally, using the
+column norms of the Jacobian to estimate the sensitivity of the residual
+to each component of <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>.  This improves the behavior of the
+algorithm for badly scaled functions.</p>
+<p>On each iteration the algorithm first determines the standard Newton
+step by solving the system <img class="math" src="_images/math/59bb66278bd75eb8065485cdeda3594e864acc47.png" alt="J dx = - f"/>.  If this step falls inside
+the trust region it is used as a trial step in the next stage.  If not,
+the algorithm uses the linear combination of the Newton and gradient
+directions which is predicted to minimize the norm of the function while
+staying inside the trust region,</p>
+<div class="math">
+<p><img src="_images/math/ac2d0faaf899f056f30a84fe05307e49fe17de70.png" alt="dx = - \alpha J^{-1} f(x) - \beta \nabla |f(x)|^2"/></p>
+</div><p>This combination of Newton and gradient directions is referred to as a
+<em>dogleg step</em>.</p>
+<p>The proposed step is now tested by evaluating the function at the
+resulting point, <img class="math" src="_images/math/5f9daf987989e00316cb5fe482843f00ad0c6a92.png" alt="x'"/>.  If the step reduces the norm of the function
+sufficiently then it is accepted and size of the trust region is
+increased.  If the proposed step fails to improve the solution then the
+size of the trust region is decreased and another trial step is
+computed.</p>
+<p>The speed of the algorithm is increased by computing the changes to the
+Jacobian approximately, using a rank-1 update.  If two successive
+attempts fail to reduce the residual then the full Jacobian is
+recomputed.  The algorithm also monitors the progress of the solution
+and returns an error if several steps fail to make any improvement,</p>
+<p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOPROG</span></code></p>
+<blockquote>
+<div><p>the iteration is not making any progress, preventing the algorithm from
+continuing.</p>
+</div></blockquote>
+<p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOPROGJ</span></code></p>
+<blockquote>
+<div><p>re-evaluations of the Jacobian indicate that the iteration is not
+making any progress, preventing the algorithm from continuing.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="c var" id="index-8">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_hybridj">
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver_type" title="gsl_multiroot_fdfsolver_type"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_hybridj</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_hybridj" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This algorithm is an unscaled version of HYBRIDSJ.  The steps are
+controlled by a spherical trust region <img class="math" src="_images/math/dcc47d6e30ea8e931401d64787cfafd389af622e.png" alt="|x' - x| &lt; \delta"/>, instead
+of a generalized region.  This can be useful if the generalized region
+estimated by HYBRIDSJ is inappropriate.</p>
+</dd></dl>
+
+<dl class="c var" id="index-9">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_newton">
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver_type" title="gsl_multiroot_fdfsolver_type"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_newton</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_newton" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Newton’s Method is the standard root-polishing algorithm.  The algorithm
+begins with an initial guess for the location of the solution.  On each
+iteration a linear approximation to the function <img class="math" src="_images/math/85dad198040a011cb16a64468ac86c5f3b739684.png" alt="F"/> is used to
+estimate the step which will zero all the components of the residual.
+The iteration is defined by the following sequence,</p>
+<div class="math">
+<p><img src="_images/math/b271a2d83a524f920d1c0bed88e14ad3c46cd4cd.png" alt="x \to x' = x - J^{-1} f(x)"/></p>
+</div><p>where the Jacobian matrix <img class="math" src="_images/math/aca80d18a77d5da4df841b8c57cc874974238dd5.png" alt="J"/> is computed from the derivative
+functions provided by <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code>.  The step <img class="math" src="_images/math/c50efd7e0cfc1e2815a499b9bdbf361c3973fd1a.png" alt="dx"/> is obtained by solving
+the linear system,</p>
+<div class="math">
+<p><img src="_images/math/4d64693851ca7a1777e5cbf5ec9af3e7ef646011.png" alt="J dx = - f(x)"/></p>
+</div><p>using LU decomposition.  If the Jacobian matrix is singular, an error
+code of <a class="reference internal" href="err.html#c.GSL_EDOM" title="GSL_EDOM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EDOM</span></code></a> is returned.</p>
+</dd></dl>
+
+<dl class="c var" id="index-10">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_gnewton">
+<a class="reference internal" href="#c.gsl_multiroot_fdfsolver_type" title="gsl_multiroot_fdfsolver_type"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fdfsolver_gnewton</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fdfsolver_type.gsl_multiroot_fdfsolver_gnewton" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a modified version of Newton’s method which attempts to improve
+global convergence by requiring every step to reduce the Euclidean norm
+of the residual, <img class="math" src="_images/math/40665784a54b72bbce54e7200f5e0ce175c3456c.png" alt="|f(x)|"/>.  If the Newton step leads to an increase
+in the norm then a reduced step of relative size,</p>
+<div class="math">
+<p><img src="_images/math/2a31545bb5f453e119662fd72cc9baf4fa875d63.png" alt="t = (\sqrt{1 + 6 r} - 1) / (3 r)"/></p>
+</div><p>is proposed, with <img class="math" src="_images/math/532311b00f74167e01e5b4d047f2c07f678dd321.png" alt="r"/> being the ratio of norms
+<img class="math" src="_images/math/ee5857c9084621dfdd46065358308cfc3ff6ccf5.png" alt="|f(x')|^2/|f(x)|^2"/>.  This procedure is repeated until a suitable step
+size is found.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="algorithms-without-derivatives">
+<h2>Algorithms without Derivatives<a class="headerlink" href="#algorithms-without-derivatives" title="Link to this heading">¶</a></h2>
+<p>The algorithms described in this section do not require any derivative
+information to be supplied by the user.  Any derivatives needed are
+approximated by finite differences.  Note that if the
+finite-differencing step size chosen by these routines is inappropriate,
+an explicit user-supplied numerical derivative can always be used with
+the algorithms described in the previous section.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_type</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fsolver_type" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The following are available algorithms for minimizing functions without
+derivatives.</p>
+<dl class="c var" id="index-11">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_hybrids">
+<a class="reference internal" href="#c.gsl_multiroot_fsolver_type" title="gsl_multiroot_fsolver_type"><span class="n"><span class="pre">gsl_multiroot_fsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_hybrids</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_hybrids" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a version of the Hybrid algorithm which replaces calls to the
+Jacobian function by its finite difference approximation.  The finite
+difference approximation is computed using <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_multiroots_fdjac()</span></code>
+with a relative step size of <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SQRT_DBL_EPSILON</span></code>.  Note that
+this step size will not be suitable for all problems.</p>
+</dd></dl>
+
+<dl class="c var" id="index-12">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_hybrid">
+<a class="reference internal" href="#c.gsl_multiroot_fsolver_type" title="gsl_multiroot_fsolver_type"><span class="n"><span class="pre">gsl_multiroot_fsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_hybrid</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_hybrid" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a finite difference version of the Hybrid algorithm without
+internal scaling.</p>
+</dd></dl>
+
+<dl class="c var" id="index-13">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_dnewton">
+<a class="reference internal" href="#c.gsl_multiroot_fsolver_type" title="gsl_multiroot_fsolver_type"><span class="n"><span class="pre">gsl_multiroot_fsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_dnewton</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_dnewton" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The <em>discrete Newton algorithm</em> is the simplest method of solving a
+multidimensional system.  It uses the Newton iteration</p>
+<div class="math">
+<p><img src="_images/math/53e6bc13ef5cfeada6301dbf30c484efa3a0170f.png" alt="x \to x - J^{-1} f(x)"/></p>
+</div><p>where the Jacobian matrix <img class="math" src="_images/math/aca80d18a77d5da4df841b8c57cc874974238dd5.png" alt="J"/> is approximated by taking finite
+differences of the function <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code>.  The approximation scheme used by
+this implementation is,</p>
+<div class="math">
+<p><img src="_images/math/1ccb1eed22a35dcbdafb71f98f4c9d792f617e14.png" alt="J_{ij} = (f_i(x + \delta_j) - f_i(x)) /  \delta_j"/></p>
+</div><p>where <img class="math" src="_images/math/a48ae4a509545e76c21f090a8b3767140a72fec6.png" alt="\delta_j"/> is a step of size <img class="math" src="_images/math/3eba30c609ac321d82ed45dbc8464bf1c6eca8f0.png" alt="\sqrt\epsilon |x_j|"/> with
+<img class="math" src="_images/math/be3df5344ca00c17e18e2e38fde14b3415593780.png" alt="\epsilon"/> being the machine precision
+(<img class="math" src="_images/math/2d95070f407ae57ee89cb4add187b68faeb8d8ae.png" alt="\epsilon \approx 2.22 \times 10^{-16}"/>).
+The order of convergence of Newton’s algorithm is quadratic, but the
+finite differences require <img class="math" src="_images/math/69b0a61d114e7de4cdd2d98d2780e9571d027d96.png" alt="n^2"/> function evaluations on each
+iteration.  The algorithm may become unstable if the finite differences
+are not a good approximation to the true derivatives.</p>
+</dd></dl>
+
+<dl class="c var" id="index-14">
+<dt class="sig sig-object c" id="c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_broyden">
+<a class="reference internal" href="#c.gsl_multiroot_fsolver_type" title="gsl_multiroot_fsolver_type"><span class="n"><span class="pre">gsl_multiroot_fsolver_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiroot_fsolver_broyden</span></span></span><a class="headerlink" href="#c.gsl_multiroot_fsolver_type.gsl_multiroot_fsolver_broyden" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The <em>Broyden algorithm</em> is a version of the discrete Newton
+algorithm which attempts to avoids the expensive update of the Jacobian
+matrix on each iteration.  The changes to the Jacobian are also
+approximated, using a rank-1 update,</p>
+<div class="math">
+<p><img src="_images/math/e8fa82a58e7e82f2f553bbea0a9380e404e1ca20.png" alt="J^{-1} \to J^{-1} - (J^{-1} df - dx) dx^T J^{-1} / dx^T J^{-1} df"/></p>
+</div><p>where the vectors <img class="math" src="_images/math/c50efd7e0cfc1e2815a499b9bdbf361c3973fd1a.png" alt="dx"/> and <img class="math" src="_images/math/3f00be41d1dc65c4f433350a8b370f3b833c0947.png" alt="df"/> are the changes in <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>
+and <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>.  On the first iteration the inverse Jacobian is estimated
+using finite differences, as in the discrete Newton algorithm.</p>
+<p>This approximation gives a fast update but is unreliable if the changes
+are not small, and the estimate of the inverse Jacobian becomes worse as
+time passes.  The algorithm has a tendency to become unstable unless it
+starts close to the root.  The Jacobian is refreshed if this instability
+is detected (consult the source for details).</p>
+<p>This algorithm is included only for demonstration purposes, and is not
+recommended for serious use.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The multidimensional solvers are used in a similar way to the
+one-dimensional root finding algorithms.  This first example
+demonstrates the HYBRIDS scaled-hybrid algorithm, which does not
+require derivatives. The program solves the Rosenbrock system of equations,</p>
+<div class="math">
+<p><img src="_images/math/6a87d7f53aea0ce0840112b106162e7e31de284f.png" alt="f_1 (x, y) &amp;= a (1 - x) \\
+f_2 (x, y) &amp;= b (y - x^2)"/></p>
+</div><p>with <img class="math" src="_images/math/fa5f5ae3499353475cb879cbba0e4eb800156502.png" alt="a = 1, b = 10"/>. The solution of this system lies at
+<img class="math" src="_images/math/b4f4f8b4722c8bc8a09f6b87a9878b3358eed3aa.png" alt="(x,y) = (1,1)"/> in a narrow valley.</p>
+<p>The first stage of the program is to define the system of equations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdlib.h&gt;</span>
+<span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_vector.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_multiroots.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">rparams</span>
+  <span class="p">{</span>
+    <span class="n">double</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">double</span> <span class="n">b</span><span class="p">;</span>
+  <span class="p">};</span>
+
+<span class="nb">int</span>
+<span class="n">rosenbrock_f</span> <span class="p">(</span><span class="n">const</span> <span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+              <span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">a</span> <span class="o">=</span> <span class="p">((</span><span class="n">struct</span> <span class="n">rparams</span> <span class="o">*</span><span class="p">)</span> <span class="n">params</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">b</span> <span class="o">=</span> <span class="p">((</span><span class="n">struct</span> <span class="n">rparams</span> <span class="o">*</span><span class="p">)</span> <span class="n">params</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">;</span>
+
+  <span class="n">const</span> <span class="n">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="n">const</span> <span class="n">double</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">);</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x0</span><span class="p">);</span>
+
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y0</span><span class="p">);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">GSL_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The main program begins by creating the function object <code class="code docutils literal notranslate"><span class="pre">f</span></code>, with
+the arguments <code class="code docutils literal notranslate"><span class="pre">(x,y)</span></code> and parameters <code class="code docutils literal notranslate"><span class="pre">(a,b)</span></code>. The solver
+<code class="code docutils literal notranslate"><span class="pre">s</span></code> is initialized to use this function, with the <code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_multiroot_fsolver_hybrids</span></code>
+method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_multiroot_fsolver_type</span> <span class="o">*</span><span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_multiroot_fsolver</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>
+
+  <span class="nb">int</span> <span class="n">status</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">struct</span> <span class="n">rparams</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">};</span>
+  <span class="n">gsl_multiroot_function</span> <span class="n">f</span> <span class="o">=</span> <span class="p">{</span><span class="o">&amp;</span><span class="n">rosenbrock_f</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">};</span>
+
+  <span class="n">double</span> <span class="n">x_init</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">};</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x_init</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x_init</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_multiroot_fsolver_hybrids</span><span class="p">;</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_multiroot_fsolver_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_multiroot_fsolver_set</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+
+  <span class="n">print_state</span> <span class="p">(</span><span class="nb">iter</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+
+  <span class="n">do</span>
+    <span class="p">{</span>
+      <span class="nb">iter</span><span class="o">++</span><span class="p">;</span>
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multiroot_fsolver_iterate</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+      <span class="n">print_state</span> <span class="p">(</span><span class="nb">iter</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span>   <span class="o">/*</span> <span class="n">check</span> <span class="k">if</span> <span class="n">solver</span> <span class="ow">is</span> <span class="n">stuck</span> <span class="o">*/</span>
+        <span class="k">break</span><span class="p">;</span>
+
+      <span class="n">status</span> <span class="o">=</span>
+        <span class="n">gsl_multiroot_test_residual</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_CONTINUE</span> <span class="o">&amp;&amp;</span> <span class="nb">iter</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;status = </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_strerror</span> <span class="p">(</span><span class="n">status</span><span class="p">));</span>
+
+  <span class="n">gsl_multiroot_fsolver_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span> <span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that it is important to check the return status of each solver
+step, in case the algorithm becomes stuck.  If an error condition is
+detected, indicating that the algorithm cannot proceed, then the error
+can be reported to the user, a new starting point chosen or a different
+algorithm used.</p>
+<p>The intermediate state of the solution is displayed by the following
+function.  The solver state contains the vector <code class="code docutils literal notranslate"><span class="pre">s-&gt;x</span></code> which is the
+current position, and the vector <code class="code docutils literal notranslate"><span class="pre">s-&gt;f</span></code> with corresponding function
+values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">print_state</span> <span class="p">(</span><span class="n">size_t</span> <span class="nb">iter</span><span class="p">,</span> <span class="n">gsl_multiroot_fsolver</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;iter = </span><span class="si">%3u</span><span class="s2"> x = </span><span class="si">% .3f</span><span class="s2"> </span><span class="si">% .3f</span><span class="s2"> &quot;</span>
+          <span class="s2">&quot;f(x) = </span><span class="si">% .3e</span><span class="s2"> </span><span class="si">% .3e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="nb">iter</span><span class="p">,</span>
+          <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+          <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+          <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+          <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here are the results of running the program. The algorithm is started at
+<img class="math" src="_images/math/9b7f1a8ad854016941d66b0117c7c7a1cb03df1c.png" alt="(-10,-5)"/> far from the solution.  Since the solution is hidden in
+a narrow valley the earliest steps follow the gradient of the function
+downhill, in an attempt to reduce the large value of the residual. Once
+the root has been approximately located, on iteration 8, the Newton
+behavior takes over and convergence is very rapid:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">iter</span> <span class="o">=</span>  <span class="mi">0</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.000</span>  <span class="o">-</span><span class="mf">5.000</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.100e+01</span> <span class="o">-</span><span class="mf">1.050e+03</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">1</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.000</span>  <span class="o">-</span><span class="mf">5.000</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.100e+01</span> <span class="o">-</span><span class="mf">1.050e+03</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">2</span> <span class="n">x</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">3.976</span>  <span class="mf">24.827</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">4.976e+00</span>  <span class="mf">9.020e+01</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">3</span> <span class="n">x</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">3.976</span>  <span class="mf">24.827</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">4.976e+00</span>  <span class="mf">9.020e+01</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">4</span> <span class="n">x</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">3.976</span>  <span class="mf">24.827</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">4.976e+00</span>  <span class="mf">9.020e+01</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">5</span> <span class="n">x</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">1.274</span>  <span class="o">-</span><span class="mf">5.680</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">2.274e+00</span> <span class="o">-</span><span class="mf">7.302e+01</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">6</span> <span class="n">x</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">1.274</span>  <span class="o">-</span><span class="mf">5.680</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">2.274e+00</span> <span class="o">-</span><span class="mf">7.302e+01</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">7</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">0.249</span>   <span class="mf">0.298</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">7.511e-01</span>  <span class="mf">2.359e+00</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">8</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">0.249</span>   <span class="mf">0.298</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">7.511e-01</span>  <span class="mf">2.359e+00</span>
+<span class="nb">iter</span> <span class="o">=</span>  <span class="mi">9</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">1.000</span>   <span class="mf">0.878</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.268e-10</span> <span class="o">-</span><span class="mf">1.218e+00</span>
+<span class="nb">iter</span> <span class="o">=</span> <span class="mi">10</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">1.000</span>   <span class="mf">0.989</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">1.124e-11</span> <span class="o">-</span><span class="mf">1.080e-01</span>
+<span class="nb">iter</span> <span class="o">=</span> <span class="mi">11</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">1.000</span>   <span class="mf">1.000</span>  <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.000e+00</span>  <span class="mf">0.000e+00</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">success</span>
+</pre></div>
+</div>
+<p>Note that the algorithm does not update the location on every
+iteration. Some iterations are used to adjust the trust-region
+parameter, after trying a step which was found to be divergent, or to
+recompute the Jacobian, when poor convergence behavior is detected.</p>
+<p>The next example program adds derivative information, in order to
+accelerate the solution. There are two derivative functions
+<code class="code docutils literal notranslate"><span class="pre">rosenbrock_df</span></code> and <code class="code docutils literal notranslate"><span class="pre">rosenbrock_fdf</span></code>. The latter computes both
+the function and its derivative simultaneously. This allows the
+optimization of any common terms.  For simplicity we substitute calls to
+the separate <code class="code docutils literal notranslate"><span class="pre">f</span></code> and <code class="code docutils literal notranslate"><span class="pre">df</span></code> functions at this point in the code
+below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">rosenbrock_df</span> <span class="p">(</span><span class="n">const</span> <span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+               <span class="n">gsl_matrix</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">a</span> <span class="o">=</span> <span class="p">((</span><span class="n">struct</span> <span class="n">rparams</span> <span class="o">*</span><span class="p">)</span> <span class="n">params</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">a</span><span class="p">;</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">b</span> <span class="o">=</span> <span class="p">((</span><span class="n">struct</span> <span class="n">rparams</span> <span class="o">*</span><span class="p">)</span> <span class="n">params</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">;</span>
+
+  <span class="n">const</span> <span class="n">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+  <span class="n">const</span> <span class="n">double</span> <span class="n">df00</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span><span class="p">;</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">df01</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">df10</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b</span>  <span class="o">*</span> <span class="n">x0</span><span class="p">;</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">df11</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">df00</span><span class="p">);</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df01</span><span class="p">);</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">df10</span><span class="p">);</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df11</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">GSL_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">rosenbrock_fdf</span> <span class="p">(</span><span class="n">const</span> <span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">gsl_vector</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">gsl_matrix</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">rosenbrock_f</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">f</span><span class="p">);</span>
+  <span class="n">rosenbrock_df</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">J</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">GSL_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The main program now makes calls to the corresponding <code class="code docutils literal notranslate"><span class="pre">fdfsolver</span></code>
+versions of the functions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_multiroot_fdfsolver_type</span> <span class="o">*</span><span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_multiroot_fdfsolver</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>
+
+  <span class="nb">int</span> <span class="n">status</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">struct</span> <span class="n">rparams</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">};</span>
+  <span class="n">gsl_multiroot_function_fdf</span> <span class="n">f</span> <span class="o">=</span> <span class="p">{</span><span class="o">&amp;</span><span class="n">rosenbrock_f</span><span class="p">,</span>
+                                  <span class="o">&amp;</span><span class="n">rosenbrock_df</span><span class="p">,</span>
+                                  <span class="o">&amp;</span><span class="n">rosenbrock_fdf</span><span class="p">,</span>
+                                  <span class="n">n</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">};</span>
+
+  <span class="n">double</span> <span class="n">x_init</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">};</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x_init</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x_init</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_multiroot_fdfsolver_gnewton</span><span class="p">;</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_multiroot_fdfsolver_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+  <span class="n">gsl_multiroot_fdfsolver_set</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+
+  <span class="n">print_state</span> <span class="p">(</span><span class="nb">iter</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+
+  <span class="n">do</span>
+    <span class="p">{</span>
+      <span class="nb">iter</span><span class="o">++</span><span class="p">;</span>
+
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multiroot_fdfsolver_iterate</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+      <span class="n">print_state</span> <span class="p">(</span><span class="nb">iter</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multiroot_test_residual</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_CONTINUE</span> <span class="o">&amp;&amp;</span> <span class="nb">iter</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;status = </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_strerror</span> <span class="p">(</span><span class="n">status</span><span class="p">));</span>
+
+  <span class="n">gsl_multiroot_fdfsolver_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span> <span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The addition of derivative information to the <code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_multiroot_fsolver_hybrids</span></code> solver does
+not make any significant difference to its behavior, since it able to
+approximate the Jacobian numerically with sufficient accuracy.  To
+illustrate the behavior of a different derivative solver we switch to
+<code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_multiroot_fdfsolver_gnewton</span></code>. This is a traditional Newton solver with the constraint
+that it scales back its step if the full step would lead “uphill”. Here
+is the output for the <code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_multiroot_fdfsolver_gnewton</span></code> algorithm:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.000</span>  <span class="o">-</span><span class="mf">5.000</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span>  <span class="mf">1.100e+01</span> <span class="o">-</span><span class="mf">1.050e+03</span>
+<span class="nb">iter</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">x</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">4.231</span> <span class="o">-</span><span class="mf">65.317</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span>  <span class="mf">5.231e+00</span> <span class="o">-</span><span class="mf">8.321e+02</span>
+<span class="nb">iter</span> <span class="o">=</span> <span class="mi">2</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">1.000</span> <span class="o">-</span><span class="mf">26.358</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.882e-16</span> <span class="o">-</span><span class="mf">2.736e+02</span>
+<span class="nb">iter</span> <span class="o">=</span> <span class="mi">3</span> <span class="n">x</span> <span class="o">=</span>   <span class="mf">1.000</span>   <span class="mf">1.000</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.220e-16</span> <span class="o">-</span><span class="mf">4.441e-15</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">success</span>
+</pre></div>
+</div>
+<p>The convergence is much more rapid, but takes a wide excursion out to
+the point <img class="math" src="_images/math/f30e65366ac2c25dcfbd9a6e5d13bcbffe466c66.png" alt="(-4.23,-65.3)"/>. This could cause the algorithm to go
+astray in a realistic application.  The hybrid algorithm follows the
+downhill path to the solution more reliably.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The original version of the Hybrid method is described in the following
+articles by Powell,</p>
+<ul class="simple">
+<li><p>M.J.D. Powell, “A Hybrid Method for Nonlinear Equations” (Chap 6, p
+87–114) and “A Fortran Subroutine for Solving systems of Nonlinear
+Algebraic Equations” (Chap 7, p 115–161), in <em>Numerical Methods for
+Nonlinear Algebraic Equations</em>, P. Rabinowitz, editor.  Gordon and
+Breach, 1970.</p></li>
+</ul>
+<p>The following papers are also relevant to the algorithms described in
+this section,</p>
+<ul class="simple">
+<li><p>J.J. Moré, M.Y. Cosnard, “Numerical Solution of Nonlinear Equations”,
+<em>ACM Transactions on Mathematical Software</em>, Vol 5, No 1, (1979), p 64–85</p></li>
+<li><p>C.G. Broyden, “A Class of Methods for Solving Nonlinear
+Simultaneous Equations”, <em>Mathematics of Computation</em>, Vol 19 (1965),
+p 577–593</p></li>
+<li><p>J.J. Moré, B.S. Garbow, K.E. Hillstrom, “Testing Unconstrained
+Optimization Software”, ACM Transactions on Mathematical Software, Vol
+7, No 1 (1981), p 17–41</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="min.html" class="btn btn-neutral float-left" title="One Dimensional Minimization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multimin.html" class="btn btn-neutral float-right" title="Multidimensional Minimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,887 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Filtering &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Histograms" href="histogram.html" />
+    <link rel="prev" title="Moving Window Statistics" href="movstat.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Digital Filtering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-endpoints">Handling Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-digital-filters">Linear Digital Filters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gaussian-filter">Gaussian Filter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#nonlinear-digital-filters">Nonlinear Digital Filters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#standard-median-filter">Standard Median Filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recursive-median-filter">Recursive Median Filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#impulse-detection-filter">Impulse Detection Filter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gaussian-example-1">Gaussian Example 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gaussian-example-2">Gaussian Example 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#square-wave-signal-example">Square Wave Signal Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#impulse-detection-example">Impulse Detection Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Digital Filtering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/filter.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="movstat.html" class="btn btn-neutral float-left" title="Moving Window Statistics" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="histogram.html" class="btn btn-neutral float-right" title="Histograms" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="digital-filtering">
+<h1>Digital Filtering<a class="headerlink" href="#digital-filtering" title="Link to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>The filters discussed in this chapter are based on the following moving data
+window which is centered on <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/>-th sample:</p>
+<div class="math">
+<p><img src="_images/math/ecf259787bcc4aad60931326971b3a499896d6e6.png" alt="W_i^H = \left\{ x_{i-H}, \dots, x_i, \dots, x_{i+H} \right\}"/></p>
+</div><p>Here, <img class="math" src="_images/math/0b0324f9aa0f192d242ff8da654535a5885c4dc6.png" alt="H"/> is a non-negative integer called the <em>window half-length</em>, which
+represents the number of samples before and after sample <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/>.
+The total window length is <img class="math" src="_images/math/b7a0b9c65ba32d3c92c3ab037db16d679b995c45.png" alt="K = 2 H + 1"/>.</p>
+</section>
+<section id="handling-endpoints">
+<h2>Handling Endpoints<a class="headerlink" href="#handling-endpoints" title="Link to this heading">¶</a></h2>
+<p>When processing samples near the ends of the input signal, there will not
+be enough samples to fill the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/> defined above.
+Therefore the user must specify how to construct the windows near the end points.
+This is done by passing an input argument of type <a class="reference internal" href="#c.gsl_filter_end_t" title="gsl_filter_end_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_filter_end_t</span></code></a>:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_filter_end_t">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_end_t</span></span></span><a class="headerlink" href="#c.gsl_filter_end_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type specifies how to construct windows near end points and can
+be selected from the following choices:</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_end_t.GSL_FILTER_END_PADZERO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_END_PADZERO</span></span></span><a class="headerlink" href="#c.gsl_filter_end_t.GSL_FILTER_END_PADZERO" title="Link to this definition">¶</a><br /></dt>
+<dd><p>With this option, a full window of length <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> will be constructed
+by inserting zeros into the window near the signal end points. Effectively,
+the input signal is modified to</p>
+<div class="math">
+<p><img src="_images/math/cd86b941c8bfde2b7e726f449c18926eb47285e2.png" alt="\tilde{x} = \{ \underbrace{0, \dots, 0}_{H \textrm{ zeros}}, x_1, x_2, \dots, x_{n-1}, x_n, \underbrace{0, \dots, 0}_{H \textrm{ zeros} } \}"/></p>
+</div><p>to ensure a well-defined window for all <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_end_t.GSL_FILTER_END_PADVALUE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_END_PADVALUE</span></span></span><a class="headerlink" href="#c.gsl_filter_end_t.GSL_FILTER_END_PADVALUE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>With this option, a full window of length <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> will be constructed
+by padding the window with the first and last sample in the input signal.
+Effectively, the input signal is modified to</p>
+<div class="math">
+<p><img src="_images/math/f5b65d4f1523e5792b05e72e4c3dd2018a3b2011.png" alt="\tilde{x} = \{ \underbrace{x_1, \dots, x_1}_{H}, x_1, x_2, \dots, x_{n-1}, x_n, \underbrace{x_n, \dots, x_n}_{H} \}"/></p>
+</div></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_end_t.GSL_FILTER_END_TRUNCATE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_END_TRUNCATE</span></span></span><a class="headerlink" href="#c.gsl_filter_end_t.GSL_FILTER_END_TRUNCATE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>With this option, no padding is performed, and the windows are simply truncated
+as the end points are approached.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="linear-digital-filters">
+<h2>Linear Digital Filters<a class="headerlink" href="#linear-digital-filters" title="Link to this heading">¶</a></h2>
+<section id="gaussian-filter">
+<h3>Gaussian Filter<a class="headerlink" href="#gaussian-filter" title="Link to this heading">¶</a></h3>
+<p>The Gaussian filter convolves the input signal with a Gaussian kernel or window. This filter
+is often used as a smoothing or noise reduction filter. The Gaussian kernel is
+defined by</p>
+<div class="math">
+<p><img src="_images/math/d08dadae10e7daccc2293ae8da9e379908cc334d.png" alt="G(k) = e^{-\frac{1}{2} \left( \alpha \frac{k}{(K-1)/2} \right)^2} = e^{-k^2/2\sigma^2}"/></p>
+</div><p>for <img class="math" src="_images/math/938962f57a9b40d48bd12a239e07a0488de22f75.png" alt="-(K-1)/2 \le k \le (K-1)/2"/>, and <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> is the size of the kernel. The
+parameter <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> specifies the number of standard deviations <img class="math" src="_images/math/0b7620936fd7a90e5dde43c07609be992245871a.png" alt="\sigma"/> desired
+in the kernel. So for example setting <img class="math" src="_images/math/06e5232fc40dcaf7812933ff9da041ea9fdd943f.png" alt="\alpha = 3"/> would define a Gaussian window
+of length <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> which spans <img class="math" src="_images/math/7e92a885ab6988e004a076171ac9a704fc301516.png" alt="\pm 3 \sigma"/>. It is often more convenient to specify
+the parameter <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> rather than the standard deviation <img class="math" src="_images/math/0b7620936fd7a90e5dde43c07609be992245871a.png" alt="\sigma"/> when constructing
+the kernel, since a fixed value of <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> would correspond to the same shape of
+Gaussian regardless of the size <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/>. The appropriate value of the standard deviation
+depends on <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> and is related to <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> as</p>
+<div class="math">
+<p><img src="_images/math/9e748fd54957c26d9082d905d6309a0638e52ac7.png" alt="\sigma = \frac{K - 1}{2\alpha}"/></p>
+</div><p>The routines below accept <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> as an input argument instead of <img class="math" src="_images/math/0b7620936fd7a90e5dde43c07609be992245871a.png" alt="\sigma"/>.</p>
+<p>The Gaussian filter offers a convenient way of differentiating and smoothing an input signal
+in a single pass. Using the derivative property of a convolution,</p>
+<div class="math">
+<p><img src="_images/math/bd44eda6ea2c95feb7874624372f2dba5c7d0000.png" alt="\frac{d}{dt} \left( G * x \right) = \frac{dG}{dt} * x"/></p>
+</div><p>the input signal <img class="math" src="_images/math/aac0f3aee0b7c3a2504e2d6e5354cf6191496531.png" alt="x(t)"/> can be smoothed and differentiated at the same time by
+convolution with a derivative Gaussian kernel, which can be readily computed from the
+analytic expression above. The same principle applies to higher order derivatives.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_gaussian_alloc">
+<span class="n"><span class="pre">gsl_filter_gaussian_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_gaussian_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_gaussian_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a workspace for Gaussian filtering using a kernel of
+size <a class="reference internal" href="#c.gsl_filter_gaussian_alloc" title="K"><code class="xref c c-data docutils literal notranslate"><span class="pre">K</span></code></a>. Here, <img class="math" src="_images/math/180d152a0590282ec3fdcaeac086887129e5d362.png" alt="H = K / 2"/>. If <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> is even, it is rounded up to the next
+odd integer to ensure a symmetric window. The size of the workspace is <img class="math" src="_images/math/58b6809e62108b38d2e48fbc663b46fd8442f6af.png" alt="O(K)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_gaussian_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_gaussian_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_filter_gaussian_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_gaussian_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with <a class="reference internal" href="#c.gsl_filter_gaussian_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_gaussian">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_gaussian</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_filter_end_t" title="gsl_filter_end_t"><span class="n"><span class="pre">gsl_filter_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">alpha</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <span class="n"><span class="pre">gsl_filter_gaussian_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_gaussian" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies a Gaussian filter parameterized by <a class="reference internal" href="#c.gsl_filter_gaussian" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a> to the input vector <a class="reference internal" href="#c.gsl_filter_gaussian" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>,
+storing the output in <a class="reference internal" href="#c.gsl_filter_gaussian" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The derivative order is specified by <a class="reference internal" href="#c.gsl_filter_gaussian" title="order"><code class="xref c c-data docutils literal notranslate"><span class="pre">order</span></code></a>, with
+<code class="code docutils literal notranslate"><span class="pre">0</span></code> corresponding to a Gaussian, <code class="code docutils literal notranslate"><span class="pre">1</span></code> corresponding to a first derivative
+Gaussian, and so on. The parameter <a class="reference internal" href="#c.gsl_filter_gaussian" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how the signal end points are handled.
+It is allowed for <a class="reference internal" href="#c.gsl_filter_gaussian" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_filter_gaussian" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place filter.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_gaussian_kernel">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_gaussian_kernel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">alpha</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">normalize</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">kernel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_gaussian_kernel" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function constructs a Gaussian kernel parameterized by <a class="reference internal" href="#c.gsl_filter_gaussian_kernel" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a> and
+stores the output in <a class="reference internal" href="#c.gsl_filter_gaussian_kernel" title="kernel"><code class="xref c c-data docutils literal notranslate"><span class="pre">kernel</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_filter_gaussian_kernel" title="order"><code class="xref c c-data docutils literal notranslate"><span class="pre">order</span></code></a> specifies the
+derivative order, with <code class="code docutils literal notranslate"><span class="pre">0</span></code> corresponding to a Gaussian, <code class="code docutils literal notranslate"><span class="pre">1</span></code> corresponding
+to a first derivative Gaussian, and so on. If <a class="reference internal" href="#c.gsl_filter_gaussian_kernel" title="normalize"><code class="xref c c-data docutils literal notranslate"><span class="pre">normalize</span></code></a> is set to <code class="code docutils literal notranslate"><span class="pre">1</span></code>, then
+the kernel will be normalized to sum to one on output. If <a class="reference internal" href="#c.gsl_filter_gaussian_kernel" title="normalize"><code class="xref c c-data docutils literal notranslate"><span class="pre">normalize</span></code></a> is set to
+<code class="code docutils literal notranslate"><span class="pre">0</span></code>, no normalization is performed.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="nonlinear-digital-filters">
+<h2>Nonlinear Digital Filters<a class="headerlink" href="#nonlinear-digital-filters" title="Link to this heading">¶</a></h2>
+<p>The nonlinear digital filters described below are based on the window median, which is given
+by</p>
+<div class="math">
+<p><img src="_images/math/98d01f95c08df3c79b8fdabfb55640b661c37226.png" alt="m_i = \textrm{median} \left\{ W_i^H \right\} = \textrm{median} \left\{ x_{i-H}, \dots, x_i, \dots, x_{i+H} \right\}"/></p>
+</div><p>The median is considered robust to local outliers, unlike the mean.
+Median filters can preserve sharp edges while at the same removing signal noise, and are used
+in a wide range of applications.</p>
+<section id="standard-median-filter">
+<h3>Standard Median Filter<a class="headerlink" href="#standard-median-filter" title="Link to this heading">¶</a></h3>
+<p>The <em>standard median filter</em> (SMF) simply replaces the sample <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> by the median
+<img class="math" src="_images/math/e750d308a4fe69bbfbc875daa940de51e90cfbbc.png" alt="m_i"/> of the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/>: This filter has one tuning parameter given
+by <img class="math" src="_images/math/0b0324f9aa0f192d242ff8da654535a5885c4dc6.png" alt="H"/>. The standard median filter is considered highly resistant to
+local outliers and local noise in the data sequence <img class="math" src="_images/math/f16428b9f21c584cc1aae9b2f9c4c6ee2c02b845.png" alt="\{x_i\}"/>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_median_alloc">
+<span class="n"><span class="pre">gsl_filter_median_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_median_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_median_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a workspace for standard median filtering using a symmetric centered moving window of
+size <a class="reference internal" href="#c.gsl_filter_median_alloc" title="K"><code class="xref c c-data docutils literal notranslate"><span class="pre">K</span></code></a>. Here, <img class="math" src="_images/math/180d152a0590282ec3fdcaeac086887129e5d362.png" alt="H = K / 2"/>. If <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> is even, it is rounded up to the next
+odd integer to ensure a symmetric window. The size of the workspace is <img class="math" src="_images/math/29c2d2f78445bc652d52547d7e6fbff0fabaf268.png" alt="O(7K)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_median_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_median_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_filter_median_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_median_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with <a class="reference internal" href="#c.gsl_filter_median_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_median">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_median</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_filter_end_t" title="gsl_filter_end_t"><span class="n"><span class="pre">gsl_filter_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <span class="n"><span class="pre">gsl_filter_median_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_median" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies a standard median filter to the input <a class="reference internal" href="#c.gsl_filter_median" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing the output in <a class="reference internal" href="#c.gsl_filter_median" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>.
+The parameter <a class="reference internal" href="#c.gsl_filter_median" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how the signal end points are handled. It
+is allowed to have <a class="reference internal" href="#c.gsl_filter_median" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_filter_median" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place filter.</p>
+</dd></dl>
+
+</section>
+<section id="recursive-median-filter">
+<h3>Recursive Median Filter<a class="headerlink" href="#recursive-median-filter" title="Link to this heading">¶</a></h3>
+<p>The <em>recursive median filter</em> (RMF) is a modification of the SMF to include previous filter outputs
+in the window before computing the median. The filter’s response is</p>
+<div class="math">
+<p><img src="_images/math/d48ccc93dec307da0c31886e0fca5f9e869acba0.png" alt="y_i = \textrm{median} \left( y_{i-H}, \dots, y_{i-1}, x_i, x_{i+1}, \dots, x_{i+H} \right)"/></p>
+</div><p>Sometimes, the SMF must be applied several times in a row to achieve adequate smoothing (i.e. a cascade filter).
+The RMF, on the other hand, converges to a <em>root sequence</em> in one pass,
+and can sometimes provide a smoother result than several passes of the SMF. A root sequence is an input which is
+left unchanged by the filter.  So there is no need to apply a recursive median filter twice to an input vector.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_rmedian_alloc">
+<span class="n"><span class="pre">gsl_filter_rmedian_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_rmedian_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_rmedian_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a workspace for recursive median filtering using a symmetric centered moving window of
+size <a class="reference internal" href="#c.gsl_filter_rmedian_alloc" title="K"><code class="xref c c-data docutils literal notranslate"><span class="pre">K</span></code></a>. Here, <img class="math" src="_images/math/180d152a0590282ec3fdcaeac086887129e5d362.png" alt="H = K / 2"/>. If <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> is even, it is rounded up to the next
+odd integer to ensure a symmetric window. The size of the workspace is <img class="math" src="_images/math/58b6809e62108b38d2e48fbc663b46fd8442f6af.png" alt="O(K)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_rmedian_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_rmedian_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_filter_rmedian_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_rmedian_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with <a class="reference internal" href="#c.gsl_filter_rmedian_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_rmedian">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_rmedian</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_filter_end_t" title="gsl_filter_end_t"><span class="n"><span class="pre">gsl_filter_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <span class="n"><span class="pre">gsl_filter_rmedian_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_rmedian" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies a recursive median filter to the input <a class="reference internal" href="#c.gsl_filter_rmedian" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing the output in <a class="reference internal" href="#c.gsl_filter_rmedian" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>.
+The parameter <a class="reference internal" href="#c.gsl_filter_rmedian" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how the signal end points are handled. It
+is allowed to have <a class="reference internal" href="#c.gsl_filter_rmedian" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_filter_rmedian" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place filter.</p>
+</dd></dl>
+
+</section>
+<section id="impulse-detection-filter">
+<h3>Impulse Detection Filter<a class="headerlink" href="#impulse-detection-filter" title="Link to this heading">¶</a></h3>
+<p>Impulsive noise is characterized by short sequences of data points distinct from those in the
+surrounding neighborhood. This section describes a powerful class of filters, also known as
+<em>impulse rejection filters</em> and <em>decision-based filters</em>, designed to detect and remove such outliers from data.
+The filter’s response is given by</p>
+<div class="math">
+<p><img src="_images/math/4b028fa9918c7ae4a80b9b596151b398f31b646f.png" alt="y_i = \left\{
+  \begin{array}{cc}
+    x_i, &amp; |x_i - m_i| \le t S_i \\
+    m_i, &amp; |x_i - m_i| &gt; t S_i
+  \end{array}
+\right."/></p>
+</div><p>where <img class="math" src="_images/math/e750d308a4fe69bbfbc875daa940de51e90cfbbc.png" alt="m_i"/> is the median value of the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/>, <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/> is a robust estimate
+of the scatter or dispersion for the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/>, and <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> is a tuning parameter specifying
+the number of scale factors needed to determine that a point is an outlier. The main idea is that the median
+<img class="math" src="_images/math/e750d308a4fe69bbfbc875daa940de51e90cfbbc.png" alt="m_i"/> will be unaffected by a small number of outliers in the window, and so a given
+sample <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> is tested to determine how far away it is from the median in terms of the local
+scale estimate <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/>. Samples which are more than <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> scale estimates away from the median
+are labeled as outliers and replaced by the window median <img class="math" src="_images/math/e750d308a4fe69bbfbc875daa940de51e90cfbbc.png" alt="m_i"/>. Samples which are less than
+<img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> scale estimates from the median are left unchanged by the filter.</p>
+<p>Note that when <img class="math" src="_images/math/993e0e6a84ff3ca48c5c314f050a7d6ec924d7e8.png" alt="t = 0"/>, the impulse detection filter is equivalent to the standard median filter. When
+<img class="math" src="_images/math/f829b68d638c0fe99169a005d53375a190116b6c.png" alt="t \rightarrow \infty"/>, it becomes the identity filter. This means the impulse detection filter can
+be viewed as a “less aggressive” version of the standard median filter, becoming less aggressive as <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> is
+increased. Note that this filter modifies only samples identified as outliers, while the standard median
+filter changes all samples to the local median, regardless of whether they are outliers. This fact, plus
+the additional flexibility offered by the additional tuning parameter <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> can make the impulse detection filter
+a better choice for some applications.</p>
+<p>It is important to have a robust and accurate scale estimate <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/> in order to
+detect impulse outliers even in the presence of noise. The window standard deviation is not
+typically a good choice, as it can be significantly perturbed by the presence of even one outlier.
+GSL offers the following choices (specified by a parameter of type <a class="reference internal" href="#c.gsl_filter_scale_t" title="gsl_filter_scale_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_filter_scale_t</span></code></a>) for
+computing the scale estimate <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/>, all of which are robust to the presence of impulse outliers.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_filter_scale_t">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_scale_t</span></span></span><a class="headerlink" href="#c.gsl_filter_scale_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This type specifies how the scale estimate <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/> of the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/> is calculated.</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_scale_t.GSL_FILTER_SCALE_MAD">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_SCALE_MAD</span></span></span><a class="headerlink" href="#c.gsl_filter_scale_t.GSL_FILTER_SCALE_MAD" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This option specifies the median absolute deviation (MAD) scale estimate, defined by</p>
+<div class="math">
+<p><img src="_images/math/434cfd03f8b315dd72bbeca365c3d712f790ba80.png" alt="S_i = 1.4826 \times \textrm{median} \left\{ | W_i^H - m_i | \right\}"/></p>
+</div><p>This choice of scale estimate is also known as the <em>Hampel filter</em> in the statistical literature.
+See <a class="reference internal" href="statistics.html#sec-mad-statistic"><span class="std std-ref">here</span></a> for more information.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_scale_t.GSL_FILTER_SCALE_IQR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_SCALE_IQR</span></span></span><a class="headerlink" href="#c.gsl_filter_scale_t.GSL_FILTER_SCALE_IQR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This option specifies the interquartile range (IQR) scale estimate, defined as the difference between
+the 75th and 25th percentiles of the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/>,</p>
+<div class="math">
+<p><img src="_images/math/608eecff47226e40d6b76bec4a1626032b3cb995.png" alt="S_i = 0.7413 \left( Q_{0.75} - Q_{0.25} \right)"/></p>
+</div><p>where <img class="math" src="_images/math/99918e59bfe0dba6ba7ab847f2f067f5847c4436.png" alt="Q_p"/> is the p-quantile of the window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/>. The idea is to throw away the largest
+and smallest 25% of the window samples (where the outliers would be), and estimate a scale from the middle 50%.
+The factor <img class="math" src="_images/math/d64408e347e8b9b798c849d6bd22f195aba476c7.png" alt="0.7413"/> provides an unbiased estimate of the standard deviation for Gaussian data.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_scale_t.GSL_FILTER_SCALE_SN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_SCALE_SN</span></span></span><a class="headerlink" href="#c.gsl_filter_scale_t.GSL_FILTER_SCALE_SN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This option specifies the so-called <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> statistic proposed by Croux and Rousseeuw.
+See <a class="reference internal" href="statistics.html#sec-sn-statistic"><span class="std std-ref">here</span></a> for more information.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_filter_scale_t.GSL_FILTER_SCALE_QN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_FILTER_SCALE_QN</span></span></span><a class="headerlink" href="#c.gsl_filter_scale_t.GSL_FILTER_SCALE_QN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This option specifies the so-called <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> statistic proposed by Croux and Rousseeuw.
+See <a class="reference internal" href="statistics.html#sec-qn-statistic"><span class="std std-ref">here</span></a> for more information.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While the scale estimates defined above are much less sensitive to outliers than the standard deviation,
+they can suffer from an effect called <em>implosion</em>. The standard deviation of a window <img class="math" src="_images/math/a6e0695d8786d95854924b0729e8c7deaf86db00.png" alt="W_i^H"/> will be zero
+if and only if all samples in the window are equal. However, it is possible for the MAD of a window
+to be zero even if all the samples in the window are not equal. For example, if <img class="math" src="_images/math/28da53aed8f372007505d9d44a32b264d053b1b1.png" alt="K/2 + 1"/> or more
+of the <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> samples in the window are equal to some value <img class="math" src="_images/math/d0513d16834b7306e37a6219fadf9000f00ba239.png" alt="x^{*}"/>, then the window median will
+be equal to <img class="math" src="_images/math/d0513d16834b7306e37a6219fadf9000f00ba239.png" alt="x^{*}"/>. Consequently, at least <img class="math" src="_images/math/28da53aed8f372007505d9d44a32b264d053b1b1.png" alt="K/2 + 1"/> of the absolute deviations
+<img class="math" src="_images/math/71ff3a25a1e76632a9e16dbe674f02111a239345.png" alt="|x_j - x^{*}|"/> will be zero, and so the MAD will be zero. In such a case, the Hampel
+filter will act like the standard median filter regardless of the value of <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/>. Caution should also
+be exercised if dividing by <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/>.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_impulse_alloc">
+<span class="n"><span class="pre">gsl_filter_impulse_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_impulse_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_impulse_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a workspace for impulse detection filtering using a symmetric moving window of
+size <a class="reference internal" href="#c.gsl_filter_impulse_alloc" title="K"><code class="xref c c-data docutils literal notranslate"><span class="pre">K</span></code></a>. Here, <img class="math" src="_images/math/180d152a0590282ec3fdcaeac086887129e5d362.png" alt="H = K / 2"/>. If <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> is even, it is rounded up to the next
+odd integer to ensure a symmetric window. The size of the workspace is <img class="math" src="_images/math/99f395032f6c25e440a6a6164b6dd806d44e006a.png" alt="O(6K)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_impulse_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_impulse_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_filter_impulse_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_impulse_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with <a class="reference internal" href="#c.gsl_filter_impulse_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_filter_impulse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_filter_impulse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_filter_end_t" title="gsl_filter_end_t"><span class="n"><span class="pre">gsl_filter_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_filter_scale_t" title="gsl_filter_scale_t"><span class="n"><span class="pre">gsl_filter_scale_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">scale_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xmedian</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xsigma</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">noutlier</span></span>, <span class="n"><span class="pre">gsl_vector_int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ioutlier</span></span>, <span class="n"><span class="pre">gsl_filter_impulse_workspace</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_filter_impulse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions apply an impulse detection filter to the input vector <a class="reference internal" href="#c.gsl_filter_impulse" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing the filtered output
+in <a class="reference internal" href="#c.gsl_filter_impulse" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The tuning parameter <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> is provided in <a class="reference internal" href="#c.gsl_filter_impulse" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a>.
+The window medians <img class="math" src="_images/math/e750d308a4fe69bbfbc875daa940de51e90cfbbc.png" alt="m_i"/> are stored in <a class="reference internal" href="#c.gsl_filter_impulse" title="xmedian"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmedian</span></code></a> and the <img class="math" src="_images/math/752aa274eea70948a23e560b2dcc10b211055165.png" alt="S_i"/> are stored in <a class="reference internal" href="#c.gsl_filter_impulse" title="xsigma"><code class="xref c c-data docutils literal notranslate"><span class="pre">xsigma</span></code></a> on output.
+The number of outliers detected is stored in <a class="reference internal" href="#c.gsl_filter_impulse" title="noutlier"><code class="xref c c-data docutils literal notranslate"><span class="pre">noutlier</span></code></a> on output, while
+the locations of flagged outliers are stored in the boolean array <a class="reference internal" href="#c.gsl_filter_impulse" title="ioutlier"><code class="xref c c-data docutils literal notranslate"><span class="pre">ioutlier</span></code></a>. The input
+<a class="reference internal" href="#c.gsl_filter_impulse" title="ioutlier"><code class="xref c c-data docutils literal notranslate"><span class="pre">ioutlier</span></code></a> may be <code class="code docutils literal notranslate"><span class="pre">NULL</span></code> if not desired. It  is allowed to have <a class="reference internal" href="#c.gsl_filter_impulse" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_filter_impulse" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an
+in-place filter.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<section id="gaussian-example-1">
+<h3>Gaussian Example 1<a class="headerlink" href="#gaussian-example-1" title="Link to this heading">¶</a></h3>
+<p>This example program illustrates the Gaussian filter applied to smoothing a time series of length
+<img class="math" src="_images/math/2ba625cafb4966ccfbb835cf54db3cbaee6d2b28.png" alt="N = 500"/> with a kernel size of <img class="math" src="_images/math/83746917c119848999e7bc33b896759f91a15f17.png" alt="K = 51"/>. Three filters are applied with
+parameters <img class="math" src="_images/math/34abdc162c921a100d84e96ca9b62b74883868bb.png" alt="\alpha = 0.5, 3, 10"/>. The results are shown in <a class="reference internal" href="#fig-filt-gaussian"><span class="std std-numref">Fig. 9</span></a>.</p>
+<figure class="align-default" id="id1">
+<span id="fig-filt-gaussian"></span><a class="reference internal image-reference" href="_images/gaussfilt.png"><img alt="_images/gaussfilt.png" src="_images/gaussfilt.png" style="width: 720.0px; height: 600.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Top panel: Gaussian kernels (unnormalized) for <img class="math" src="_images/math/34abdc162c921a100d84e96ca9b62b74883868bb.png" alt="\alpha = 0.5, 3, 10"/>.
+Bottom panel: Time series (gray) with Gaussian filter output for same <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/>
+values.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>We see that the filter corresponding to <img class="math" src="_images/math/3a62159424ebaa4f7fb5512760f0ee09fee4ddba.png" alt="\alpha = 0.5"/> applies the most smoothing,
+while <img class="math" src="_images/math/b6f37ee64cddd70c1e809cdf17f70c386b1d56fb.png" alt="\alpha = 10"/> corresponds to the least amount of smoothing.
+The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_filter.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_randist.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_vector.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>                        <span class="o">/*</span> <span class="n">length</span> <span class="n">of</span> <span class="n">time</span> <span class="n">series</span> <span class="o">*/</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">51</span><span class="p">;</span>                         <span class="o">/*</span> <span class="n">window</span> <span class="n">size</span> <span class="o">*/</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">10.0</span> <span class="p">};</span>  <span class="o">/*</span> <span class="n">alpha</span> <span class="n">values</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>         <span class="o">/*</span> <span class="nb">input</span> <span class="n">vector</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">y1</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">filtered</span> <span class="n">output</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">alpha1</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">y2</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">filtered</span> <span class="n">output</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">alpha2</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">y3</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">filtered</span> <span class="n">output</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">alpha3</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">k1</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">Gaussian</span> <span class="n">kernel</span> <span class="k">for</span> <span class="n">alpha1</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">k2</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">Gaussian</span> <span class="n">kernel</span> <span class="k">for</span> <span class="n">alpha2</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">k3</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">Gaussian</span> <span class="n">kernel</span> <span class="k">for</span> <span class="n">alpha3</span> <span class="o">*/</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span><span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span><span class="p">(</span><span class="n">gsl_rng_default</span><span class="p">);</span>
+  <span class="n">gsl_filter_gaussian_workspace</span> <span class="o">*</span><span class="n">gauss_p</span> <span class="o">=</span> <span class="n">gsl_filter_gaussian_alloc</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">double</span> <span class="nb">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">generate</span> <span class="nb">input</span> <span class="n">signal</span> <span class="o">*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">ui</span> <span class="o">=</span> <span class="n">gsl_ran_gaussian</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+      <span class="nb">sum</span> <span class="o">+=</span> <span class="n">ui</span><span class="p">;</span>
+      <span class="n">gsl_vector_set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">sum</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="o">/*</span> <span class="n">compute</span> <span class="n">kernels</span> <span class="n">without</span> <span class="n">normalization</span> <span class="o">*/</span>
+  <span class="n">gsl_filter_gaussian_kernel</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k1</span><span class="p">);</span>
+  <span class="n">gsl_filter_gaussian_kernel</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k2</span><span class="p">);</span>
+  <span class="n">gsl_filter_gaussian_kernel</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k3</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">apply</span> <span class="n">filters</span> <span class="o">*/</span>
+  <span class="n">gsl_filter_gaussian</span><span class="p">(</span><span class="n">GSL_FILTER_END_PADVALUE</span><span class="p">,</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">gauss_p</span><span class="p">);</span>
+  <span class="n">gsl_filter_gaussian</span><span class="p">(</span><span class="n">GSL_FILTER_END_PADVALUE</span><span class="p">,</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">gauss_p</span><span class="p">);</span>
+  <span class="n">gsl_filter_gaussian</span><span class="p">(</span><span class="n">GSL_FILTER_END_PADVALUE</span><span class="p">,</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">gauss_p</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="nb">print</span> <span class="n">kernels</span> <span class="o">*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">K</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">k1i</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">k2i</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">k2</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">k3i</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">k3</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+      <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%e</span><span class="s2"> </span><span class="si">%e</span><span class="s2"> </span><span class="si">%e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">k1i</span><span class="p">,</span> <span class="n">k2i</span><span class="p">,</span> <span class="n">k3i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="nb">print</span> <span class="nb">filter</span> <span class="n">results</span> <span class="o">*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">y1i</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">y2i</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">y3i</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">y3</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+      <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.12e</span><span class="s2"> </span><span class="si">%.12e</span><span class="s2"> </span><span class="si">%.12e</span><span class="s2"> </span><span class="si">%.12e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">y1i</span><span class="p">,</span> <span class="n">y2i</span><span class="p">,</span> <span class="n">y3i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">y1</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">y2</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">y3</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">k1</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">k2</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">k3</span><span class="p">);</span>
+  <span class="n">gsl_rng_free</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+  <span class="n">gsl_filter_gaussian_free</span><span class="p">(</span><span class="n">gauss_p</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="gaussian-example-2">
+<h3>Gaussian Example 2<a class="headerlink" href="#gaussian-example-2" title="Link to this heading">¶</a></h3>
+<p>A common application of the Gaussian filter is to detect edges, or sudden jumps, in a noisy
+input signal. It is used both for 1D edge detection in time series, as well as 2D edge
+detection in images. Here we will examine a noisy time series of length <img class="math" src="_images/math/ddcca411d2a5477b5064962e9f89c13809bac8bc.png" alt="N = 1000"/>
+with a single edge. The input signal is defined as</p>
+<div class="math">
+<p><img src="_images/math/3171faf3a287e52b17cbd14a62061d582f01e220.png" alt="x(n) = e(n) +
+\left\{
+  \begin{array}{cc}
+    0, &amp; n \le N/2 \\
+    0.5, &amp; n &gt; N/2
+  \end{array}
+\right."/></p>
+</div><p>where <img class="math" src="_images/math/01e302126712c99dfbc9ffa59f7ae2b8de4c0b9b.png" alt="e(n)"/> is Gaussian random noise. The program smooths the input signal
+with order <img class="math" src="_images/math/1044a66b8e70facf921d704e8cf8c75fe1067ce5.png" alt="0,1,"/> and <img class="math" src="_images/math/2a2702de739befc144e6b7371e7f63ac3aeb8bec.png" alt="2"/> Gaussian filters of length <img class="math" src="_images/math/eededd652bd6a9c8662f3fe491e66a243ec2099d.png" alt="K = 61"/> with
+<img class="math" src="_images/math/06e5232fc40dcaf7812933ff9da041ea9fdd943f.png" alt="\alpha = 3"/>. For comparison, the program also computes finite differences
+of the input signal without smoothing. The results are shown in <a class="reference internal" href="#fig-filt-gaussian2"><span class="std std-numref">Fig. 10</span></a>.</p>
+<figure class="align-default" id="id2">
+<span id="fig-filt-gaussian2"></span><a class="reference internal image-reference" href="_images/gaussfilt2.png"><img alt="_images/gaussfilt2.png" src="_images/gaussfilt2.png" style="width: 600.0px; height: 720.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Top row: original input signal <img class="math" src="_images/math/be35ab64279d97c5f760547483918b48a841db82.png" alt="x(n)"/> (black) with Gaussian smoothed signal in red.
+Second row: First finite differences of input signal.
+Third row: Input signal smoothed with a first order Gaussian filter.
+Fourth row: Input signal smoothed with a second order Gaussian filter.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The finite difference approximation of the first derivative (second row) shows
+the common problem with differentiating a noisy signal. The noise is amplified
+and makes it extremely difficult to detect the sharp gradient at sample <img class="math" src="_images/math/3ee922f79c876846fa25ca9d099706f46a38da09.png" alt="500"/>.
+The third row shows the first order Gaussian smoothed signal with a clear peak
+at the location of the edge. Alternatively, one could examine the second order
+Gaussian smoothed signal (fourth row) and look for zero crossings to determine
+the edge location.</p>
+<p>The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;gsl/gsl_math.h&gt;
+#include &lt;gsl/gsl_filter.h&gt;
+#include &lt;gsl/gsl_rng.h&gt;
+#include &lt;gsl/gsl_randist.h&gt;
+#include &lt;gsl/gsl_vector.h&gt;
+
+int
+main(void)
+{
+  const size_t N = 1000;                       /* length of time series */
+  const size_t K = 61;                         /* window size */
+  const double alpha = 3.0;                    /* Gaussian kernel has +/- 3 standard deviations */
+  gsl_vector *x = gsl_vector_alloc(N);         /* input vector */
+  gsl_vector *y = gsl_vector_alloc(N);         /* filtered output vector */
+  gsl_vector *dy = gsl_vector_alloc(N);        /* first derivative filtered vector */
+  gsl_vector *d2y = gsl_vector_alloc(N);       /* second derivative filtered vector */
+  gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+  gsl_filter_gaussian_workspace *gauss_p = gsl_filter_gaussian_alloc(K);
+  size_t i;
+
+  /* generate input signal */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double xi = (i &gt; N / 2) ? 0.5 : 0.0;
+      double ei = gsl_ran_gaussian(r, 0.1);
+
+      gsl_vector_set(x, i, xi + ei);
+    }
+
+  /* apply filters */
+  gsl_filter_gaussian(GSL_FILTER_END_PADVALUE, alpha, 0, x, y, gauss_p);
+  gsl_filter_gaussian(GSL_FILTER_END_PADVALUE, alpha, 1, x, dy, gauss_p);
+  gsl_filter_gaussian(GSL_FILTER_END_PADVALUE, alpha, 2, x, d2y, gauss_p);
+
+  /* print results */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double xi = gsl_vector_get(x, i);
+      double yi = gsl_vector_get(y, i);
+      double dyi = gsl_vector_get(dy, i);
+      double d2yi = gsl_vector_get(d2y, i);
+      double dxi;
+
+      /* compute finite difference of x vector */
+      if (i == 0)
+        dxi = gsl_vector_get(x, i + 1) - xi;
+      else if (i == N - 1)
+        dxi = gsl_vector_get(x, i) - gsl_vector_get(x, i - 1);
+      else
+        dxi = 0.5 * (gsl_vector_get(x, i + 1) - gsl_vector_get(x, i - 1));
+
+      printf(&quot;%.12e %.12e %.12e %.12e %.12e\n&quot;,
+             xi,
+             yi,
+             dxi,
+             dyi,
+             d2yi);
+    }
+
+  gsl_vector_free(x);
+  gsl_vector_free(y);
+  gsl_vector_free(dy);
+  gsl_vector_free(d2y);
+  gsl_rng_free(r);
+  gsl_filter_gaussian_free(gauss_p);
+
+  return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="square-wave-signal-example">
+<h3>Square Wave Signal Example<a class="headerlink" href="#square-wave-signal-example" title="Link to this heading">¶</a></h3>
+<p>The following example program illustrates the median filters on a noisy
+square wave signal. Median filters are well known for preserving sharp
+edges in the input signal while reducing noise. The program constructs
+a 5 Hz square wave signal with Gaussian noise added. Then the signal is
+filtered with a standard median filter and recursive median filter using
+a symmetric window of length <img class="math" src="_images/math/e06b29a8e43b153fbb73ae18fa7ab674895368f0.png" alt="K = 7"/>. The results are shown in
+<a class="reference internal" href="#fig-filt-edge"><span class="std std-numref">Fig. 11</span></a>.</p>
+<figure class="align-default" id="id3">
+<span id="fig-filt-edge"></span><a class="reference internal image-reference" href="_images/filt_edge.png"><img alt="_images/filt_edge.png" src="_images/filt_edge.png" style="width: 960.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Original time series is in gray. The standard median filter output is in
+green and the recursive median filter output is in red.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Both filters preserve the sharp signal edges while reducing the noise. The
+recursive median filter achieves a smoother result than the standard median
+filter. The “blocky” nature of the output is characteristic of all median
+filters. The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;gsl/gsl_math.h&gt;
+#include &lt;gsl/gsl_filter.h&gt;
+#include &lt;gsl/gsl_rng.h&gt;
+#include &lt;gsl/gsl_randist.h&gt;
+#include &lt;gsl/gsl_vector.h&gt;
+
+int
+main(void)
+{
+  const size_t N = 1000;                               /* length of time series */
+  const size_t K = 7;                                  /* window size */
+  const double f = 5.0;                                /* frequency of square wave in Hz */
+  gsl_filter_median_workspace *median_p = gsl_filter_median_alloc(K);
+  gsl_filter_rmedian_workspace *rmedian_p = gsl_filter_rmedian_alloc(K);
+  gsl_vector *t = gsl_vector_alloc(N);                 /* time */
+  gsl_vector *x = gsl_vector_alloc(N);                 /* input vector */
+  gsl_vector *y_median = gsl_vector_alloc(N);          /* median filtered output */
+  gsl_vector *y_rmedian = gsl_vector_alloc(N);         /* recursive median filtered output */
+  gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+  size_t i;
+
+  /* generate input signal */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double ti = (double) i / (N - 1.0);
+      double tmp = sin(2.0 * M_PI * f * ti);
+      double xi = (tmp &gt;= 0.0) ? 1.0 : -1.0;
+      double ei = gsl_ran_gaussian(r, 0.1);
+
+      gsl_vector_set(t, i, ti);
+      gsl_vector_set(x, i, xi + ei);
+    }
+
+  gsl_filter_median(GSL_FILTER_END_PADVALUE, x, y_median, median_p);
+  gsl_filter_rmedian(GSL_FILTER_END_PADVALUE, x, y_rmedian, rmedian_p);
+
+  /* print results */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double ti = gsl_vector_get(t, i);
+      double xi = gsl_vector_get(x, i);
+      double medi = gsl_vector_get(y_median, i);
+      double rmedi = gsl_vector_get(y_rmedian, i);
+
+      printf(&quot;%f %f %f %f\n&quot;,
+             ti,
+             xi,
+             medi,
+             rmedi);
+    }
+
+  gsl_vector_free(t);
+  gsl_vector_free(x);
+  gsl_vector_free(y_median);
+  gsl_vector_free(y_rmedian);
+  gsl_rng_free(r);
+  gsl_filter_median_free(median_p);
+
+  return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="impulse-detection-example">
+<h3>Impulse Detection Example<a class="headerlink" href="#impulse-detection-example" title="Link to this heading">¶</a></h3>
+<p>The following example program illustrates the impulse detection filter. First,
+it constructs a sinusoid signal of length <img class="math" src="_images/math/ddcca411d2a5477b5064962e9f89c13809bac8bc.png" alt="N = 1000"/> with Gaussian noise
+added. Then, about 1% of the data are perturbed to represent large outliers. An
+impulse detecting filter is applied with a window size <img class="math" src="_images/math/25f81cb3ecc2c8b9a7017d6fdd966aff7eb86127.png" alt="K = 25"/> and
+tuning parameter <img class="math" src="_images/math/a6c009ee5d62abe465714004655662ada299d729.png" alt="t = 4"/>, using the <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> statistic as the robust
+measure of scale. The results are plotted in <a class="reference internal" href="#fig-impulse"><span class="std std-numref">Fig. 12</span></a>.</p>
+<figure class="align-default" id="id4">
+<span id="fig-impulse"></span><a class="reference internal image-reference" href="_images/impulse.png"><img alt="_images/impulse.png" src="_images/impulse.png" style="width: 960.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Original time series is in blue, filter output is in green, upper and
+lower intervals for detecting outliers are in red and yellow respectively.
+Detected outliers are marked with squares.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;gsl/gsl_math.h&gt;
+#include &lt;gsl/gsl_filter.h&gt;
+#include &lt;gsl/gsl_rng.h&gt;
+#include &lt;gsl/gsl_randist.h&gt;
+#include &lt;gsl/gsl_vector.h&gt;
+
+int
+main(void)
+{
+  const size_t N = 1000;                               /* length of time series */
+  const size_t K = 25;                                 /* window size */
+  const double t = 4.0;                                /* number of scale factors for outlier detection */
+  gsl_vector *x = gsl_vector_alloc(N);                 /* input vector */
+  gsl_vector *y = gsl_vector_alloc(N);                 /* output (filtered) vector */
+  gsl_vector *xmedian = gsl_vector_alloc(N);           /* window medians */
+  gsl_vector *xsigma = gsl_vector_alloc(N);            /* window scale estimates */
+  gsl_vector_int *ioutlier = gsl_vector_int_alloc(N);  /* outlier detected? */
+  gsl_filter_impulse_workspace * w = gsl_filter_impulse_alloc(K);
+  gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+  size_t noutlier;
+  size_t i;
+
+  /* generate input signal */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double xi = 10.0 * sin(2.0 * M_PI * i / (double) N);
+      double ei = gsl_ran_gaussian(r, 2.0);
+      double u = gsl_rng_uniform(r);
+      double outlier = (u &lt; 0.01) ? 15.0*GSL_SIGN(ei) : 0.0;
+
+      gsl_vector_set(x, i, xi + ei + outlier);
+    }
+
+  /* apply impulse detection filter */
+  gsl_filter_impulse(GSL_FILTER_END_TRUNCATE, GSL_FILTER_SCALE_QN, t, x, y,
+                     xmedian, xsigma, &amp;noutlier, ioutlier, w);
+
+  /* print results */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double xi = gsl_vector_get(x, i);
+      double yi = gsl_vector_get(y, i);
+      double xmedi = gsl_vector_get(xmedian, i);
+      double xsigmai = gsl_vector_get(xsigma, i);
+      int outlier = gsl_vector_int_get(ioutlier, i);
+
+      printf(&quot;%zu %f %f %f %f %d\n&quot;,
+             i,
+             xi,
+             yi,
+             xmedi + t * xsigmai,
+             xmedi - t * xsigmai,
+             outlier);
+    }
+
+  gsl_vector_free(x);
+  gsl_vector_free(y);
+  gsl_vector_free(xmedian);
+  gsl_vector_free(xsigma);
+  gsl_vector_int_free(ioutlier);
+  gsl_filter_impulse_free(w);
+  gsl_rng_free(r);
+
+  return 0;
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The following publications are relevant to the algorithms described
+in this chapter,</p>
+<ul class="simple">
+<li><p>F. J. Harris, <em>On the use of windows for harmonic analysis with the discrete Fourier transform</em>,
+Proceedings of the IEEE, 66 (1), 1978.</p></li>
+<li><p>S-J. Ko, Y-H. Lee, and A. T. Fam. <em>Efficient implementation of one-dimensional recursive median filters</em>,
+IEEE transactions on circuits and systems 37.11 (1990): 1447-1450.</p></li>
+<li><p>R. K. Pearson and M. Gabbouj, <em>Nonlinear Digital Filtering with Python: An Introduction</em>.
+CRC Press, 2015.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="movstat.html" class="btn btn-neutral float-left" title="Moving Window Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="histogram.html" class="btn btn-neutral float-right" title="Histograms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moving Window Statistics &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Digital Filtering" href="filter.html" />
+    <link rel="prev" title="Running Statistics" href="rstat.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Moving Window Statistics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-endpoints">Handling Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allocation-for-moving-window-statistics">Allocation for Moving Window Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-mean">Moving Mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-variance-and-standard-deviation">Moving Variance and Standard Deviation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-minimum-and-maximum">Moving Minimum and Maximum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-sum">Moving Sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-median">Moving Median</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robust-scale-estimation">Robust Scale Estimation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#moving-mad">Moving MAD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moving-qqr">Moving QQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moving-s-n">Moving <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moving-q-n">Moving <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#user-defined-moving-statistics">User-defined Moving Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accumulators">Accumulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-1">Example 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-2-robust-scale">Example 2: Robust Scale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-3-user-defined-moving-window">Example 3: User-defined Moving Window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Moving Window Statistics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/movstat.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="rstat.html" class="btn btn-neutral float-left" title="Running Statistics" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="filter.html" class="btn btn-neutral float-right" title="Digital Filtering" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="moving-window-statistics">
+<span id="index-0"></span><h1>Moving Window Statistics<a class="headerlink" href="#moving-window-statistics" title="Link to this heading">¶</a></h1>
+<p>This chapter describes routines for computing <em>moving window
+statistics</em> (also called rolling statistics and running statistics),
+using a window around a sample which is used to calculate various
+local statistical properties of an input data stream. The window is
+then slid forward by one sample to process the next data point and so on.</p>
+<p>The functions described in this chapter are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_movstat.h</span></code>.</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>This chapter is concerned with calculating various statistics from
+subsets of a given dataset. The main idea is to compute statistics
+in the vicinity of a given data sample by defining a <em>window</em> which
+includes the sample itself as well as some specified number of samples
+before and after the sample in question. For a sample <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>, we
+define a window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> as</p>
+<div class="math">
+<p><img src="_images/math/55731091029e03a5aad70474c3452b087f42a306.png" alt="W_i^{H,J} = \left\{ x_{i-H}, \dots, x_i, \dots, x_{i+J} \right\}"/></p>
+</div><p>The parameters <img class="math" src="_images/math/0b0324f9aa0f192d242ff8da654535a5885c4dc6.png" alt="H"/> and <img class="math" src="_images/math/aca80d18a77d5da4df841b8c57cc874974238dd5.png" alt="J"/> are non-negative integers specifying
+the number of samples to include before and after the sample <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>.
+Statistics such as the mean and standard deviation of the window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/>
+may be computed, and then the window is shifted forward by one sample to
+focus on <img class="math" src="_images/math/1635688763ca7a3d943e1dd07bf2fd4cceba00c5.png" alt="x_{i+1}"/>. The total number of samples in the window is
+<img class="math" src="_images/math/33dc469c2ca7554d68b7e23eee2d2404d2472fab.png" alt="K = H + J + 1"/>. To define a symmetric window centered on <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>,
+one would set <img class="math" src="_images/math/6f6d4de164c329752039e819fbe3143d2af82c92.png" alt="H = J = \left\lfloor K / 2 \right\rfloor"/>.</p>
+</section>
+<section id="handling-endpoints">
+<h2>Handling Endpoints<a class="headerlink" href="#handling-endpoints" title="Link to this heading">¶</a></h2>
+<p>When processing samples near the ends of the input signal, there will not
+be enough samples to fill the window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> defined above.
+Therefore the user must specify how to construct the windows near the end points.
+This is done by passing an input argument of type <a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_movstat_end_t</span></code></a>:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_movstat_end_t">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></span><a class="headerlink" href="#c.gsl_movstat_end_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type specifies how to construct windows near end points and can
+be selected from the following choices:</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_movstat_end_t.GSL_MOVSTAT_END_PADZERO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_MOVSTAT_END_PADZERO</span></span></span><a class="headerlink" href="#c.gsl_movstat_end_t.GSL_MOVSTAT_END_PADZERO" title="Link to this definition">¶</a><br /></dt>
+<dd><p>With this option, a full window of length <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> will be constructed
+by inserting zeros into the window near the signal end points. Effectively,
+the input signal is modified to</p>
+<div class="math">
+<p><img src="_images/math/f26cc95eb3b7841c8a8b9f07dd2277c4d8186dcf.png" alt="\tilde{x} = \{ \underbrace{0, \dots, 0}_{H \textrm{ zeros}}, x_1, x_2, \dots, x_{n-1}, x_n, \underbrace{0, \dots, 0}_{J \textrm{ zeros} } \}"/></p>
+</div><p>to ensure a well-defined window for all <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_movstat_end_t.GSL_MOVSTAT_END_PADVALUE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_MOVSTAT_END_PADVALUE</span></span></span><a class="headerlink" href="#c.gsl_movstat_end_t.GSL_MOVSTAT_END_PADVALUE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>With this option, a full window of length <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> will be constructed
+by padding the window with the first and last sample in the input signal.
+Effectively, the input signal is modified to</p>
+<div class="math">
+<p><img src="_images/math/1bf27e06edb12b6ef9917973b9eb0956ed83b621.png" alt="\tilde{x} = \{ \underbrace{x_1, \dots, x_1}_{H}, x_1, x_2, \dots, x_{n-1}, x_n, \underbrace{x_n, \dots, x_n}_{J} \}"/></p>
+</div></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.gsl_movstat_end_t.GSL_MOVSTAT_END_TRUNCATE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_MOVSTAT_END_TRUNCATE</span></span></span><a class="headerlink" href="#c.gsl_movstat_end_t.GSL_MOVSTAT_END_TRUNCATE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>With this option, no padding is performed, and the windows are simply truncated
+as the end points are approached.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="allocation-for-moving-window-statistics">
+<span id="index-1"></span><h2>Allocation for Moving Window Statistics<a class="headerlink" href="#allocation-for-moving-window-statistics" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_movstat_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></span><a class="headerlink" href="#c.gsl_movstat_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The moving window statistical routines use a common workspace.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_alloc">
+<a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">K</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing symmetric, centered moving statistics with a window
+length of <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> samples. In this case, <img class="math" src="_images/math/90959ad7feb1f5b4aadaabc4b268a70deda0bc9a.png" alt="H = J = \left\lfloor K/2 \right\rfloor"/>. The size of the workspace
+is <img class="math" src="_images/math/29c2d2f78445bc652d52547d7e6fbff0fabaf268.png" alt="O(7K)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_alloc2">
+<a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_alloc2</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">H</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">J</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_alloc2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing moving statistics using a window with <img class="math" src="_images/math/0b0324f9aa0f192d242ff8da654535a5885c4dc6.png" alt="H"/>
+samples prior to the current sample, and <img class="math" src="_images/math/aca80d18a77d5da4df841b8c57cc874974238dd5.png" alt="J"/> samples after the current sample. The
+total window size is <img class="math" src="_images/math/33dc469c2ca7554d68b7e23eee2d2404d2472fab.png" alt="K = H + J + 1"/>. The size of the workspace is <img class="math" src="_images/math/29c2d2f78445bc652d52547d7e6fbff0fabaf268.png" alt="O(7K)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with <a class="reference internal" href="#c.gsl_movstat_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="moving-mean">
+<span id="index-2"></span><h2>Moving Mean<a class="headerlink" href="#moving-mean" title="Link to this heading">¶</a></h2>
+<p>The moving window mean calculates the mean of the values of each window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/>.</p>
+<div class="math">
+<p><img src="_images/math/d2c737a5f99e18d89b01df3640452bf57bfbf62e.png" alt="\hat{\mu}_i = \frac{1}{\left| W_i^{H,J} \right|} \sum_{x_m \in W_i^{H,J}} x_m"/></p>
+</div><p>Here, <img class="math" src="_images/math/a6ae4f7cc33b9662256efde444420f4a5d534cb4.png" alt="\left| W_i^{H,J} \right|"/> represents the number of elements in the window
+<img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/>. This will normally be <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/>, unless the <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MOVSTAT_END_TRUNCATE</span></code>
+option is selected, in which case it could be less than <img class="math" src="_images/math/509fee627df40d3a8b45354ce502d8152429513c.png" alt="K"/> near the signal end points.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_mean">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving window mean of the input vector <a class="reference internal" href="#c.gsl_movstat_mean" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the output in <a class="reference internal" href="#c.gsl_movstat_mean" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_mean" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled. It is allowed to have <a class="reference internal" href="#c.gsl_movstat_mean" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_mean" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>
+for an in-place moving mean.</p>
+</dd></dl>
+
+</section>
+<section id="moving-variance-and-standard-deviation">
+<span id="index-3"></span><h2>Moving Variance and Standard Deviation<a class="headerlink" href="#moving-variance-and-standard-deviation" title="Link to this heading">¶</a></h2>
+<p>The moving window variance calculates the <em>sample variance</em> of the values of each window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/>,
+defined by</p>
+<div class="math">
+<p><img src="_images/math/552cdc874c5cd5d4239ec5ca3580ca491a516d91.png" alt="\hat{\sigma}_i^2 = \frac{1}{\left( \left| W_i^{H,J} \right| - 1 \right)} \sum_{x_m \in W_i^{H,J}} \left( x_m - \hat{\mu}_i \right)^2"/></p>
+</div><p>where <img class="math" src="_images/math/5db1ed5ce1603ede5bb657e63ae65b8a0656c629.png" alt="\hat{\mu}_i"/> is the mean of <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> defined above. The standard deviation <img class="math" src="_images/math/4fd4664b56a65f98a8a32cc7a978c9761b3ffee4.png" alt="\hat{\sigma}_i"/>
+is the square root of the variance.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_variance">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_variance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_variance" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving window variance of the input vector <a class="reference internal" href="#c.gsl_movstat_variance" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the output in <a class="reference internal" href="#c.gsl_movstat_variance" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_variance" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled. It is allowed to have <a class="reference internal" href="#c.gsl_movstat_variance" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_variance" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>
+for an in-place moving variance.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_sd">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_sd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_sd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving window standard deviation of the input vector <a class="reference internal" href="#c.gsl_movstat_sd" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the output in <a class="reference internal" href="#c.gsl_movstat_sd" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_sd" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled. It is allowed to have <a class="reference internal" href="#c.gsl_movstat_sd" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_sd" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>
+for an in-place moving standard deviation.</p>
+</dd></dl>
+
+</section>
+<section id="moving-minimum-and-maximum">
+<span id="index-4"></span><h2>Moving Minimum and Maximum<a class="headerlink" href="#moving-minimum-and-maximum" title="Link to this heading">¶</a></h2>
+<p>The moving minimum/maximum calculates the minimum and maximum values of
+each window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/>.</p>
+<div class="math">
+<p><img src="_images/math/129a711f6edbd54d16f55c8aea6a7e5e7edd5e31.png" alt="y_i^{min} &amp;= \min \left( W_i^{H,J} \right) \\
+y_i^{max} &amp;= \max \left( W_i^{H,J} \right)"/></p>
+</div><dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_min">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_min</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_min" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving minimum of the input vector <a class="reference internal" href="#c.gsl_movstat_min" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the result in <a class="reference internal" href="#c.gsl_movstat_min" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_min" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled.
+It is allowed to have <a class="reference internal" href="#c.gsl_movstat_min" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_min" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place moving minimum.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_max">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_max" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving maximum of the input vector <a class="reference internal" href="#c.gsl_movstat_max" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the result in <a class="reference internal" href="#c.gsl_movstat_max" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_max" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled.
+It is allowed to have <a class="reference internal" href="#c.gsl_movstat_max" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_max" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place moving maximum.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_minmax">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_minmax</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y_min</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y_max</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_minmax" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving minimum and maximum of the input vector <a class="reference internal" href="#c.gsl_movstat_minmax" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the window minimums in <a class="reference internal" href="#c.gsl_movstat_minmax" title="y_min"><code class="xref c c-data docutils literal notranslate"><span class="pre">y_min</span></code></a> and the window maximums in <a class="reference internal" href="#c.gsl_movstat_minmax" title="y_max"><code class="xref c c-data docutils literal notranslate"><span class="pre">y_max</span></code></a>.
+The parameter <a class="reference internal" href="#c.gsl_movstat_minmax" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.</p>
+</dd></dl>
+
+</section>
+<section id="moving-sum">
+<span id="index-5"></span><h2>Moving Sum<a class="headerlink" href="#moving-sum" title="Link to this heading">¶</a></h2>
+<p>The moving window sum calculates the sum of the values of each window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/>.</p>
+<div class="math">
+<p><img src="_images/math/fb2997f694018557011dd087537d1bafb763c46b.png" alt="y_i = \sum_{x_m \in W_i^{H,J}} x_m"/></p>
+</div><dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_sum">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_sum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_sum" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving window sum of the input vector <a class="reference internal" href="#c.gsl_movstat_sum" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the output in <a class="reference internal" href="#c.gsl_movstat_sum" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_sum" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled. It is allowed to have <a class="reference internal" href="#c.gsl_movstat_sum" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_sum" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>
+for an in-place moving sum.</p>
+</dd></dl>
+
+</section>
+<section id="moving-median">
+<span id="index-6"></span><h2>Moving Median<a class="headerlink" href="#moving-median" title="Link to this heading">¶</a></h2>
+<p>The moving median calculates the median of the window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> for
+each sample <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>:</p>
+<div class="math">
+<p><img src="_images/math/d411dd09ba1081b74775d0412d3d9fac9a5809a8.png" alt="y_i = \textrm{median} \left( W_i^{H,J} \right)"/></p>
+</div><dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_median">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_median</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_median" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving median of the input vector <a class="reference internal" href="#c.gsl_movstat_median" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing
+the output in <a class="reference internal" href="#c.gsl_movstat_median" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>. The parameter <a class="reference internal" href="#c.gsl_movstat_median" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near
+the ends of the input should be handled. It is allowed for
+<a class="reference internal" href="#c.gsl_movstat_median" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_median" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place moving window median.</p>
+</dd></dl>
+
+</section>
+<section id="robust-scale-estimation">
+<h2>Robust Scale Estimation<a class="headerlink" href="#robust-scale-estimation" title="Link to this heading">¶</a></h2>
+<p>A common problem in statistics is to quantify the dispersion (also known as the variability, scatter, and spread) of
+a set of data. Often this is done by calculating the variance or standard deviation. However these statistics
+are strongly influenced by outliers, and can often provide erroneous results when even a small number of outliers
+are present.</p>
+<p>Several useful statistics have emerged to provide robust estimates of scale which are not as susceptible to data outliers.
+A few of these statistical scale estimators are described below.</p>
+<section id="moving-mad">
+<span id="index-7"></span><h3>Moving MAD<a class="headerlink" href="#moving-mad" title="Link to this heading">¶</a></h3>
+<p>The median absolute deviation (MAD) for the window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> is defined
+to be the median of the absolute deviations from the window’s median:</p>
+<div class="math">
+<p><img src="_images/math/edbd0f50da98ee223924f9b90824388e468924cc.png" alt="MAD_i = 1.4826 \times \textrm{median} \left( \left| W_i^{H,J} - \textrm{median} \left( W_i^{H,J} \right) \right| \right)"/></p>
+</div><p>The factor of <img class="math" src="_images/math/6b3e916d178fdc15709672758d2880dc55fefb01.png" alt="1.4826"/> makes the MAD an unbiased estimator of the standard deviation
+for Gaussian data. The MAD has an efficiency of 37%.  See <a class="reference internal" href="statistics.html#sec-mad-statistic"><span class="std std-ref">here</span></a> for more information.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_mad0">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_mad0</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xmedian</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xmad</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_mad0" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_movstat_mad">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_mad</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xmedian</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xmad</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_mad" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions compute the moving MAD of the input vector <a class="reference internal" href="#c.gsl_movstat_mad" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and store the result
+in <a class="reference internal" href="#c.gsl_movstat_mad" title="xmad"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmad</span></code></a>. The medians of each window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> are stored in <a class="reference internal" href="#c.gsl_movstat_mad" title="xmedian"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmedian</span></code></a>
+on output. The inputs <a class="reference internal" href="#c.gsl_movstat_mad" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, <a class="reference internal" href="#c.gsl_movstat_mad" title="xmedian"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmedian</span></code></a>, and <a class="reference internal" href="#c.gsl_movstat_mad" title="xmad"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmad</span></code></a> must all be the same length.
+The parameter <a class="reference internal" href="#c.gsl_movstat_mad" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.
+The function <code class="code docutils literal notranslate"><span class="pre">mad0</span></code> does not include the scale factor of <img class="math" src="_images/math/6b3e916d178fdc15709672758d2880dc55fefb01.png" alt="1.4826"/>, while the
+function <code class="code docutils literal notranslate"><span class="pre">mad</span></code> does include this factor.</p>
+</dd></dl>
+
+</section>
+<section id="moving-qqr">
+<span id="index-8"></span><h3>Moving QQR<a class="headerlink" href="#moving-qqr" title="Link to this heading">¶</a></h3>
+<p>The q-quantile range (QQR) is the difference between the <img class="math" src="_images/math/b330072da3f31e596c3d213abe62852854ea754b.png" alt="(1-q)"/> and <img class="math" src="_images/math/b37ddf7d09edbcd8e9da5bb7965bdcc6ab32b507.png" alt="q"/> quantiles
+of a set of data,</p>
+<div class="math">
+<p><img src="_images/math/469f4e25984f168537e44f10f3427cb40d313ff8.png" alt="QQR = Q_{1-q} - Q_q"/></p>
+</div><p>The case <img class="math" src="_images/math/b504cbd7c400f83ad3e6b834bceee73c3fc449df.png" alt="q = 0.25"/> corresponds to the well-known <em>interquartile range (IQR)</em>, which
+is the difference between the 75th and 25th percentiles of a set of data. The QQR is
+a <em>trimmed estimator</em>, the main idea being to discard the largest and smallest values in
+a data window and compute a scale estimate from the remaining middle values. In the case
+of the IQR, the largest and smallest 25% of the data are discarded and the scale is
+estimated from the remaining (middle) 50%.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_qqr">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_qqr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">q</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xqqr</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_qqr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving QQR of the input vector <a class="reference internal" href="#c.gsl_movstat_qqr" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and stores the q-quantile ranges
+of each window <img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> in <a class="reference internal" href="#c.gsl_movstat_qqr" title="xqqr"><code class="xref c c-data docutils literal notranslate"><span class="pre">xqqr</span></code></a>. The quantile parameter <a class="reference internal" href="#c.gsl_movstat_qqr" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a> must be between
+<img class="math" src="_images/math/77bfa83830305fac291e4e73b780e4cc9458b293.png" alt="0"/> and <img class="math" src="_images/math/efbb14d29d1c125dc69c29f97aab6f07e0bf13ad.png" alt="0.5"/>. The input <img class="math" src="_images/math/b504cbd7c400f83ad3e6b834bceee73c3fc449df.png" alt="q = 0.25"/> corresponds to the IQR.
+The inputs <a class="reference internal" href="#c.gsl_movstat_qqr" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and <a class="reference internal" href="#c.gsl_movstat_qqr" title="xqqr"><code class="xref c c-data docutils literal notranslate"><span class="pre">xqqr</span></code></a> must be the same length.
+The parameter <a class="reference internal" href="#c.gsl_movstat_qqr" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.</p>
+</dd></dl>
+
+</section>
+<section id="moving-s-n">
+<h3>Moving <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/><a class="headerlink" href="#moving-s-n" title="Link to this heading">¶</a></h3>
+<p>The <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> statistic proposed by Croux and Rousseeuw is based on pairwise differences between
+all samples in the window. It has an efficiency of 58%, significantly higher than the MAD.
+See <a class="reference internal" href="statistics.html#sec-sn-statistic"><span class="std std-ref">here</span></a> for more information.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_Sn">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_Sn</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xscale</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_Sn" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> of the input vector <a class="reference internal" href="#c.gsl_movstat_Sn" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and stores the output
+in <a class="reference internal" href="#c.gsl_movstat_Sn" title="xscale"><code class="xref c c-data docutils literal notranslate"><span class="pre">xscale</span></code></a>. The inputs <a class="reference internal" href="#c.gsl_movstat_Sn" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and <a class="reference internal" href="#c.gsl_movstat_Sn" title="xscale"><code class="xref c c-data docutils literal notranslate"><span class="pre">xscale</span></code></a> must be the same length.
+The parameter <a class="reference internal" href="#c.gsl_movstat_Sn" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.
+It is allowed for <a class="reference internal" href="#c.gsl_movstat_Sn" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_Sn" title="xscale"><code class="xref c c-data docutils literal notranslate"><span class="pre">xscale</span></code></a> for an in-place moving window <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/>.</p>
+</dd></dl>
+
+</section>
+<section id="moving-q-n">
+<h3>Moving <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/><a class="headerlink" href="#moving-q-n" title="Link to this heading">¶</a></h3>
+<p>The <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> statistic proposed by Croux and Rousseeuw is loosely based on the Hodges-Lehmann location
+estimator. It has a relatively high efficiency of 82%. See <a class="reference internal" href="statistics.html#sec-qn-statistic"><span class="std std-ref">here</span></a> for more information.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_Qn">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_Qn</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xscale</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_Qn" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the moving <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> of the input vector <a class="reference internal" href="#c.gsl_movstat_Qn" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and stores the output
+in <a class="reference internal" href="#c.gsl_movstat_Qn" title="xscale"><code class="xref c c-data docutils literal notranslate"><span class="pre">xscale</span></code></a>. The inputs <a class="reference internal" href="#c.gsl_movstat_Qn" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and <a class="reference internal" href="#c.gsl_movstat_Qn" title="xscale"><code class="xref c c-data docutils literal notranslate"><span class="pre">xscale</span></code></a> must be the same length.
+The parameter <a class="reference internal" href="#c.gsl_movstat_Qn" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.
+It is allowed for <a class="reference internal" href="#c.gsl_movstat_Qn" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_Qn" title="xscale"><code class="xref c c-data docutils literal notranslate"><span class="pre">xscale</span></code></a> for an in-place moving window <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/>.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="user-defined-moving-statistics">
+<span id="index-9"></span><h2>User-defined Moving Statistics<a class="headerlink" href="#user-defined-moving-statistics" title="Link to this heading">¶</a></h2>
+<p>GSL offers an interface for users to define their own moving window statistics
+functions, without needing to implement the edge-handling and accumulator
+machinery. This can be done by explicitly constructing the windows
+<img class="math" src="_images/math/a8a9d40035942a335181e12326fedcb6bc8523db.png" alt="W_i^{H,J}"/> for a given input signal (<a class="reference internal" href="#c.gsl_movstat_fill" title="gsl_movstat_fill"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_movstat_fill()</span></code></a>), or by calculating a user-defined
+function for each window automatically. In order to apply a user-defined
+function to each window, users must define a variable of type
+<a class="reference internal" href="#c.gsl_movstat_function" title="gsl_movstat_function"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_movstat_function</span></code></a> to pass into <a class="reference internal" href="#c.gsl_movstat_apply" title="gsl_movstat_apply"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_movstat_apply()</span></code></a>.
+This structure is defined as follows.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_movstat_function">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_function</span></span></span><a class="headerlink" href="#c.gsl_movstat_function" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Structure specifying user-defined moving window statistical function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="p">(</span><span class="o">*</span> <span class="n">function</span><span class="p">)</span> <span class="p">(</span><span class="n">const</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">double</span> <span class="n">x</span><span class="p">[],</span> <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">);</span>
+  <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">gsl_movstat_function</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This structure contains a pointer to the user-defined function as well
+as possible parameters to pass to the function.</p>
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_function.function">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">function</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gsl_movstat_function.function" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the user-defined statistic of the array <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>
+of length <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>. User-specified parameters are passed in via <a class="reference internal" href="#c.gsl_movstat_function.params" title="params"><code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code></a>.
+It is allowed to modify the array <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>.</p>
+</dd></dl>
+
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_function.params">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">params</span></span></span><a class="headerlink" href="#c.gsl_movstat_function.params" title="Link to this definition">¶</a><br /></dt>
+<dd><p>User-specified parameters to be passed into the function.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_apply">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_apply</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_function" title="gsl_movstat_function"><span class="n"><span class="pre">gsl_movstat_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">F</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">y</span></span>, <a class="reference internal" href="#c.gsl_movstat_workspace" title="gsl_movstat_workspace"><span class="n"><span class="pre">gsl_movstat_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_apply" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the user-defined moving window statistic specified in <a class="reference internal" href="#c.gsl_movstat_apply" title="F"><code class="xref c c-data docutils literal notranslate"><span class="pre">F</span></code></a>
+to the input vector <a class="reference internal" href="#c.gsl_movstat_apply" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, storing the output in <a class="reference internal" href="#c.gsl_movstat_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>.
+The parameter <a class="reference internal" href="#c.gsl_movstat_apply" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.
+It is allowed for <a class="reference internal" href="#c.gsl_movstat_apply" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> = <a class="reference internal" href="#c.gsl_movstat_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> for an in-place moving window calculation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_movstat_fill">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_fill</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_movstat_end_t" title="gsl_movstat_end_t"><span class="n"><span class="pre">gsl_movstat_end_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">endtype</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">idx</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">H</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">J</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">window</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_movstat_fill" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function explicitly constructs the sliding window for the input vector <a class="reference internal" href="#c.gsl_movstat_fill" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> which
+is centered on the sample <a class="reference internal" href="#c.gsl_movstat_fill" title="idx"><code class="xref c c-data docutils literal notranslate"><span class="pre">idx</span></code></a>. On output, the array <a class="reference internal" href="#c.gsl_movstat_fill" title="window"><code class="xref c c-data docutils literal notranslate"><span class="pre">window</span></code></a> will contain
+<img class="math" src="_images/math/ea677e790cfbb18cb8ed65282e81657aa25869be.png" alt="W_{idx}^{H,J}"/>. The number of samples to the left and right
+of the sample <a class="reference internal" href="#c.gsl_movstat_fill" title="idx"><code class="xref c c-data docutils literal notranslate"><span class="pre">idx</span></code></a> are specified by <a class="reference internal" href="#c.gsl_movstat_fill" title="H"><code class="xref c c-data docutils literal notranslate"><span class="pre">H</span></code></a> and <a class="reference internal" href="#c.gsl_movstat_fill" title="J"><code class="xref c c-data docutils literal notranslate"><span class="pre">J</span></code></a> respectively.
+The parameter <a class="reference internal" href="#c.gsl_movstat_fill" title="endtype"><code class="xref c c-data docutils literal notranslate"><span class="pre">endtype</span></code></a> specifies how windows near the ends of the input should be handled.
+The function returns the size of the window.</p>
+</dd></dl>
+
+</section>
+<section id="accumulators">
+<h2>Accumulators<a class="headerlink" href="#accumulators" title="Link to this heading">¶</a></h2>
+<p>Many of the algorithms of this chapter are based on an accumulator design, which
+process the input vector one sample at a time, updating calculations of the
+desired statistic for the current window. Each accumulator is stored in the
+following structure:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Structure specifying accumulator for moving window statistics:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+<span class="p">{</span>
+  <span class="n">size_t</span> <span class="p">(</span><span class="o">*</span> <span class="n">size</span><span class="p">)</span> <span class="p">(</span><span class="n">const</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">);</span>
+  <span class="nb">int</span> <span class="p">(</span><span class="o">*</span> <span class="n">init</span><span class="p">)</span> <span class="p">(</span><span class="n">const</span> <span class="n">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">vstate</span><span class="p">);</span>
+  <span class="nb">int</span> <span class="p">(</span><span class="o">*</span> <span class="n">insert</span><span class="p">)</span> <span class="p">(</span><span class="n">const</span> <span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">vstate</span><span class="p">);</span>
+  <span class="nb">int</span> <span class="p">(</span><span class="o">*</span> <span class="n">delete</span><span class="p">)</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span> <span class="n">vstate</span><span class="p">);</span>
+  <span class="nb">int</span> <span class="p">(</span><span class="o">*</span> <span class="n">get</span><span class="p">)</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">,</span> <span class="n">double</span> <span class="o">*</span> <span class="n">result</span><span class="p">,</span> <span class="n">const</span> <span class="n">void</span> <span class="o">*</span> <span class="n">vstate</span><span class="p">);</span>
+<span class="p">}</span> <span class="n">gsl_movstat_accum</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The structure contains function pointers responsible for performing
+different tasks for the accumulator.</p>
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum.size">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gsl_movstat_accum.size" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the size of the workspace (in bytes) needed by the accumulator
+for a moving window of length <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>.</p>
+</dd></dl>
+
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum.init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vstate</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gsl_movstat_accum.init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the workspace <code class="xref c c-data docutils literal notranslate"><span class="pre">vstate</span></code> for a moving window of length <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>.</p>
+</dd></dl>
+
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum.insert">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">insert</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vstate</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gsl_movstat_accum.insert" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function inserts a single sample <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> into the accumulator, updating internal
+calculations of the desired statistic. If the accumulator is full (i.e. <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> samples
+have already been inserted), then the oldest sample is deleted from the accumulator.</p>
+</dd></dl>
+
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum.delete">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">delete</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vstate</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gsl_movstat_accum.delete" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function deletes the oldest sample from the accumulator, updating internal
+calculations of the desired statistic.</p>
+</dd></dl>
+
+<dl class="c member">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum.get">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vstate</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gsl_movstat_accum.get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function stores the desired statistic for the current window in
+<code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code>. The input <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code> specifies optional parameters
+for calculating the statistic.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following accumulators of type <a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_movstat_accum</span></code></a> are defined by GSL to perform moving window statistics
+calculations.</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_min">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_min</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_min" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_max">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_max</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_max" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_minmax">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_minmax</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_minmax" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These accumulators calculate moving window minimum/maximums efficiently, using
+the algorithm of D. Lemire.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_mean">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_mean</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_mean" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_sd">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_sd</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_sd" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_variance">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_variance</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_variance" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These accumulators calculate the moving window mean, standard deviation, and variance,
+using the algorithm of B. P. Welford.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_median">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_median</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_median" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This accumulator calculates the moving window median using the min/max heap algorithm
+of Härdle and Steiger.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_Sn">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_Sn</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_Sn" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_Qn">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_Qn</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_Qn" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These accumulators calculate the moving window <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> and <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> statistics
+developed by Croux and Rousseeuw.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_sum">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_sum</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_sum" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This accumulator calculates the moving window sum.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_movstat_accum_qqr">
+<a class="reference internal" href="#c.gsl_movstat_accum" title="gsl_movstat_accum"><span class="n"><span class="pre">gsl_movstat_accum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_movstat_accum_qqr</span></span></span><a class="headerlink" href="#c.gsl_movstat_accum_qqr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This accumulator calculates the moving window q-quantile range.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<section id="example-1">
+<h3>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">¶</a></h3>
+<p>The following example program computes the moving mean, minimum and maximum of a noisy
+sinusoid signal of length <img class="math" src="_images/math/2ba625cafb4966ccfbb835cf54db3cbaee6d2b28.png" alt="N = 500"/> with a symmetric moving window of size <img class="math" src="_images/math/9688d84f7244178d83786c9480ab043f75c6e31b.png" alt="K = 11"/>.</p>
+<figure class="align-default" id="id1">
+<span id="fig-movstat1"></span><a class="reference internal image-reference" href="_images/movstat1.png"><img alt="_images/movstat1.png" src="_images/movstat1.png" style="width: 960.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Original signal time series (gray) with moving mean (green), moving minimum (blue),
+and moving maximum (orange).</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_movstat.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_randist.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_vector.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">500</span><span class="p">;</span>                      <span class="o">/*</span> <span class="n">length</span> <span class="n">of</span> <span class="n">time</span> <span class="n">series</span> <span class="o">*/</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>                       <span class="o">/*</span> <span class="n">window</span> <span class="n">size</span> <span class="o">*/</span>
+  <span class="n">gsl_movstat_workspace</span> <span class="o">*</span> <span class="n">w</span> <span class="o">=</span> <span class="n">gsl_movstat_alloc</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">xmean</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">xmin</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span><span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span><span class="p">(</span><span class="n">gsl_rng_default</span><span class="p">);</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="n">double</span><span class="p">)</span> <span class="n">N</span><span class="p">);</span>
+      <span class="n">double</span> <span class="n">ei</span> <span class="o">=</span> <span class="n">gsl_ran_gaussian</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+
+      <span class="n">gsl_vector_set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="o">+</span> <span class="n">ei</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="o">/*</span> <span class="n">compute</span> <span class="n">moving</span> <span class="n">statistics</span> <span class="o">*/</span>
+  <span class="n">gsl_movstat_mean</span><span class="p">(</span><span class="n">GSL_MOVSTAT_END_PADVALUE</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xmean</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+  <span class="n">gsl_movstat_minmax</span><span class="p">(</span><span class="n">GSL_MOVSTAT_END_PADVALUE</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="nb">print</span> <span class="n">results</span> <span class="o">*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;%zu </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+             <span class="n">i</span><span class="p">,</span>
+             <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span>
+             <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">xmean</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span>
+             <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span>
+             <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">xmax</span><span class="p">,</span> <span class="n">i</span><span class="p">));</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">xmean</span><span class="p">);</span>
+  <span class="n">gsl_rng_free</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+  <span class="n">gsl_movstat_free</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-2-robust-scale">
+<h3>Example 2: Robust Scale<a class="headerlink" href="#example-2-robust-scale" title="Link to this heading">¶</a></h3>
+<p>The following example program analyzes a time series of length <img class="math" src="_images/math/ddcca411d2a5477b5064962e9f89c13809bac8bc.png" alt="N = 1000"/> composed
+of Gaussian random variates with zero mean whose standard deviation changes in a piecewise constant fashion
+as shown in the table below.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Sample Range</p></th>
+<th class="head"><p><img class="math" src="_images/math/0b7620936fd7a90e5dde43c07609be992245871a.png" alt="\sigma"/></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1-200</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>201-450</p></td>
+<td><p>5.0</p></td>
+</tr>
+<tr class="row-even"><td><p>451-600</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>601-850</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-even"><td><p>851-1000</p></td>
+<td><p>5.0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Additionally, about 1% of the samples are perturbed to represent outliers by adding
+<img class="math" src="_images/math/c40ff925d743095b4955096b3b9bd86fa59403e6.png" alt="\pm 15"/> to the random Gaussian variate.
+The program calculates the moving statistics MAD, IQR, <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/>, <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/>, and
+the standard deviation using a symmetric moving window of length <img class="math" src="_images/math/80b92e3edcadd6a50ccc9511954fd015171eaaa9.png" alt="K = 41"/>. The results are shown in
+<a class="reference internal" href="#fig-movstat2"><span class="std std-numref">Fig. 7</span></a>.</p>
+<figure class="align-default" id="id2">
+<span id="fig-movstat2"></span><a class="reference internal image-reference" href="_images/movstat2.png"><img alt="_images/movstat2.png" src="_images/movstat2.png" style="width: 960.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Top: time series of piecewise constant variance. Bottom: scale estimates using a moving
+window; the true sigma value is in light blue, MAD in green, IQR in red, <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> in yellow, and
+<img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> in dark blue. The moving standard deviation is shown in gray.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The robust statistics follow the true standard deviation piecewise changes well, without being
+influenced by the outliers. The moving standard deviation (gray curve) is heavily influenced by
+the presence of the outliers. The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;gsl/gsl_math.h&gt;
+#include &lt;gsl/gsl_movstat.h&gt;
+#include &lt;gsl/gsl_rng.h&gt;
+#include &lt;gsl/gsl_randist.h&gt;
+#include &lt;gsl/gsl_vector.h&gt;
+
+int
+main(void)
+{
+  const size_t N = 1000;                                 /* length of time series */
+  const double sigma[] = { 1.0, 5.0, 1.0, 3.0, 5.0 };    /* variances */
+  const size_t N_sigma[] = { 200, 450, 600, 850, 1000 }; /* samples where variance changes */
+  const size_t K = 41;                                   /* window size */
+  gsl_vector *x = gsl_vector_alloc(N);
+  gsl_vector *xmedian = gsl_vector_alloc(N);
+  gsl_vector *xmad = gsl_vector_alloc(N);
+  gsl_vector *xiqr = gsl_vector_alloc(N);
+  gsl_vector *xSn = gsl_vector_alloc(N);
+  gsl_vector *xQn = gsl_vector_alloc(N);
+  gsl_vector *xsd = gsl_vector_alloc(N);
+  gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+  gsl_movstat_workspace * w = gsl_movstat_alloc(K);
+  size_t idx = 0;
+  size_t i;
+
+  for (i = 0; i &lt; N; ++i)
+    {
+      double gi = gsl_ran_gaussian(r, sigma[idx]);
+      double u = gsl_rng_uniform(r);
+      double outlier = (u &lt; 0.01) ? 15.0*GSL_SIGN(gi) : 0.0;
+      double xi = gi + outlier;
+
+      gsl_vector_set(x, i, xi);
+
+      if (i == N_sigma[idx] - 1)
+        ++idx;
+    }
+
+  /* compute moving statistics */
+  gsl_movstat_mad(GSL_MOVSTAT_END_TRUNCATE, x, xmedian, xmad, w);
+  gsl_movstat_qqr(GSL_MOVSTAT_END_TRUNCATE, x, 0.25, xiqr, w);
+  gsl_movstat_Sn(GSL_MOVSTAT_END_TRUNCATE, x, xSn, w);
+  gsl_movstat_Qn(GSL_MOVSTAT_END_TRUNCATE, x, xQn, w);
+  gsl_movstat_sd(GSL_MOVSTAT_END_TRUNCATE, x, xsd, w);
+
+  /* scale IQR by factor to approximate standard deviation */
+  gsl_vector_scale(xiqr, 0.7413);
+
+  /* print results */
+  idx = 0;
+  for (i = 0; i &lt; N; ++i)
+    {
+      printf(&quot;%zu %f %f %f %f %f %f %f\n&quot;,
+             i,
+             gsl_vector_get(x, i),
+             sigma[idx],
+             gsl_vector_get(xmad, i),
+             gsl_vector_get(xiqr, i),
+             gsl_vector_get(xSn, i),
+             gsl_vector_get(xQn, i),
+             gsl_vector_get(xsd, i));
+
+      if (i == N_sigma[idx] - 1)
+        ++idx;
+    }
+
+  gsl_vector_free(x);
+  gsl_vector_free(xmedian);
+  gsl_vector_free(xmad);
+  gsl_vector_free(xiqr);
+  gsl_vector_free(xSn);
+  gsl_vector_free(xQn);
+  gsl_vector_free(xsd);
+  gsl_rng_free(r);
+  gsl_movstat_free(w);
+
+  return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="example-3-user-defined-moving-window">
+<h3>Example 3: User-defined Moving Window<a class="headerlink" href="#example-3-user-defined-moving-window" title="Link to this heading">¶</a></h3>
+<p>This example program illustrates how a user can define their own moving window function to apply
+to an input vector. It constructs a random noisy time series of length <img class="math" src="_images/math/ddcca411d2a5477b5064962e9f89c13809bac8bc.png" alt="N = 1000"/> with
+some outliers added. Then it applies a moving window trimmed mean to the time series with
+trim parameter <img class="math" src="_images/math/71eca8833f4fb7dffd5fcad0fd2c47f6bcaad216.png" alt="\alpha = 0.1"/>. The length of the moving window is <img class="math" src="_images/math/9688d84f7244178d83786c9480ab043f75c6e31b.png" alt="K = 11"/>, so
+the smallest and largest sample of each window is discarded prior to computing the mean.
+The results are shown in <a class="reference internal" href="#fig-movstat3"><span class="std std-numref">Fig. 8</span></a>.</p>
+<figure class="align-default" id="id3">
+<span id="fig-movstat3"></span><a class="reference internal image-reference" href="_images/movstat3.png"><img alt="_images/movstat3.png" src="_images/movstat3.png" style="width: 960.0px; height: 480.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Noisy time series data (black) with moving window trimmed mean (red)</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The program is given below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;gsl/gsl_math.h&gt;
+#include &lt;gsl/gsl_movstat.h&gt;
+#include &lt;gsl/gsl_rng.h&gt;
+#include &lt;gsl/gsl_randist.h&gt;
+#include &lt;gsl/gsl_vector.h&gt;
+#include &lt;gsl/gsl_sort.h&gt;
+#include &lt;gsl/gsl_statistics.h&gt;
+
+double
+func(const size_t n, double x[], void * params)
+{
+  const double alpha = *(double *) params;
+
+  gsl_sort(x, 1, n);
+
+  return gsl_stats_trmean_from_sorted_data(alpha, x, 1, n);
+}
+
+int
+main(void)
+{
+  const size_t N = 1000;                /* length of time series */
+  const size_t K = 11;                  /* window size */
+  double alpha = 0.1;                   /* trimmed mean parameter */
+  gsl_vector *x = gsl_vector_alloc(N);  /* input vector */
+  gsl_vector *y = gsl_vector_alloc(N);  /* filtered output vector for alpha1 */
+  gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+  gsl_movstat_workspace *w = gsl_movstat_alloc(K);
+  gsl_movstat_function F;
+  size_t i;
+  double sum = 0.0;
+
+  /* generate input signal */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double ui = gsl_ran_gaussian(r, 1.0);
+      double outlier = (gsl_rng_uniform(r) &lt; 0.01) ? 10.0*GSL_SIGN(ui) : 0.0;
+      sum += ui;
+      gsl_vector_set(x, i, sum + outlier);
+    }
+
+  /* apply moving window function */
+  F.function = func;
+  F.params = &amp;alpha;
+  gsl_movstat_apply(GSL_MOVSTAT_END_PADVALUE, &amp;F, x, y, w);
+
+  /* print results */
+  for (i = 0; i &lt; N; ++i)
+    {
+      double xi = gsl_vector_get(x, i);
+      double yi = gsl_vector_get(y, i);
+
+      printf(&quot;%f %f\n&quot;, xi, yi);
+    }
+
+  gsl_vector_free(x);
+  gsl_vector_free(y);
+  gsl_rng_free(r);
+  gsl_movstat_free(w);
+
+  return 0;
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The following publications are relevant to the algorithms described
+in this chapter,</p>
+<ul class="simple">
+<li><p>W.Hardle and W. Steiger, <em>Optimal Median Smoothing</em>, Appl. Statist., 44 (2), 1995.</p></li>
+<li><p>D. Lemire, <em>Streaming Maximum-Minimum Filter Using No More than Three Comparisons per Element</em>,
+Nordic Journal of Computing, 13 (4), 2006 (<a class="reference external" href="https://arxiv.org/abs/cs/0610046">https://arxiv.org/abs/cs/0610046</a>).</p></li>
+<li><p>B. P. Welford, <em>Note on a method for calculating corrected sums of squares and products</em>,
+Technometrics, 4 (3), 1962.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rstat.html" class="btn btn-neutral float-left" title="Running Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="filter.html" class="btn btn-neutral float-right" title="Digital Filtering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

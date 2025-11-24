@@ -1,0 +1,930 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monte Carlo Integration &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulated Annealing" href="siman.html" />
+    <link rel="prev" title="N-tuples" href="ntuple.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Monte Carlo Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#interface">Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plain-monte-carlo">PLAIN Monte Carlo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#miser">MISER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vegas">VEGAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Monte Carlo Integration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/montecarlo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="ntuple.html" class="btn btn-neutral float-left" title="N-tuples" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="siman.html" class="btn btn-neutral float-right" title="Simulated Annealing" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="monte-carlo-integration">
+<span id="index-0"></span><h1>Monte Carlo Integration<a class="headerlink" href="#monte-carlo-integration" title="Link to this heading">¶</a></h1>
+<p>This chapter describes routines for multidimensional Monte Carlo
+integration.  These include the traditional Monte Carlo method and
+adaptive algorithms such as VEGAS and MISER which use
+importance sampling and stratified sampling techniques. Each algorithm
+computes an estimate of a multidimensional definite integral of the
+form,</p>
+<div class="math">
+<p><img src="_images/math/c0464336a8bbf8f0fdd2799d2fe40b858717e287.png" alt="I = \int_{x_l}^{x_u} dx \int_{y_l}^{y_u} dy ... f(x, y, ...)"/></p>
+</div><p>over a hypercubic region <img class="math" src="_images/math/10274287aa46dfb54335749cad436f602d0ddfc1.png" alt="((x_l,x_u)"/>, <img class="math" src="_images/math/adc3d8ea36ebad573ee2f6c289750d5ef4c24d3b.png" alt="(y_l,y_u), ...)"/> using
+a fixed number of function calls.  The routines also provide a
+statistical estimate of the error on the result.  This error estimate
+should be taken as a guide rather than as a strict error bound—random
+sampling of the region may not uncover all the important features
+of the function, resulting in an underestimate of the error.</p>
+<p>The functions are defined in separate header files for each routine,
+<code class="file docutils literal notranslate"><span class="pre">gsl_monte_plain.h</span></code>, <code class="file docutils literal notranslate"><span class="pre">gsl_monte_miser.h</span></code> and
+<code class="file docutils literal notranslate"><span class="pre">gsl_monte_vegas.h</span></code>.</p>
+<section id="interface">
+<h2>Interface<a class="headerlink" href="#interface" title="Link to this heading">¶</a></h2>
+<p>All of the Monte Carlo integration routines use the same general form of
+interface.  There is an allocator to allocate memory for control
+variables and workspace, a routine to initialize those control
+variables, the integrator itself, and a function to free the space when
+done.</p>
+<p>Each integration function requires a random number generator to be
+supplied, and returns an estimate of the integral and its standard
+deviation.  The accuracy of the result is determined by the number of
+function calls specified by the user.  If a known level of accuracy is
+required this can be achieved by calling the integrator several times
+and averaging the individual results until the desired accuracy is
+obtained.</p>
+<p>Random sample points used within the Monte Carlo routines are always
+chosen strictly within the integration region, so that endpoint
+singularities are automatically avoided.</p>
+<p>The function to be integrated has its own datatype, defined in the
+header file <code class="file docutils literal notranslate"><span class="pre">gsl_monte.h</span></code>.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_monte_function">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_function</span></span></span><a class="headerlink" href="#c.gsl_monte_function" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type defines a general function with parameters for Monte
+Carlo integration.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">(*</span> <span class="pre">f)</span> <span class="pre">(double</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">size_t</span> <span class="pre">dim,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params)</span></code></p></td>
+<td><p>this function should return the value
+<img class="math" src="_images/math/6dea37df222c0d9f1bcf0f1a4cf97b1913ac5cc7.png" alt="f(x,params)"/> for the argument
+<code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>,
+where <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> is an array of size
+<code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code> giving the coordinates of the
+point where the function is to be
+evaluated.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">dim</span></code></p></td>
+<td><p>the number of dimensions for <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">params</span></code></p></td>
+<td><p>a pointer to the parameters of the
+function.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Here is an example for a quadratic function in two dimensions,</p>
+<div class="math">
+<p><img src="_images/math/28b62c4d617f33b88bee89a80ec06371363dfe09.png" alt="f(x,y) = a x^2 + b x y + c y^2"/></p>
+</div><p>with <img class="math" src="_images/math/97a91269f9bb43e573b4c0c9928c5e5ef035c546.png" alt="a = 3"/>, <img class="math" src="_images/math/9766d2b3d7bf2fc2584eb6c09105607788004682.png" alt="b = 2"/>, <img class="math" src="_images/math/43cb59c460acd4b894e8d23b2b56e84e918d2ae0.png" alt="c = 1"/>.  The following code
+defines a <a class="reference internal" href="#c.gsl_monte_function" title="gsl_monte_function"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_monte_function</span></code></a> <code class="code docutils literal notranslate"><span class="pre">F</span></code> which you could pass to an
+integrator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">my_f_params</span> <span class="p">{</span> <span class="n">double</span> <span class="n">a</span><span class="p">;</span> <span class="n">double</span> <span class="n">b</span><span class="p">;</span> <span class="n">double</span> <span class="n">c</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="n">double</span>
+<span class="n">my_f</span> <span class="p">(</span><span class="n">double</span> <span class="n">x</span><span class="p">[],</span> <span class="n">size_t</span> <span class="n">dim</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">struct</span> <span class="n">my_f_params</span> <span class="o">*</span> <span class="n">fp</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">my_f_params</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">;</span>
+
+   <span class="k">if</span> <span class="p">(</span><span class="n">dim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="n">fprintf</span> <span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;error: dim != 2&quot;</span><span class="p">);</span>
+        <span class="n">abort</span> <span class="p">();</span>
+      <span class="p">}</span>
+
+   <span class="k">return</span>  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+             <span class="o">+</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+               <span class="o">+</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">gsl_monte_function</span> <span class="n">F</span><span class="p">;</span>
+<span class="n">struct</span> <span class="n">my_f_params</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">};</span>
+
+<span class="n">F</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">my_f</span><span class="p">;</span>
+<span class="n">F</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">F</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The function <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/> can be evaluated using the following macro:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define GSL_MONTE_FN_EVAL(F,x)</span>
+    <span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">F</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">))(</span><span class="n">x</span><span class="p">,(</span><span class="n">F</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">dim</span><span class="p">,(</span><span class="n">F</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="plain-monte-carlo">
+<span id="index-1"></span><h2>PLAIN Monte Carlo<a class="headerlink" href="#plain-monte-carlo" title="Link to this heading">¶</a></h2>
+<p>The plain Monte Carlo algorithm samples points randomly from the
+integration region to estimate the integral and its error.  Using this
+algorithm the estimate of the integral <img class="math" src="_images/math/25449f8329c0b99fdbfb4bb9d6dce6959149cc2f.png" alt="E(f; N)"/> for <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/>
+randomly distributed points <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> is given by,</p>
+<div class="math">
+<p><img src="_images/math/573503c1403d8e7c9640c51ac8002ef7b0fbc541.png" alt="E(f; N) =  V \langle f \rangle = {V \over N} \sum_i^N f(x_i)"/></p>
+</div><p>where <img class="math" src="_images/math/c4b9de55f86fc0a11a30113a1ff1468a7729c621.png" alt="V"/> is the volume of the integration region.  The error on
+this estimate <img class="math" src="_images/math/86afff1be2a5fa27625c8680df2836792c6d13e9.png" alt="\sigma(E;N)"/> is calculated from the estimated
+variance of the mean,</p>
+<div class="math">
+<p><img src="_images/math/5043be37e87b4bcc313148e6ff2c8e196262a4bd.png" alt="\sigma^2 (E; N) = {V^2 \over N^2 } \sum_i^N (f(x_i) - \langle f \rangle)^2."/></p>
+</div><p>For large <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/> this variance decreases asymptotically as
+<img class="math" src="_images/math/877bf9913a824e361eda3cc5d90ce38dd916b481.png" alt="\Var(f)/N"/>, where <img class="math" src="_images/math/ab5711f8277564af0b5b20b291ccc0ad4f0ab49c.png" alt="\Var(f)"/> is the true variance of the
+function over the integration region.  The error estimate itself should
+decrease as <img class="math" src="_images/math/91402ff26b6f7b430d2ca7e8258c9a586db1c576.png" alt="\sigma(f)/\sqrt{N}"/>.
+The familiar law of errors
+decreasing as <img class="math" src="_images/math/df933792d094342d230cc3d92af41e895c4f6c61.png" alt="1/\sqrt{N}"/>
+applies—to reduce the error by a
+factor of 10 requires a 100-fold increase in the number of sample
+points.</p>
+<p>The functions described in this section are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_monte_plain.h</span></code>.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_monte_plain_state">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_plain_state</span></span></span><a class="headerlink" href="#c.gsl_monte_plain_state" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for plain Monte Carlo integration</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_plain_alloc">
+<a class="reference internal" href="#c.gsl_monte_plain_state" title="gsl_monte_plain_state"><span class="n"><span class="pre">gsl_monte_plain_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_plain_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_plain_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates and initializes a workspace for Monte Carlo
+integration in <a class="reference internal" href="#c.gsl_monte_plain_alloc" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a> dimensions.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_plain_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_plain_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_plain_state" title="gsl_monte_plain_state"><span class="n"><span class="pre">gsl_monte_plain_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_plain_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a previously allocated integration state.
+This allows an existing workspace to be reused for different
+integrations.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_plain_integrate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_plain_integrate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_function" title="gsl_monte_function"><span class="n"><span class="pre">gsl_monte_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xl</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xu</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">calls</span></span>, <a class="reference internal" href="rng.html#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span>, <a class="reference internal" href="#c.gsl_monte_plain_state" title="gsl_monte_plain_state"><span class="n"><span class="pre">gsl_monte_plain_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_plain_integrate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This routines uses the plain Monte Carlo algorithm to integrate the
+function <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> over the <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>-dimensional hypercubic region
+defined by the lower and upper limits in the arrays <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="xl"><code class="xref c c-data docutils literal notranslate"><span class="pre">xl</span></code></a> and
+<a class="reference internal" href="#c.gsl_monte_plain_integrate" title="xu"><code class="xref c c-data docutils literal notranslate"><span class="pre">xu</span></code></a>, each of size <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>.  The integration uses a fixed number
+of function calls <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="calls"><code class="xref c c-data docutils literal notranslate"><span class="pre">calls</span></code></a>, and obtains random sampling points using
+the random number generator <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>. A previously allocated workspace
+<a class="reference internal" href="#c.gsl_monte_plain_integrate" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> must be supplied.  The result of the integration is returned in
+<a class="reference internal" href="#c.gsl_monte_plain_integrate" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a>, with an estimated absolute error <a class="reference internal" href="#c.gsl_monte_plain_integrate" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_plain_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_plain_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_plain_state" title="gsl_monte_plain_state"><span class="n"><span class="pre">gsl_monte_plain_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_plain_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the integrator state
+<a class="reference internal" href="#c.gsl_monte_plain_free" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="miser">
+<span id="index-2"></span><h2>MISER<a class="headerlink" href="#miser" title="Link to this heading">¶</a></h2>
+<p>The MISER algorithm of Press and Farrar is based on recursive
+stratified sampling.  This technique aims to reduce the overall
+integration error by concentrating integration points in the regions of
+highest variance.</p>
+<p>The idea of stratified sampling begins with the observation that for two
+disjoint regions <img class="math" src="_images/math/ab8ec5d5a907c2d63aba6be0e2e1abbe131f208c.png" alt="a"/> and <img class="math" src="_images/math/b9e7a11d6c55d13df40be0f0e33a142fd09d27af.png" alt="b"/> with Monte Carlo estimates of the
+integral <img class="math" src="_images/math/f62ac772ef47f81ae8f2ebbfd5a555525d49e93c.png" alt="E_a(f)"/> and <img class="math" src="_images/math/c99392b46182f2b7ccf37afa10fd7143706426e8.png" alt="E_b(f)"/> and variances
+<img class="math" src="_images/math/c4b13d9ffa6d7cd060747204dda6911c084d7f77.png" alt="\sigma_a^2(f)"/> and <img class="math" src="_images/math/ee2ec2dd75d9bbd00c16ca99a61a375dce04b8bf.png" alt="\sigma_b^2(f)"/>, the variance
+<img class="math" src="_images/math/ab5711f8277564af0b5b20b291ccc0ad4f0ab49c.png" alt="\Var(f)"/> of the combined estimate
+<img class="math" src="_images/math/59660e7f426a1e0a96c42ff02fe823fcec61d8e0.png" alt="E(f) = {1\over 2} (E_a(f) + E_b(f))"/>
+is given by,</p>
+<div class="math">
+<p><img src="_images/math/747d700424dd1035b33c0da9717faebeac0e2dd5.png" alt="\Var(f) = {\sigma_a^2(f) \over 4 N_a} + {\sigma_b^2(f) \over 4 N_b}."/></p>
+</div><p>It can be shown that this variance is minimized by distributing the
+points such that,</p>
+<div class="math">
+<p><img src="_images/math/db1ea1b5d1189bae8a1f06384d51c6a01fd9dd27.png" alt="{N_a \over N_a+N_b} = {\sigma_a \over \sigma_a + \sigma_b}."/></p>
+</div><p>Hence the smallest error estimate is obtained by allocating sample
+points in proportion to the standard deviation of the function in each
+sub-region.</p>
+<p>The MISER algorithm proceeds by bisecting the integration region
+along one coordinate axis to give two sub-regions at each step.  The
+direction is chosen by examining all <img class="math" src="_images/math/92f093ef8e67b2293db7509b06c7817f327f445c.png" alt="d"/> possible bisections and
+selecting the one which will minimize the combined variance of the two
+sub-regions.  The variance in the sub-regions is estimated by sampling
+with a fraction of the total number of points available to the current
+step.  The same procedure is then repeated recursively for each of the
+two half-spaces from the best bisection. The remaining sample points are
+allocated to the sub-regions using the formula for <img class="math" src="_images/math/f22126062202c9d795b00bbf4b92e6d16a75b486.png" alt="N_a"/> and
+<img class="math" src="_images/math/8b65c94f797ee50aab8eaf9a7439aa6048fadf46.png" alt="N_b"/>.  This recursive allocation of integration points continues
+down to a user-specified depth where each sub-region is integrated using
+a plain Monte Carlo estimate.  These individual values and their error
+estimates are then combined upwards to give an overall result and an
+estimate of its error.</p>
+<p>The functions described in this section are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_monte_miser.h</span></code>.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_state">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_state" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace is used for MISER Monte Carlo integration</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_alloc">
+<a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_miser_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates and initializes a workspace for Monte Carlo
+integration in <a class="reference internal" href="#c.gsl_monte_miser_alloc" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a> dimensions.  The workspace is used to maintain
+the state of the integration.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_miser_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a previously allocated integration state.
+This allows an existing workspace to be reused for different
+integrations.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_integrate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_integrate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_function" title="gsl_monte_function"><span class="n"><span class="pre">gsl_monte_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xl</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xu</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">calls</span></span>, <a class="reference internal" href="rng.html#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span>, <a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_miser_integrate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This routines uses the MISER Monte Carlo algorithm to integrate the
+function <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> over the <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>-dimensional hypercubic region
+defined by the lower and upper limits in the arrays <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="xl"><code class="xref c c-data docutils literal notranslate"><span class="pre">xl</span></code></a> and
+<a class="reference internal" href="#c.gsl_monte_miser_integrate" title="xu"><code class="xref c c-data docutils literal notranslate"><span class="pre">xu</span></code></a>, each of size <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>.  The integration uses a fixed number
+of function calls <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="calls"><code class="xref c c-data docutils literal notranslate"><span class="pre">calls</span></code></a>, and obtains random sampling points using
+the random number generator <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>. A previously allocated workspace
+<a class="reference internal" href="#c.gsl_monte_miser_integrate" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> must be supplied.  The result of the integration is returned in
+<a class="reference internal" href="#c.gsl_monte_miser_integrate" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a>, with an estimated absolute error <a class="reference internal" href="#c.gsl_monte_miser_integrate" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_miser_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the integrator state
+<a class="reference internal" href="#c.gsl_monte_miser_free" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+<p>The MISER algorithm has several configurable parameters which can
+be changed using the following two functions <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params_get">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_params_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <a class="reference internal" href="#c.gsl_monte_miser_params" title="gsl_monte_miser_params"><span class="n"><span class="pre">gsl_monte_miser_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_miser_params_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the parameters of the integrator state into the
+user-supplied <a class="reference internal" href="#c.gsl_monte_miser_params_get" title="params"><code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code></a> structure.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params_set">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_params_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><span class="n"><span class="pre">gsl_monte_miser_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_monte_miser_params" title="gsl_monte_miser_params"><span class="n"><span class="pre">gsl_monte_miser_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_miser_params_set" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets the integrator parameters based on values provided
+in the <a class="reference internal" href="#c.gsl_monte_miser_params_set" title="params"><code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code></a> structure.</p>
+</dd></dl>
+
+<p>Typically the values of the parameters are first read using
+<a class="reference internal" href="#c.gsl_monte_miser_params_get" title="gsl_monte_miser_params_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_monte_miser_params_get()</span></code></a>, the necessary changes are made to
+the fields of the <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code> structure, and the values are copied
+back into the integrator state using
+<a class="reference internal" href="#c.gsl_monte_miser_params_set" title="gsl_monte_miser_params_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_monte_miser_params_set()</span></code></a>.  The functions use the
+<a class="reference internal" href="#c.gsl_monte_miser_params" title="gsl_monte_miser_params"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_monte_miser_params</span></code></a> structure which contains the following
+fields:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_miser_params</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_params" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params.estimate_frac">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">estimate_frac</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_params.estimate_frac" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This parameter specifies the fraction of the currently available number of
+function calls which are allocated to estimating the variance at each
+recursive step. The default value is 0.1.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params.min_calls">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_calls</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_params.min_calls" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This parameter specifies the minimum number of function calls required
+for each estimate of the variance. If the number of function calls
+allocated to the estimate using <a class="reference internal" href="#c.gsl_monte_miser_params.estimate_frac" title="estimate_frac"><code class="xref c c-data docutils literal notranslate"><span class="pre">estimate_frac</span></code></a> falls below
+<a class="reference internal" href="#c.gsl_monte_miser_params.min_calls" title="min_calls"><code class="xref c c-data docutils literal notranslate"><span class="pre">min_calls</span></code></a> then <a class="reference internal" href="#c.gsl_monte_miser_params.min_calls" title="min_calls"><code class="xref c c-data docutils literal notranslate"><span class="pre">min_calls</span></code></a> are used instead.  This ensures
+that each estimate maintains a reasonable level of accuracy.  The
+default value of <a class="reference internal" href="#c.gsl_monte_miser_params.min_calls" title="min_calls"><code class="xref c c-data docutils literal notranslate"><span class="pre">min_calls</span></code></a> is <code class="code docutils literal notranslate"><span class="pre">16</span> <span class="pre">*</span> <span class="pre">dim</span></code>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params.min_calls_per_bisection">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_calls_per_bisection</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_params.min_calls_per_bisection" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This parameter specifies the minimum number of function calls required
+to proceed with a bisection step.  When a recursive step has fewer calls
+available than <a class="reference internal" href="#c.gsl_monte_miser_params.min_calls_per_bisection" title="min_calls_per_bisection"><code class="xref c c-data docutils literal notranslate"><span class="pre">min_calls_per_bisection</span></code></a> it performs a plain Monte
+Carlo estimate of the current sub-region and terminates its branch of
+the recursion.  The default value of this parameter is <code class="code docutils literal notranslate"><span class="pre">32</span> <span class="pre">*</span> <span class="pre">min_calls</span></code>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params.alpha">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">alpha</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_params.alpha" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This parameter controls how the estimated variances for the two
+sub-regions of a bisection are combined when allocating points.  With
+recursive sampling the overall variance should scale better than
+<img class="math" src="_images/math/e0506576810590fcd645c97774223d9362231ab9.png" alt="1/N"/>, since the values from the sub-regions will be obtained using
+a procedure which explicitly minimizes their variance.  To accommodate
+this behavior the MISER algorithm allows the total variance to
+depend on a scaling parameter <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/>,</p>
+<div class="math">
+<p><img src="_images/math/4a0d3b6b05232f882a2714ac9e38145bed656694.png" alt="\Var(f) = {\sigma_a \over N_a^\alpha} + {\sigma_b \over N_b^\alpha}."/></p>
+</div><p>The authors of the original paper describing MISER recommend the
+value <img class="math" src="_images/math/3339f4b2cb90b9a6b2d06517c330466819ff29c1.png" alt="\alpha = 2"/> as a good choice, obtained from numerical
+experiments, and this is used as the default value in this
+implementation.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_miser_params.dither">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dither</span></span></span><a class="headerlink" href="#c.gsl_monte_miser_params.dither" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This parameter introduces a random fractional variation of size
+<a class="reference internal" href="#c.gsl_monte_miser_params.dither" title="dither"><code class="xref c c-data docutils literal notranslate"><span class="pre">dither</span></code></a> into each bisection, which can be used to break the
+symmetry of integrands which are concentrated near the exact center of
+the hypercubic integration region.  The default value of dither is zero,
+so no variation is introduced. If needed, a typical value of
+<a class="reference internal" href="#c.gsl_monte_miser_params.dither" title="dither"><code class="xref c c-data docutils literal notranslate"><span class="pre">dither</span></code></a> is 0.1.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="vegas">
+<span id="index-3"></span><h2>VEGAS<a class="headerlink" href="#vegas" title="Link to this heading">¶</a></h2>
+<p>The VEGAS algorithm of Lepage is based on importance sampling.  It
+samples points from the probability distribution described by the
+function <img class="math" src="_images/math/60d26adb295d0859ab47994d7762136fcbd9cf3b.png" alt="|f|"/>, so that the points are concentrated in the regions
+that make the largest contribution to the integral.</p>
+<p>In general, if the Monte Carlo integral of <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> is sampled with
+points distributed according to a probability distribution described by
+the function <img class="math" src="_images/math/a2d34c8a92c62b29096b15c1ae20083c2b0985ca.png" alt="g"/>, we obtain an estimate <img class="math" src="_images/math/bf7bfdf8dce34d0f30abbb0c01d4cf1cc6a3da83.png" alt="E_g(f; N)"/>,</p>
+<div class="math">
+<p><img src="_images/math/568b78955a0fbfb170ebac45c67e14fe97b27800.png" alt="E_g(f; N) = E(f/g; N)"/></p>
+</div><p>with a corresponding variance,</p>
+<div class="math">
+<p><img src="_images/math/a13fb58f8f9ccf83b4f5b579f9e44eaa5ba58eb7.png" alt="\Var_g(f; N) = \Var(f/g; N)"/></p>
+</div><p>If the probability distribution is chosen as <img class="math" src="_images/math/04282a367a1efbbef770e2f7a77bc5d3756624e2.png" alt="g = |f|/I(|f|)"/> then
+it can be shown that the variance <img class="math" src="_images/math/d69c4f9402749e2c89b41e488da9365ec3ae62eb.png" alt="V_g(f; N)"/> vanishes, and the
+error in the estimate will be zero.  In practice it is not possible to
+sample from the exact distribution <img class="math" src="_images/math/a2d34c8a92c62b29096b15c1ae20083c2b0985ca.png" alt="g"/> for an arbitrary function, so
+importance sampling algorithms aim to produce efficient approximations
+to the desired distribution.</p>
+<p>The VEGAS algorithm approximates the exact distribution by making a
+number of passes over the integration region while histogramming the
+function <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>. Each histogram is used to define a sampling
+distribution for the next pass.  Asymptotically this procedure converges
+to the desired distribution. In order
+to avoid the number of histogram bins growing like <img class="math" src="_images/math/c822f42f42abf2f0c0cdd0057240b0fa3aca240a.png" alt="K^d"/> the
+probability distribution is approximated by a separable function:
+<img class="math" src="_images/math/a22a7658c5599d48073be2a5441198bf4f16e618.png" alt="g(x_1, x_2, \ldots) = g_1(x_1) g_2(x_2) \ldots"/>
+so that the number of bins required is only <img class="math" src="_images/math/ee2d016ecbdbf67bf0e5672aa703b19770b8f27e.png" alt="Kd"/>.
+This is equivalent to locating the peaks of the function from the
+projections of the integrand onto the coordinate axes.  The efficiency
+of VEGAS depends on the validity of this assumption.  It is most
+efficient when the peaks of the integrand are well-localized.  If an
+integrand can be rewritten in a form which is approximately separable
+this will increase the efficiency of integration with VEGAS.</p>
+<p>VEGAS incorporates a number of additional features, and combines both
+stratified sampling and importance sampling.  The integration region is
+divided into a number of “boxes”, with each box getting a fixed
+number of points (the goal is 2).  Each box can then have a fractional
+number of bins, but if the ratio of bins-per-box is less than two, Vegas switches to a
+kind variance reduction (rather than importance sampling).</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_state">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_state" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace is used for VEGAS Monte Carlo integration</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_alloc">
+<a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates and initializes a workspace for Monte Carlo
+integration in <a class="reference internal" href="#c.gsl_monte_vegas_alloc" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a> dimensions.  The workspace is used to maintain
+the state of the integration.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes a previously allocated integration state.
+This allows an existing workspace to be reused for different
+integrations.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_integrate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_integrate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_function" title="gsl_monte_function"><span class="n"><span class="pre">gsl_monte_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xl</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xu</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">calls</span></span>, <a class="reference internal" href="rng.html#c.gsl_rng" title="gsl_rng"><span class="n"><span class="pre">gsl_rng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">r</span></span>, <a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_integrate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This routines uses the VEGAS Monte Carlo algorithm to integrate the
+function <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> over the <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>-dimensional hypercubic region
+defined by the lower and upper limits in the arrays <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="xl"><code class="xref c c-data docutils literal notranslate"><span class="pre">xl</span></code></a> and
+<a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="xu"><code class="xref c c-data docutils literal notranslate"><span class="pre">xu</span></code></a>, each of size <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>.  The integration uses a fixed number
+of function calls <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="calls"><code class="xref c c-data docutils literal notranslate"><span class="pre">calls</span></code></a>, and obtains random sampling points using
+the random number generator <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="r"><code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code></a>. A previously allocated workspace
+<a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> must be supplied.  The result of the integration is returned in
+<a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a>, with an estimated absolute error <a class="reference internal" href="#c.gsl_monte_vegas_integrate" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.  The result
+and its error estimate are based on a weighted average of independent
+samples. The chi-squared per degree of freedom for the weighted average
+is returned via the state struct component, <code class="code docutils literal notranslate"><span class="pre">s-&gt;chisq</span></code>, and must be
+consistent with 1 for the weighted average to be reliable.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the integrator state
+<a class="reference internal" href="#c.gsl_monte_vegas_free" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+<p>The VEGAS algorithm computes a number of independent estimates of the
+integral internally, according to the <code class="code docutils literal notranslate"><span class="pre">iterations</span></code> parameter
+described below, and returns their weighted average.  Random sampling of
+the integrand can occasionally produce an estimate where the error is
+zero, particularly if the function is constant in some regions. An
+estimate with zero error causes the weighted average to break down and
+must be handled separately. In the original Fortran implementations of
+VEGAS the error estimate is made non-zero by substituting a small
+value (typically <code class="code docutils literal notranslate"><span class="pre">1e-30</span></code>).  The implementation in GSL differs from
+this and avoids the use of an arbitrary constant—it either assigns
+the value a weight which is the average weight of the preceding
+estimates or discards it according to the following procedure,</p>
+<ul>
+<li><p>current estimate has zero error, weighted average has finite error</p>
+<p>The current estimate is assigned a weight which is the average weight of
+the preceding estimates.</p>
+</li>
+<li><p>current estimate has finite error, previous estimates had zero error</p>
+<p>The previous estimates are discarded and the weighted averaging
+procedure begins with the current estimate.</p>
+</li>
+<li><p>current estimate has zero error, previous estimates had zero error</p>
+<p>The estimates are averaged using the arithmetic mean, but no error is computed.</p>
+</li>
+</ul>
+<p>The convergence of the algorithm can be tested using the overall
+chi-squared value of the results, which is available from the
+following function:</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_chisq">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_chisq</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_chisq" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the chi-squared per degree of freedom for the
+weighted estimate of the integral.  The returned value should be close
+to 1.  A value which differs significantly from 1 indicates that the
+values from different iterations are inconsistent.  In this case the
+weighted error will be under-estimated, and further iterations of the
+algorithm are needed to obtain reliable results.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_runval">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_runval</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sigma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_runval" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the raw (unaveraged) values of the integral
+<a class="reference internal" href="#c.gsl_monte_vegas_runval" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a> and its error <a class="reference internal" href="#c.gsl_monte_vegas_runval" title="sigma"><code class="xref c c-data docutils literal notranslate"><span class="pre">sigma</span></code></a> from the most recent iteration
+of the algorithm.</p>
+</dd></dl>
+
+<p>The VEGAS algorithm is highly configurable. Several parameters
+can be changed using the following two functions.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params_get">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_params_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <a class="reference internal" href="#c.gsl_monte_vegas_params" title="gsl_monte_vegas_params"><span class="n"><span class="pre">gsl_monte_vegas_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_params_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the parameters of the integrator state into the
+user-supplied <a class="reference internal" href="#c.gsl_monte_vegas_params_get" title="params"><code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code></a> structure.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params_set">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_params_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><span class="n"><span class="pre">gsl_monte_vegas_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_monte_vegas_params" title="gsl_monte_vegas_params"><span class="n"><span class="pre">gsl_monte_vegas_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_monte_vegas_params_set" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets the integrator parameters based on values provided
+in the <a class="reference internal" href="#c.gsl_monte_vegas_params_set" title="params"><code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code></a> structure.</p>
+</dd></dl>
+
+<p>Typically the values of the parameters are first read using
+<a class="reference internal" href="#c.gsl_monte_vegas_params_get" title="gsl_monte_vegas_params_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_monte_vegas_params_get()</span></code></a>, the necessary changes are made to
+the fields of the <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code> structure, and the values are copied
+back into the integrator state using
+<a class="reference internal" href="#c.gsl_monte_vegas_params_set" title="gsl_monte_vegas_params_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_monte_vegas_params_set()</span></code></a>.  The functions use the
+<a class="reference internal" href="#c.gsl_monte_vegas_params" title="gsl_monte_vegas_params"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_monte_vegas_params</span></code></a> structure which contains the following
+fields:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_monte_vegas_params</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params.alpha">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">alpha</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params.alpha" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The parameter <a class="reference internal" href="#c.gsl_monte_vegas_params.alpha" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a> controls the stiffness of the rebinning
+algorithm.  It is typically set between one and two. A value of zero
+prevents rebinning of the grid.  The default value is 1.5.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params.iterations">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterations</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params.iterations" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The number of iterations to perform for each call to the routine. The
+default value is 5 iterations.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params.stage">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stage</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params.stage" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Setting this determines the <em>stage</em> of the calculation.  Normally,
+<code class="code docutils literal notranslate"><span class="pre">stage</span> <span class="pre">=</span> <span class="pre">0</span></code> which begins with a new uniform grid and empty weighted
+average.  Calling VEGAS with <code class="code docutils literal notranslate"><span class="pre">stage</span> <span class="pre">=</span> <span class="pre">1</span></code> retains the grid from the
+previous run but discards the weighted average, so that one can “tune”
+the grid using a relatively small number of points and then do a large
+run with <code class="code docutils literal notranslate"><span class="pre">stage</span> <span class="pre">=</span> <span class="pre">1</span></code> on the optimized grid.  Setting <code class="code docutils literal notranslate"><span class="pre">stage</span> <span class="pre">=</span> <span class="pre">2</span></code>
+keeps the grid and the weighted average from the previous run, but
+may increase (or decrease) the number of histogram bins in the grid
+depending on the number of calls available.  Choosing <code class="code docutils literal notranslate"><span class="pre">stage</span> <span class="pre">=</span> <span class="pre">3</span></code>
+enters at the main loop, so that nothing is changed, and is equivalent
+to performing additional iterations in a previous call.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params.mode">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mode</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params.mode" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The possible choices are <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_VEGAS_MODE_IMPORTANCE</span></code>,
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_VEGAS_MODE_STRATIFIED</span></code>, <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_VEGAS_MODE_IMPORTANCE_ONLY</span></code>.
+This determines whether VEGAS will use importance sampling or
+stratified sampling, or whether it can pick on its own.  In low
+dimensions VEGAS uses strict stratified sampling (more precisely,
+stratified sampling is chosen if there are fewer than 2 bins per box).</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params.verbose">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">verbose</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params.verbose" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_monte_vegas_params.ostream">
+<span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ostream</span></span></span><a class="headerlink" href="#c.gsl_monte_vegas_params.ostream" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These parameters set the level of information printed by VEGAS. All
+information is written to the stream <a class="reference internal" href="#c.gsl_monte_vegas_params.ostream" title="ostream"><code class="xref c c-data docutils literal notranslate"><span class="pre">ostream</span></code></a>.  The default setting
+of <a class="reference internal" href="#c.gsl_monte_vegas_params.verbose" title="verbose"><code class="xref c c-data docutils literal notranslate"><span class="pre">verbose</span></code></a> is <code class="code docutils literal notranslate"><span class="pre">-1</span></code>, which turns off all output.  A
+<a class="reference internal" href="#c.gsl_monte_vegas_params.verbose" title="verbose"><code class="xref c c-data docutils literal notranslate"><span class="pre">verbose</span></code></a> value of <code class="code docutils literal notranslate"><span class="pre">0</span></code> prints summary information about the
+weighted average and final result, while a value of <code class="code docutils literal notranslate"><span class="pre">1</span></code> also
+displays the grid coordinates.  A value of <code class="code docutils literal notranslate"><span class="pre">2</span></code> prints information
+from the rebinning procedure for each iteration.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The above fields and the <code class="xref c c-data docutils literal notranslate"><span class="pre">chisq</span></code> value can also be accessed
+directly in the <a class="reference internal" href="#c.gsl_monte_vegas_state" title="gsl_monte_vegas_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_monte_vegas_state</span></code></a> but such use is
+deprecated.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The example program below uses the Monte Carlo routines to estimate the
+value of the following 3-dimensional integral from the theory of random
+walks,</p>
+<div class="math">
+<p><img src="_images/math/e2f04c037c9f73af2fdcf72509a3ac6222c9c6ba.png" alt="I = \int_{-\pi}^{+\pi} {dk_x \over 2\pi}
+    \int_{-\pi}^{+\pi} {dk_y \over 2\pi}
+    \int_{-\pi}^{+\pi} {dk_z \over 2\pi}
+     { 1 \over (1 - \cos(k_x)\cos(k_y)\cos(k_z))}."/></p>
+</div><p>The analytic value of this integral can be shown to be
+<img class="math" src="_images/math/ce0051da21545ff26360b3714179e141c135f8a7.png" alt="I = \Gamma(1/4)^4/(4 \pi^3) = 1.393203929685676859..."/>.  The integral gives
+the mean time spent at the origin by a random walk on a body-centered
+cubic lattice in three dimensions.</p>
+<p>For simplicity we will compute the integral over the region
+<img class="math" src="_images/math/facf33fc09ee883a99616d6d673425c0570d7d45.png" alt="(0,0,0)"/> to <img class="math" src="_images/math/52c334365f715e9e4d0d8010c7476ab78d0d1502.png" alt="(\pi,\pi,\pi)"/> and multiply by 8 to obtain the
+full result.  The integral is slowly varying in the middle of the region
+but has integrable singularities at the corners <img class="math" src="_images/math/facf33fc09ee883a99616d6d673425c0570d7d45.png" alt="(0,0,0)"/>,
+<img class="math" src="_images/math/f80b3227ca3cf1944159781a4994b4deb96ba36e.png" alt="(0,\pi,\pi)"/>, <img class="math" src="_images/math/8a2d5c2af4c4a58c3f7f945d008e7efbeb614696.png" alt="(\pi,0,\pi)"/> and <img class="math" src="_images/math/ef14ad67984cbe36517de6b6bae2cc3e35dea8c4.png" alt="(\pi,\pi,0)"/>.  The
+Monte Carlo routines only select points which are strictly within the
+integration region and so no special measures are needed to avoid these
+singularities.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdlib.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_monte.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_monte_plain.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_monte_miser.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_monte_vegas.h&gt;</span>
+
+<span class="o">/*</span> <span class="n">Computation</span> <span class="n">of</span> <span class="n">the</span> <span class="n">integral</span><span class="p">,</span>
+
+      <span class="n">I</span> <span class="o">=</span> <span class="nb">int</span> <span class="p">(</span><span class="n">dx</span> <span class="n">dy</span> <span class="n">dz</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="n">pi</span><span class="p">)</span><span class="o">^</span><span class="mi">3</span>  <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="n">cos</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+
+   <span class="n">over</span> <span class="p">(</span><span class="o">-</span><span class="n">pi</span><span class="p">,</span><span class="o">-</span><span class="n">pi</span><span class="p">,</span><span class="o">-</span><span class="n">pi</span><span class="p">)</span> <span class="n">to</span> <span class="p">(</span><span class="o">+</span><span class="n">pi</span><span class="p">,</span> <span class="o">+</span><span class="n">pi</span><span class="p">,</span> <span class="o">+</span><span class="n">pi</span><span class="p">)</span><span class="o">.</span>  <span class="n">The</span> <span class="n">exact</span> <span class="n">answer</span>
+   <span class="ow">is</span> <span class="n">Gamma</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">^</span><span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span> <span class="n">pi</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span>  <span class="n">This</span> <span class="n">example</span> <span class="ow">is</span> <span class="n">taken</span> <span class="kn">from</span>
+<span class="w">   </span><span class="nn">C.Itzykson</span><span class="p">,</span> <span class="n">J</span><span class="o">.</span><span class="n">M</span><span class="o">.</span><span class="n">Drouffe</span><span class="p">,</span> <span class="s2">&quot;Statistical Field Theory -</span>
+   <span class="n">Volume</span> <span class="mi">1</span><span class="s2">&quot;, Section 1.1, p21, which cites the original</span>
+   <span class="n">paper</span> <span class="n">M</span><span class="o">.</span><span class="n">L</span><span class="o">.</span><span class="n">Glasser</span><span class="p">,</span> <span class="n">I</span><span class="o">.</span><span class="n">J</span><span class="o">.</span><span class="n">Zucker</span><span class="p">,</span> <span class="n">Proc</span><span class="o">.</span><span class="n">Natl</span><span class="o">.</span><span class="n">Acad</span><span class="o">.</span><span class="n">Sci</span><span class="o">.</span><span class="n">USA</span> <span class="mi">74</span>
+   <span class="mi">1800</span> <span class="p">(</span><span class="mi">1977</span><span class="p">)</span> <span class="o">*/</span>
+
+<span class="o">/*</span> <span class="n">For</span> <span class="n">simplicity</span> <span class="n">we</span> <span class="n">compute</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">over</span> <span class="n">the</span> <span class="n">region</span>
+   <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">pi</span><span class="p">)</span> <span class="ow">and</span> <span class="n">multiply</span> <span class="n">by</span> <span class="mi">8</span> <span class="o">*/</span>
+
+<span class="n">double</span> <span class="n">exact</span> <span class="o">=</span> <span class="mf">1.3932039296856768591842462603255</span><span class="p">;</span>
+
+<span class="n">double</span>
+<span class="n">g</span> <span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="n">k</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">dim</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">dim</span><span class="p">);</span> <span class="o">/*</span> <span class="n">avoid</span> <span class="n">unused</span> <span class="n">parameter</span> <span class="n">warnings</span> <span class="o">*/</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">params</span><span class="p">);</span>
+  <span class="n">double</span> <span class="n">A</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">M_PI</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">A</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">cos</span> <span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">cos</span> <span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">cos</span> <span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">]));</span>
+<span class="p">}</span>
+
+<span class="n">void</span>
+<span class="n">display_results</span> <span class="p">(</span><span class="n">char</span> <span class="o">*</span><span class="n">title</span><span class="p">,</span> <span class="n">double</span> <span class="n">result</span><span class="p">,</span> <span class="n">double</span> <span class="n">error</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> ==================</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">title</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;result = </span><span class="si">% .6f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;sigma  = </span><span class="si">% .6f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;exact  = </span><span class="si">% .6f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exact</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;error  = </span><span class="si">% .6f</span><span class="s2"> = </span><span class="si">%.2g</span><span class="s2"> sigma</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span> <span class="o">-</span> <span class="n">exact</span><span class="p">,</span>
+          <span class="n">fabs</span> <span class="p">(</span><span class="n">result</span> <span class="o">-</span> <span class="n">exact</span><span class="p">)</span> <span class="o">/</span> <span class="n">error</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span><span class="p">;</span>
+
+  <span class="n">double</span> <span class="n">xl</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">};</span>
+  <span class="n">double</span> <span class="n">xu</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">M_PI</span><span class="p">,</span> <span class="n">M_PI</span><span class="p">,</span> <span class="n">M_PI</span> <span class="p">};</span>
+
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span><span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span><span class="n">r</span><span class="p">;</span>
+
+  <span class="n">gsl_monte_function</span> <span class="n">G</span> <span class="o">=</span> <span class="p">{</span> <span class="o">&amp;</span><span class="n">g</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span> <span class="p">};</span>
+
+  <span class="n">size_t</span> <span class="n">calls</span> <span class="o">=</span> <span class="mi">500000</span><span class="p">;</span>
+
+  <span class="n">gsl_rng_env_setup</span> <span class="p">();</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="p">{</span>
+    <span class="n">gsl_monte_plain_state</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="n">gsl_monte_plain_alloc</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">gsl_monte_plain_integrate</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">G</span><span class="p">,</span> <span class="n">xl</span><span class="p">,</span> <span class="n">xu</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">calls</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span>
+                               <span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+    <span class="n">gsl_monte_plain_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+    <span class="n">display_results</span> <span class="p">(</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">{</span>
+    <span class="n">gsl_monte_miser_state</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="n">gsl_monte_miser_alloc</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">gsl_monte_miser_integrate</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">G</span><span class="p">,</span> <span class="n">xl</span><span class="p">,</span> <span class="n">xu</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">calls</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span>
+                               <span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+    <span class="n">gsl_monte_miser_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+    <span class="n">display_results</span> <span class="p">(</span><span class="s2">&quot;miser&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">{</span>
+    <span class="n">gsl_monte_vegas_state</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="n">gsl_monte_vegas_alloc</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+    <span class="n">gsl_monte_vegas_integrate</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">G</span><span class="p">,</span> <span class="n">xl</span><span class="p">,</span> <span class="n">xu</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span>
+                               <span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+    <span class="n">display_results</span> <span class="p">(</span><span class="s2">&quot;vegas warm-up&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span><span class="p">);</span>
+
+    <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;converging...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+    <span class="n">do</span>
+      <span class="p">{</span>
+        <span class="n">gsl_monte_vegas_integrate</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">G</span><span class="p">,</span> <span class="n">xl</span><span class="p">,</span> <span class="n">xu</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">calls</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span>
+                                   <span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;result = </span><span class="si">% .6f</span><span class="s2"> sigma = </span><span class="si">% .6f</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;chisq/dof = </span><span class="si">%.1f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">gsl_monte_vegas_chisq</span> <span class="p">(</span><span class="n">s</span><span class="p">));</span>
+      <span class="p">}</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">fabs</span> <span class="p">(</span><span class="n">gsl_monte_vegas_chisq</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="n">display_results</span> <span class="p">(</span><span class="s2">&quot;vegas final&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">err</span><span class="p">);</span>
+
+    <span class="n">gsl_monte_vegas_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>With 500,000 function calls the plain Monte Carlo algorithm achieves a
+fractional error of 1%.  The estimated error <code class="code docutils literal notranslate"><span class="pre">sigma</span></code> is roughly
+consistent with the actual error–the computed result differs from
+the true result by about 1.4 standard deviations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plain</span> <span class="o">==================</span>
+<span class="n">result</span> <span class="o">=</span>  <span class="mf">1.412209</span>
+<span class="n">sigma</span>  <span class="o">=</span>  <span class="mf">0.013436</span>
+<span class="n">exact</span>  <span class="o">=</span>  <span class="mf">1.393204</span>
+<span class="n">error</span>  <span class="o">=</span>  <span class="mf">0.019005</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="n">sigma</span>
+</pre></div>
+</div>
+<p>The MISER algorithm reduces the error by a factor of four, and also
+correctly estimates the error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">miser</span> <span class="o">==================</span>
+<span class="n">result</span> <span class="o">=</span>  <span class="mf">1.391322</span>
+<span class="n">sigma</span>  <span class="o">=</span>  <span class="mf">0.003461</span>
+<span class="n">exact</span>  <span class="o">=</span>  <span class="mf">1.393204</span>
+<span class="n">error</span>  <span class="o">=</span> <span class="o">-</span><span class="mf">0.001882</span> <span class="o">=</span> <span class="mf">0.54</span> <span class="n">sigma</span>
+</pre></div>
+</div>
+<p>In the case of the VEGAS algorithm the program uses an initial
+warm-up run of 10,000 function calls to prepare, or “warm up”, the grid.
+This is followed by a main run with five iterations of 100,000 function
+calls. The chi-squared per degree of freedom for the five iterations are
+checked for consistency with 1, and the run is repeated if the results
+have not converged. In this case the estimates are consistent on the
+first pass:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vegas</span> <span class="n">warm</span><span class="o">-</span><span class="n">up</span> <span class="o">==================</span>
+<span class="n">result</span> <span class="o">=</span>  <span class="mf">1.392673</span>
+<span class="n">sigma</span>  <span class="o">=</span>  <span class="mf">0.003410</span>
+<span class="n">exact</span>  <span class="o">=</span>  <span class="mf">1.393204</span>
+<span class="n">error</span>  <span class="o">=</span> <span class="o">-</span><span class="mf">0.000531</span> <span class="o">=</span> <span class="mf">0.16</span> <span class="n">sigma</span>
+<span class="n">converging</span><span class="o">...</span>
+<span class="n">result</span> <span class="o">=</span>  <span class="mf">1.393281</span> <span class="n">sigma</span> <span class="o">=</span>  <span class="mf">0.000362</span> <span class="n">chisq</span><span class="o">/</span><span class="n">dof</span> <span class="o">=</span> <span class="mf">1.5</span>
+<span class="n">vegas</span> <span class="n">final</span> <span class="o">==================</span>
+<span class="n">result</span> <span class="o">=</span>  <span class="mf">1.393281</span>
+<span class="n">sigma</span>  <span class="o">=</span>  <span class="mf">0.000362</span>
+<span class="n">exact</span>  <span class="o">=</span>  <span class="mf">1.393204</span>
+<span class="n">error</span>  <span class="o">=</span>  <span class="mf">0.000077</span> <span class="o">=</span> <span class="mf">0.21</span> <span class="n">sigma</span>
+</pre></div>
+</div>
+<p>If the value of <code class="code docutils literal notranslate"><span class="pre">chisq</span></code> had differed significantly from 1 it would
+indicate inconsistent results, with a correspondingly underestimated
+error.  The final estimate from VEGAS (using a similar number of
+function calls) is significantly more accurate than the other two
+algorithms.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The MISER algorithm is described in the following article by Press
+and Farrar,</p>
+<ul class="simple">
+<li><p>W.H. Press, G.R. Farrar, <em>Recursive Stratified Sampling for
+Multidimensional Monte Carlo Integration</em>,
+Computers in Physics, v4 (1990), pp190–195.</p></li>
+</ul>
+<p>The VEGAS algorithm is described in the following papers,</p>
+<ul class="simple">
+<li><p>G.P. Lepage,
+<em>A New Algorithm for Adaptive Multidimensional Integration</em>,
+Journal of Computational Physics 27, 192–203, (1978)</p></li>
+<li><p>G.P. Lepage,
+<em>VEGAS: An Adaptive Multi-dimensional Integration Program</em>,
+Cornell preprint CLNS 80-447, March 1980</p></li>
+</ul>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>The previous method of accessing these fields directly through the
+<a class="reference internal" href="#c.gsl_monte_miser_state" title="gsl_monte_miser_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_monte_miser_state</span></code></a> struct is now deprecated.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ntuple.html" class="btn btn-neutral float-left" title="N-tuples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="siman.html" class="btn btn-neutral float-right" title="Simulated Annealing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

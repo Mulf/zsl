@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multidimensional Minimization &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Linear Least-Squares Fitting" href="lls.html" />
+    <link rel="prev" title="Multidimensional Root-Finding" href="multiroots.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multidimensional Minimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caveats">Caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initializing-the-multidimensional-minimizer">Initializing the Multidimensional Minimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#providing-a-function-to-minimize">Providing a function to minimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stopping-criteria">Stopping Criteria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithms-with-derivatives">Algorithms with Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithms-without-derivatives">Algorithms without Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Multidimensional Minimization</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/multimin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="multiroots.html" class="btn btn-neutral float-left" title="Multidimensional Root-Finding" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lls.html" class="btn btn-neutral float-right" title="Linear Least-Squares Fitting" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multidimensional-minimization">
+<span id="index-0"></span><h1>Multidimensional Minimization<a class="headerlink" href="#multidimensional-minimization" title="Link to this heading">¶</a></h1>
+<p>This chapter describes routines for finding minima of arbitrary
+multidimensional functions.  The library provides low level components
+for a variety of iterative minimizers and convergence tests.  These can
+be combined by the user to achieve the desired solution, while providing
+full access to the intermediate steps of the algorithms.  Each class of
+methods uses the same framework, so that you can switch between
+minimizers at runtime without needing to recompile your program.  Each
+instance of a minimizer keeps track of its own state, allowing the
+minimizers to be used in multi-threaded programs. The minimization
+algorithms can be used to maximize a function by inverting its sign.</p>
+<p>The header file <code class="file docutils literal notranslate"><span class="pre">gsl_multimin.h</span></code> contains prototypes for the
+minimization functions and related declarations.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The problem of multidimensional minimization requires finding a point
+<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> such that the scalar function,</p>
+<div class="math">
+<p><img src="_images/math/b46fe4ffba7fc646aaed6a791144c5a8a5970ce7.png" alt="f(x_1, \dots, x_n)"/></p>
+</div><p>takes a value which is lower than at any neighboring point. For smooth
+functions the gradient <img class="math" src="_images/math/94886e3158821a975fabf48bc82ed9eb031c66a5.png" alt="g = \nabla f"/> vanishes at the minimum. In
+general there are no bracketing methods available for the
+minimization of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-dimensional functions.  The algorithms
+proceed from an initial guess using a search algorithm which attempts
+to move in a downhill direction.</p>
+<p>Algorithms making use of the gradient of the function perform a
+one-dimensional line minimisation along this direction until the lowest
+point is found to a suitable tolerance.  The search direction is then
+updated with local information from the function and its derivatives,
+and the whole process repeated until the true <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-dimensional
+minimum is found.</p>
+<p>Algorithms which do not require the gradient of the function use
+different strategies.  For example, the Nelder-Mead Simplex algorithm
+maintains <img class="math" src="_images/math/e24d3b323d3f607ef26dc368283596f63f2d103a.png" alt="n+1"/> trial parameter vectors as the vertices of a
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-dimensional simplex.  On each iteration it tries to improve
+the worst vertex of the simplex by geometrical transformations.  The
+iterations are continued until the overall size of the simplex has
+decreased sufficiently.</p>
+<p>Both types of algorithms use a standard framework. The user provides a
+high-level driver for the algorithms, and the library provides the
+individual functions necessary for each of the steps.  There are three
+main phases of the iteration.  The steps are,</p>
+<ul class="simple">
+<li><p>initialize minimizer state, <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code>, for algorithm <code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></p></li>
+<li><p>update <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code> using the iteration <code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></p></li>
+<li><p>test <code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code> for convergence, and repeat iteration if necessary</p></li>
+</ul>
+<p>Each iteration step consists either of an improvement to the
+line-minimisation in the current direction or an update to the search
+direction itself.  The state for the minimizers is held in a
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multimin_fdfminimizer</span></code></a> struct or a
+<a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer</span></code></a> struct.</p>
+</section>
+<section id="caveats">
+<span id="index-1"></span><h2>Caveats<a class="headerlink" href="#caveats" title="Link to this heading">¶</a></h2>
+<p>Note that the minimization algorithms can only search for one local
+minimum at a time.  When there are several local minima in the search
+area, the first minimum to be found will be returned; however it is
+difficult to predict which of the minima this will be.  In most cases,
+no error will be reported if you try to find a local minimum in an area
+where there is more than one.</p>
+<p>It is also important to note that the minimization algorithms find local
+minima; there is no way to determine whether a minimum is a global
+minimum of the function in question.</p>
+</section>
+<section id="initializing-the-multidimensional-minimizer">
+<h2>Initializing the Multidimensional Minimizer<a class="headerlink" href="#initializing-the-multidimensional-minimizer" title="Link to this heading">¶</a></h2>
+<p>The following function initializes a multidimensional minimizer.  The
+minimizer itself depends only on the dimension of the problem and the
+algorithm and can be reused for different problems.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for minimizing functions using derivatives.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></span><a class="headerlink" href="#c.gsl_multimin_fminimizer" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for minimizing functions without derivatives.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_alloc">
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer_type" title="gsl_multimin_fdfminimizer_type"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_alloc" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_alloc">
+<a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fminimizer_type" title="gsl_multimin_fminimizer_type"><span class="n"><span class="pre">gsl_multimin_fminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly allocated instance of a
+minimizer of type <a class="reference internal" href="#c.gsl_multimin_fminimizer_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a> for an <a class="reference internal" href="#c.gsl_multimin_fminimizer_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-dimension function.  If there
+is insufficient memory to create the minimizer then the function returns
+a null pointer and the error handler is invoked with an error code of
+<a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_set">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <a class="reference internal" href="#c.gsl_multimin_function_fdf" title="gsl_multimin_function_fdf"><span class="n"><span class="pre">gsl_multimin_function_fdf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fdf</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">step_size</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">tol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_set" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_set">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <a class="reference internal" href="#c.gsl_multimin_function" title="gsl_multimin_function"><span class="n"><span class="pre">gsl_multimin_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">step_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_set" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The function <a class="reference internal" href="#c.gsl_multimin_fdfminimizer_set" title="gsl_multimin_fdfminimizer_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_multimin_fdfminimizer_set()</span></code></a> initializes the minimizer <a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> to minimize the function
+<code class="xref c c-data docutils literal notranslate"><span class="pre">fdf</span></code> starting from the initial point <a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.  The size of the
+first trial step is given by <a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="step_size"><code class="xref c c-data docutils literal notranslate"><span class="pre">step_size</span></code></a>.  The accuracy of the line
+minimization is specified by <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code>.  The precise meaning of this
+parameter depends on the method used.  Typically the line minimization
+is considered successful if the gradient of the function <img class="math" src="_images/math/a2d34c8a92c62b29096b15c1ae20083c2b0985ca.png" alt="g"/> is
+orthogonal to the current search direction <img class="math" src="_images/math/fb0d29f420855f76f8e9deaf5ff8c5580e97a4f0.png" alt="p"/> to a relative
+accuracy of <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code>, where <img class="math" src="_images/math/1dbc2d5fb2039c07a4df6cada62e3c4c2b4e45e4.png" alt="p \cdot g &lt; tol |p| |g|"/>.
+A <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code> value of 0.1 is
+suitable for most purposes, since line minimization only needs to
+be carried out approximately.    Note that setting <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code> to zero will
+force the use of “exact” line-searches, which are extremely expensive.</p>
+<p>The function <a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="gsl_multimin_fminimizer_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer_set()</span></code></a> initializes the minimizer <a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> to minimize the function
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a>, starting from the initial point
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>. The size of the initial trial steps is given in vector
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="step_size"><code class="xref c c-data docutils literal notranslate"><span class="pre">step_size</span></code></a>. The precise meaning of this parameter depends on the
+method used.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_free" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the minimizer
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_free" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_name" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the name of the minimizer.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;s is a &#39;</span><span class="si">%s</span><span class="s2">&#39; minimizer</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_multimin_fdfminimizer_name</span> <span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>would print something like <code class="code docutils literal notranslate"><span class="pre">s</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">'conjugate_pr'</span> <span class="pre">minimizer</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="providing-a-function-to-minimize">
+<h2>Providing a function to minimize<a class="headerlink" href="#providing-a-function-to-minimize" title="Link to this heading">¶</a></h2>
+<p>You must provide a parametric function of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> variables for the
+minimizers to operate on.  You may also need to provide a routine which
+calculates the gradient of the function and a third routine which
+calculates both the function value and the gradient together.  In order
+to allow for general parameters the functions are defined by the
+following data types:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multimin_function_fdf">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_function_fdf</span></span></span><a class="headerlink" href="#c.gsl_multimin_function_fdf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type defines a general function of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> variables with
+parameters and the corresponding gradient vector of derivatives,</p>
+<p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">(*</span> <span class="pre">f)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params)</span></code></p>
+<blockquote>
+<div><p>this function should return the result
+<img class="math" src="_images/math/6dea37df222c0d9f1bcf0f1a4cf97b1913ac5cc7.png" alt="f(x,params)"/> for argument <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>.
+If the function cannot be computed, an error value of <a class="reference internal" href="math.html#c.GSL_NAN" title="GSL_NAN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_NAN</span></code></a>
+should be returned.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*</span> <span class="pre">df)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params,</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">g)</span></code></p>
+<blockquote>
+<div><p>this function should store the <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>-dimensional gradient</p>
+<div class="math">
+<p><img src="_images/math/c51413d71f0398e732efc28cbb75b4222d7b2696.png" alt="g_i = \partial f(x,\hbox{\it params}) / \partial x_i"/></p>
+</div><p>in the vector <code class="xref c c-data docutils literal notranslate"><span class="pre">g</span></code> for argument <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>
+and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>, returning an appropriate error code if the
+function cannot be computed.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*</span> <span class="pre">fdf)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params,</span> <span class="pre">double</span> <span class="pre">*</span> <span class="pre">f,</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">g)</span></code></p>
+<blockquote>
+<div><p>This function should set the values of the <code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">g</span></code> as above,
+for arguments <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>.  This function
+provides an optimization of the separate functions for <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/> and
+<img class="math" src="_images/math/a5b3ba6ff98c589e0f96792ac40d4f49dfaa6022.png" alt="g(x)"/>—it is always faster to compute the function and its
+derivative at the same time.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">n</span></code></p>
+<blockquote>
+<div><p>the dimension of the system, i.e. the number of components of the
+vectors <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">params</span></code></p>
+<blockquote>
+<div><p>a pointer to the parameters of the function.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multimin_function">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_function</span></span></span><a class="headerlink" href="#c.gsl_multimin_function" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type defines a general function of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> variables with
+parameters,</p>
+<p><code class="code docutils literal notranslate"><span class="pre">double</span> <span class="pre">(*</span> <span class="pre">f)</span> <span class="pre">(const</span> <span class="pre">gsl_vector</span> <span class="pre">*</span> <span class="pre">x,</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params)</span></code></p>
+<blockquote>
+<div><p>this function should return the result
+<img class="math" src="_images/math/6dea37df222c0d9f1bcf0f1a4cf97b1913ac5cc7.png" alt="f(x,params)"/> for argument <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>.
+If the function cannot be computed, an error value of <a class="reference internal" href="math.html#c.GSL_NAN" title="GSL_NAN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_NAN</span></code></a>
+should be returned.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">n</span></code></p>
+<blockquote>
+<div><p>the dimension of the system, i.e. the number of components of the
+vectors <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">params</span></code></p>
+<blockquote>
+<div><p>a pointer to the parameters of the function.</p>
+</div></blockquote>
+</dd></dl>
+
+<p id="multimin-paraboloid">The following example function defines a simple two-dimensional
+paraboloid with five parameters,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Paraboloid</span> <span class="n">centered</span> <span class="n">on</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="k">with</span>
+   <span class="n">scale</span> <span class="n">factors</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="ow">and</span> <span class="n">minimum</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*/</span>
+
+<span class="n">double</span>
+<span class="n">my_f</span> <span class="p">(</span><span class="n">const</span> <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+  <span class="n">double</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="p">)</span><span class="n">params</span><span class="p">;</span>
+
+  <span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>
+           <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">The</span> <span class="n">gradient</span> <span class="n">of</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">/</span><span class="n">dx</span><span class="p">,</span> <span class="n">df</span><span class="o">/</span><span class="n">dy</span><span class="p">)</span><span class="o">.</span> <span class="o">*/</span>
+<span class="n">void</span>
+<span class="n">my_df</span> <span class="p">(</span><span class="n">const</span> <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+       <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">df</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+  <span class="n">double</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="p">)</span><span class="n">params</span><span class="p">;</span>
+
+  <span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="n">gsl_vector_set</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+  <span class="n">gsl_vector_set</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">Compute</span> <span class="n">both</span> <span class="n">f</span> <span class="ow">and</span> <span class="n">df</span> <span class="n">together</span><span class="o">.</span> <span class="o">*/</span>
+<span class="n">void</span>
+<span class="n">my_fdf</span> <span class="p">(</span><span class="n">const</span> <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">double</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">df</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="o">*</span><span class="n">f</span> <span class="o">=</span> <span class="n">my_f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+  <span class="n">my_df</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">df</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The function can be initialized using the following code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_multimin_function_fdf</span> <span class="n">my_func</span><span class="p">;</span>
+
+<span class="o">/*</span> <span class="n">Paraboloid</span> <span class="n">center</span> <span class="n">at</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">scale</span> <span class="n">factors</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+   <span class="n">minimum</span> <span class="n">value</span> <span class="mi">30</span> <span class="o">*/</span>
+<span class="n">double</span> <span class="n">p</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span> <span class="p">};</span>
+
+<span class="n">my_func</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>  <span class="o">/*</span> <span class="n">number</span> <span class="n">of</span> <span class="n">function</span> <span class="n">components</span> <span class="o">*/</span>
+<span class="n">my_func</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">my_f</span><span class="p">;</span>
+<span class="n">my_func</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">my_df</span><span class="p">;</span>
+<span class="n">my_func</span><span class="o">.</span><span class="n">fdf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">my_fdf</span><span class="p">;</span>
+<span class="n">my_func</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">p</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="iteration">
+<h2>Iteration<a class="headerlink" href="#iteration" title="Link to this heading">¶</a></h2>
+<p>The following function drives the iteration of each algorithm.  The
+function performs one iteration to update the state of the minimizer.
+The same function works for all minimizers so that different methods can
+be substituted at runtime without modifications to the code.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_iterate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_iterate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_iterate" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_iterate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_iterate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_iterate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions perform a single iteration of the minimizer <a class="reference internal" href="#c.gsl_multimin_fminimizer_iterate" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.
+If the iteration encounters an unexpected problem then an error code
+will be returned.  The error code <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOPROG</span></code> signifies that
+the minimizer is unable to improve on its current estimate, either due
+to numerical difficulty or because a genuine local minimum has been
+reached.</p>
+</dd></dl>
+
+<p>The minimizer maintains a current best estimate of the minimum at all
+times.  This information can be accessed with the following auxiliary
+functions,</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_x">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_x</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_x" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_x">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_x</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_x" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_minimum">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_minimum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_minimum" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_minimum">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_minimum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_minimum" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_gradient">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_gradient</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_gradient" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_dx">
+<a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_dx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_dx" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_size">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_size</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multimin_fminimizer" title="gsl_multimin_fminimizer"><span class="n"><span class="pre">gsl_multimin_fminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fminimizer_size" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the current best estimate of the location of the
+minimum, the value of the function at that point, its gradient, the last
+step increment of the estimate, and minimizer specific characteristic size for the minimizer <a class="reference internal" href="#c.gsl_multimin_fminimizer_size" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_restart">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_restart</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multimin_fdfminimizer" title="gsl_multimin_fdfminimizer"><span class="n"><span class="pre">gsl_multimin_fdfminimizer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_restart" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function resets the minimizer <a class="reference internal" href="#c.gsl_multimin_fdfminimizer_restart" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> to use the current point as a
+new starting point.</p>
+</dd></dl>
+
+</section>
+<section id="stopping-criteria">
+<h2>Stopping Criteria<a class="headerlink" href="#stopping-criteria" title="Link to this heading">¶</a></h2>
+<p>A minimization procedure should stop when one of the following
+conditions is true:</p>
+<ul class="simple">
+<li><p>A minimum has been found to within the user-specified precision.</p></li>
+<li><p>A user-specified maximum number of iterations has been reached.</p></li>
+<li><p>An error has occurred.</p></li>
+</ul>
+<p>The handling of these conditions is under user control.  The functions
+below allow the user to test the precision of the current result.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_test_gradient">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_test_gradient</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">g</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_test_gradient" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function tests the norm of the gradient <a class="reference internal" href="#c.gsl_multimin_test_gradient" title="g"><code class="xref c c-data docutils literal notranslate"><span class="pre">g</span></code></a> against the
+absolute tolerance <a class="reference internal" href="#c.gsl_multimin_test_gradient" title="epsabs"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsabs</span></code></a>. The gradient of a multidimensional
+function goes to zero at a minimum. The test returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>
+if the following condition is achieved,</p>
+<div class="math">
+<p><img src="_images/math/dfbd693d7cc2125e60a11a79a94a8236290823f3.png" alt="|g| &lt; \hbox{\it epsabs}"/></p>
+</div><p>and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_CONTINUE</span></code> otherwise.  A suitable choice of
+<a class="reference internal" href="#c.gsl_multimin_test_gradient" title="epsabs"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsabs</span></code></a> can be made from the desired accuracy in the function for
+small variations in <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>.  The relationship between these quantities
+is given by <img class="math" src="_images/math/a5e215150e7806205dabf70eb80d644f2b87e159.png" alt="\delta{f} = g\,\delta{x}"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multimin_test_size">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_test_size</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multimin_test_size" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function tests the minimizer specific characteristic
+size (if applicable to the used minimizer) against absolute tolerance <a class="reference internal" href="#c.gsl_multimin_test_size" title="epsabs"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsabs</span></code></a>.
+The test returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if the size is smaller than tolerance,
+otherwise <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_CONTINUE</span></code> is returned.</p>
+</dd></dl>
+
+</section>
+<section id="algorithms-with-derivatives">
+<h2>Algorithms with Derivatives<a class="headerlink" href="#algorithms-with-derivatives" title="Link to this heading">¶</a></h2>
+<p>There are several minimization methods available. The best choice of
+algorithm depends on the problem.  The algorithms described in this
+section use the value of the function and its gradient at each
+evaluation point.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_type" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This type specifies a minimization algorithm using gradients.</p>
+<dl class="c var" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_conjugate_fr">
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer_type" title="gsl_multimin_fdfminimizer_type"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_conjugate_fr</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_conjugate_fr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the Fletcher-Reeves conjugate gradient algorithm. The conjugate
+gradient algorithm proceeds as a succession of line minimizations. The
+sequence of search directions is used to build up an approximation to the
+curvature of the function in the neighborhood of the minimum.</p>
+<p>An initial search direction <code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code> is chosen using the gradient, and line
+minimization is carried out in that direction.  The accuracy of the line
+minimization is specified by the parameter <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code>.  The minimum
+along this line occurs when the function gradient <code class="xref c c-data docutils literal notranslate"><span class="pre">g</span></code> and the search direction
+<code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code> are orthogonal.  The line minimization terminates when
+<img class="math" src="_images/math/4e4fac174a4e431504c9d9c6222b07feb67ee065.png" alt="p\cdot g &lt; tol |p| |g|"/>. The
+search direction is updated  using the Fletcher-Reeves formula
+<img class="math" src="_images/math/4320a560bdfda4cb0c20e041854a613a147dc278.png" alt="p' = g' - \beta p"/> where <img class="math" src="_images/math/9b18520b02a4ce57276e7bdba81cd953120b387e.png" alt="\beta=-|g'|^2/|g|^2"/>, and
+the line minimization is then repeated for the new search
+direction.</p>
+</dd></dl>
+
+<dl class="c var" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_conjugate_pr">
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer_type" title="gsl_multimin_fdfminimizer_type"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_conjugate_pr</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_conjugate_pr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the Polak-Ribiere conjugate gradient algorithm.  It is similar
+to the Fletcher-Reeves method, differing only in the choice of the
+coefficient <img class="math" src="_images/math/e02f190f8fb57cf0cbdb88e60ad6999080cfed17.png" alt="\beta"/>. Both methods work well when the evaluation
+point is close enough to the minimum of the objective function that it
+is well approximated by a quadratic hypersurface.</p>
+</dd></dl>
+
+<dl class="c var" id="index-4">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_vector_bfgs2">
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer_type" title="gsl_multimin_fdfminimizer_type"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_vector_bfgs2</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_vector_bfgs2" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_vector_bfgs">
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer_type" title="gsl_multimin_fdfminimizer_type"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_vector_bfgs</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_vector_bfgs" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These methods use the vector Broyden-Fletcher-Goldfarb-Shanno (BFGS)
+algorithm.  This is a quasi-Newton method which builds up an approximation
+to the second derivatives of the function <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> using the difference
+between successive gradient vectors.  By combining the first and second
+derivatives the algorithm is able to take Newton-type steps towards the
+function minimum, assuming quadratic behavior in that region.</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">bfgs2</span></code> version of this minimizer is the most efficient
+version available, and is a faithful implementation of the line
+minimization scheme described in Fletcher’s <em>Practical Methods of
+Optimization</em>, Algorithms 2.6.2 and 2.6.4.  It supersedes the original
+<code class="code docutils literal notranslate"><span class="pre">bfgs</span></code> routine and requires substantially fewer function and
+gradient evaluations.  The user-supplied tolerance <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code>
+corresponds to the parameter <img class="math" src="_images/math/0b7620936fd7a90e5dde43c07609be992245871a.png" alt="\sigma"/> used by Fletcher.  A value
+of 0.1 is recommended for typical use (larger values correspond to
+less accurate line searches).</p>
+</dd></dl>
+
+<dl class="c var" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_steepest_descent">
+<a class="reference internal" href="#c.gsl_multimin_fdfminimizer_type" title="gsl_multimin_fdfminimizer_type"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fdfminimizer_steepest_descent</span></span></span><a class="headerlink" href="#c.gsl_multimin_fdfminimizer_type.gsl_multimin_fdfminimizer_steepest_descent" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The steepest descent algorithm follows the downhill gradient of the
+function at each step. When a downhill step is successful the step-size
+is increased by a factor of two.  If the downhill step leads to a higher
+function value then the algorithm backtracks and the step size is
+decreased using the parameter <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code>.  A suitable value of <code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code>
+for most applications is 0.1.  The steepest descent method is
+inefficient and is included only for demonstration purposes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="algorithms-without-derivatives">
+<h2>Algorithms without Derivatives<a class="headerlink" href="#algorithms-without-derivatives" title="Link to this heading">¶</a></h2>
+<p>The algorithms described in this section use only the value of the function
+at each evaluation point.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_type</span></span></span><a class="headerlink" href="#c.gsl_multimin_fminimizer_type" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This type specifies minimization algorithms which do not use gradients.</p>
+<dl class="c var" id="index-6">
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex2">
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_type" title="gsl_multimin_fminimizer_type"><span class="n"><span class="pre">gsl_multimin_fminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_nmsimplex2</span></span></span><a class="headerlink" href="#c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex2" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex">
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_type" title="gsl_multimin_fminimizer_type"><span class="n"><span class="pre">gsl_multimin_fminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_nmsimplex</span></span></span><a class="headerlink" href="#c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These methods use the Simplex algorithm of Nelder and Mead.
+Starting from the initial vector <img class="math" src="_images/math/d30ea910b69e1329945fb4719fb5e1450c2da769.png" alt="x = p_0"/>, the algorithm
+constructs an additional <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> vectors <img class="math" src="_images/math/cfaa0c1ab83209af749a4b74246082e8dc6521fa.png" alt="p_i"/>
+using the step size vector <img class="math" src="_images/math/5a0f501954f9dc57900b2fd447613de87a77d033.png" alt="s = step\_size"/>
+as follows:</p>
+<div class="math">
+<p><img src="_images/math/2fc21c70ee6767cc43e6e8bfb689a4b485d65c34.png" alt="p_0 &amp; = (x_0, x_1, \cdots , x_n) \\
+p_1 &amp; = (x_0 + s_0, x_1, \cdots , x_n) \\
+p_2 &amp; = (x_0, x_1 + s_1, \cdots , x_n) \\
+\dots &amp;= \dots \\
+p_n &amp; = (x_0, x_1, \cdots , x_n + s_n)"/></p>
+</div><p>These vectors form the <img class="math" src="_images/math/e24d3b323d3f607ef26dc368283596f63f2d103a.png" alt="n+1"/> vertices of a simplex in <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>
+dimensions.  On each iteration the algorithm uses simple geometrical
+transformations to update the vector corresponding to the highest
+function value.  The geometric transformations are reflection,
+reflection followed by expansion, contraction and multiple
+contraction.  Using these transformations the simplex moves through
+the space towards the minimum, where it contracts itself.</p>
+<p>After each iteration, the best vertex is returned.  Note, that due to
+the nature of the algorithm not every step improves the current
+best parameter vector.  Usually several iterations are required.</p>
+<p>The minimizer-specific characteristic size is calculated as the
+average distance from the geometrical center of the simplex to all its
+vertices.  This size can be used as a stopping criteria, as the
+simplex contracts itself near the minimum. The size is returned by the
+function <a class="reference internal" href="#c.gsl_multimin_fminimizer_size" title="gsl_multimin_fminimizer_size"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer_size()</span></code></a>.</p>
+<p>The <a class="reference internal" href="#c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex2" title="gsl_multimin_fminimizer_nmsimplex2"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer_nmsimplex2</span></code></a> version of this minimiser is
+a new <img class="math" src="_images/math/d7adb0d18071ae03d48f0e0bd45a7540149c398f.png" alt="O(N)"/> operations
+implementation of the earlier <img class="math" src="_images/math/c0d3ae9d90fc064780ab0268899f079073a6a417.png" alt="O(N^2)"/> operations
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex" title="gsl_multimin_fminimizer_nmsimplex"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer_nmsimplex</span></code></a>
+minimiser.  It uses the same underlying algorithm, but the simplex
+updates are computed more efficiently for high-dimensional problems.
+In addition, the size of simplex is calculated as the RMS
+distance of each vertex from the center rather than the mean distance,
+allowing a linear update of this quantity on each step.  The memory usage is
+<img class="math" src="_images/math/c0d3ae9d90fc064780ab0268899f079073a6a417.png" alt="O(N^2)"/> for both algorithms.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex2rand">
+<a class="reference internal" href="#c.gsl_multimin_fminimizer_type" title="gsl_multimin_fminimizer_type"><span class="n"><span class="pre">gsl_multimin_fminimizer_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multimin_fminimizer_nmsimplex2rand</span></span></span><a class="headerlink" href="#c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex2rand" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This method is a variant of <a class="reference internal" href="#c.gsl_multimin_fminimizer_type.gsl_multimin_fminimizer_nmsimplex2" title="gsl_multimin_fminimizer_nmsimplex2"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer_nmsimplex2</span></code></a> which initialises the
+simplex around the starting point <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> using a randomly-oriented
+set of basis vectors instead of the fixed coordinate axes. The
+final dimensions of the simplex are scaled along the coordinate axes by the
+vector <code class="xref c c-data docutils literal notranslate"><span class="pre">step_size</span></code>.  The randomisation uses a simple deterministic
+generator so that repeated calls to <a class="reference internal" href="#c.gsl_multimin_fminimizer_set" title="gsl_multimin_fminimizer_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_multimin_fminimizer_set()</span></code></a> for
+a given solver object will vary the orientation in a well-defined way.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>This example program finds the minimum of the <a class="reference internal" href="#multimin-paraboloid"><span class="std std-ref">paraboloid function</span></a>
+defined earlier.  The location of the minimum is offset from the origin
+in <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> and <img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/>, and the function value at the minimum is
+non-zero. The main program is given below, it requires the example
+function given earlier in this chapter.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">size_t</span> <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">status</span><span class="p">;</span>
+
+  <span class="n">const</span> <span class="n">gsl_multimin_fdfminimizer_type</span> <span class="o">*</span><span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_multimin_fdfminimizer</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">Position</span> <span class="n">of</span> <span class="n">the</span> <span class="n">minimum</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">scale</span> <span class="n">factors</span>
+     <span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span> <span class="mf">30.</span> <span class="o">*/</span>
+  <span class="n">double</span> <span class="n">par</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span> <span class="p">};</span>
+
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+  <span class="n">gsl_multimin_function_fdf</span> <span class="n">my_func</span><span class="p">;</span>
+
+  <span class="n">my_func</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">my_func</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">my_f</span><span class="p">;</span>
+  <span class="n">my_func</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">my_df</span><span class="p">;</span>
+  <span class="n">my_func</span><span class="o">.</span><span class="n">fdf</span> <span class="o">=</span> <span class="n">my_fdf</span><span class="p">;</span>
+  <span class="n">my_func</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">par</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">Starting</span> <span class="n">point</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span> <span class="o">*/</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">);</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_multimin_fdfminimizer_conjugate_fr</span><span class="p">;</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_multimin_fdfminimizer_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+  <span class="n">gsl_multimin_fdfminimizer_set</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">);</span>
+
+  <span class="n">do</span>
+    <span class="p">{</span>
+      <span class="nb">iter</span><span class="o">++</span><span class="p">;</span>
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multimin_fdfminimizer_iterate</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multimin_test_gradient</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">gradient</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_SUCCESS</span><span class="p">)</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Minimum found at:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%5d</span><span class="s2"> </span><span class="si">%.5f</span><span class="s2"> </span><span class="si">%.5f</span><span class="s2"> </span><span class="si">%10.5f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">iter</span><span class="p">,</span>
+              <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+              <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+              <span class="n">s</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">);</span>
+
+    <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_CONTINUE</span> <span class="o">&amp;&amp;</span> <span class="nb">iter</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">);</span>
+
+  <span class="n">gsl_multimin_fdfminimizer_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span> <span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The initial step-size is chosen as 0.01, a conservative estimate in this
+case, and the line minimization parameter is set at 0.0001.  The program
+terminates when the norm of the gradient has been reduced below
+0.001. The output of the program is shown below,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">x</span>       <span class="n">y</span>         <span class="n">f</span>
+    <span class="mi">1</span> <span class="mf">4.99629</span> <span class="mf">6.99072</span>  <span class="mf">687.84780</span>
+    <span class="mi">2</span> <span class="mf">4.98886</span> <span class="mf">6.97215</span>  <span class="mf">683.55456</span>
+    <span class="mi">3</span> <span class="mf">4.97400</span> <span class="mf">6.93501</span>  <span class="mf">675.01278</span>
+    <span class="mi">4</span> <span class="mf">4.94429</span> <span class="mf">6.86073</span>  <span class="mf">658.10798</span>
+    <span class="mi">5</span> <span class="mf">4.88487</span> <span class="mf">6.71217</span>  <span class="mf">625.01340</span>
+    <span class="mi">6</span> <span class="mf">4.76602</span> <span class="mf">6.41506</span>  <span class="mf">561.68440</span>
+    <span class="mi">7</span> <span class="mf">4.52833</span> <span class="mf">5.82083</span>  <span class="mf">446.46694</span>
+    <span class="mi">8</span> <span class="mf">4.05295</span> <span class="mf">4.63238</span>  <span class="mf">261.79422</span>
+    <span class="mi">9</span> <span class="mf">3.10219</span> <span class="mf">2.25548</span>   <span class="mf">75.49762</span>
+   <span class="mi">10</span> <span class="mf">2.85185</span> <span class="mf">1.62963</span>   <span class="mf">67.03704</span>
+   <span class="mi">11</span> <span class="mf">2.19088</span> <span class="mf">1.76182</span>   <span class="mf">45.31640</span>
+   <span class="mi">12</span> <span class="mf">0.86892</span> <span class="mf">2.02622</span>   <span class="mf">30.18555</span>
+<span class="n">Minimum</span> <span class="n">found</span> <span class="n">at</span><span class="p">:</span>
+   <span class="mi">13</span> <span class="mf">1.00000</span> <span class="mf">2.00000</span>   <span class="mf">30.00000</span>
+</pre></div>
+</div>
+<p>Note that the algorithm gradually increases the step size as it
+successfully moves downhill, as can be seen by plotting the successive
+points in <a class="reference internal" href="#fig-multimin"><span class="std std-numref">Fig. 29</span></a>.</p>
+<figure class="align-default" id="id1">
+<span id="fig-multimin"></span><a class="reference internal image-reference" href="_images/multimin.png"><img alt="_images/multimin.png" src="_images/multimin.png" style="width: 384.0px; height: 288.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text">Function contours with path taken by minimization algorithm</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The conjugate gradient algorithm finds the minimum on its second
+direction because the function is purely quadratic. Additional
+iterations would be needed for a more complicated function.</p>
+<p>Here is another example using the Nelder-Mead Simplex algorithm to
+minimize the same example object function, as above.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">par</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">};</span>
+
+  <span class="n">const</span> <span class="n">gsl_multimin_fminimizer_type</span> <span class="o">*</span><span class="n">T</span> <span class="o">=</span>
+    <span class="n">gsl_multimin_fminimizer_nmsimplex2</span><span class="p">;</span>
+  <span class="n">gsl_multimin_fminimizer</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">ss</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+  <span class="n">gsl_multimin_function</span> <span class="n">minex_func</span><span class="p">;</span>
+
+  <span class="n">size_t</span> <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">status</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">size</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">Starting</span> <span class="n">point</span> <span class="o">*/</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">);</span>
+  <span class="n">gsl_vector_set</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">Set</span> <span class="n">initial</span> <span class="n">step</span> <span class="n">sizes</span> <span class="n">to</span> <span class="mi">1</span> <span class="o">*/</span>
+  <span class="n">ss</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_vector_set_all</span> <span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">Initialize</span> <span class="n">method</span> <span class="ow">and</span> <span class="n">iterate</span> <span class="o">*/</span>
+  <span class="n">minex_func</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">minex_func</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">my_f</span><span class="p">;</span>
+  <span class="n">minex_func</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">par</span><span class="p">;</span>
+
+  <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_multimin_fminimizer_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_multimin_fminimizer_set</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">minex_func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">ss</span><span class="p">);</span>
+
+  <span class="n">do</span>
+    <span class="p">{</span>
+      <span class="nb">iter</span><span class="o">++</span><span class="p">;</span>
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multimin_fminimizer_iterate</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+      <span class="n">size</span> <span class="o">=</span> <span class="n">gsl_multimin_fminimizer_size</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+      <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_multimin_test_size</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_SUCCESS</span><span class="p">)</span>
+        <span class="p">{</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;converged to minimum at</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%5d</span><span class="s2"> </span><span class="si">%10.3e</span><span class="s2"> </span><span class="si">%10.3e</span><span class="s2"> f() = </span><span class="si">%7.3f</span><span class="s2"> size = </span><span class="si">%.3f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+              <span class="nb">iter</span><span class="p">,</span>
+              <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+              <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+              <span class="n">s</span><span class="o">-&gt;</span><span class="n">fval</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_CONTINUE</span> <span class="o">&amp;&amp;</span> <span class="nb">iter</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">);</span>
+
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">ss</span><span class="p">);</span>
+  <span class="n">gsl_multimin_fminimizer_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">status</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The minimum search stops when the Simplex size drops to 0.01. The output is
+shown below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">1</span>  <span class="mf">6.500e+00</span>  <span class="mf">5.000e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span> <span class="mf">512.500</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.130</span>
+    <span class="mi">2</span>  <span class="mf">5.250e+00</span>  <span class="mf">4.000e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span> <span class="mf">290.625</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.409</span>
+    <span class="mi">3</span>  <span class="mf">5.250e+00</span>  <span class="mf">4.000e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span> <span class="mf">290.625</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.409</span>
+    <span class="mi">4</span>  <span class="mf">5.500e+00</span>  <span class="mf">1.000e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span> <span class="mf">252.500</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.409</span>
+    <span class="mi">5</span>  <span class="mf">2.625e+00</span>  <span class="mf">3.500e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span> <span class="mf">101.406</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.847</span>
+    <span class="mi">6</span>  <span class="mf">2.625e+00</span>  <span class="mf">3.500e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span> <span class="mf">101.406</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.847</span>
+    <span class="mi">7</span>  <span class="mf">0.000e+00</span>  <span class="mf">3.000e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">60.000</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.847</span>
+    <span class="mi">8</span>  <span class="mf">2.094e+00</span>  <span class="mf">1.875e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">42.275</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.321</span>
+    <span class="mi">9</span>  <span class="mf">2.578e-01</span>  <span class="mf">1.906e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">35.684</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">1.069</span>
+   <span class="mi">10</span>  <span class="mf">5.879e-01</span>  <span class="mf">2.445e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">35.664</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.841</span>
+   <span class="mi">11</span>  <span class="mf">1.258e+00</span>  <span class="mf">2.025e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.680</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.476</span>
+   <span class="mi">12</span>  <span class="mf">1.258e+00</span>  <span class="mf">2.025e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.680</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.367</span>
+   <span class="mi">13</span>  <span class="mf">1.093e+00</span>  <span class="mf">1.849e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.539</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.300</span>
+   <span class="mi">14</span>  <span class="mf">8.830e-01</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.137</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.172</span>
+   <span class="mi">15</span>  <span class="mf">8.830e-01</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.137</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.126</span>
+   <span class="mi">16</span>  <span class="mf">9.582e-01</span>  <span class="mf">2.060e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.090</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.106</span>
+   <span class="mi">17</span>  <span class="mf">1.022e+00</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.005</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.063</span>
+   <span class="mi">18</span>  <span class="mf">1.022e+00</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.005</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.043</span>
+   <span class="mi">19</span>  <span class="mf">1.022e+00</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.005</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.043</span>
+   <span class="mi">20</span>  <span class="mf">1.022e+00</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.005</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.027</span>
+   <span class="mi">21</span>  <span class="mf">1.022e+00</span>  <span class="mf">2.004e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.005</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.022</span>
+   <span class="mi">22</span>  <span class="mf">9.920e-01</span>  <span class="mf">1.997e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.001</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.016</span>
+   <span class="mi">23</span>  <span class="mf">9.920e-01</span>  <span class="mf">1.997e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.001</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.013</span>
+<span class="n">converged</span> <span class="n">to</span> <span class="n">minimum</span> <span class="n">at</span>
+   <span class="mi">24</span>  <span class="mf">9.920e-01</span>  <span class="mf">1.997e+00</span> <span class="n">f</span><span class="p">()</span> <span class="o">=</span>  <span class="mf">30.001</span> <span class="n">size</span> <span class="o">=</span> <span class="mf">0.008</span>
+</pre></div>
+</div>
+<p>The simplex size first increases, while the simplex moves towards the
+minimum. After a while the size begins to decrease as the simplex
+contracts around the minimum.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The conjugate gradient and BFGS methods are described in detail in the
+following book,</p>
+<ul class="simple">
+<li><p>R. Fletcher,
+<em>Practical Methods of Optimization (Second Edition)</em> Wiley
+(1987), ISBN 0471915475.</p></li>
+</ul>
+<p>A brief description of multidimensional minimization algorithms and
+more recent references can be found in,</p>
+<ul class="simple">
+<li><p>C.W. Ueberhuber,
+<em>Numerical Computation (Volume 2)</em>, Chapter 14, Section 4.4
+“Minimization Methods”, p.: 325–335, Springer (1997), ISBN
+3-540-62057-5.</p></li>
+</ul>
+<p>The simplex algorithm is described in the following paper,</p>
+<ul class="simple">
+<li><p>J.A. Nelder and R. Mead,
+<em>A simplex method for function minimization</em>, Computer Journal
+vol.: 7 (1965), 308–313.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="multiroots.html" class="btn btn-neutral float-left" title="Multidimensional Root-Finding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lls.html" class="btn btn-neutral float-right" title="Linear Least-Squares Fitting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

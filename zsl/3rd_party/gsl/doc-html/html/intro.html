@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using the Library" href="usage.html" />
+    <link rel="prev" title="GNU Scientific Library" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#routines-available-in-gsl">Routines available in GSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gsl-is-free-software">GSL is Free Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#obtaining-gsl">Obtaining GSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#no-warranty">No Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reporting-bugs">Reporting Bugs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#further-information">Further Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conventions-used-in-this-manual">Conventions used in this manual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="GNU Scientific Library" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Using the Library" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<span id="index-0"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
+<p>The GNU Scientific Library (GSL) is a collection of routines for
+numerical computing.  The routines have been written from scratch in C,
+and present a modern Applications Programming Interface
+(API) for C programmers, allowing wrappers to be written for very
+high level languages.  The source code is distributed under the GNU
+General Public License.</p>
+<section id="routines-available-in-gsl">
+<h2>Routines available in GSL<a class="headerlink" href="#routines-available-in-gsl" title="Link to this heading">¶</a></h2>
+<p>The library covers a wide range of topics in numerical computing.
+Routines are available for the following areas,</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Complex Numbers</p></td>
+<td><p>Roots of Polynomials</p></td>
+<td><p>Special Functions</p></td>
+</tr>
+<tr class="row-even"><td><p>Vectors and Matrices</p></td>
+<td><p>Permutations</p></td>
+<td><p>Combinations</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sorting</p></td>
+<td><p>BLAS Support</p></td>
+<td><p>Linear Algebra</p></td>
+</tr>
+<tr class="row-even"><td><p>CBLAS Library</p></td>
+<td><p>Fast Fourier Transforms</p></td>
+<td><p>Eigensystems</p></td>
+</tr>
+<tr class="row-odd"><td><p>Random Numbers</p></td>
+<td><p>Quadrature</p></td>
+<td><p>Random Distributions</p></td>
+</tr>
+<tr class="row-even"><td><p>Quasi-Random Sequences</p></td>
+<td><p>Histograms</p></td>
+<td><p>Statistics</p></td>
+</tr>
+<tr class="row-odd"><td><p>Monte Carlo Integration</p></td>
+<td><p>N-Tuples</p></td>
+<td><p>Differential Equations</p></td>
+</tr>
+<tr class="row-even"><td><p>Simulated Annealing</p></td>
+<td><p>Numerical Differentiation</p></td>
+<td><p>Interpolation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Series Acceleration</p></td>
+<td><p>Chebyshev Approximations</p></td>
+<td><p>Root-Finding</p></td>
+</tr>
+<tr class="row-even"><td><p>Discrete Hankel Transforms</p></td>
+<td><p>Least-Squares Fitting</p></td>
+<td><p>Minimization</p></td>
+</tr>
+<tr class="row-odd"><td><p>IEEE Floating-Point</p></td>
+<td><p>Physical Constants</p></td>
+<td><p>Basis Splines</p></td>
+</tr>
+<tr class="row-even"><td><p>Wavelets</p></td>
+<td><p>Sparse BLAS Support</p></td>
+<td><p>Sparse Linear Algebra</p></td>
+</tr>
+</tbody>
+</table>
+<p>The use of these routines is described in this manual.  Each chapter
+provides detailed definitions of the functions, followed by example
+programs and references to the articles on which the algorithms are
+based.</p>
+<p>Where possible the routines have been based on reliable public-domain
+packages such as FFTPACK and QUADPACK, which the developers of GSL
+have reimplemented in C with modern coding conventions.</p>
+</section>
+<section id="gsl-is-free-software">
+<span id="index-1"></span><h2>GSL is Free Software<a class="headerlink" href="#gsl-is-free-software" title="Link to this heading">¶</a></h2>
+<p>The subroutines in the GNU Scientific Library are “free software”;
+this means that everyone is free to use them, and to redistribute them
+in other free programs.  The library is not in the public domain; it is
+copyrighted and there are conditions on its distribution.  These
+conditions are designed to permit everything that a good cooperating
+citizen would want to do.  What is not allowed is to try to prevent
+others from further sharing any version of the software that they might
+get from you.</p>
+<p>Specifically, we want to make sure that you have the right to share
+copies of programs that you are given which use the GNU Scientific
+Library, that you receive their source code or else can get it if you
+want it, that you can change these programs or use pieces of them in new
+free programs, and that you know you can do these things.</p>
+<p>To make sure that everyone has such rights, we have to forbid you to
+deprive anyone else of these rights.  For example, if you distribute
+copies of any code which uses the GNU Scientific Library, you must give
+the recipients all the rights that you have received.  You must make
+sure that they, too, receive or can get the source code, both to the
+library and the code which uses it.  And you must tell them their
+rights.  This means that the library should not be redistributed in
+proprietary programs.</p>
+<p>Also, for our own protection, we must make certain that everyone finds
+out that there is no warranty for the GNU Scientific Library.  If these
+programs are modified by someone else and passed on, we want their
+recipients to know that what they have is not what we distributed, so
+that any problems introduced by others will not reflect on our
+reputation.</p>
+<p>The precise conditions for the distribution of software related to the
+GNU Scientific Library are found in the
+<a class="reference external" href="https://www.gnu.org/software/gsl/manual/html_node/GNU-General-Public-License.html#GNU-General-Public-License">GNU General Public License</a>.
+Further information about this
+license is available from the GNU Project webpage <a class="reference external" href="http://www.gnu.org/copyleft/gpl-faq.html">Frequently Asked
+Questions about the GNU GPL</a>.</p>
+<p>The Free Software Foundation also operates a license consulting
+service for commercial users (contact details available from
+<a class="reference external" href="http://www.fsf.org">http://www.fsf.org</a>.</p>
+</section>
+<section id="obtaining-gsl">
+<span id="index-2"></span><h2>Obtaining GSL<a class="headerlink" href="#obtaining-gsl" title="Link to this heading">¶</a></h2>
+<p>The source code for the library can be obtained in different ways, by
+copying it from a friend, purchasing it on CDROM or downloading it
+from the internet. A list of public ftp servers which carry the source
+code can be found on the GNU website, <a class="reference external" href="http://www.gnu.org/software/gsl/">http://www.gnu.org/software/gsl/</a>.</p>
+<p>The preferred platform for the library is a GNU system, which allows it
+to take advantage of additional features in the GNU C compiler and GNU C
+library.  However, the library is fully portable and should compile on
+most systems with a C compiler.</p>
+<p>Announcements of new releases, updates and other relevant events are
+made on the <a class="reference external" href="mailto:info-gsl&#37;&#52;&#48;gnu&#46;org">info-gsl<span>&#64;</span>gnu<span>&#46;</span>org</a> mailing list.  To subscribe to this
+low-volume list, send an email of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">To</span><span class="p">:</span> <span class="n">info</span><span class="o">-</span><span class="n">gsl</span><span class="o">-</span><span class="n">request</span><span class="nd">@gnu</span><span class="o">.</span><span class="n">org</span>
+<span class="n">Subject</span><span class="p">:</span> <span class="n">subscribe</span>
+</pre></div>
+</div>
+<p>You will receive a response asking you to reply in order to confirm
+your subscription.</p>
+</section>
+<section id="no-warranty">
+<span id="index-3"></span><h2>No Warranty<a class="headerlink" href="#no-warranty" title="Link to this heading">¶</a></h2>
+<p>The software described in this manual has no warranty, it is provided
+“as is”.  It is your responsibility to validate the behavior of the
+routines and their accuracy using the source code provided, or to
+purchase support and warranties from commercial redistributors.  Consult the
+<a class="reference external" href="https://www.gnu.org/software/gsl/manual/html_node/GNU-General-Public-License.html#GNU-General-Public-License">GNU General Public License</a>
+for further details.</p>
+</section>
+<section id="reporting-bugs">
+<span id="index-4"></span><h2>Reporting Bugs<a class="headerlink" href="#reporting-bugs" title="Link to this heading">¶</a></h2>
+<p>A list of known bugs can be found in the <code class="file docutils literal notranslate"><span class="pre">BUGS</span></code> file included in
+the GSL distribution or online in the GSL bug tracker. <a class="footnote-reference brackets" href="#f1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>
+Details of compilation problems can be found in the <code class="file docutils literal notranslate"><span class="pre">INSTALL</span></code> file.</p>
+<p>If you find a bug which is not listed in these files, please report it to
+<a class="reference external" href="mailto:bug-gsl&#37;&#52;&#48;gnu&#46;org">bug-gsl<span>&#64;</span>gnu<span>&#46;</span>org</a>.</p>
+<p>All bug reports should include:</p>
+<ul class="simple">
+<li><p>The version number of GSL</p></li>
+<li><p>The hardware and operating system</p></li>
+<li><p>The compiler used, including version number and compilation options</p></li>
+<li><p>A description of the bug behavior</p></li>
+<li><p>A short program which exercises the bug</p></li>
+</ul>
+<p>It is useful if you can check whether the same problem occurs when the
+library is compiled without optimization.  Thank you.</p>
+<p>Any errors or omissions in this manual can also be reported to the
+same address.</p>
+</section>
+<section id="further-information">
+<span id="index-5"></span><h2>Further Information<a class="headerlink" href="#further-information" title="Link to this heading">¶</a></h2>
+<p>Additional information, including online copies of this manual, links to
+related projects, and mailing list archives are available from the
+website mentioned above.</p>
+<p>Any questions about the use and installation of the library can be asked
+on the mailing list <a class="reference external" href="mailto:help-gsl&#37;&#52;&#48;gnu&#46;org">help-gsl<span>&#64;</span>gnu<span>&#46;</span>org</a>.  To subscribe to this
+list, send an email of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">To</span><span class="p">:</span> <span class="n">help</span><span class="o">-</span><span class="n">gsl</span><span class="o">-</span><span class="n">request</span><span class="nd">@gnu</span><span class="o">.</span><span class="n">org</span>
+<span class="n">Subject</span><span class="p">:</span> <span class="n">subscribe</span>
+</pre></div>
+</div>
+<p>This mailing list can be used to ask questions not covered by this
+manual, and to contact the developers of the library.</p>
+<p>If you would like to refer to the GNU Scientific Library in a journal
+article, the recommended way is to cite this reference manual,
+e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">M</span><span class="o">.</span> <span class="n">Galassi</span> <span class="n">et</span> <span class="n">al</span><span class="p">,</span> <span class="n">GNU</span> <span class="n">Scientific</span> <span class="n">Library</span> <span class="n">Reference</span> <span class="n">Manual</span> <span class="p">(</span><span class="mi">3</span><span class="n">rd</span> <span class="n">Ed</span><span class="o">.</span><span class="p">),</span> <span class="n">ISBN</span> <span class="mf">0954612078.</span>
+</pre></div>
+</div>
+<p>If you want to give a url, use “<a class="reference external" href="http://www.gnu.org/software/gsl/">http://www.gnu.org/software/gsl/</a>”.</p>
+</section>
+<section id="conventions-used-in-this-manual">
+<span id="index-6"></span><h2>Conventions used in this manual<a class="headerlink" href="#conventions-used-in-this-manual" title="Link to this heading">¶</a></h2>
+<p id="index-7">This manual contains many examples which can be typed at the keyboard.
+A command entered at the terminal is shown like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ command
+</pre></div>
+</div>
+<p>The first character on the line is the terminal prompt, and should not
+be typed.  The dollar sign $ is used as the standard prompt in
+this manual, although some systems may use a different character.</p>
+<p>The examples assume the use of the GNU operating system.  There may be
+minor differences in the output on other systems.  The commands for
+setting environment variables use the Bourne shell syntax of the
+standard GNU shell (<code class="code docutils literal notranslate"><span class="pre">bash</span></code>).</p>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://savannah.gnu.org/bugs/?group=gsl">http://savannah.gnu.org/bugs/?group=gsl</a></p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="GNU Scientific Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Using the Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

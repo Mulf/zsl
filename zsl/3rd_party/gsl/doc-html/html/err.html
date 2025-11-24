@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error Handling &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Mathematical Functions" href="math.html" />
+    <link rel="prev" title="Using the Library" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Error Handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#error-reporting">Error Reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-codes">Error Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handlers">Error Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-gsl-error-reporting-in-your-own-functions">Using GSL error reporting in your own functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Error Handling</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/err.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Using the Library" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="math.html" class="btn btn-neutral float-right" title="Mathematical Functions" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="error-handling">
+<span id="index-0"></span><h1>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">¶</a></h1>
+<p>This chapter describes the way that GSL functions report and handle
+errors.  By examining the status information returned by every function
+you can determine whether it succeeded or failed, and if it failed you
+can find out what the precise cause of failure was.  You can also define
+your own error handling functions to modify the default behavior of the
+library.</p>
+<p>The functions described in this section are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code>.</p>
+<section id="error-reporting">
+<h2>Error Reporting<a class="headerlink" href="#error-reporting" title="Link to this heading">¶</a></h2>
+<p>The library follows the thread-safe error reporting conventions of the
+POSIX Threads library.  Functions return a non-zero error code to
+indicate an error and <code class="code docutils literal notranslate"><span class="pre">0</span></code> to indicate success:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_function</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="p">{</span> <span class="o">/*</span> <span class="n">an</span> <span class="n">error</span> <span class="n">occurred</span> <span class="o">*/</span>
+  <span class="o">.....</span>
+  <span class="o">/*</span> <span class="n">status</span> <span class="n">value</span> <span class="n">specifies</span> <span class="n">the</span> <span class="nb">type</span> <span class="n">of</span> <span class="n">error</span> <span class="o">*/</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The routines report an error whenever they cannot perform the task
+requested of them.  For example, a root-finding function would return a
+non-zero error code if could not converge to the requested accuracy, or
+exceeded a limit on the number of iterations.  Situations like this are
+a normal occurrence when using any mathematical library and you should
+check the return status of the functions that you call.</p>
+<p>Whenever a routine reports an error the return value specifies the type
+of error.  The return value is analogous to the value of the variable
+<code class="code docutils literal notranslate"><span class="pre">errno</span></code> in the C library.  The caller can examine the return code
+and decide what action to take, including ignoring the error if it is
+not considered serious.</p>
+<p>In addition to reporting errors by return codes the library also has an
+error handler function <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_error()</span></code>.  This function is called by
+other library functions when they report an error, just before they
+return to the caller.  The default behavior of the error handler is to
+print a message and abort the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl</span><span class="p">:</span> <span class="n">file</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">67</span><span class="p">:</span> <span class="n">ERROR</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">argument</span> <span class="n">supplied</span> <span class="n">by</span> <span class="n">user</span>
+<span class="n">Default</span> <span class="n">GSL</span> <span class="n">error</span> <span class="n">handler</span> <span class="n">invoked</span><span class="o">.</span>
+<span class="n">Aborted</span>
+</pre></div>
+</div>
+<p>The purpose of the <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_error()</span></code> handler is to provide a function
+where a breakpoint can be set that will catch library errors when
+running under the debugger.  It is not intended for use in production
+programs, which should handle any errors using the return codes.</p>
+</section>
+<section id="error-codes">
+<span id="index-1"></span><h2>Error Codes<a class="headerlink" href="#error-codes" title="Link to this heading">¶</a></h2>
+<p>The error code numbers returned by library functions are defined in
+the file <code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code>.  They all have the prefix <code class="code docutils literal notranslate"><span class="pre">GSL_</span></code> and
+expand to non-zero constant integer values. Error codes above 1024 are
+reserved for applications, and are not used by the library.  Many of
+the error codes use the same base name as the corresponding error code
+in the C library.  Here are some of the most common error codes,</p>
+<dl class="c var" id="index-2">
+<dt class="sig sig-object c" id="c.GSL_EDOM">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_EDOM</span></span></span><a class="headerlink" href="#c.GSL_EDOM" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Domain error; used by mathematical functions when an argument value does
+not fall into the domain over which the function is defined (like
+<code class="xref c c-data docutils literal notranslate"><span class="pre">EDOM</span></code> in the C library)</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.GSL_ERANGE">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_ERANGE</span></span></span><a class="headerlink" href="#c.GSL_ERANGE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Range error; used by mathematical functions when the result value is not
+representable because of overflow or underflow (like <code class="xref c c-data docutils literal notranslate"><span class="pre">ERANGE</span></code> in the C
+library)</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.GSL_ENOMEM">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_ENOMEM</span></span></span><a class="headerlink" href="#c.GSL_ENOMEM" title="Link to this definition">¶</a><br /></dt>
+<dd><p>No memory available.  The system cannot allocate more virtual memory
+because its capacity is full (like <code class="xref c c-data docutils literal notranslate"><span class="pre">ENOMEM</span></code> in the C library).  This error
+is reported when a GSL routine encounters problems when trying to
+allocate memory with <code class="xref c c-func docutils literal notranslate"><span class="pre">malloc()</span></code>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.GSL_EINVAL">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_EINVAL</span></span></span><a class="headerlink" href="#c.GSL_EINVAL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Invalid argument.  This is used to indicate various kinds of problems
+with passing the wrong argument to a library function (like <code class="xref c c-data docutils literal notranslate"><span class="pre">EINVAL</span></code> in the C
+library).</p>
+</dd></dl>
+
+<p>The error codes can be converted into an error message using the
+function <a class="reference internal" href="#c.gsl_strerror" title="gsl_strerror"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_strerror()</span></code></a>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_strerror">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_strerror</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_errno</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_strerror" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a string describing the error code
+<a class="reference internal" href="#c.gsl_strerror" title="gsl_errno"><code class="xref c c-data docutils literal notranslate"><span class="pre">gsl_errno</span></code></a>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;error: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_strerror</span> <span class="p">(</span><span class="n">status</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>would print an error message like <code class="code docutils literal notranslate"><span class="pre">error:</span> <span class="pre">output</span> <span class="pre">range</span> <span class="pre">error</span></code> for a
+status value of <a class="reference internal" href="#c.GSL_ERANGE" title="GSL_ERANGE"><code class="xref c c-data docutils literal notranslate"><span class="pre">GSL_ERANGE</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="error-handlers">
+<span id="index-3"></span><h2>Error Handlers<a class="headerlink" href="#error-handlers" title="Link to this heading">¶</a></h2>
+<p>The default behavior of the GSL error handler is to print a short
+message and call <code class="xref c c-func docutils literal notranslate"><span class="pre">abort()</span></code>.  When this default is in use programs
+will stop with a core-dump whenever a library routine reports an error.
+This is intended as a fail-safe default for programs which do not check
+the return status of library routines (we don’t encourage you to write
+programs this way).</p>
+<p>If you turn off the default error handler it is your responsibility to
+check the return values of routines and handle them yourself.  You can
+also customize the error behavior by providing a new error handler. For
+example, an alternative error handler could log all errors to a file,
+ignore certain error conditions (such as underflows), or start the
+debugger and attach it to the current process when an error occurs.</p>
+<p>All GSL error handlers have the type <code class="code docutils literal notranslate"><span class="pre">gsl_error_handler_t</span></code>, which is
+defined in <code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code>,</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_error_handler_t">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_error_handler_t</span></span></span><a class="headerlink" href="#c.gsl_error_handler_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is the type of GSL error handler functions.  An error handler will
+be passed four arguments which specify the reason for the error (a
+string), the name of the source file in which it occurred (also a
+string), the line number in that file (an integer) and the error number
+(an integer).  The source file and line number are set at compile time
+using the <code class="code docutils literal notranslate"><span class="pre">__FILE__</span></code> and <code class="code docutils literal notranslate"><span class="pre">__LINE__</span></code> directives in the
+preprocessor.  An error handler function returns type <code class="code docutils literal notranslate"><span class="pre">void</span></code>.
+Error handler functions should be defined like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">handler</span> <span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">reason</span><span class="p">,</span>
+              <span class="n">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">file</span><span class="p">,</span>
+              <span class="nb">int</span> <span class="n">line</span><span class="p">,</span>
+              <span class="nb">int</span> <span class="n">gsl_errno</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>To request the use of your own error handler you need to call the
+function <a class="reference internal" href="#c.gsl_set_error_handler" title="gsl_set_error_handler"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_set_error_handler()</span></code></a> which is also declared in
+<code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code>,</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_set_error_handler">
+<a class="reference internal" href="#c.gsl_error_handler_t" title="gsl_error_handler_t"><span class="n"><span class="pre">gsl_error_handler_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_set_error_handler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_error_handler_t" title="gsl_error_handler_t"><span class="n"><span class="pre">gsl_error_handler_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new_handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_set_error_handler" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets a new error handler, <a class="reference internal" href="#c.gsl_set_error_handler" title="new_handler"><code class="xref c c-data docutils literal notranslate"><span class="pre">new_handler</span></code></a>, for the GSL
+library routines.  The previous handler is returned (so that you can
+restore it later).  Note that the pointer to a user defined error
+handler function is stored in a static variable, so there can be only
+one error handler per program.  This function should be not be used in
+multi-threaded programs except to set up a program-wide error handler
+from a master thread.  The following example shows how to set and
+restore a new error handler:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">save</span> <span class="n">original</span> <span class="n">handler</span><span class="p">,</span> <span class="n">install</span> <span class="n">new</span> <span class="n">handler</span> <span class="o">*/</span>
+<span class="n">old_handler</span> <span class="o">=</span> <span class="n">gsl_set_error_handler</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">my_handler</span><span class="p">);</span>
+
+<span class="o">/*</span> <span class="n">code</span> <span class="n">uses</span> <span class="n">new</span> <span class="n">handler</span> <span class="o">*/</span>
+<span class="o">.....</span>
+
+<span class="o">/*</span> <span class="n">restore</span> <span class="n">original</span> <span class="n">handler</span> <span class="o">*/</span>
+<span class="n">gsl_set_error_handler</span> <span class="p">(</span><span class="n">old_handler</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To use the default behavior (<code class="xref c c-func docutils literal notranslate"><span class="pre">abort()</span></code> on error) set the error
+handler to <code class="code docutils literal notranslate"><span class="pre">NULL</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">old_handler</span> <span class="o">=</span> <span class="n">gsl_set_error_handler</span> <span class="p">(</span><span class="n">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_set_error_handler_off">
+<a class="reference internal" href="#c.gsl_error_handler_t" title="gsl_error_handler_t"><span class="n"><span class="pre">gsl_error_handler_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_set_error_handler_off</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_set_error_handler_off" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function turns off the error handler by defining an error handler
+which does nothing. This will cause the program to continue after any
+error, so the return values from any library routines must be checked.
+This is the recommended behavior for production programs.  The previous
+handler is returned (so that you can restore it later).</p>
+</dd></dl>
+
+<p>The error behavior can be changed for specific applications by
+recompiling the library with a customized definition of the
+<code class="code docutils literal notranslate"><span class="pre">GSL_ERROR</span></code> macro in the file <code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code>.</p>
+</section>
+<section id="using-gsl-error-reporting-in-your-own-functions">
+<span id="index-4"></span><h2>Using GSL error reporting in your own functions<a class="headerlink" href="#using-gsl-error-reporting-in-your-own-functions" title="Link to this heading">¶</a></h2>
+<p>If you are writing numerical functions in a program which also uses GSL
+code you may find it convenient to adopt the same error reporting
+conventions as in the library.</p>
+<p>To report an error you need to call the function <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_error()</span></code> with a
+string describing the error and then return an appropriate error code
+from <code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code>, or a special value, such as <code class="code docutils literal notranslate"><span class="pre">NaN</span></code>.  For
+convenience the file <code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code> defines two macros which carry
+out these steps:</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_ERROR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_ERROR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">reason</span></span>, <span class="n"><span class="pre">gsl_errno</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_ERROR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro reports an error using the GSL conventions and returns a
+status value of <code class="code docutils literal notranslate"><span class="pre">gsl_errno</span></code>.  It expands to the following code fragment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gsl_error</span> <span class="p">(</span><span class="n">reason</span><span class="p">,</span> <span class="n">__FILE__</span><span class="p">,</span> <span class="n">__LINE__</span><span class="p">,</span> <span class="n">gsl_errno</span><span class="p">);</span>
+<span class="k">return</span> <span class="n">gsl_errno</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The macro definition in <code class="file docutils literal notranslate"><span class="pre">gsl_errno.h</span></code> actually wraps the code
+in a <code class="code docutils literal notranslate"><span class="pre">do</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span> <span class="pre">while</span> <span class="pre">(0)</span></code> block to prevent possible
+parsing problems.</p>
+</dd></dl>
+
+<p>Here is an example of how the macro could be used to report that a
+routine did not achieve a requested tolerance.  To report the error the
+routine needs to return the error code <code class="code docutils literal notranslate"><span class="pre">GSL_ETOL</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">residual</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">GSL_ERROR</span><span class="p">(</span><span class="s2">&quot;residual exceeds tolerance&quot;</span><span class="p">,</span> <span class="n">GSL_ETOL</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_ERROR_VAL">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_ERROR_VAL</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">reason</span></span>, <span class="n"><span class="pre">gsl_errno</span></span>, <span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_ERROR_VAL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro is the same as <code class="code docutils literal notranslate"><span class="pre">GSL_ERROR</span></code> but returns a user-defined
+value of <code class="xref c c-data docutils literal notranslate"><span class="pre">value</span></code> instead of an error code.  It can be used for
+mathematical functions that return a floating point value.</p>
+</dd></dl>
+
+<p>The following example shows how to return a <code class="code docutils literal notranslate"><span class="pre">NaN</span></code> at a mathematical
+singularity using the <code class="code docutils literal notranslate"><span class="pre">GSL_ERROR_VAL</span></code> macro:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">GSL_ERROR_VAL</span><span class="p">(</span><span class="s2">&quot;argument lies on singularity&quot;</span><span class="p">,</span> <span class="n">GSL_ERANGE</span><span class="p">,</span> <span class="n">GSL_NAN</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>Here is an example of some code which checks the return value of a
+function where an error might be reported:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_errno.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_fft_complex.h&gt;</span>
+
+<span class="o">...</span>
+  <span class="nb">int</span> <span class="n">status</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">37</span><span class="p">;</span>
+
+  <span class="n">gsl_set_error_handler_off</span><span class="p">();</span>
+
+  <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_fft_complex_radix2_forward</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_EINVAL</span><span class="p">)</span> <span class="p">{</span>
+       <span class="n">fprintf</span> <span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;invalid argument, n=</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="n">fprintf</span> <span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;failed, gsl_errno=</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">exit</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>The function <a class="reference internal" href="fft.html#c.gsl_fft_complex_radix2_forward" title="gsl_fft_complex_radix2_forward"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_radix2_forward()</span></code></a> only accepts integer lengths
+which are a power of two.  If the variable <code class="code docutils literal notranslate"><span class="pre">n</span></code> is not a power of
+two then the call to the library function will return <code class="code docutils literal notranslate"><span class="pre">GSL_EINVAL</span></code>,
+indicating that the length argument is invalid.  The function call to
+<a class="reference internal" href="#c.gsl_set_error_handler_off" title="gsl_set_error_handler_off"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_set_error_handler_off()</span></code></a> stops the default error handler from
+aborting the program.  The <code class="code docutils literal notranslate"><span class="pre">else</span></code> clause catches any other possible
+errors.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Using the Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="math.html" class="btn btn-neutral float-right" title="Mathematical Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

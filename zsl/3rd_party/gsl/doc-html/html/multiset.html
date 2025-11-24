@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multisets &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sorting" href="sort.html" />
+    <link rel="prev" title="Combinations" href="combination.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multisets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-multiset-struct">The Multiset struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiset-allocation">Multiset allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-multiset-elements">Accessing multiset elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiset-properties">Multiset properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiset-functions">Multiset functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-multisets">Reading and writing multisets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Multisets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/multiset.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="combination.html" class="btn btn-neutral float-left" title="Combinations" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sort.html" class="btn btn-neutral float-right" title="Sorting" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multisets">
+<span id="index-0"></span><h1>Multisets<a class="headerlink" href="#multisets" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for creating and manipulating multisets. A
+multiset <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/> is represented by an array of <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> integers in the range
+0 to <img class="math" src="_images/math/20df0c4aec91444f204cfbfb831b4035081f410a.png" alt="n - 1"/>, where each value <img class="math" src="_images/math/8f3ed3aa23232b84b9d4f7e1d0068c62e5869384.png" alt="c_i"/> may occur more than once.  The
+multiset <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/> corresponds to indices of <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> elements chosen from an
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> element vector with replacement.  In mathematical terms, <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> is
+the cardinality of the multiset while <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> is the maximum multiplicity of
+any value.  Multisets are useful, for example, when iterating over the indices
+of a <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-th order symmetric tensor in <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-space.</p>
+<p>The functions described in this chapter are defined in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_multiset.h</span></code>.</p>
+<section id="the-multiset-struct">
+<h2>The Multiset struct<a class="headerlink" href="#the-multiset-struct" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_multiset">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset</span></span></span><a class="headerlink" href="#c.gsl_multiset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>A multiset is defined by a structure containing three components, the
+values of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>, and a pointer to the multiset array.
+The elements of the multiset array are all of type <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>, and
+are stored in increasing order.  The <a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_multiset</span></code></a> structure
+looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+<span class="p">{</span>
+  <span class="n">size_t</span> <span class="n">n</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">k</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">gsl_multiset</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="multiset-allocation">
+<h2>Multiset allocation<a class="headerlink" href="#multiset-allocation" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_alloc">
+<a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a new multiset with parameters <a class="reference internal" href="#c.gsl_multiset_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>,
+<a class="reference internal" href="#c.gsl_multiset_alloc" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a>.  The multiset is not initialized and its elements are undefined.  Use
+the function <a class="reference internal" href="#c.gsl_multiset_calloc" title="gsl_multiset_calloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_multiset_calloc()</span></code></a> if you want to create a multiset which
+is initialized to the lexicographically first multiset element. A null pointer
+is returned if insufficient memory is available to create the multiset.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_calloc">
+<a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_calloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_calloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a new multiset with parameters <a class="reference internal" href="#c.gsl_multiset_calloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>,
+<a class="reference internal" href="#c.gsl_multiset_calloc" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a> and initializes it to the lexicographically first multiset element. A
+null pointer is returned if insufficient memory is available to create the
+multiset.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_init_first">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_init_first</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_init_first" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the multiset <a class="reference internal" href="#c.gsl_multiset_init_first" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the lexicographically first
+multiset element, i.e. <img class="math" src="_images/math/77bfa83830305fac291e4e73b780e4cc9458b293.png" alt="0"/> repeated <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> times.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_init_last">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_init_last</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_init_last" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the multiset <a class="reference internal" href="#c.gsl_multiset_init_last" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the lexicographically last
+multiset element, i.e. <img class="math" src="_images/math/148b550abf206bf92c3b91882cf27375074a57d7.png" alt="n-1"/> repeated <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> times.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory used by the multiset <a class="reference internal" href="#c.gsl_multiset_free" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the elements of the multiset <a class="reference internal" href="#c.gsl_multiset_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the
+multiset <a class="reference internal" href="#c.gsl_multiset_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>.  The two multisets must have the same size.</p>
+</dd></dl>
+
+</section>
+<section id="accessing-multiset-elements">
+<h2>Accessing multiset elements<a class="headerlink" href="#accessing-multiset-elements" title="Link to this heading">¶</a></h2>
+<p>The following function can be used to access the elements of a multiset.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_get">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the value of the <a class="reference internal" href="#c.gsl_multiset_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>-th element of the
+multiset <a class="reference internal" href="#c.gsl_multiset_get" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.  If <a class="reference internal" href="#c.gsl_multiset_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> lies outside the allowed range of 0 to
+<img class="math" src="_images/math/f2a1956e91647c128c4dcf865b90a0ae4c09b08a.png" alt="k - 1"/> then the error handler is invoked and 0 is returned. An inline version of this function is used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.</p>
+</dd></dl>
+
+</section>
+<section id="multiset-properties">
+<h2>Multiset properties<a class="headerlink" href="#multiset-properties" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_n">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_n</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_n" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the range (<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>) of the multiset <a class="reference internal" href="#c.gsl_multiset_n" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_k">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_k</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_k" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the number of elements (<img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>) in the multiset <a class="reference internal" href="#c.gsl_multiset_k" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_data">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the array of elements in the
+multiset <a class="reference internal" href="#c.gsl_multiset_data" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-1">
+<dt class="sig sig-object c" id="c.gsl_multiset_valid">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_valid</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_valid" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function checks that the multiset <a class="reference internal" href="#c.gsl_multiset_valid" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> is valid.  The <code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code>
+elements should lie in the range 0 to <img class="math" src="_images/math/20df0c4aec91444f204cfbfb831b4035081f410a.png" alt="n - 1"/>, with each
+value occurring in nondecreasing order.</p>
+</dd></dl>
+
+</section>
+<section id="multiset-functions">
+<h2>Multiset functions<a class="headerlink" href="#multiset-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_multiset_next">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_next</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_next" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function advances the multiset <a class="reference internal" href="#c.gsl_multiset_next" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the next multiset element in
+lexicographic order and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If no further multisets
+elements are available it returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> and leaves <a class="reference internal" href="#c.gsl_multiset_next" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>
+unmodified.  Starting with the first multiset and repeatedly applying this
+function will iterate through all possible multisets of a given order.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_prev">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_prev</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_prev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function steps backwards from the multiset <a class="reference internal" href="#c.gsl_multiset_prev" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the previous
+multiset element in lexicographic order, returning <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If no
+previous multiset is available it returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> and leaves <a class="reference internal" href="#c.gsl_multiset_prev" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>
+unmodified.</p>
+</dd></dl>
+
+</section>
+<section id="reading-and-writing-multisets">
+<h2>Reading and writing multisets<a class="headerlink" href="#reading-and-writing-multisets" title="Link to this heading">¶</a></h2>
+<p>The library provides functions for reading and writing multisets to a
+file as binary data or formatted text.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_fwrite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_fwrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_fwrite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the elements of the multiset <a class="reference internal" href="#c.gsl_multiset_fwrite" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to the
+stream <a class="reference internal" href="#c.gsl_multiset_fwrite" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.  Since the
+data is written in the native binary format it may not be portable
+between different architectures.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_fread">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_fread</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_fread" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads elements from the open stream <a class="reference internal" href="#c.gsl_multiset_fread" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+multiset <a class="reference internal" href="#c.gsl_multiset_fread" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> in binary format.  The multiset <a class="reference internal" href="#c.gsl_multiset_fread" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> must be
+preallocated with correct values of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> since the
+function uses the size of <a class="reference internal" href="#c.gsl_multiset_fread" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to determine how many bytes to read.
+The function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading
+from the file.  The data is assumed to have been written in the native
+binary format on the same architecture.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_fprintf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_fprintf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">format</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_fprintf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the elements of the multiset <a class="reference internal" href="#c.gsl_multiset_fprintf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>
+line-by-line to the stream <a class="reference internal" href="#c.gsl_multiset_fprintf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> using the format specifier
+<a class="reference internal" href="#c.gsl_multiset_fprintf" title="format"><code class="xref c c-data docutils literal notranslate"><span class="pre">format</span></code></a>, which should be suitable for a type of <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>.
+In ISO C99 the type modifier <code class="code docutils literal notranslate"><span class="pre">z</span></code> represents <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>, so
+<code class="code docutils literal notranslate"><span class="pre">&quot;%zun&quot;</span></code> is a suitable format <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+The function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_multiset_fscanf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_multiset_fscanf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_multiset" title="gsl_multiset"><span class="n"><span class="pre">gsl_multiset</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_multiset_fscanf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads formatted data from the stream <a class="reference internal" href="#c.gsl_multiset_fscanf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+multiset <a class="reference internal" href="#c.gsl_multiset_fscanf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.  The multiset <a class="reference internal" href="#c.gsl_multiset_fscanf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> must be preallocated with
+correct values of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> since the function uses the size of <a class="reference internal" href="#c.gsl_multiset_fscanf" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> to
+determine how many numbers to read.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from the file.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The example program below prints all multisets elements containing the values
+<img class="math" src="_images/math/835a1511e14b2486053aa20315a2388368f21746.png" alt="{0,1,2,3}"/> ordered by size.  Multiset elements of the same size are
+ordered lexicographically.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_multiset.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">gsl_multiset</span> <span class="o">*</span> <span class="n">c</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">;</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;All multisets of {0,1,2,3} by size:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="n">gsl_multiset_calloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+      <span class="n">do</span>
+        <span class="p">{</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">);</span>
+          <span class="n">gsl_multiset_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="s2">&quot; </span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">);</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot; }</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">gsl_multiset_next</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="n">GSL_SUCCESS</span><span class="p">);</span>
+      <span class="n">gsl_multiset_free</span> <span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output from the program,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">All</span> <span class="n">multisets</span> <span class="n">of</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}</span> <span class="n">by</span> <span class="n">size</span><span class="p">:</span>
+<span class="p">{</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+<span class="p">{</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>All 70 multisets are generated and sorted lexicographically.</p>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>In versions of the GNU C library prior to the ISO C99 standard,
+the type modifier <code class="code docutils literal notranslate"><span class="pre">Z</span></code> was used instead.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="combination.html" class="btn btn-neutral float-left" title="Combinations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sort.html" class="btn btn-neutral float-right" title="Sorting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

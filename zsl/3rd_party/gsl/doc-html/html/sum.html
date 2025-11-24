@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Series Acceleration &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wavelet Transforms" href="dwt.html" />
+    <link rel="prev" title="Chebyshev Approximations" href="cheb.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Series Acceleration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#acceleration-functions">Acceleration functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acceleration-functions-without-error-estimation">Acceleration functions without error estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Series Acceleration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sum.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="cheb.html" class="btn btn-neutral float-left" title="Chebyshev Approximations" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dwt.html" class="btn btn-neutral float-right" title="Wavelet Transforms" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="series-acceleration">
+<span id="index-0"></span><h1>Series Acceleration<a class="headerlink" href="#series-acceleration" title="Link to this heading">¶</a></h1>
+<p>The functions described in this chapter accelerate the convergence of a
+series using the Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform.  This method takes a small number of
+terms from the start of a series and uses a systematic approximation to
+compute an extrapolated value and an estimate of its error.  The
+<img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform works for both convergent and divergent series, including
+asymptotic series.</p>
+<p>These functions are declared in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_sum.h</span></code>.</p>
+<section id="acceleration-functions">
+<h2>Acceleration functions<a class="headerlink" href="#acceleration-functions" title="Link to this heading">¶</a></h2>
+<p>The following functions compute the full Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform of a series
+with its error estimate.  The error estimate is computed by propagating
+rounding errors from each term through to the final extrapolation.</p>
+<p>These functions are intended for summing analytic series where each term
+is known to high accuracy, and the rounding errors are assumed to
+originate from finite precision. They are taken to be relative errors of
+order <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_DBL_EPSILON</span></code> for each term.</p>
+<p>The calculation of the error in the extrapolated value is an
+<img class="math" src="_images/math/c0d3ae9d90fc064780ab0268899f079073a6a417.png" alt="O(N^2)"/> process, which is expensive in time and memory.  A faster
+but less reliable method which estimates the error from the convergence
+of the extrapolated value is described in the next section.  For the
+method described here a full table of intermediate values and
+derivatives through to <img class="math" src="_images/math/d7adb0d18071ae03d48f0e0bd45a7540149c398f.png" alt="O(N)"/> must be computed and stored, but this
+does give a reliable error estimate.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_u_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_u_workspace</span></span></span><a class="headerlink" href="#c.gsl_sum_levin_u_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Workspace for a Leven <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_u_alloc">
+<a class="reference internal" href="#c.gsl_sum_levin_u_workspace" title="gsl_sum_levin_u_workspace"><span class="n"><span class="pre">gsl_sum_levin_u_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_u_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sum_levin_u_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for a Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform of <a class="reference internal" href="#c.gsl_sum_levin_u_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>
+terms.  The size of the workspace is <img class="math" src="_images/math/c4f586abaf5fef5418195d2a4b9c0892b071d287.png" alt="O(2n^2 + 3n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_u_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_u_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_sum_levin_u_workspace" title="gsl_sum_levin_u_workspace"><span class="n"><span class="pre">gsl_sum_levin_u_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sum_levin_u_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_sum_levin_u_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_u_accel">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_u_accel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">array</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">array_size</span></span>, <a class="reference internal" href="#c.gsl_sum_levin_u_workspace" title="gsl_sum_levin_u_workspace"><span class="n"><span class="pre">gsl_sum_levin_u_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sum_accel</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sum_levin_u_accel" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function takes the terms of a series in <a class="reference internal" href="#c.gsl_sum_levin_u_accel" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a> of size
+<a class="reference internal" href="#c.gsl_sum_levin_u_accel" title="array_size"><code class="xref c c-data docutils literal notranslate"><span class="pre">array_size</span></code></a> and computes the extrapolated limit of the series using
+a Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform.  Additional working space must be provided in
+<a class="reference internal" href="#c.gsl_sum_levin_u_accel" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.  The extrapolated sum is stored in <a class="reference internal" href="#c.gsl_sum_levin_u_accel" title="sum_accel"><code class="xref c c-data docutils literal notranslate"><span class="pre">sum_accel</span></code></a>, with an
+estimate of the absolute error stored in <a class="reference internal" href="#c.gsl_sum_levin_u_accel" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.  The actual
+term-by-term sum is returned in <code class="code docutils literal notranslate"><span class="pre">w-&gt;sum_plain</span></code>. The algorithm
+calculates the truncation error (the difference between two successive
+extrapolations) and round-off error (propagated from the individual
+terms) to choose an optimal number of terms for the extrapolation.
+All the terms of the series passed in through <a class="reference internal" href="#c.gsl_sum_levin_u_accel" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a> should be non-zero.</p>
+</dd></dl>
+
+</section>
+<section id="acceleration-functions-without-error-estimation">
+<h2>Acceleration functions without error estimation<a class="headerlink" href="#acceleration-functions-without-error-estimation" title="Link to this heading">¶</a></h2>
+<p>The functions described in this section compute the Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform of
+series and attempt to estimate the error from the “truncation error” in
+the extrapolation, the difference between the final two approximations.
+Using this method avoids the need to compute an intermediate table of
+derivatives because the error is estimated from the behavior of the
+extrapolated value itself. Consequently this algorithm is an <img class="math" src="_images/math/d7adb0d18071ae03d48f0e0bd45a7540149c398f.png" alt="O(N)"/>
+process and only requires <img class="math" src="_images/math/d7adb0d18071ae03d48f0e0bd45a7540149c398f.png" alt="O(N)"/> terms of storage.  If the series
+converges sufficiently fast then this procedure can be acceptable.  It
+is appropriate to use this method when there is a need to compute many
+extrapolations of series with similar convergence properties at high-speed.
+For example, when numerically integrating a function defined by a
+parameterized series where the parameter varies only slightly. A
+reliable error estimate should be computed first using the full
+algorithm described above in order to verify the consistency of the
+results.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_utrunc_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_utrunc_workspace</span></span></span><a class="headerlink" href="#c.gsl_sum_levin_utrunc_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Workspace for a Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform without error estimation</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_utrunc_alloc">
+<a class="reference internal" href="#c.gsl_sum_levin_utrunc_workspace" title="gsl_sum_levin_utrunc_workspace"><span class="n"><span class="pre">gsl_sum_levin_utrunc_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_utrunc_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sum_levin_utrunc_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for a Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform of <a class="reference internal" href="#c.gsl_sum_levin_utrunc_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>
+terms, without error estimation.  The size of the workspace is
+<img class="math" src="_images/math/9dae32ea1035953abb5a8626643629aa2aff85ad.png" alt="O(3n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_utrunc_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_utrunc_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_sum_levin_utrunc_workspace" title="gsl_sum_levin_utrunc_workspace"><span class="n"><span class="pre">gsl_sum_levin_utrunc_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sum_levin_utrunc_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_sum_levin_utrunc_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_sum_levin_utrunc_accel">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_sum_levin_utrunc_accel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">array</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">array_size</span></span>, <a class="reference internal" href="#c.gsl_sum_levin_utrunc_workspace" title="gsl_sum_levin_utrunc_workspace"><span class="n"><span class="pre">gsl_sum_levin_utrunc_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sum_accel</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr_trunc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_sum_levin_utrunc_accel" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function takes the terms of a series in <a class="reference internal" href="#c.gsl_sum_levin_utrunc_accel" title="array"><code class="xref c c-data docutils literal notranslate"><span class="pre">array</span></code></a> of size
+<a class="reference internal" href="#c.gsl_sum_levin_utrunc_accel" title="array_size"><code class="xref c c-data docutils literal notranslate"><span class="pre">array_size</span></code></a> and computes the extrapolated limit of the series using
+a Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform.  Additional working space must be provided in
+<a class="reference internal" href="#c.gsl_sum_levin_utrunc_accel" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.  The extrapolated sum is stored in <a class="reference internal" href="#c.gsl_sum_levin_utrunc_accel" title="sum_accel"><code class="xref c c-data docutils literal notranslate"><span class="pre">sum_accel</span></code></a>.  The actual
+term-by-term sum is returned in <code class="code docutils literal notranslate"><span class="pre">w-&gt;sum_plain</span></code>. The algorithm
+terminates when the difference between two successive extrapolations
+reaches a minimum or is sufficiently small. The difference between these
+two values is used as estimate of the error and is stored in
+<a class="reference internal" href="#c.gsl_sum_levin_utrunc_accel" title="abserr_trunc"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr_trunc</span></code></a>.  To improve the reliability of the algorithm the
+extrapolated values are replaced by moving averages when calculating the
+truncation error, smoothing out any fluctuations.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following code calculates an estimate of <img class="math" src="_images/math/e58934b3d31b6cdada47eec3aec67e72dbc9d467.png" alt="\zeta(2) = \pi^2 / 6"/>
+using the series,</p>
+<div class="math">
+<p><img src="_images/math/540bc8c9b4ea9201712bea7a8504c9253db5962d.png" alt="\zeta(2) = 1 + 1/2^2 + 1/3^2 + 1/4^2 + \dots"/></p>
+</div><p>After <code class="xref c c-data docutils literal notranslate"><span class="pre">N</span></code> terms the error in the sum is <img class="math" src="_images/math/3061c5bac39f1663d7353a29de3438a9651c645b.png" alt="O(1/N)"/>, making direct
+summation of the series converge slowly.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_sum.h&gt;</span>
+
+<span class="c1">#define N 20</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+  <span class="n">double</span> <span class="n">sum_accel</span><span class="p">,</span> <span class="n">err</span><span class="p">;</span>
+  <span class="n">double</span> <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">n</span><span class="p">;</span>
+
+  <span class="n">gsl_sum_levin_u_workspace</span> <span class="o">*</span> <span class="n">w</span>
+    <span class="o">=</span> <span class="n">gsl_sum_levin_u_alloc</span> <span class="p">(</span><span class="n">N</span><span class="p">);</span>
+
+  <span class="n">const</span> <span class="n">double</span> <span class="n">zeta_2</span> <span class="o">=</span> <span class="n">M_PI</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">/</span> <span class="mf">6.0</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">terms</span> <span class="k">for</span> <span class="n">zeta</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> \<span class="n">sum_</span><span class="p">{</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">}</span><span class="o">^</span><span class="p">{</span>\<span class="n">infty</span><span class="p">}</span> <span class="mi">1</span><span class="o">/</span><span class="n">n</span><span class="o">^</span><span class="mi">2</span> <span class="o">*/</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">n</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">np1</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">;</span>
+      <span class="n">t</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">np1</span> <span class="o">*</span> <span class="n">np1</span><span class="p">);</span>
+      <span class="nb">sum</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_sum_levin_u_accel</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sum_accel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;term-by-term sum = </span><span class="si">% .16f</span><span class="s2"> using </span><span class="si">%d</span><span class="s2"> terms</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="nb">sum</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;term-by-term sum = </span><span class="si">% .16f</span><span class="s2"> using %zu terms</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="n">w</span><span class="o">-&gt;</span><span class="n">sum_plain</span><span class="p">,</span> <span class="n">w</span><span class="o">-&gt;</span><span class="n">terms_used</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;exact value      = </span><span class="si">% .16f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">zeta_2</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;accelerated sum  = </span><span class="si">% .16f</span><span class="s2"> using %zu terms</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="n">sum_accel</span><span class="p">,</span> <span class="n">w</span><span class="o">-&gt;</span><span class="n">terms_used</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;estimated error  = </span><span class="si">% .16f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;actual error     = </span><span class="si">% .16f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="n">sum_accel</span> <span class="o">-</span> <span class="n">zeta_2</span><span class="p">);</span>
+
+  <span class="n">gsl_sum_levin_u_free</span> <span class="p">(</span><span class="n">w</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output below shows that the Levin <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform is able to obtain an
+estimate of the sum to 1 part in
+<img class="math" src="_images/math/4c7c24ae5d33e5b027b6691137dec1aca881d157.png" alt="10^{10}"/>
+using the first eleven terms of the series.  The
+error estimate returned by the function is also accurate, giving
+the correct number of significant digits.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">term</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">term</span> <span class="nb">sum</span> <span class="o">=</span>  <span class="mf">1.5961632439130233</span> <span class="n">using</span> <span class="mi">20</span> <span class="n">terms</span>
+<span class="n">term</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">term</span> <span class="nb">sum</span> <span class="o">=</span>  <span class="mf">1.5759958390005426</span> <span class="n">using</span> <span class="mi">13</span> <span class="n">terms</span>
+<span class="n">exact</span> <span class="n">value</span>      <span class="o">=</span>  <span class="mf">1.6449340668482264</span>
+<span class="n">accelerated</span> <span class="nb">sum</span>  <span class="o">=</span>  <span class="mf">1.6449340669228176</span> <span class="n">using</span> <span class="mi">13</span> <span class="n">terms</span>
+<span class="n">estimated</span> <span class="n">error</span>  <span class="o">=</span>  <span class="mf">0.0000000000888360</span>
+<span class="n">actual</span> <span class="n">error</span>     <span class="o">=</span>  <span class="mf">0.0000000000745912</span>
+</pre></div>
+</div>
+<p>Note that a direct summation of this series would require
+<img class="math" src="_images/math/4c7c24ae5d33e5b027b6691137dec1aca881d157.png" alt="10^{10}"/>
+terms to achieve the same precision as the accelerated
+sum does in 13 terms.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The algorithms used by these functions are described in the following papers,</p>
+<ul class="simple">
+<li><p>T. Fessler, W.F. Ford, D.A. Smith,
+HURRY: An acceleration algorithm for scalar sequences and series
+<em>ACM Transactions on Mathematical Software</em>, 9(3):346–354, 1983.
+and Algorithm 602 9(3):355–357, 1983.</p></li>
+</ul>
+<p>The theory of the <img class="math" src="_images/math/71fb5a1cc0758ba70654e6dc934c374032656d2f.png" alt="u"/>-transform was presented by Levin,</p>
+<ul class="simple">
+<li><p>D. Levin,
+Development of Non-Linear Transformations for Improving Convergence of
+Sequences, <em>Intern.: J.: Computer Math.</em> B3:371–388, 1973.</p></li>
+</ul>
+<p>A review paper on the Levin Transform is available online,</p>
+<ul class="simple">
+<li><p>Herbert H. H. Homeier, Scalar Levin-Type Sequence Transformations,
+<a class="reference external" href="http://arxiv.org/abs/math/0005209">http://arxiv.org/abs/math/0005209</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cheb.html" class="btn btn-neutral float-left" title="Chebyshev Approximations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dwt.html" class="btn btn-neutral float-right" title="Wavelet Transforms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

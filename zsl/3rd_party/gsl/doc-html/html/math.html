@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mathematical Functions &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Complex Numbers" href="complex.html" />
+    <link rel="prev" title="Error Handling" href="err.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematical Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mathematical-constants">Mathematical Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#infinities-and-not-a-number">Infinities and Not-a-number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#elementary-functions">Elementary Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#small-integer-powers">Small integer powers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-sign-of-numbers">Testing the Sign of Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-for-odd-and-even-numbers">Testing for Odd and Even Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maximum-and-minimum-functions">Maximum and Minimum functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#approximate-comparison-of-floating-point-numbers">Approximate Comparison of Floating Point Numbers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Mathematical Functions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/math.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="err.html" class="btn btn-neutral float-left" title="Error Handling" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="complex.html" class="btn btn-neutral float-right" title="Complex Numbers" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mathematical-functions">
+<span id="index-0"></span><h1>Mathematical Functions<a class="headerlink" href="#mathematical-functions" title="Link to this heading">¶</a></h1>
+<p>This chapter describes basic mathematical functions.  Some of these
+functions are present in system libraries, but the alternative versions
+given here can be used as a substitute when the system functions are not
+available.</p>
+<p>The functions and macros described in this chapter are defined in the
+header file <code class="file docutils literal notranslate"><span class="pre">gsl_math.h</span></code>.</p>
+<section id="mathematical-constants">
+<span id="index-1"></span><h2>Mathematical Constants<a class="headerlink" href="#mathematical-constants" title="Link to this heading">¶</a></h2>
+<p>The library ensures that the standard BSD mathematical constants
+are defined. For reference, here is a list of the constants:</p>
+<table class="docutils align-default" id="index-2">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_E</span></code></p></td>
+<td><p>The base of exponentials, <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_LOG2E</span></code></p></td>
+<td><p>The base-2 logarithm of <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>, <img class="math" src="_images/math/5b37e2272e8694d564887fc3aca3804dab3b984c.png" alt="\log_2 (e)"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_LOG10E</span></code></p></td>
+<td><p>The base-10 logarithm of <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>, <img class="math" src="_images/math/4334f9db65b90795ef8110ae5466e60e659f4455.png" alt="\log_{10} (e)"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_SQRT2</span></code></p></td>
+<td><p>The square root of two, <img class="math" src="_images/math/f82584e97973b9a75588c73a07b958276ee51016.png" alt="\sqrt 2"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_SQRT1_2</span></code></p></td>
+<td><p>The square root of one-half, <img class="math" src="_images/math/d6b831bc99e9f05ea3dea7aa4341c57fbd8badcb.png" alt="\sqrt{1/2}"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_SQRT3</span></code></p></td>
+<td><p>The square root of three, <img class="math" src="_images/math/a47657410d642e3347493dfa3b38bc6f35ad53a4.png" alt="\sqrt 3"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_PI</span></code></p></td>
+<td><p>The constant pi, <img class="math" src="_images/math/38aa55829038d8edbd874969ca2af5ca133e5842.png" alt="\pi"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_PI_2</span></code></p></td>
+<td><p>Pi divided by two, <img class="math" src="_images/math/dff565f58034959da185d4f5881282682f747dd0.png" alt="\pi/2"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_PI_4</span></code></p></td>
+<td><p>Pi divided by four, <img class="math" src="_images/math/2143683bf092399481a8cb0348d2b39c7f696f67.png" alt="\pi/4"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_SQRTPI</span></code></p></td>
+<td><p>The square root of pi, <img class="math" src="_images/math/f3660cce7e2f333f03a002267196c40c179eac41.png" alt="\sqrt\pi"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_2_SQRTPI</span></code></p></td>
+<td><p>Two divided by the square root of pi, <img class="math" src="_images/math/dd5e27f1e002127e51979309c560b925628957ad.png" alt="2/\sqrt\pi"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_1_PI</span></code></p></td>
+<td><p>The reciprocal of pi, <img class="math" src="_images/math/4c7e41ab85d3606801b5b2b7f32ba661b51c4b7a.png" alt="1/\pi"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_2_PI</span></code></p></td>
+<td><p>Twice the reciprocal of pi, <img class="math" src="_images/math/aaf3c50959d9ac3c954974301b778b4208f69d0f.png" alt="2/\pi"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_LN10</span></code></p></td>
+<td><p>The natural logarithm of ten, <img class="math" src="_images/math/805eaf45272b2a6329b8546fbc54e58f0a62897c.png" alt="\ln(10)"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_LN2</span></code></p></td>
+<td><p>The natural logarithm of two, <img class="math" src="_images/math/f2801b5c1afbf5afc4488584029e850e9f1c6ed1.png" alt="\ln(2)"/></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_LNPI</span></code></p></td>
+<td><p>The natural logarithm of pi, <img class="math" src="_images/math/5ef9f0f7dbf05d648e68048324d911693b067868.png" alt="\ln(\pi)"/></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">M_EULER</span></code></p></td>
+<td><p>Euler’s constant, <img class="math" src="_images/math/533fb47a7285b2de690169d937c8bfeaba4100c7.png" alt="\gamma"/></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="infinities-and-not-a-number">
+<span id="index-3"></span><h2>Infinities and Not-a-number<a class="headerlink" href="#infinities-and-not-a-number" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_POSINF">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_POSINF</span></span></span><a class="headerlink" href="#c.GSL_POSINF" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro contains the IEEE representation of positive infinity,
+<img class="math" src="_images/math/07c4e162ddf3c96166f275403d9613795cf00350.png" alt="+\infty"/>. It is computed from the expression <code class="code docutils literal notranslate"><span class="pre">+1.0/0.0</span></code>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_NEGINF">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_NEGINF</span></span></span><a class="headerlink" href="#c.GSL_NEGINF" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro contains the IEEE representation of negative infinity,
+<img class="math" src="_images/math/533634fe24ae42ba33b1d413afbe4a8f8a69370b.png" alt="-\infty"/>. It is computed from the expression <code class="code docutils literal notranslate"><span class="pre">-1.0/0.0</span></code>.</p>
+</dd></dl>
+
+<dl class="c macro" id="index-4">
+<dt class="sig sig-object c" id="c.GSL_NAN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_NAN</span></span></span><a class="headerlink" href="#c.GSL_NAN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro contains the IEEE representation of the Not-a-Number symbol,
+<code class="code docutils literal notranslate"><span class="pre">NaN</span></code>. It is computed from the ratio <code class="code docutils literal notranslate"><span class="pre">0.0/0.0</span></code>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_isnan">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_isnan</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_isnan" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns 1 if <a class="reference internal" href="#c.gsl_isnan" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is not-a-number.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_isinf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_isinf</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_isinf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns <img class="math" src="_images/math/7d8e38d31bf43630815fde9e3f56c37b74f0fc51.png" alt="+1"/> if <a class="reference internal" href="#c.gsl_isinf" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is positive infinity,
+<img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/> if <a class="reference internal" href="#c.gsl_isinf" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is negative infinity and 0
+otherwise. <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_finite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_finite</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_finite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns 1 if <a class="reference internal" href="#c.gsl_finite" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is a real number, and 0 if it is
+infinite or not-a-number.</p>
+</dd></dl>
+
+</section>
+<section id="elementary-functions">
+<h2>Elementary Functions<a class="headerlink" href="#elementary-functions" title="Link to this heading">¶</a></h2>
+<p>The following routines provide portable implementations of functions
+found in the BSD math library.  When native versions are not available
+the functions described here can be used instead.  The substitution can
+be made automatically if you use <code class="code docutils literal notranslate"><span class="pre">autoconf</span></code> to compile your
+application (see <a class="reference internal" href="usage.html#portability-functions"><span class="std std-ref">Portability functions</span></a>).</p>
+<dl class="c function" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_log1p">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_log1p</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_log1p" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of <img class="math" src="_images/math/cd3a987a12f5e36a2417198f98f87c246cc8be5b.png" alt="\log(1+x)"/> in a way that is
+accurate for small <a class="reference internal" href="#c.gsl_log1p" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>. It provides an alternative to the BSD math
+function <code class="code docutils literal notranslate"><span class="pre">log1p(x)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-6">
+<dt class="sig sig-object c" id="c.gsl_expm1">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_expm1</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_expm1" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of <img class="math" src="_images/math/c0d87caf51504ee542b794a673bb47ae513f8bad.png" alt="\exp(x)-1"/> in a way that is
+accurate for small <a class="reference internal" href="#c.gsl_expm1" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>. It provides an alternative to the BSD math
+function <code class="code docutils literal notranslate"><span class="pre">expm1(x)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-7">
+<dt class="sig sig-object c" id="c.gsl_hypot">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_hypot</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_hypot" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of
+<img class="math" src="_images/math/1be7b6a9cf87e66dd1379af2e7e458e2fb863015.png" alt="\sqrt{x^2 + y^2}"/> in a way that avoids overflow. It provides an
+alternative to the BSD math function <code class="code docutils literal notranslate"><span class="pre">hypot(x,y)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-8">
+<dt class="sig sig-object c" id="c.gsl_hypot3">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_hypot3</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_hypot3" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of
+<img class="math" src="_images/math/66c798500c7d6ae7da8eeda32161ee7aa9047849.png" alt="\sqrt{x^2 + y^2 + z^2}"/> in a way that avoids overflow.</p>
+</dd></dl>
+
+<dl class="c function" id="index-9">
+<dt class="sig sig-object c" id="c.gsl_acosh">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_acosh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_acosh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of <img class="math" src="_images/math/d461e468a52798364d8b8391515bd3f3fd28b07e.png" alt="\arccosh{(x)}"/>. It provides an
+alternative to the standard math function <code class="code docutils literal notranslate"><span class="pre">acosh(x)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-10">
+<dt class="sig sig-object c" id="c.gsl_asinh">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_asinh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_asinh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of <img class="math" src="_images/math/e805d36ef2ea8e3a6a10aa0c9d870a3429ca4033.png" alt="\arcsinh{(x)}"/>. It provides an
+alternative to the standard math function <code class="code docutils literal notranslate"><span class="pre">asinh(x)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-11">
+<dt class="sig sig-object c" id="c.gsl_atanh">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_atanh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_atanh" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of <img class="math" src="_images/math/8b0a438f8e56a29b950f3bc977bcafdf7d86e271.png" alt="\arctanh{(x)}"/>. It provides an
+alternative to the standard math function <code class="code docutils literal notranslate"><span class="pre">atanh(x)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-12">
+<dt class="sig sig-object c" id="c.gsl_ldexp">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ldexp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ldexp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the value of <img class="math" src="_images/math/b3a681f5d464868e55bd2a039d99837e16427dde.png" alt="x * 2^e"/>. It provides an
+alternative to the standard math function <code class="code docutils literal notranslate"><span class="pre">ldexp(x,e)</span></code>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-13">
+<dt class="sig sig-object c" id="c.gsl_frexp">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_frexp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_frexp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function splits the number <a class="reference internal" href="#c.gsl_frexp" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> into its normalized fraction
+<img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> and exponent <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>, such that <img class="math" src="_images/math/de773575421ed5c0eff52f0cb7fe48dbc5e382d4.png" alt="x = f * 2^e"/> and
+<img class="math" src="_images/math/eff193c0578f9c7d60dda046e055aa287283c016.png" alt="0.5 &lt;= f &lt; 1"/>. The function returns <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> and stores the
+exponent in <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>. If <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> is zero, both <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> and <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>
+are set to zero. This function provides an alternative to the standard
+math function <code class="code docutils literal notranslate"><span class="pre">frexp(x,</span> <span class="pre">e)</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="small-integer-powers">
+<h2>Small integer powers<a class="headerlink" href="#small-integer-powers" title="Link to this heading">¶</a></h2>
+<p>A common complaint about the standard C library is its lack of a
+function for calculating (small) integer powers.  GSL provides some simple
+functions to fill this gap.  For reasons of efficiency, these functions
+do not check for overflow or underflow conditions.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_pow_int">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_int</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_int" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_uint">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_uint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_uint" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These routines computes the power <img class="math" src="_images/math/d1e97c35882ba9581683a3cbd111da2ad6c52975.png" alt="x^n"/> for integer <a class="reference internal" href="#c.gsl_pow_uint" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.  The
+power is computed efficiently—for example, <img class="math" src="_images/math/2bc17fc9b20233667fb5f8ee27c0a42d8402351e.png" alt="x^8"/> is computed as
+<img class="math" src="_images/math/6eed6780480a443d2a672eda69ba2d2f016e3389.png" alt="((x^2)^2)^2"/>, requiring only 3 multiplications.  A version of this
+function which also computes the numerical error in the result is
+available as <a class="reference internal" href="specfunc.html#c.gsl_sf_pow_int_e" title="gsl_sf_pow_int_e"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sf_pow_int_e()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_pow_2">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_2</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_2" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_3">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_3</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_3" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_4">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_4</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_4" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_5">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_5</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_5" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_6">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_6</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_6" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_7">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_7</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_7" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_8">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_8</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_8" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_pow_9">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_pow_9</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_pow_9" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions can be used to compute small integer powers <img class="math" src="_images/math/993e35fe083a088a4224c0ff19c9b78cbf0b47e7.png" alt="x^2"/>,
+<img class="math" src="_images/math/13a5c89425afa855bd2eeafacb82d98455f62556.png" alt="x^3"/>, etc. efficiently. The functions will be inlined when
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined, so that use of these functions
+should be as efficient as explicitly writing the corresponding
+product expression:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="n">double</span> <span class="n">y</span> <span class="o">=</span> <span class="n">gsl_pow_4</span> <span class="p">(</span><span class="mf">3.141</span><span class="p">)</span>  <span class="o">/*</span> <span class="n">compute</span> <span class="mf">3.141</span><span class="o">**</span><span class="mi">4</span> <span class="o">*/</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="testing-the-sign-of-numbers">
+<h2>Testing the Sign of Numbers<a class="headerlink" href="#testing-the-sign-of-numbers" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_SIGN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_SIGN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_SIGN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro returns the sign of <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>. It is defined as <code class="code docutils literal notranslate"><span class="pre">((x)</span> <span class="pre">&gt;=</span> <span class="pre">0</span>
+<span class="pre">?</span> <span class="pre">1</span> <span class="pre">:</span> <span class="pre">-1)</span></code>. Note that with this definition the sign of zero is positive
+(regardless of its IEEE sign bit).</p>
+</dd></dl>
+
+</section>
+<section id="testing-for-odd-and-even-numbers">
+<h2>Testing for Odd and Even Numbers<a class="headerlink" href="#testing-for-odd-and-even-numbers" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_IS_ODD">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_IS_ODD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_IS_ODD" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro evaluates to 1 if <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> is odd and 0 if <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> is
+even. The argument <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> must be of integer type.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_IS_EVEN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_IS_EVEN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_IS_EVEN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro is the opposite of <a class="reference internal" href="#c.GSL_IS_ODD" title="GSL_IS_ODD"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IS_ODD</span></code></a>. It evaluates to 1 if
+<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> is even and 0 if <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> is odd. The argument <code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> must be of
+integer type.</p>
+</dd></dl>
+
+</section>
+<section id="maximum-and-minimum-functions">
+<h2>Maximum and Minimum functions<a class="headerlink" href="#maximum-and-minimum-functions" title="Link to this heading">¶</a></h2>
+<p>Note that the following macros perform multiple evaluations of their
+arguments, so they should not be used with arguments that have side
+effects (such as a call to a random number generator).</p>
+<dl class="c macro" id="index-14">
+<dt class="sig sig-object c" id="c.GSL_MAX">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_MAX</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MAX" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro returns the maximum of <code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code>. It is defined
+as <code class="code docutils literal notranslate"><span class="pre">((a)</span> <span class="pre">&gt;</span> <span class="pre">(b)</span> <span class="pre">?</span> <span class="pre">(a):(b))</span></code>.</p>
+</dd></dl>
+
+<dl class="c macro" id="index-15">
+<dt class="sig sig-object c" id="c.GSL_MIN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_MIN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MIN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This macro returns the minimum of <code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code> and <code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code>. It is defined as
+<code class="code docutils literal notranslate"><span class="pre">((a)</span> <span class="pre">&lt;</span> <span class="pre">(b)</span> <span class="pre">?</span> <span class="pre">(a):(b))</span></code>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.GSL_MAX_DBL">
+<span class="k"><span class="pre">extern</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_MAX_DBL</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MAX_DBL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the maximum of the double precision numbers
+<a class="reference internal" href="#c.GSL_MAX_DBL" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and <a class="reference internal" href="#c.GSL_MAX_DBL" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> using an inline function. The use of a function
+allows for type checking of the arguments as an extra safety feature. On
+platforms where inline functions are not available the macro
+<a class="reference internal" href="#c.GSL_MAX" title="GSL_MAX"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MAX</span></code></a> will be automatically substituted.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.GSL_MIN_DBL">
+<span class="k"><span class="pre">extern</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_MIN_DBL</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MIN_DBL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the minimum of the double precision numbers
+<a class="reference internal" href="#c.GSL_MIN_DBL" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a> and <a class="reference internal" href="#c.GSL_MIN_DBL" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> using an inline function. The use of a function
+allows for type checking of the arguments as an extra safety feature. On
+platforms where inline functions are not available the macro
+<a class="reference internal" href="#c.GSL_MIN" title="GSL_MIN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MIN</span></code></a> will be automatically substituted.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.GSL_MAX_INT">
+<span class="k"><span class="pre">extern</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_MAX_INT</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MAX_INT" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.GSL_MIN_INT">
+<span class="k"><span class="pre">extern</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_MIN_INT</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MIN_INT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the maximum or minimum of the integers <a class="reference internal" href="#c.GSL_MIN_INT" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a>
+and <a class="reference internal" href="#c.GSL_MIN_INT" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> using an inline function.  On platforms where inline
+functions are not available the macros <a class="reference internal" href="#c.GSL_MAX" title="GSL_MAX"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MAX</span></code></a> or <a class="reference internal" href="#c.GSL_MIN" title="GSL_MIN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MIN</span></code></a>
+will be automatically substituted.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.GSL_MAX_LDBL">
+<span class="k"><span class="pre">extern</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_MAX_LDBL</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MAX_LDBL" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.GSL_MIN_LDBL">
+<span class="k"><span class="pre">extern</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GSL_MIN_LDBL</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.GSL_MIN_LDBL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the maximum or minimum of the long doubles <a class="reference internal" href="#c.GSL_MIN_LDBL" title="a"><code class="xref c c-data docutils literal notranslate"><span class="pre">a</span></code></a>
+and <a class="reference internal" href="#c.GSL_MIN_LDBL" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> using an inline function.  On platforms where inline
+functions are not available the macros <a class="reference internal" href="#c.GSL_MAX" title="GSL_MAX"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MAX</span></code></a> or <a class="reference internal" href="#c.GSL_MIN" title="GSL_MIN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_MIN</span></code></a>
+will be automatically substituted.</p>
+</dd></dl>
+
+</section>
+<section id="approximate-comparison-of-floating-point-numbers">
+<h2>Approximate Comparison of Floating Point Numbers<a class="headerlink" href="#approximate-comparison-of-floating-point-numbers" title="Link to this heading">¶</a></h2>
+<p>It is sometimes useful to be able to compare two floating point numbers
+approximately, to allow for rounding and truncation errors.  The following
+function implements the approximate floating-point comparison algorithm
+proposed by D.E. Knuth in Section 4.2.2 of “Seminumerical
+Algorithms” (3rd edition).</p>
+<dl class="c function" id="index-16">
+<dt class="sig sig-object c" id="c.gsl_fcmp">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_fcmp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsilon</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_fcmp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function determines whether <a class="reference internal" href="#c.gsl_fcmp" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> and <a class="reference internal" href="#c.gsl_fcmp" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> are approximately
+equal to a relative accuracy <a class="reference internal" href="#c.gsl_fcmp" title="epsilon"><code class="xref c c-data docutils literal notranslate"><span class="pre">epsilon</span></code></a>.</p>
+<p>The relative accuracy is measured using an interval of size <img class="math" src="_images/math/58aa92e594a11b5a5dbb28a814c00b169820ed4b.png" alt="2
+\delta"/>, where <img class="math" src="_images/math/9cf3d4053f9d6624bf7ba00268e080155b3d578c.png" alt="\delta = 2^k \epsilon"/> and <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/> is the
+maximum base-2 exponent of <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> and <img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/> as computed by the
+function <code class="xref c c-func docutils literal notranslate"><span class="pre">frexp()</span></code>.</p>
+<p>If <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> and <img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/> lie within this interval, they are considered
+approximately equal and the function returns 0. Otherwise if <img class="math" src="_images/math/3fd30b1736a7b77ae44538e32963fbd7a8599520.png" alt="x &lt;
+y"/>, the function returns <img class="math" src="_images/math/c7bd6c49eb5a777cc2ce2788ac4455cc30ffecb2.png" alt="-1"/>, or if <img class="math" src="_images/math/feb81e7fcd9c315086b99b0597091a63301b442a.png" alt="x &gt; y"/>, the function returns
+<img class="math" src="_images/math/7d8e38d31bf43630815fde9e3f56c37b74f0fc51.png" alt="+1"/>.</p>
+<p>Note that <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> and <img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/> are compared to relative accuracy, so
+this function is not suitable for testing whether a value is
+approximately zero.</p>
+<p>The implementation is based on the package <code class="code docutils literal notranslate"><span class="pre">fcmp</span></code> by T.C. Belding.</p>
+</dd></dl>
+
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Note that the C99 standard only requires the
+system <code class="xref c c-func docutils literal notranslate"><span class="pre">isinf()</span></code> function to return a non-zero value, without the
+sign of the infinity.  The implementation in some earlier versions of
+GSL used the system <code class="xref c c-func docutils literal notranslate"><span class="pre">isinf()</span></code> function and may have this behavior
+on some platforms.  Therefore, it is advisable to test the sign of
+<code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> separately, if needed, rather than relying the sign of the
+return value from <a class="reference internal" href="#c.gsl_isinf" title="gsl_isinf"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_isinf()</span></code></a>.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="err.html" class="btn btn-neutral float-left" title="Error Handling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="complex.html" class="btn btn-neutral float-right" title="Complex Numbers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

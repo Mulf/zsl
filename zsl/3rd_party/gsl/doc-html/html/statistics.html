@@ -1,0 +1,992 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statistics &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running Statistics" href="rstat.html" />
+    <link rel="prev" title="Random Number Distributions" href="randist.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Statistics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mean-standard-deviation-and-variance">Mean, Standard Deviation and Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#absolute-deviation">Absolute deviation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#higher-moments-skewness-and-kurtosis">Higher moments (skewness and kurtosis)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#autocorrelation">Autocorrelation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#covariance">Covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#correlation">Correlation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#weighted-samples">Weighted Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maximum-and-minimum-values">Maximum and Minimum values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#median-and-percentiles">Median and Percentiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#order-statistics">Order Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robust-location-estimates">Robust Location Estimates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#trimmed-mean">Trimmed Mean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gastwirth-estimator">Gastwirth Estimator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robust-scale-estimates">Robust Scale Estimates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#median-absolute-deviation-mad">Median Absolute Deviation (MAD)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s-n-statistic"><img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> Statistic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#q-n-statistic"><img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> Statistic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Statistics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/statistics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="randist.html" class="btn btn-neutral float-left" title="Random Number Distributions" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rstat.html" class="btn btn-neutral float-right" title="Running Statistics" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statistics">
+<span id="index-0"></span><h1>Statistics<a class="headerlink" href="#statistics" title="Link to this heading">¶</a></h1>
+<p>This chapter describes the statistical functions in the library.  The
+basic statistical functions include routines to compute the mean,
+variance and standard deviation.  More advanced functions allow you to
+calculate absolute deviations, skewness, and kurtosis as well as the
+median and arbitrary percentiles.  The algorithms use recurrence
+relations to compute average quantities in a stable way, without large
+intermediate values that might overflow.</p>
+<p>The functions are available in versions for datasets in the standard
+floating-point and integer types.  The versions for double precision
+floating-point data have the prefix <code class="code docutils literal notranslate"><span class="pre">gsl_stats</span></code> and are declared in
+the header file <code class="file docutils literal notranslate"><span class="pre">gsl_statistics_double.h</span></code>.  The versions for integer
+data have the prefix <code class="code docutils literal notranslate"><span class="pre">gsl_stats_int</span></code> and are declared in the header
+file <code class="file docutils literal notranslate"><span class="pre">gsl_statistics_int.h</span></code>.   All the functions operate on C
+arrays with a <code class="code docutils literal notranslate"><span class="pre">stride</span></code> parameter specifying the spacing between
+elements.</p>
+<section id="mean-standard-deviation-and-variance">
+<h2>Mean, Standard Deviation and Variance<a class="headerlink" href="#mean-standard-deviation-and-variance" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_mean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the arithmetic mean of <a class="reference internal" href="#c.gsl_stats_mean" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of
+length <a class="reference internal" href="#c.gsl_stats_mean" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_mean" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The arithmetic mean, or
+<em>sample mean</em>, is denoted by <img class="math" src="_images/math/a6f76b992f1e2180bdb4c9ca681343a1513e359e.png" alt="\Hat\mu"/> and defined as,</p>
+<div class="math">
+<p><img src="_images/math/395f415ad4602ffe3f24e4e5d279f3a684a36ee1.png" alt="\Hat\mu = {1 \over N} \sum x_i"/></p>
+</div><p>where <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> are the elements of the dataset <a class="reference internal" href="#c.gsl_stats_mean" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.  For
+samples drawn from a gaussian distribution the variance of
+<img class="math" src="_images/math/a6f76b992f1e2180bdb4c9ca681343a1513e359e.png" alt="\Hat\mu"/> is <img class="math" src="_images/math/f774c5cb511aed1e61e6d2e129d2dd1c06edf04d.png" alt="\sigma^2 / N"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_variance">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_variance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_variance" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the estimated, or <em>sample</em>, variance of
+<a class="reference internal" href="#c.gsl_stats_variance" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of length <a class="reference internal" href="#c.gsl_stats_variance" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_variance" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The
+estimated variance is denoted by <img class="math" src="_images/math/5106df6a76ff65c97ff2d945d70fe88e97702ff8.png" alt="\Hat\sigma^2"/> and is defined by,</p>
+<div class="math">
+<p><img src="_images/math/ced349876b3170ba31383915185040b31fa9cb0e.png" alt="{\Hat\sigma}^2 = {1 \over (N-1)} \sum (x_i - {\Hat\mu})^2"/></p>
+</div><p>where <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> are the elements of the dataset <a class="reference internal" href="#c.gsl_stats_variance" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.  Note that
+the normalization factor of <img class="math" src="_images/math/2e196a33c56258ad0b0ff578c82cd8b50a9f16e6.png" alt="1/(N-1)"/> results from the derivation
+of <img class="math" src="_images/math/5106df6a76ff65c97ff2d945d70fe88e97702ff8.png" alt="\Hat\sigma^2"/> as an unbiased estimator of the population
+variance <img class="math" src="_images/math/fee663798dc7011f5d64a60f621ad813428ddaa4.png" alt="\sigma^2"/>.  For samples drawn from a Gaussian distribution
+the variance of <img class="math" src="_images/math/5106df6a76ff65c97ff2d945d70fe88e97702ff8.png" alt="\Hat\sigma^2"/> itself is <img class="math" src="_images/math/c417dbde3e9169d86f181263ab80d831ee851bfc.png" alt="2 \sigma^4 / N"/>.</p>
+<p>This function computes the mean via a call to <a class="reference internal" href="#c.gsl_stats_mean" title="gsl_stats_mean"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_mean()</span></code></a>.  If
+you have already computed the mean then you can pass it directly to
+<a class="reference internal" href="#c.gsl_stats_variance_m" title="gsl_stats_variance_m"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_variance_m()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_variance_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_variance_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_variance_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the sample variance of <a class="reference internal" href="#c.gsl_stats_variance_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> relative to the
+given value of <a class="reference internal" href="#c.gsl_stats_variance_m" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a>.  The function is computed with <img class="math" src="_images/math/a6f76b992f1e2180bdb4c9ca681343a1513e359e.png" alt="\Hat\mu"/>
+replaced by the value of <a class="reference internal" href="#c.gsl_stats_variance_m" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a> that you supply,</p>
+<div class="math">
+<p><img src="_images/math/8ea475dcade66fb891bf22d53bf68d4fe30ff501.png" alt="{\Hat\sigma}^2 = {1 \over (N-1)} \sum (x_i - mean)^2"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_sd">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_sd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_sd" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_stats_sd_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_sd_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_sd_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The standard deviation is defined as the square root of the variance.
+These functions return the square root of the corresponding variance
+functions above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_tss">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_tss</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_tss" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_stats_tss_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_tss_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_tss_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the total sum of squares (TSS) of <a class="reference internal" href="#c.gsl_stats_tss_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> about
+the mean.  For <a class="reference internal" href="#c.gsl_stats_tss_m" title="gsl_stats_tss_m"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_tss_m()</span></code></a> the user-supplied value of
+<a class="reference internal" href="#c.gsl_stats_tss_m" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a> is used, and for <a class="reference internal" href="#c.gsl_stats_tss" title="gsl_stats_tss"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_tss()</span></code></a> it is computed using
+<a class="reference internal" href="#c.gsl_stats_mean" title="gsl_stats_mean"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_mean()</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/6e4cc34d571f9c6ec84646afa27fc722e3ca613f.png" alt="{\rm TSS} = \sum (x_i - mean)^2"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_variance_with_fixed_mean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_variance_with_fixed_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_variance_with_fixed_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes an unbiased estimate of the variance of
+<a class="reference internal" href="#c.gsl_stats_variance_with_fixed_mean" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> when the population mean <a class="reference internal" href="#c.gsl_stats_variance_with_fixed_mean" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a> of the underlying
+distribution is known <em>a priori</em>.  In this case the estimator for
+the variance uses the factor <img class="math" src="_images/math/e0506576810590fcd645c97774223d9362231ab9.png" alt="1/N"/> and the sample mean
+<img class="math" src="_images/math/a6f76b992f1e2180bdb4c9ca681343a1513e359e.png" alt="\Hat\mu"/> is replaced by the known population mean <img class="math" src="_images/math/7d29918417bdbeb6749620d5f24e09c1080dd299.png" alt="\mu"/>,</p>
+<div class="math">
+<p><img src="_images/math/cff299a865ef867f7b7a22f0f7ae25548c42e7bb.png" alt="{\Hat\sigma}^2 = {1 \over N} \sum (x_i - \mu)^2"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_sd_with_fixed_mean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_sd_with_fixed_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_sd_with_fixed_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function calculates the standard deviation of <a class="reference internal" href="#c.gsl_stats_sd_with_fixed_mean" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> for a
+fixed population mean <a class="reference internal" href="#c.gsl_stats_sd_with_fixed_mean" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a>.  The result is the square root of the
+corresponding variance function.</p>
+</dd></dl>
+
+</section>
+<section id="absolute-deviation">
+<h2>Absolute deviation<a class="headerlink" href="#absolute-deviation" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_absdev">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_absdev</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_absdev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the absolute deviation from the mean of
+<a class="reference internal" href="#c.gsl_stats_absdev" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of length <a class="reference internal" href="#c.gsl_stats_absdev" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_absdev" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The
+absolute deviation from the mean is defined as,</p>
+<div class="math">
+<p><img src="_images/math/c05d25e97c0a1e0600cc11280c4d078dd91121b7.png" alt="absdev  = {1 \over N} \sum |x_i - {\Hat\mu}|"/></p>
+</div><p>where <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> are the elements of the dataset <a class="reference internal" href="#c.gsl_stats_absdev" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.  The
+absolute deviation from the mean provides a more robust measure of the
+width of a distribution than the variance.  This function computes the
+mean of <a class="reference internal" href="#c.gsl_stats_absdev" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> via a call to <a class="reference internal" href="#c.gsl_stats_mean" title="gsl_stats_mean"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_mean()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_absdev_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_absdev_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_absdev_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the absolute deviation of the dataset <a class="reference internal" href="#c.gsl_stats_absdev_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>
+relative to the given value of <a class="reference internal" href="#c.gsl_stats_absdev_m" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a>,</p>
+<div class="math">
+<p><img src="_images/math/10fc2674ed897ef92b57d791c435f89456b44c61.png" alt="absdev  = {1 \over N} \sum |x_i - mean|"/></p>
+</div><p>This function is useful if you have already computed the mean of
+<a class="reference internal" href="#c.gsl_stats_absdev_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> (and want to avoid recomputing it), or wish to calculate the
+absolute deviation relative to another value (such as zero, or the
+median).</p>
+</dd></dl>
+
+</section>
+<section id="higher-moments-skewness-and-kurtosis">
+<span id="index-1"></span><h2>Higher moments (skewness and kurtosis)<a class="headerlink" href="#higher-moments-skewness-and-kurtosis" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_skew">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_skew</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_skew" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the skewness of <a class="reference internal" href="#c.gsl_stats_skew" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of length
+<a class="reference internal" href="#c.gsl_stats_skew" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_skew" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The skewness is defined as,</p>
+<div class="math">
+<p><img src="_images/math/e7d84d4a573aae3fbeb49e4ad537d72b74c716a6.png" alt="skew = {1 \over N} \sum
+ {\left( x_i - {\Hat\mu} \over {\Hat\sigma} \right)}^3"/></p>
+</div><p>where <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> are the elements of the dataset <a class="reference internal" href="#c.gsl_stats_skew" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.  The skewness
+measures the asymmetry of the tails of a distribution.</p>
+<p>The function computes the mean and estimated standard deviation of
+<a class="reference internal" href="#c.gsl_stats_skew" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> via calls to <a class="reference internal" href="#c.gsl_stats_mean" title="gsl_stats_mean"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_mean()</span></code></a> and <a class="reference internal" href="#c.gsl_stats_sd" title="gsl_stats_sd"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_sd()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_skew_m_sd">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_skew_m_sd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_skew_m_sd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the skewness of the dataset <a class="reference internal" href="#c.gsl_stats_skew_m_sd" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> using the
+given values of the mean <a class="reference internal" href="#c.gsl_stats_skew_m_sd" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a> and standard deviation <a class="reference internal" href="#c.gsl_stats_skew_m_sd" title="sd"><code class="xref c c-data docutils literal notranslate"><span class="pre">sd</span></code></a>,</p>
+<div class="math">
+<p><img src="_images/math/240aa749a3c8304ee4fc5964e3433fb27b37c284.png" alt="skew = {1 \over N} \sum {\left( x_i - mean \over sd \right)}^3"/></p>
+</div><p>These functions are useful if you have already computed the mean and
+standard deviation of <a class="reference internal" href="#c.gsl_stats_skew_m_sd" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> and want to avoid recomputing them.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_kurtosis">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_kurtosis</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_kurtosis" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the kurtosis of <a class="reference internal" href="#c.gsl_stats_kurtosis" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of length
+<a class="reference internal" href="#c.gsl_stats_kurtosis" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_kurtosis" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The kurtosis is defined as,</p>
+<div class="math">
+<p><img src="_images/math/aa4277a318a1ceaef554bbc83fd0963a60ffe4c8.png" alt="kurtosis = \left( {1 \over N} \sum
+ {\left(x_i - {\Hat\mu} \over {\Hat\sigma} \right)}^4
+ \right)
+ - 3"/></p>
+</div><p>The kurtosis measures how sharply peaked a distribution is, relative to
+its width.  The kurtosis is normalized to zero for a Gaussian
+distribution.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_kurtosis_m_sd">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_kurtosis_m_sd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_kurtosis_m_sd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the kurtosis of the dataset <a class="reference internal" href="#c.gsl_stats_kurtosis_m_sd" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> using the
+given values of the mean <a class="reference internal" href="#c.gsl_stats_kurtosis_m_sd" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a> and standard deviation <a class="reference internal" href="#c.gsl_stats_kurtosis_m_sd" title="sd"><code class="xref c c-data docutils literal notranslate"><span class="pre">sd</span></code></a>,</p>
+<div class="math">
+<p><img src="_images/math/66c80340de429136b85565b3e7898245ed137656.png" alt="kurtosis = {1 \over N}
+  \left( \sum {\left(x_i - mean \over sd \right)}^4 \right)
+  - 3"/></p>
+</div><p>This function is useful if you have already computed the mean and
+standard deviation of <a class="reference internal" href="#c.gsl_stats_kurtosis_m_sd" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> and want to avoid recomputing them.</p>
+</dd></dl>
+
+</section>
+<section id="autocorrelation">
+<h2>Autocorrelation<a class="headerlink" href="#autocorrelation" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_lag1_autocorrelation">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_lag1_autocorrelation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_lag1_autocorrelation" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the lag-1 autocorrelation of the dataset <a class="reference internal" href="#c.gsl_stats_lag1_autocorrelation" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/acc9316e3647b7055c0be778d8743e376e4cfa31.png" alt="a_1 = {\sum_{i = 2}^{n} (x_{i} - \Hat\mu) (x_{i-1} - \Hat\mu)
+\over
+\sum_{i = 1}^{n} (x_{i} - \Hat\mu) (x_{i} - \Hat\mu)}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_lag1_autocorrelation_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_lag1_autocorrelation_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_lag1_autocorrelation_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the lag-1 autocorrelation of the dataset
+<a class="reference internal" href="#c.gsl_stats_lag1_autocorrelation_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> using the given value of the mean <a class="reference internal" href="#c.gsl_stats_lag1_autocorrelation_m" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="covariance">
+<span id="index-2"></span><h2>Covariance<a class="headerlink" href="#covariance" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_covariance">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_covariance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data1</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data2</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_covariance" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the covariance of the datasets <a class="reference internal" href="#c.gsl_stats_covariance" title="data1"><code class="xref c c-data docutils literal notranslate"><span class="pre">data1</span></code></a> and
+<a class="reference internal" href="#c.gsl_stats_covariance" title="data2"><code class="xref c c-data docutils literal notranslate"><span class="pre">data2</span></code></a> which must both be of the same length <a class="reference internal" href="#c.gsl_stats_covariance" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/e3496910cd0a35e63f9ff3e1e17ff295f8549572.png" alt="covar = {1 \over (n - 1)} \sum_{i = 1}^{n} (x_{i} - \Hat x) (y_{i} - \Hat y)"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_covariance_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_covariance_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data1</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data2</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_covariance_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the covariance of the datasets <a class="reference internal" href="#c.gsl_stats_covariance_m" title="data1"><code class="xref c c-data docutils literal notranslate"><span class="pre">data1</span></code></a> and
+<a class="reference internal" href="#c.gsl_stats_covariance_m" title="data2"><code class="xref c c-data docutils literal notranslate"><span class="pre">data2</span></code></a> using the given values of the means, <a class="reference internal" href="#c.gsl_stats_covariance_m" title="mean1"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean1</span></code></a> and
+<a class="reference internal" href="#c.gsl_stats_covariance_m" title="mean2"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean2</span></code></a>.  This is useful if you have already computed the means of
+<a class="reference internal" href="#c.gsl_stats_covariance_m" title="data1"><code class="xref c c-data docutils literal notranslate"><span class="pre">data1</span></code></a> and <a class="reference internal" href="#c.gsl_stats_covariance_m" title="data2"><code class="xref c c-data docutils literal notranslate"><span class="pre">data2</span></code></a> and want to avoid recomputing them.</p>
+</dd></dl>
+
+</section>
+<section id="correlation">
+<span id="index-3"></span><h2>Correlation<a class="headerlink" href="#correlation" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_correlation">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_correlation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data1</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data2</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_correlation" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function efficiently computes the Pearson correlation coefficient
+between the datasets <a class="reference internal" href="#c.gsl_stats_correlation" title="data1"><code class="xref c c-data docutils literal notranslate"><span class="pre">data1</span></code></a> and <a class="reference internal" href="#c.gsl_stats_correlation" title="data2"><code class="xref c c-data docutils literal notranslate"><span class="pre">data2</span></code></a> which must both be of
+the same length <a class="reference internal" href="#c.gsl_stats_correlation" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/f16bde890abfd82e6f5f6053a7bff13211d2bf23.png" alt="r = {cov(x, y) \over \Hat\sigma_x \Hat\sigma_y} =
+{{1 \over n-1} \sum (x_i - \Hat x) (y_i - \Hat y)
+\over
+\sqrt{{1 \over n-1} \sum (x_i - {\Hat x})^2}
+\sqrt{{1 \over n-1} \sum (y_i - {\Hat y})^2}
+}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_spearman">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_spearman</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data1</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data2</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_spearman" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the Spearman rank correlation coefficient between
+the datasets <a class="reference internal" href="#c.gsl_stats_spearman" title="data1"><code class="xref c c-data docutils literal notranslate"><span class="pre">data1</span></code></a> and <a class="reference internal" href="#c.gsl_stats_spearman" title="data2"><code class="xref c c-data docutils literal notranslate"><span class="pre">data2</span></code></a> which must both be of the same
+length <a class="reference internal" href="#c.gsl_stats_spearman" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>. Additional workspace of size 2 * <a class="reference internal" href="#c.gsl_stats_spearman" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> is required in
+<a class="reference internal" href="#c.gsl_stats_spearman" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a>. The Spearman rank correlation between vectors <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> and
+<img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/> is equivalent to the Pearson correlation between the ranked
+vectors <img class="math" src="_images/math/d549fce14eb641dd721b755ee5edfaab29cd75e3.png" alt="x_R"/> and <img class="math" src="_images/math/6bf162bc0c7b468d7e4fcedbd919f19f07ff6dc8.png" alt="y_R"/>, where ranks are defined to be the
+average of the positions of an element in the ascending order of the values.</p>
+</dd></dl>
+
+</section>
+<section id="weighted-samples">
+<h2>Weighted Samples<a class="headerlink" href="#weighted-samples" title="Link to this heading">¶</a></h2>
+<p>The functions described in this section allow the computation of
+statistics for weighted samples.  The functions accept an array of
+samples, <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>, with associated weights, <img class="math" src="_images/math/ece130da0e1e9c9e66b0053903b5cffae6299256.png" alt="w_i"/>.  Each sample
+<img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> is considered as having been drawn from a Gaussian
+distribution with variance <img class="math" src="_images/math/213fa559514444bff4abad969113c3f48b27787c.png" alt="\sigma_i^2"/>.  The sample weight
+<img class="math" src="_images/math/ece130da0e1e9c9e66b0053903b5cffae6299256.png" alt="w_i"/> is defined as the reciprocal of this variance, <img class="math" src="_images/math/13838869480e9999005177447ac34ee219a43dba.png" alt="w_i = 1/\sigma_i^2"/>.
+Setting a weight to zero corresponds to removing a sample from a dataset.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wmean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wmean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wmean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the weighted mean of the dataset <a class="reference internal" href="#c.gsl_stats_wmean" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> with
+stride <a class="reference internal" href="#c.gsl_stats_wmean" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> and length <a class="reference internal" href="#c.gsl_stats_wmean" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>, using the set of weights <a class="reference internal" href="#c.gsl_stats_wmean" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>
+with stride <a class="reference internal" href="#c.gsl_stats_wmean" title="wstride"><code class="xref c c-data docutils literal notranslate"><span class="pre">wstride</span></code></a> and length <a class="reference internal" href="#c.gsl_stats_wmean" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.  The weighted mean is defined as,</p>
+<div class="math">
+<p><img src="_images/math/5fe28a57942e927031541675044841cfb8e97305.png" alt="{\Hat\mu} = {{\sum w_i x_i} \over {\sum w_i}}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wvariance">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wvariance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wvariance" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the estimated variance of the dataset <a class="reference internal" href="#c.gsl_stats_wvariance" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>
+with stride <a class="reference internal" href="#c.gsl_stats_wvariance" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> and length <a class="reference internal" href="#c.gsl_stats_wvariance" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>, using the set of weights
+<a class="reference internal" href="#c.gsl_stats_wvariance" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_wvariance" title="wstride"><code class="xref c c-data docutils literal notranslate"><span class="pre">wstride</span></code></a> and length <a class="reference internal" href="#c.gsl_stats_wvariance" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.  The estimated
+variance of a weighted dataset is calculated as,</p>
+<div class="math">
+<p><img src="_images/math/47ad9ec103aaa66bc88f0b0b22a62043db2cba2a.png" alt="\Hat\sigma^2 = {{\sum w_i} \over {(\sum w_i)^2 - \sum (w_i^2)}}
+                \sum w_i (x_i - \Hat\mu)^2"/></p>
+</div><p>Note that this expression reduces to an unweighted variance with the
+familiar <img class="math" src="_images/math/2e196a33c56258ad0b0ff578c82cd8b50a9f16e6.png" alt="1/(N-1)"/> factor when there are <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/> equal non-zero
+weights.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wvariance_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wvariance_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wmean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wvariance_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the estimated variance of the weighted dataset
+<a class="reference internal" href="#c.gsl_stats_wvariance_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> using the given weighted mean <a class="reference internal" href="#c.gsl_stats_wvariance_m" title="wmean"><code class="xref c c-data docutils literal notranslate"><span class="pre">wmean</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wsd">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wsd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wsd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The standard deviation is defined as the square root of the variance.
+This function returns the square root of the corresponding variance
+function <a class="reference internal" href="#c.gsl_stats_wvariance" title="gsl_stats_wvariance"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_wvariance()</span></code></a> above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wsd_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wsd_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wmean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wsd_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the square root of the corresponding variance
+function <a class="reference internal" href="#c.gsl_stats_wvariance_m" title="gsl_stats_wvariance_m"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_wvariance_m()</span></code></a> above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wvariance_with_fixed_mean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wvariance_with_fixed_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wvariance_with_fixed_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes an unbiased estimate of the variance of the weighted
+dataset <a class="reference internal" href="#c.gsl_stats_wvariance_with_fixed_mean" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> when the population mean <a class="reference internal" href="#c.gsl_stats_wvariance_with_fixed_mean" title="mean"><code class="xref c c-data docutils literal notranslate"><span class="pre">mean</span></code></a> of the underlying
+distribution is known <em>a priori</em>.  In this case the estimator for
+the variance replaces the sample mean <img class="math" src="_images/math/a6f76b992f1e2180bdb4c9ca681343a1513e359e.png" alt="\Hat\mu"/> by the known
+population mean <img class="math" src="_images/math/7d29918417bdbeb6749620d5f24e09c1080dd299.png" alt="\mu"/>,</p>
+<div class="math">
+<p><img src="_images/math/d2ed984bb3e4b7ff0dda8aa90a8359973c68f8c5.png" alt="\Hat\sigma^2 = {{\sum w_i (x_i - \mu)^2} \over {\sum w_i}}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wsd_with_fixed_mean">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wsd_with_fixed_mean</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">mean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wsd_with_fixed_mean" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The standard deviation is defined as the square root of the variance.
+This function returns the square root of the corresponding variance
+function above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wtss">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wtss</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wtss" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_stats_wtss_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wtss_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wmean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wtss_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the weighted total sum of squares (TSS) of
+<a class="reference internal" href="#c.gsl_stats_wtss_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> about the weighted mean.  For <a class="reference internal" href="#c.gsl_stats_wtss_m" title="gsl_stats_wtss_m"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_wtss_m()</span></code></a> the
+user-supplied value of <a class="reference internal" href="#c.gsl_stats_wtss_m" title="wmean"><code class="xref c c-data docutils literal notranslate"><span class="pre">wmean</span></code></a> is used, and for <a class="reference internal" href="#c.gsl_stats_wtss" title="gsl_stats_wtss"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_wtss()</span></code></a>
+it is computed using <a class="reference internal" href="#c.gsl_stats_wmean" title="gsl_stats_wmean"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_stats_wmean()</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/0d2ddb22f56e1b6ad36070b7b28b41968d0c653f.png" alt="{\rm TSS} = \sum w_i (x_i - wmean)^2"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wabsdev">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wabsdev</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wabsdev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the weighted absolute deviation from the weighted
+mean of <a class="reference internal" href="#c.gsl_stats_wabsdev" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.  The absolute deviation from the mean is defined as,</p>
+<div class="math">
+<p><img src="_images/math/bb3c2745dcdc3a71b3b8f3f97eadd6f344bb2939.png" alt="absdev = {{\sum w_i |x_i - \Hat\mu|} \over {\sum w_i}}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wabsdev_m">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wabsdev_m</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wmean</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wabsdev_m" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the absolute deviation of the weighted dataset
+<a class="reference internal" href="#c.gsl_stats_wabsdev_m" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> about the given weighted mean <a class="reference internal" href="#c.gsl_stats_wabsdev_m" title="wmean"><code class="xref c c-data docutils literal notranslate"><span class="pre">wmean</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wskew">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wskew</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wskew" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the weighted skewness of the dataset <a class="reference internal" href="#c.gsl_stats_wskew" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/6e3ee48ba0193cb5ca1b0be5ff03781694ce869c.png" alt="skew = {{\sum w_i ((x_i - {\Hat x})/{\Hat \sigma})^3} \over {\sum w_i}}"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wskew_m_sd">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wskew_m_sd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wmean</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wsd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wskew_m_sd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the weighted skewness of the dataset <a class="reference internal" href="#c.gsl_stats_wskew_m_sd" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>
+using the given values of the weighted mean and weighted standard
+deviation, <a class="reference internal" href="#c.gsl_stats_wskew_m_sd" title="wmean"><code class="xref c c-data docutils literal notranslate"><span class="pre">wmean</span></code></a> and <a class="reference internal" href="#c.gsl_stats_wskew_m_sd" title="wsd"><code class="xref c c-data docutils literal notranslate"><span class="pre">wsd</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wkurtosis">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wkurtosis</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wkurtosis" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the weighted kurtosis of the dataset <a class="reference internal" href="#c.gsl_stats_wkurtosis" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>.</p>
+<div class="math">
+<p><img src="_images/math/3c0a4959f925f080ef865f50a0389b3a30882cca.png" alt="kurtosis = {{\sum w_i ((x_i - {\Hat x})/{\Hat \sigma})^4} \over {\sum w_i}} - 3"/></p>
+</div></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_wkurtosis_m_sd">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_wkurtosis_m_sd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">wstride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wmean</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">wsd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_wkurtosis_m_sd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the weighted kurtosis of the dataset <a class="reference internal" href="#c.gsl_stats_wkurtosis_m_sd" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>
+using the given values of the weighted mean and weighted standard
+deviation, <a class="reference internal" href="#c.gsl_stats_wkurtosis_m_sd" title="wmean"><code class="xref c c-data docutils literal notranslate"><span class="pre">wmean</span></code></a> and <a class="reference internal" href="#c.gsl_stats_wkurtosis_m_sd" title="wsd"><code class="xref c c-data docutils literal notranslate"><span class="pre">wsd</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="maximum-and-minimum-values">
+<h2>Maximum and Minimum values<a class="headerlink" href="#maximum-and-minimum-values" title="Link to this heading">¶</a></h2>
+<p>The following functions find the maximum and minimum values of a
+dataset (or their indices).  If the data contains <code class="code docutils literal notranslate"><span class="pre">NaN</span></code>-s then a
+<code class="code docutils literal notranslate"><span class="pre">NaN</span></code> will be returned, since the maximum or minimum value is
+undefined.  For functions which return an index, the location of the
+first <code class="code docutils literal notranslate"><span class="pre">NaN</span></code> in the array is returned.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_max">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_max" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the maximum value in <a class="reference internal" href="#c.gsl_stats_max" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of
+length <a class="reference internal" href="#c.gsl_stats_max" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_max" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The maximum value is defined
+as the value of the element <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> which satisfies <img class="math" src="_images/math/6e922649e2d8d3aba1912020d2f30438ff2d4437.png" alt="x_i \ge x_j"/>
+for all <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>.</p>
+<p>If you want instead to find the element with the largest absolute
+magnitude you will need to apply <code class="xref c c-func docutils literal notranslate"><span class="pre">fabs()</span></code> or <code class="xref c c-func docutils literal notranslate"><span class="pre">abs()</span></code> to your data
+before calling this function.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_min">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_min</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_min" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the minimum value in <a class="reference internal" href="#c.gsl_stats_min" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset of
+length <a class="reference internal" href="#c.gsl_stats_min" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_min" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The minimum value is defined
+as the value of the element <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> which satisfies <img class="math" src="_images/math/ba1450a1eb20bd6a378c737d96fee6ff80235a60.png" alt="x_i \le x_j"/>
+for all <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>.</p>
+<p>If you want instead to find the element with the smallest absolute
+magnitude you will need to apply <code class="xref c c-func docutils literal notranslate"><span class="pre">fabs()</span></code> or <code class="xref c c-func docutils literal notranslate"><span class="pre">abs()</span></code> to your data
+before calling this function.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_minmax">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_minmax</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">min</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">max</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_minmax" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds both the minimum and maximum values <a class="reference internal" href="#c.gsl_stats_minmax" title="min"><code class="xref c c-data docutils literal notranslate"><span class="pre">min</span></code></a>,
+<a class="reference internal" href="#c.gsl_stats_minmax" title="max"><code class="xref c c-data docutils literal notranslate"><span class="pre">max</span></code></a> in <a class="reference internal" href="#c.gsl_stats_minmax" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> in a single pass.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_max_index">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_max_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_max_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the index of the maximum value in <a class="reference internal" href="#c.gsl_stats_max_index" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a
+dataset of length <a class="reference internal" href="#c.gsl_stats_max_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_max_index" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The maximum value is
+defined as the value of the element <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> which satisfies
+<img class="math" src="_images/math/6e922649e2d8d3aba1912020d2f30438ff2d4437.png" alt="x_i \ge x_j"/>
+for all <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>.  When there are several equal maximum
+elements then the first one is chosen.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_min_index">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_min_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_min_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the index of the minimum value in <a class="reference internal" href="#c.gsl_stats_min_index" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a
+dataset of length <a class="reference internal" href="#c.gsl_stats_min_index" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_min_index" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The minimum value
+is defined as the value of the element <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/> which satisfies
+<img class="math" src="_images/math/6e922649e2d8d3aba1912020d2f30438ff2d4437.png" alt="x_i \ge x_j"/>
+for all <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>.  When there are several equal
+minimum elements then the first one is chosen.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_minmax_index">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_minmax_index</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">min_index</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">max_index</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_minmax_index" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the indexes <a class="reference internal" href="#c.gsl_stats_minmax_index" title="min_index"><code class="xref c c-data docutils literal notranslate"><span class="pre">min_index</span></code></a>, <a class="reference internal" href="#c.gsl_stats_minmax_index" title="max_index"><code class="xref c c-data docutils literal notranslate"><span class="pre">max_index</span></code></a> of
+the minimum and maximum values in <a class="reference internal" href="#c.gsl_stats_minmax_index" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> in a single pass.</p>
+</dd></dl>
+
+</section>
+<section id="median-and-percentiles">
+<h2>Median and Percentiles<a class="headerlink" href="#median-and-percentiles" title="Link to this heading">¶</a></h2>
+<p>The median and percentile functions described in this section operate on
+sorted data in <img class="math" src="_images/math/7a8c96471eb27bf3896037e79cd6bf6262bd5fb6.png" alt="O(1)"/> time. There is also a routine for computing
+the median of an unsorted input array in average <img class="math" src="_images/math/8c9c88e7ccbfc1a8524f9121fb555eb486beb2ea.png" alt="O(n)"/> time using
+the quickselect algorithm. For convenience we use <em>quantiles</em>, measured on a scale
+of 0 to 1, instead of percentiles (which use a scale of 0 to 100).</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_median_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_median_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_median_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the median value of <a class="reference internal" href="#c.gsl_stats_median_from_sorted_data" title="sorted_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">sorted_data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_median_from_sorted_data" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_median_from_sorted_data" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The elements of the array
+must be in ascending numerical order.  There are no checks to see
+whether the data are sorted, so the function <a class="reference internal" href="sort.html#c.gsl_sort" title="gsl_sort"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort()</span></code></a> should
+always be used first.</p>
+<p>When the dataset has an odd number of elements the median is the value
+of element <img class="math" src="_images/math/c366b7bf4eb1874d5cdeefbdeb9b4566eb235e30.png" alt="(n-1)/2"/>.  When the dataset has an even number of
+elements the median is the mean of the two nearest middle values,
+elements <img class="math" src="_images/math/c366b7bf4eb1874d5cdeefbdeb9b4566eb235e30.png" alt="(n-1)/2"/> and <img class="math" src="_images/math/f17c95769a10212bfeb05e0bef6fc83dbfc76499.png" alt="n/2"/>.  Since the algorithm for
+computing the median involves interpolation this function always returns
+a floating-point number, even for integer data types.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_median">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_median</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_median" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the median value of <a class="reference internal" href="#c.gsl_stats_median" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_median" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_median" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>. The median is found
+using the quickselect algorithm. The input array does not need to be
+sorted, but note that the algorithm rearranges the array and so the input
+is not preserved on output.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_quantile_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_quantile_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_quantile_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a quantile value of <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="sorted_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">sorted_data</span></code></a>, a
+double-precision array of length <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The
+elements of the array must be in ascending numerical order.  The
+quantile is determined by the <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a>, a fraction between 0 and 1.  For
+example, to compute the value of the 75th percentile <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> should have
+the value 0.75.</p>
+<p>There are no checks to see whether the data are sorted, so the function
+<a class="reference internal" href="sort.html#c.gsl_sort" title="gsl_sort"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort()</span></code></a> should always be used first.</p>
+<p>The quantile is found by interpolation, using the formula</p>
+<div class="math">
+<p><img src="_images/math/e48bc7166c443a7a651c0349daa8adc4d203e963.png" alt="\hbox{quantile} = (1 - \delta) x_i + \delta x_{i+1}"/></p>
+</div><p>where <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/> is <code class="code docutils literal notranslate"><span class="pre">floor((n</span> <span class="pre">-</span> <span class="pre">1)f)</span></code> and <img class="math" src="_images/math/e0991156a224047b35453a4d365526b09ffe5746.png" alt="\delta"/> is
+<img class="math" src="_images/math/6bc210690acfa6e54b3beb9a9c981e0a615cec31.png" alt="(n-1)f - i"/>.</p>
+<p>Thus the minimum value of the array (<code class="code docutils literal notranslate"><span class="pre">data[0*stride]</span></code>) is given by
+<a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> equal to zero, the maximum value (<code class="code docutils literal notranslate"><span class="pre">data[(n-1)*stride]</span></code>) is
+given by <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a> equal to one and the median value is given by <a class="reference internal" href="#c.gsl_stats_quantile_from_sorted_data" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a>
+equal to 0.5.  Since the algorithm for computing quantiles involves
+interpolation this function always returns a floating-point number, even
+for integer data types.</p>
+</dd></dl>
+
+</section>
+<section id="order-statistics">
+<h2>Order Statistics<a class="headerlink" href="#order-statistics" title="Link to this heading">¶</a></h2>
+<p>The <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-th <em>order statistic</em> of a sample is equal to its <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-th smallest value.
+The <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-th order statistic of a set of <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> values <img class="math" src="_images/math/9070c53d68641bb65a63df309714e49ca77fcf24.png" alt="x = \left\{ x_i \right\}, 1 \le i \le n"/> is
+denoted <img class="math" src="_images/math/c447dcec3641633b54e23b19c88e074728fa2154.png" alt="x_{(k)}"/>. The median of the set <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> is equal to <img class="math" src="_images/math/ff98bb1db7db2743f1dd987d2dec4a662130cb75.png" alt="x_{\left( \frac{n}{2} \right)}"/> if
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> is odd, or the average of <img class="math" src="_images/math/ff98bb1db7db2743f1dd987d2dec4a662130cb75.png" alt="x_{\left( \frac{n}{2} \right)}"/> and <img class="math" src="_images/math/eb757f329dacfacc9e26e791c582d0920a2a9690.png" alt="x_{\left( \frac{n}{2} + 1 \right)}"/>
+if <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> is even. The <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>-th smallest element of a length <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> vector can be found
+in average <img class="math" src="_images/math/8c9c88e7ccbfc1a8524f9121fb555eb486beb2ea.png" alt="O(n)"/> time using the quickselect algorithm.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_select">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_select</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_select" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function finds the <a class="reference internal" href="#c.gsl_stats_select" title="k"><code class="xref c c-data docutils literal notranslate"><span class="pre">k</span></code></a>-th smallest element of the input array <a class="reference internal" href="#c.gsl_stats_select" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>
+of length <a class="reference internal" href="#c.gsl_stats_select" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_stats_select" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a> using the quickselect method. The
+algorithm rearranges the elements of <a class="reference internal" href="#c.gsl_stats_select" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> and so the input array is not preserved
+on output.</p>
+</dd></dl>
+
+</section>
+<section id="robust-location-estimates">
+<span id="index-4"></span><h2>Robust Location Estimates<a class="headerlink" href="#robust-location-estimates" title="Link to this heading">¶</a></h2>
+<p>A <em>location estimate</em> refers to a typical or central value which best describes a given
+dataset. The mean and median are both examples of location estimators. However, the
+mean has a severe sensitivity to data outliers and can give erroneous values when
+even a small number of outliers are present. The median on the other hand, has
+a strong insensitivity to data outliers, but due to its non-smoothness it can
+behave unexpectedly in certain situations. GSL offers the following alternative
+location estimators, which are robust to the presence of outliers.</p>
+<section id="trimmed-mean">
+<span id="index-5"></span><h3>Trimmed Mean<a class="headerlink" href="#trimmed-mean" title="Link to this heading">¶</a></h3>
+<p>The trimmed mean, or <em>truncated mean</em>, discards a certain number of smallest and largest
+samples from the input vector before computing the mean of the remaining samples. The
+amount of trimming is specified by a factor <img class="math" src="_images/math/fd05efebd98c2398ee308a6f3d97af8ba1390345.png" alt="\alpha \in [0,0.5]"/>. Then the
+number of samples discarded from both ends of the input vector is
+<img class="math" src="_images/math/3cc3f365a8ce4c10ece2341063495fc98dee7943.png" alt="\left\lfloor \alpha n \right\rfloor"/>, where <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> is the length of the input.
+So to discard 25% of the samples from each end, one would set <img class="math" src="_images/math/d99b54c6121836b9b87e1ec84ca6fcebf7a881f7.png" alt="\alpha = 0.25"/>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_trmean_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_trmean_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">alpha</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_trmean_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the trimmed mean of <a class="reference internal" href="#c.gsl_stats_trmean_from_sorted_data" title="sorted_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">sorted_data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_trmean_from_sorted_data" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_trmean_from_sorted_data" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>. The elements of the array
+must be in ascending numerical order.  There are no checks to see
+whether the data are sorted, so the function <a class="reference internal" href="sort.html#c.gsl_sort" title="gsl_sort"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort()</span></code></a> should
+always be used first. The trimming factor <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> is given in <a class="reference internal" href="#c.gsl_stats_trmean_from_sorted_data" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a>.
+If <img class="math" src="_images/math/9380d8dd61c7bb15c3b0dfea5774c5565e0fac94.png" alt="\alpha \ge 0.5"/>, then the median of the input is returned.</p>
+</dd></dl>
+
+</section>
+<section id="gastwirth-estimator">
+<span id="index-6"></span><h3>Gastwirth Estimator<a class="headerlink" href="#gastwirth-estimator" title="Link to this heading">¶</a></h3>
+<p>Gastwirth’s location estimator is a weighted sum of three order statistics,</p>
+<div class="math">
+<p><img src="_images/math/49d49212ac3282861aed88ba433f33a120cbd433.png" alt="gastwirth = 0.3 \times Q_{\frac{1}{3}} + 0.4 \times Q_{\frac{1}{2}} + 0.3 \times Q_{\frac{2}{3}}"/></p>
+</div><p>where <img class="math" src="_images/math/56aa1345e29b919d3fd2a1dc0077f656278fb0d4.png" alt="Q_{\frac{1}{3}}"/> is the one-third quantile, <img class="math" src="_images/math/b1d14bfc553b9a110aa504b7e04b9366eadd7ad9.png" alt="Q_{\frac{1}{2}}"/> is the one-half
+quantile (i.e. median), and <img class="math" src="_images/math/6dbb03f6d9e3c31f42346b28bdcc36b6ed62a91b.png" alt="Q_{\frac{2}{3}}"/> is the two-thirds quantile.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_gastwirth_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_gastwirth_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_gastwirth_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the Gastwirth location estimator of <a class="reference internal" href="#c.gsl_stats_gastwirth_from_sorted_data" title="sorted_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">sorted_data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_gastwirth_from_sorted_data" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_gastwirth_from_sorted_data" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The elements of the array
+must be in ascending numerical order.  There are no checks to see
+whether the data are sorted, so the function <a class="reference internal" href="sort.html#c.gsl_sort" title="gsl_sort"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort()</span></code></a> should
+always be used first.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="robust-scale-estimates">
+<span id="index-7"></span><h2>Robust Scale Estimates<a class="headerlink" href="#robust-scale-estimates" title="Link to this heading">¶</a></h2>
+<p>A <em>robust scale estimate</em>, also known as a robust measure of scale, attempts to quantify
+the statistical dispersion (variability, scatter, spread) in a set of data which may contain outliers.
+In such datasets, the usual variance or standard deviation scale estimate can be rendered useless
+by even a single outlier.</p>
+<section id="median-absolute-deviation-mad">
+<span id="sec-mad-statistic"></span><span id="index-8"></span><h3>Median Absolute Deviation (MAD)<a class="headerlink" href="#median-absolute-deviation-mad" title="Link to this heading">¶</a></h3>
+<p>The median absolute deviation (MAD) is defined as</p>
+<div class="math">
+<p><img src="_images/math/adfdba0edb2a75a9f02a0fe48bdf8922159d3292.png" alt="MAD = 1.4826 \times \textrm{median} \left\{ \left| x_i - \textrm{median} \left( x \right) \right| \right\}"/></p>
+</div><p>In words, first the median of all samples is computed. Then the median
+is subtracted from all samples in the input to find the deviation of each sample
+from the median. The median of all absolute deviations is then the MAD.
+The factor <img class="math" src="_images/math/6b3e916d178fdc15709672758d2880dc55fefb01.png" alt="1.4826"/> makes the MAD an unbiased estimator of the standard deviation for Gaussian data.
+The median absolute deviation has an asymptotic efficiency of 37%.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_mad0">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_mad0</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_mad0" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_mad">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_mad</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_mad" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the median absolute deviation of <a class="reference internal" href="#c.gsl_stats_mad" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_mad" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and stride <a class="reference internal" href="#c.gsl_stats_mad" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.
+The <code class="code docutils literal notranslate"><span class="pre">mad0</span></code> function calculates
+<img class="math" src="_images/math/ebbf8b98650aa47d3d746bfb96c57e945873072b.png" alt="\textrm{median} \left\{ \left| x_i - \textrm{median} \left( x \right) \right| \right\}"/>
+(i.e. the <img class="math" src="_images/math/3a6c3bad4df607d20d107f909da0c74bb1bfa709.png" alt="MAD"/> statistic without the bias correction scale factor).
+These functions require additional workspace of size <code class="code docutils literal notranslate"><span class="pre">n</span></code> provided in <a class="reference internal" href="#c.gsl_stats_mad" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="s-n-statistic">
+<span id="sec-sn-statistic"></span><span id="index-9"></span><h3><img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> Statistic<a class="headerlink" href="#s-n-statistic" title="Link to this heading">¶</a></h3>
+<p>The <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> statistic developed by Croux and Rousseeuw is defined as</p>
+<div class="math">
+<p><img src="_images/math/d5cf4c43bfb8788f6121c2b6a721a45aef47b567.png" alt="S_n = 1.1926 \times c_n \times \textrm{median}_i \left\{ \textrm{median}_j \left( \left| x_i - x_j \right| \right) \right\}"/></p>
+</div><p>For each sample <img class="math" src="_images/math/86302020c4ed55e7995889a375265120ebd5bfc9.png" alt="x_i, 1 \le i \le n"/>, the median of the values <img class="math" src="_images/math/70c54b6b6c7c5f30ded10f04adfd83a117e61f6c.png" alt="\left| x_i - x_j \right|"/> is computed for all
+<img class="math" src="_images/math/de28737c67a90d7bd88086492657c62cba83daf7.png" alt="x_j, 1 \le j \le n"/>. This yields <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> values, whose median then gives the final <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/>.
+The factor <img class="math" src="_images/math/570c8f42c92ab457e5c65e4ef99fb5ebeb5356bd.png" alt="1.1926"/> makes <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> an unbiased estimate of the standard deviation for Gaussian data.
+The factor <img class="math" src="_images/math/e8c6d0fe7819bde35f4b44f4650daa9ebae8973e.png" alt="c_n"/> is a correction factor to correct bias in small sample sizes. <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> has an asymptotic
+efficiency of 58%.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_Sn0_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_Sn0_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_Sn0_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_Sn_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_Sn_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_Sn_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> statistic of <a class="reference internal" href="#c.gsl_stats_Sn_from_sorted_data" title="sorted_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">sorted_data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_Sn_from_sorted_data" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_Sn_from_sorted_data" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.  The elements of the array
+must be in ascending numerical order.  There are no checks to see
+whether the data are sorted, so the function <a class="reference internal" href="sort.html#c.gsl_sort" title="gsl_sort"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort()</span></code></a> should
+always be used first. The <code class="code docutils literal notranslate"><span class="pre">Sn0</span></code> function calculates
+<img class="math" src="_images/math/4dd7e2788c484a94e0e658b8eb86b9687ea5d739.png" alt="\textrm{median}_i \left\{ \textrm{median}_j \left( \left| x_i - x_j \right| \right) \right\}"/>
+(i.e. the <img class="math" src="_images/math/0dd91a7a8bef56d587e51e3f9ea59be6e666eb85.png" alt="S_n"/> statistic without the bias correction scale factors).
+These functions require additional workspace of size
+<code class="code docutils literal notranslate"><span class="pre">n</span></code> provided in <a class="reference internal" href="#c.gsl_stats_Sn_from_sorted_data" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="q-n-statistic">
+<span id="sec-qn-statistic"></span><span id="index-10"></span><h3><img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> Statistic<a class="headerlink" href="#q-n-statistic" title="Link to this heading">¶</a></h3>
+<p>The <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> statistic developed by Croux and Rousseeuw is defined as</p>
+<div class="math">
+<p><img src="_images/math/d70fb71409ac0c6d9013de42c1c5492310973f02.png" alt="Q_n = 2.21914 \times d_n \times \left\{ \left| x_i - x_j \right|, i &lt; j \right\}_{(k)}"/></p>
+</div><p>The factor <img class="math" src="_images/math/4f4213c28e6ff84fd17d829c3d2a588a556ce6d4.png" alt="2.21914"/> makes <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> an unbiased estimate of the standard deviation for Gaussian data.
+The factor <img class="math" src="_images/math/c8fd4d5836eb6263620edd3a0786fd157f6f54c6.png" alt="d_n"/> is a correction factor to correct bias in small sample sizes. The order statistic
+is</p>
+<div class="math">
+<p><img src="_images/math/e4a44a345245448d4fb592b5807d7c8991325ee9.png" alt="k = \left(
+  \begin{array}{c}
+    \left\lfloor \frac{n}{2} \right\rfloor + 1 \\
+    2
+  \end{array}
+\right)"/></p>
+</div><p><img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> has an asymptotic efficiency of 82%.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_stats_Qn0_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_Qn0_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">work_int</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_Qn0_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_stats_Qn_from_sorted_data">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_stats_Qn_from_sorted_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">sorted_data</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">work</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">work_int</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_stats_Qn_from_sorted_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return the <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> statistic of <a class="reference internal" href="#c.gsl_stats_Qn_from_sorted_data" title="sorted_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">sorted_data</span></code></a>, a dataset
+of length <a class="reference internal" href="#c.gsl_stats_Qn_from_sorted_data" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_stats_Qn_from_sorted_data" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>. The elements of the array
+must be in ascending numerical order.  There are no checks to see
+whether the data are sorted, so the function <a class="reference internal" href="sort.html#c.gsl_sort" title="gsl_sort"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_sort()</span></code></a> should
+always be used first. The <code class="code docutils literal notranslate"><span class="pre">Qn0</span></code> function calculates
+<img class="math" src="_images/math/70b99f6fe04818b1fc5c740f409d4f1cb0a9421c.png" alt="\left\{ \left| x_i - x_j \right|, i &lt; j \right\}_{(k)}"/>
+(i.e. <img class="math" src="_images/math/e68cd6eebe9be0868fbe0c528b3d599ea22ed9c3.png" alt="Q_n"/> without the bias correction scale factors).
+These functions require additional workspace of size
+<code class="code docutils literal notranslate"><span class="pre">3n</span></code> provided in <a class="reference internal" href="#c.gsl_stats_Qn_from_sorted_data" title="work"><code class="xref c c-data docutils literal notranslate"><span class="pre">work</span></code></a> and integer workspace of size <code class="code docutils literal notranslate"><span class="pre">5n</span></code>
+provided in <a class="reference internal" href="#c.gsl_stats_Qn_from_sorted_data" title="work_int"><code class="xref c c-data docutils literal notranslate"><span class="pre">work_int</span></code></a>.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>Here is a basic example of how to use the statistical functions:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_statistics.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">17.2</span><span class="p">,</span> <span class="mf">18.1</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">18.3</span><span class="p">,</span> <span class="mf">12.6</span><span class="p">};</span>
+  <span class="n">double</span> <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span><span class="p">,</span> <span class="n">largest</span><span class="p">,</span> <span class="n">smallest</span><span class="p">;</span>
+
+  <span class="n">mean</span>     <span class="o">=</span> <span class="n">gsl_stats_mean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+  <span class="n">variance</span> <span class="o">=</span> <span class="n">gsl_stats_variance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+  <span class="n">largest</span>  <span class="o">=</span> <span class="n">gsl_stats_max</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+  <span class="n">smallest</span> <span class="o">=</span> <span class="n">gsl_stats_min</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The dataset is </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+         <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The sample mean is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mean</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The estimated variance is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">variance</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The largest value is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">largest</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The smallest value is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">smallest</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The program should produce the following output,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="mf">17.2</span><span class="p">,</span> <span class="mf">18.1</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">18.3</span><span class="p">,</span> <span class="mf">12.6</span>
+<span class="n">The</span> <span class="n">sample</span> <span class="n">mean</span> <span class="ow">is</span> <span class="mf">16.54</span>
+<span class="n">The</span> <span class="n">estimated</span> <span class="n">variance</span> <span class="ow">is</span> <span class="mf">5.373</span>
+<span class="n">The</span> <span class="n">largest</span> <span class="n">value</span> <span class="ow">is</span> <span class="mf">18.3</span>
+<span class="n">The</span> <span class="n">smallest</span> <span class="n">value</span> <span class="ow">is</span> <span class="mf">12.6</span>
+</pre></div>
+</div>
+<p>Here is an example using sorted data,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_sort.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_statistics.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">17.2</span><span class="p">,</span> <span class="mf">18.1</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">18.3</span><span class="p">,</span> <span class="mf">12.6</span><span class="p">};</span>
+  <span class="n">double</span> <span class="n">median</span><span class="p">,</span> <span class="n">upperq</span><span class="p">,</span> <span class="n">lowerq</span><span class="p">;</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Original dataset:  </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+         <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+
+  <span class="n">gsl_sort</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Sorted dataset: </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="s2">, </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+         <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span>
+
+  <span class="n">median</span>
+    <span class="o">=</span> <span class="n">gsl_stats_median_from_sorted_data</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                                         <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+  <span class="n">upperq</span>
+    <span class="o">=</span> <span class="n">gsl_stats_quantile_from_sorted_data</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                                           <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span>
+                                           <span class="mf">0.75</span><span class="p">);</span>
+  <span class="n">lowerq</span>
+    <span class="o">=</span> <span class="n">gsl_stats_quantile_from_sorted_data</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                                           <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span>
+                                           <span class="mf">0.25</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The median is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">median</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The upper quartile is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">upperq</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;The lower quartile is </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">lowerq</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This program should produce the following output,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Original</span> <span class="n">dataset</span><span class="p">:</span>  <span class="mf">17.2</span><span class="p">,</span> <span class="mf">18.1</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">18.3</span><span class="p">,</span> <span class="mf">12.6</span>
+<span class="n">Sorted</span> <span class="n">dataset</span><span class="p">:</span> <span class="mf">12.6</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">17.2</span><span class="p">,</span> <span class="mf">18.1</span><span class="p">,</span> <span class="mf">18.3</span>
+<span class="n">The</span> <span class="n">median</span> <span class="ow">is</span> <span class="mf">17.2</span>
+<span class="n">The</span> <span class="n">upper</span> <span class="n">quartile</span> <span class="ow">is</span> <span class="mf">18.1</span>
+<span class="n">The</span> <span class="n">lower</span> <span class="n">quartile</span> <span class="ow">is</span> <span class="mf">16.5</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The standard reference for almost any topic in statistics is the
+multi-volume <em>Advanced Theory of Statistics</em> by Kendall and Stuart.</p>
+<ul class="simple">
+<li><p>Maurice Kendall, Alan Stuart, and J. Keith Ord.
+<em>The Advanced Theory of Statistics</em> (multiple volumes)
+reprinted as <em>Kendall’s Advanced Theory of Statistics</em>.
+Wiley, ISBN 047023380X.</p></li>
+</ul>
+<p>Many statistical concepts can be more easily understood by a Bayesian
+approach.  The following book by Gelman, Carlin, Stern and Rubin gives a
+comprehensive coverage of the subject.</p>
+<ul class="simple">
+<li><p>Andrew Gelman, John B. Carlin, Hal S. Stern, Donald B. Rubin.
+<em>Bayesian Data Analysis</em>.
+Chapman &amp; Hall, ISBN 0412039915.</p></li>
+</ul>
+<p>For physicists the Particle Data Group provides useful reviews of
+Probability and Statistics in the “Mathematical Tools” section of its
+Annual Review of Particle Physics.</p>
+<ul class="simple">
+<li><p><em>Review of Particle Properties</em>,
+R.M. Barnett et al., Physical Review D54, 1 (1996)</p></li>
+</ul>
+<p>The Review of Particle Physics is available online at
+the website <a class="reference external" href="http://pdg.lbl.gov/">http://pdg.lbl.gov/</a>.</p>
+<p>The following papers describe robust scale estimation,</p>
+<ul class="simple">
+<li><p>C. Croux and P. J. Rousseeuw, <em>Time-Efficient algorithms for two highly robust
+estimators of scale</em>, Comp. Stat., Physica, Heidelberg, 1992.</p></li>
+<li><p>P. J. Rousseeuw and C. Croux, <em>Explicit scale estimators with high breakdown point</em>,
+L1-Statistical Analysis and Related Methods, pp. 77-92, 1992.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="randist.html" class="btn btn-neutral float-left" title="Random Number Distributions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rstat.html" class="btn btn-neutral float-right" title="Running Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

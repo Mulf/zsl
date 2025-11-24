@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debugging Numerical Programs &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributors to GSL" href="contrib.html" />
+    <link rel="prev" title="IEEE floating-point arithmetic" href="ieee754.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Debugging Numerical Programs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-gdb">Using gdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examining-floating-point-registers">Examining floating point registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-floating-point-exceptions">Handling floating point exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gcc-warning-options-for-numerical-programs">GCC warning options for numerical programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Debugging Numerical Programs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/debug.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="ieee754.html" class="btn btn-neutral float-left" title="IEEE floating-point arithmetic" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contrib.html" class="btn btn-neutral float-right" title="Contributors to GSL" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="debugging-numerical-programs">
+<h1>Debugging Numerical Programs<a class="headerlink" href="#debugging-numerical-programs" title="Link to this heading">¶</a></h1>
+<p>This chapter describes some tips and tricks for debugging numerical
+programs which use GSL.</p>
+<section id="using-gdb">
+<span id="index-0"></span><h2>Using gdb<a class="headerlink" href="#using-gdb" title="Link to this heading">¶</a></h2>
+<p>Any errors reported by the library are passed to the function
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_error()</span></code>.  By running your programs under gdb and setting a
+breakpoint in this function you can automatically catch any library
+errors.  You can add a breakpoint for every session by putting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">break</span> <span class="n">gsl_error</span>
+</pre></div>
+</div>
+<p>into your <code class="file docutils literal notranslate"><span class="pre">.gdbinit</span></code> file in the directory where your program is
+started.</p>
+<p>If the breakpoint catches an error then you can use a backtrace
+(<code class="code docutils literal notranslate"><span class="pre">bt</span></code>) to see the call-tree, and the arguments which possibly
+caused the error.  By moving up into the calling function you can
+investigate the values of variables at that point.  Here is an example
+from the program <code class="code docutils literal notranslate"><span class="pre">fft/test_trap</span></code>, which contains the following
+line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">status</span> <span class="o">=</span> <span class="n">gsl_fft_complex_wavetable_alloc</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">complex_wavetable</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function <a class="reference internal" href="fft.html#c.gsl_fft_complex_wavetable_alloc" title="gsl_fft_complex_wavetable_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_wavetable_alloc()</span></code></a> takes the length of
+an FFT as its first argument.  When this line is executed an error will
+be generated because the length of an FFT is not allowed to be zero.</p>
+<p>To debug this problem we start <code class="code docutils literal notranslate"><span class="pre">gdb</span></code>, using the file
+<code class="file docutils literal notranslate"><span class="pre">.gdbinit</span></code> to define a breakpoint in <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_error()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gdb test_trap
+
+GDB is free software and you are welcome to distribute copies
+of it under certain conditions; type &quot;show copying&quot; to see
+the conditions.  There is absolutely no warranty for GDB;
+type &quot;show warranty&quot; for details.  GDB 4.16 (i586-debian-linux),
+Copyright 1996 Free Software Foundation, Inc.
+
+Breakpoint 1 at 0x8050b1e: file error.c, line 14.
+</pre></div>
+</div>
+<p>When we run the program this breakpoint catches the error and shows the
+reason for it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">run</span>
+<span class="n">Starting</span> <span class="n">program</span><span class="p">:</span> <span class="n">test_trap</span>
+
+<span class="n">Breakpoint</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gsl_error</span> <span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="mh">0x8052b0d</span>
+    <span class="s2">&quot;length n must be positive integer&quot;</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="mh">0x8052b04</span> <span class="s2">&quot;c_init.c&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="mi">108</span><span class="p">,</span> <span class="n">gsl_errno</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">at</span> <span class="n">error</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">14</span>
+<span class="mi">14</span>        <span class="k">if</span> <span class="p">(</span><span class="n">gsl_error_handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first argument of <code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_error()</span></code> is always a string describing the
+error.  Now we can look at the backtrace to see what caused the problem:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">bt</span>
+<span class="c1">#0  gsl_error (reason=0x8052b0d</span>
+    <span class="s2">&quot;length n must be positive integer&quot;</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="mh">0x8052b04</span> <span class="s2">&quot;c_init.c&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="mi">108</span><span class="p">,</span> <span class="n">gsl_errno</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">at</span> <span class="n">error</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">14</span>
+<span class="c1">#1  0x8049376 in gsl_fft_complex_wavetable_alloc (n=0,</span>
+    <span class="n">wavetable</span><span class="o">=</span><span class="mh">0xbffff778</span><span class="p">)</span> <span class="n">at</span> <span class="n">c_init</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">108</span>
+<span class="c1">#2  0x8048a00 in main (argc=1, argv=0xbffff9bc)</span>
+    <span class="n">at</span> <span class="n">test_trap</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">94</span>
+<span class="c1">#3  0x80488be in ___crt_dummy__ ()</span>
+</pre></div>
+</div>
+<p>We can see that the error was generated in the function
+<a class="reference internal" href="fft.html#c.gsl_fft_complex_wavetable_alloc" title="gsl_fft_complex_wavetable_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_fft_complex_wavetable_alloc()</span></code></a> when it was called with an
+argument of <code class="code docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">0</span></code>.  The original call came from line 94 in the
+file <code class="file docutils literal notranslate"><span class="pre">test_trap.c</span></code>.</p>
+<p>By moving up to the level of the original call we can find the line that
+caused the error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">up</span>
+<span class="c1">#1  0x8049376 in gsl_fft_complex_wavetable_alloc (n=0,</span>
+    <span class="n">wavetable</span><span class="o">=</span><span class="mh">0xbffff778</span><span class="p">)</span> <span class="n">at</span> <span class="n">c_init</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">108</span>
+<span class="mi">108</span>   <span class="n">GSL_ERROR</span> <span class="p">(</span><span class="s2">&quot;length n must be positive integer&quot;</span><span class="p">,</span> <span class="n">GSL_EDOM</span><span class="p">);</span>
+<span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">up</span>
+<span class="c1">#2  0x8048a00 in main (argc=1, argv=0xbffff9bc)</span>
+  <span class="n">at</span> <span class="n">test_trap</span><span class="o">.</span><span class="n">c</span><span class="p">:</span><span class="mi">94</span>
+<span class="mi">94</span>    <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_fft_complex_wavetable_alloc</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">complex_wavetable</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Thus we have found the line that caused the problem.  From this point we
+could also print out the values of other variables such as
+<code class="code docutils literal notranslate"><span class="pre">complex_wavetable</span></code>.</p>
+</section>
+<section id="examining-floating-point-registers">
+<span id="index-1"></span><h2>Examining floating point registers<a class="headerlink" href="#examining-floating-point-registers" title="Link to this heading">¶</a></h2>
+<p>The contents of floating point registers can be examined using the
+command <code class="code docutils literal notranslate"><span class="pre">info</span> <span class="pre">float</span></code> (on supported platforms):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">info</span> <span class="nb">float</span>
+     <span class="n">st0</span><span class="p">:</span> <span class="mh">0xc4018b895aa17a945000</span>  <span class="n">Valid</span> <span class="n">Normal</span> <span class="o">-</span><span class="mf">7.838871e+308</span>
+     <span class="n">st1</span><span class="p">:</span> <span class="mh">0x3ff9ea3f50e4d7275000</span>  <span class="n">Valid</span> <span class="n">Normal</span> <span class="mf">0.0285946</span>
+     <span class="n">st2</span><span class="p">:</span> <span class="mh">0x3fe790c64ce27dad4800</span>  <span class="n">Valid</span> <span class="n">Normal</span> <span class="mf">6.7415931e-08</span>
+     <span class="n">st3</span><span class="p">:</span> <span class="mh">0x3ffaa3ef0df6607d7800</span>  <span class="n">Spec</span>  <span class="n">Normal</span> <span class="mf">0.0400229</span>
+     <span class="n">st4</span><span class="p">:</span> <span class="mh">0x3c028000000000000000</span>  <span class="n">Valid</span> <span class="n">Normal</span> <span class="mf">4.4501477e-308</span>
+     <span class="n">st5</span><span class="p">:</span> <span class="mh">0x3ffef5412c22219d9000</span>  <span class="n">Zero</span>  <span class="n">Normal</span> <span class="mf">0.9580257</span>
+     <span class="n">st6</span><span class="p">:</span> <span class="mh">0x3fff8000000000000000</span>  <span class="n">Valid</span> <span class="n">Normal</span> <span class="mi">1</span>
+     <span class="n">st7</span><span class="p">:</span> <span class="mh">0xc4028b65a1f6d243c800</span>  <span class="n">Valid</span> <span class="n">Normal</span> <span class="o">-</span><span class="mf">1.566206e+309</span>
+   <span class="n">fctrl</span><span class="p">:</span> <span class="mh">0x0272</span> <span class="mi">53</span> <span class="n">bit</span><span class="p">;</span> <span class="n">NEAR</span><span class="p">;</span> <span class="n">mask</span> <span class="n">DENOR</span> <span class="n">UNDER</span> <span class="n">LOS</span><span class="p">;</span>
+   <span class="n">fstat</span><span class="p">:</span> <span class="mh">0xb9ba</span> <span class="n">flags</span> <span class="mi">0001</span><span class="p">;</span> <span class="n">top</span> <span class="mi">7</span><span class="p">;</span> <span class="n">excep</span> <span class="n">DENOR</span> <span class="n">OVERF</span> <span class="n">UNDER</span> <span class="n">LOS</span>
+    <span class="n">ftag</span><span class="p">:</span> <span class="mh">0x3fff</span>
+     <span class="n">fip</span><span class="p">:</span> <span class="mh">0x08048b5c</span>
+     <span class="n">fcs</span><span class="p">:</span> <span class="mh">0x051a0023</span>
+  <span class="n">fopoff</span><span class="p">:</span> <span class="mh">0x08086820</span>
+  <span class="n">fopsel</span><span class="p">:</span> <span class="mh">0x002b</span>
+</pre></div>
+</div>
+<p>Individual registers can be examined using the variables <code class="code docutils literal notranslate"><span class="pre">$reg</span></code>,
+where <code class="code docutils literal notranslate"><span class="pre">reg</span></code> is the register name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(gdb) p $st1
+$1 = 0.02859464454261210347719
+</pre></div>
+</div>
+</section>
+<section id="handling-floating-point-exceptions">
+<span id="index-2"></span><h2>Handling floating point exceptions<a class="headerlink" href="#handling-floating-point-exceptions" title="Link to this heading">¶</a></h2>
+<p>It is possible to stop the program whenever a <code class="code docutils literal notranslate"><span class="pre">SIGFPE</span></code> floating
+point exception occurs.  This can be useful for finding the cause of an
+unexpected infinity or <code class="code docutils literal notranslate"><span class="pre">NaN</span></code>.  The current handler settings can be
+shown with the command <code class="code docutils literal notranslate"><span class="pre">info</span> <span class="pre">signal</span> <span class="pre">SIGFPE</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">info</span> <span class="n">signal</span> <span class="n">SIGFPE</span>
+<span class="n">Signal</span>  <span class="n">Stop</span>  <span class="n">Print</span>  <span class="n">Pass</span> <span class="n">to</span> <span class="n">program</span> <span class="n">Description</span>
+<span class="n">SIGFPE</span>  <span class="n">Yes</span>   <span class="n">Yes</span>    <span class="n">Yes</span>             <span class="n">Arithmetic</span> <span class="n">exception</span>
+</pre></div>
+</div>
+<p>Unless the program uses a signal handler the default setting should be
+changed so that SIGFPE is not passed to the program, as this would cause
+it to exit.  The command <code class="code docutils literal notranslate"><span class="pre">handle</span> <span class="pre">SIGFPE</span> <span class="pre">stop</span> <span class="pre">nopass</span></code> prevents this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="n">handle</span> <span class="n">SIGFPE</span> <span class="n">stop</span> <span class="n">nopass</span>
+<span class="n">Signal</span>  <span class="n">Stop</span>  <span class="n">Print</span>  <span class="n">Pass</span> <span class="n">to</span> <span class="n">program</span> <span class="n">Description</span>
+<span class="n">SIGFPE</span>  <span class="n">Yes</span>   <span class="n">Yes</span>    <span class="n">No</span>              <span class="n">Arithmetic</span> <span class="n">exception</span>
+</pre></div>
+</div>
+<p>Depending on the platform it may be necessary to instruct the kernel to
+generate signals for floating point exceptions.  For programs using GSL
+this can be achieved using the <a class="reference internal" href="ieee754.html#c.GSL_IEEE_MODE" title="GSL_IEEE_MODE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_IEEE_MODE</span></code></a> environment variable
+in conjunction with the function <a class="reference internal" href="ieee754.html#c.gsl_ieee_env_setup" title="gsl_ieee_env_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_ieee_env_setup()</span></code></a> as described
+in <a class="reference internal" href="ieee754.html#chap-ieee"><span class="std std-ref">IEEE floating-point arithmetic</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span> <span class="nb">set</span> <span class="n">env</span> <span class="n">GSL_IEEE_MODE</span><span class="o">=</span><span class="n">double</span><span class="o">-</span><span class="n">precision</span>
+</pre></div>
+</div>
+</section>
+<section id="gcc-warning-options-for-numerical-programs">
+<span id="index-3"></span><h2>GCC warning options for numerical programs<a class="headerlink" href="#gcc-warning-options-for-numerical-programs" title="Link to this heading">¶</a></h2>
+<p>Writing reliable numerical programs in C requires great care.  The
+following GCC warning options are recommended when compiling numerical
+programs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">ansi</span> <span class="o">-</span><span class="n">pedantic</span> <span class="o">-</span><span class="n">Werror</span> <span class="o">-</span><span class="n">Wall</span> <span class="o">-</span><span class="n">W</span>
+  <span class="o">-</span><span class="n">Wmissing</span><span class="o">-</span><span class="n">prototypes</span> <span class="o">-</span><span class="n">Wstrict</span><span class="o">-</span><span class="n">prototypes</span>
+  <span class="o">-</span><span class="n">Wconversion</span> <span class="o">-</span><span class="n">Wshadow</span> <span class="o">-</span><span class="n">Wpointer</span><span class="o">-</span><span class="n">arith</span>
+  <span class="o">-</span><span class="n">Wcast</span><span class="o">-</span><span class="n">qual</span> <span class="o">-</span><span class="n">Wcast</span><span class="o">-</span><span class="n">align</span>
+  <span class="o">-</span><span class="n">Wwrite</span><span class="o">-</span><span class="n">strings</span> <span class="o">-</span><span class="n">Wnested</span><span class="o">-</span><span class="n">externs</span>
+  <span class="o">-</span><span class="n">fshort</span><span class="o">-</span><span class="n">enums</span> <span class="o">-</span><span class="n">fno</span><span class="o">-</span><span class="n">common</span> <span class="o">-</span><span class="n">Dinline</span><span class="o">=</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">O2</span>
+</pre></div>
+</div>
+<p>For details of each option consult the manual <em>Using and Porting
+GCC</em>.  The following table gives a brief explanation of what types of
+errors these options catch.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">-ansi</span> <span class="pre">-pedantic</span></code></p>
+<blockquote>
+<div><p>Use ANSI C, and reject any non-ANSI extensions.  These flags help in
+writing portable programs that will compile on other systems.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Werror</span></code></p>
+<blockquote>
+<div><p>Consider warnings to be errors, so that compilation stops.  This prevents
+warnings from scrolling off the top of the screen and being lost.  You
+won’t be able to compile the program until it is completely
+warning-free.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wall</span></code></p>
+<blockquote>
+<div><p>This turns on a set of warnings for common programming problems.  You
+need <code class="code docutils literal notranslate"><span class="pre">-Wall</span></code>, but it is not enough on its own.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-O2</span></code></p>
+<blockquote>
+<div><p>Turn on optimization.  The warnings for uninitialized variables in
+<code class="code docutils literal notranslate"><span class="pre">-Wall</span></code> rely on the optimizer to analyze the code.  If there is no
+optimization then these warnings aren’t generated.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-W</span></code></p>
+<blockquote>
+<div><p>This turns on some extra warnings not included in <code class="code docutils literal notranslate"><span class="pre">-Wall</span></code>, such as
+missing return values and comparisons between signed and unsigned
+integers.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wmissing-prototypes</span> <span class="pre">-Wstrict-prototypes</span></code></p>
+<blockquote>
+<div><p>Warn if there are any missing or inconsistent prototypes.  Without
+prototypes it is harder to detect problems with incorrect arguments.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wconversion</span></code></p>
+<blockquote>
+<div><p>The main use of this option is to warn about conversions from signed to
+unsigned integers.  For example, <code class="code docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">-1</span></code>.  If you need
+to perform such a conversion you can use an explicit cast.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wshadow</span></code></p>
+<blockquote>
+<div><p>This warns whenever a local variable shadows another local variable.  If
+two variables have the same name then it is a potential source of
+confusion.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wpointer-arith</span> <span class="pre">-Wcast-qual</span> <span class="pre">-Wcast-align</span></code></p>
+<blockquote>
+<div><p>These options warn if you try to do pointer arithmetic for types which
+don’t have a size, such as <code class="code docutils literal notranslate"><span class="pre">void</span></code>, if you remove a <code class="code docutils literal notranslate"><span class="pre">const</span></code>
+cast from a pointer, or if you cast a pointer to a type which has a
+different size, causing an invalid alignment.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wwrite-strings</span></code></p>
+<blockquote>
+<div><p>This option gives string constants a <code class="code docutils literal notranslate"><span class="pre">const</span></code> qualifier so that it
+will be a compile-time error to attempt to overwrite them.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-fshort-enums</span></code></p>
+<blockquote>
+<div><p>This option makes the type of <code class="code docutils literal notranslate"><span class="pre">enum</span></code> as short as possible.  Normally
+this makes an <code class="code docutils literal notranslate"><span class="pre">enum</span></code> different from an <code class="code docutils literal notranslate"><span class="pre">int</span></code>.  Consequently any
+attempts to assign a pointer-to-int to a pointer-to-enum will generate a
+cast-alignment warning.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-fno-common</span></code></p>
+<blockquote>
+<div><p>This option prevents global variables being simultaneously defined in
+different object files (you get an error at link time).  Such a variable
+should be defined in one file and referred to in other files with an
+<code class="code docutils literal notranslate"><span class="pre">extern</span></code> declaration.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Wnested-externs</span></code></p>
+<blockquote>
+<div><p>This warns if an <code class="code docutils literal notranslate"><span class="pre">extern</span></code> declaration is encountered within a
+function.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-Dinline=</span></code></p>
+<blockquote>
+<div><p>The <code class="code docutils literal notranslate"><span class="pre">inline</span></code> keyword is not part of ANSI C. Thus if you want to use
+<code class="code docutils literal notranslate"><span class="pre">-ansi</span></code> with a program which uses inline functions you can use this
+preprocessor definition to remove the <code class="code docutils literal notranslate"><span class="pre">inline</span></code> keywords.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">-g</span></code></p>
+<blockquote>
+<div><p>It always makes sense to put debugging symbols in the executable so that
+you can debug it using <code class="code docutils literal notranslate"><span class="pre">gdb</span></code>.  The only effect of debugging symbols
+is to increase the size of the file, and you can use the <code class="code docutils literal notranslate"><span class="pre">strip</span></code>
+command to remove them later if necessary.</p>
+</div></blockquote>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The following books are essential reading for anyone writing and
+debugging numerical programs with <code class="code docutils literal notranslate"><span class="pre">gcc</span></code> and <code class="code docutils literal notranslate"><span class="pre">gdb</span></code>.</p>
+<ul class="simple">
+<li><p>R.M. Stallman, <em>Using and Porting GNU CC</em>, Free Software
+Foundation, ISBN 1882114388</p></li>
+<li><p>R.M. Stallman, R.H. Pesch, <em>Debugging with GDB: The GNU
+Source-Level Debugger</em>, Free Software Foundation, ISBN 1882114779</p></li>
+</ul>
+<p>For a tutorial introduction to the GNU C Compiler and related programs,
+see</p>
+<ul class="simple">
+<li><p>B.J. Gough, <a class="reference external" href="http://www.network-theory.co.uk/gcc/intro/">http://www.network-theory.co.uk/gcc/intro/</a>,’
+<em>An Introduction to GCC</em>, Network Theory
+Ltd, ISBN 0954161793</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ieee754.html" class="btn btn-neutral float-left" title="IEEE floating-point arithmetic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contrib.html" class="btn btn-neutral float-right" title="Contributors to GSL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

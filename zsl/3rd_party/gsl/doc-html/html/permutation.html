@@ -1,0 +1,629 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Permutations &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Combinations" href="combination.html" />
+    <link rel="prev" title="Vectors and Matrices" href="vectors.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Permutations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-permutation-struct">The Permutation struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permutation-allocation">Permutation allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-permutation-elements">Accessing permutation elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permutation-properties">Permutation properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permutation-functions">Permutation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#applying-permutations">Applying Permutations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-permutations">Reading and writing permutations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permutations-in-cyclic-form">Permutations in cyclic form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Permutations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/permutation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="vectors.html" class="btn btn-neutral float-left" title="Vectors and Matrices" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="combination.html" class="btn btn-neutral float-right" title="Combinations" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="permutations">
+<span id="index-0"></span><h1>Permutations<a class="headerlink" href="#permutations" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for creating and manipulating
+permutations. A permutation <img class="math" src="_images/math/fb0d29f420855f76f8e9deaf5ff8c5580e97a4f0.png" alt="p"/> is represented by an array of
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> integers in the range 0 to <img class="math" src="_images/math/148b550abf206bf92c3b91882cf27375074a57d7.png" alt="n-1"/>, where each value
+<img class="math" src="_images/math/cfaa0c1ab83209af749a4b74246082e8dc6521fa.png" alt="p_i"/> occurs once and only once.  The application of a permutation
+<img class="math" src="_images/math/fb0d29f420855f76f8e9deaf5ff8c5580e97a4f0.png" alt="p"/> to a vector <img class="math" src="_images/math/5fdec03022aa06df18d924e8a33c9d7c6db2ebc8.png" alt="v"/> yields a new vector <img class="math" src="_images/math/bf06c9b66188ee54eb218a6c9226339d3991063a.png" alt="v'"/> where
+<img class="math" src="_images/math/540d038fd062722e5152b6096baedd0068e78b38.png" alt="v'_i = v_{p_i}"/>.
+For example, the array <img class="math" src="_images/math/4f704798d97e3dd1ea5359ab7622876c886434c9.png" alt="(0,1,3,2)"/> represents a permutation
+which exchanges the last two elements of a four element vector.
+The corresponding identity permutation is <img class="math" src="_images/math/b7f57959c8c4fcc9c2a15367a67d69411a27e849.png" alt="(0,1,2,3)"/>.</p>
+<p>Note that the permutations produced by the linear algebra routines
+correspond to the exchange of matrix columns, and so should be considered
+as applying to row-vectors in the form <img class="math" src="_images/math/25adec8616f774563032afda38c109a66fb1c045.png" alt="v' = v P"/> rather than
+column-vectors, when permuting the elements of a vector.</p>
+<p>The functions described in this chapter are defined in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_permutation.h</span></code>.</p>
+<section id="the-permutation-struct">
+<h2>The Permutation struct<a class="headerlink" href="#the-permutation-struct" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_permutation">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation</span></span></span><a class="headerlink" href="#c.gsl_permutation" title="Link to this definition">¶</a><br /></dt>
+<dd><p>A permutation is defined by a structure containing two components, the size
+of the permutation and a pointer to the permutation array.  The elements
+of the permutation array are all of type <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>.  The
+<a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_permutation</span></code></a> structure looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+<span class="p">{</span>
+  <span class="n">size_t</span> <span class="n">size</span><span class="p">;</span>
+  <span class="n">size_t</span> <span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">gsl_permutation</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="permutation-allocation">
+<h2>Permutation allocation<a class="headerlink" href="#permutation-allocation" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_alloc">
+<a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a new permutation of size <a class="reference internal" href="#c.gsl_permutation_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>.
+The permutation is not initialized and its elements are undefined.  Use
+the function <a class="reference internal" href="#c.gsl_permutation_calloc" title="gsl_permutation_calloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_permutation_calloc()</span></code></a> if you want to create a
+permutation which is initialized to the identity. A null pointer is
+returned if insufficient memory is available to create the permutation.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_calloc">
+<a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_calloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_calloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates memory for a new permutation of size <a class="reference internal" href="#c.gsl_permutation_calloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> and
+initializes it to the identity. A null pointer is returned if
+insufficient memory is available to create the permutation.</p>
+</dd></dl>
+
+<dl class="c function" id="index-1">
+<dt class="sig sig-object c" id="c.gsl_permutation_init">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the permutation <a class="reference internal" href="#c.gsl_permutation_init" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the identity, i.e.
+<img class="math" src="_images/math/c9e68f6e6e2a82ed672d0fe0c7606a2960b66077.png" alt="(0, 1, 2, \dots, n - 1)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory used by the permutation <a class="reference internal" href="#c.gsl_permutation_free" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the elements of the permutation <a class="reference internal" href="#c.gsl_permutation_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the
+permutation <a class="reference internal" href="#c.gsl_permutation_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>.  The two permutations must have the same size.</p>
+</dd></dl>
+
+</section>
+<section id="accessing-permutation-elements">
+<h2>Accessing permutation elements<a class="headerlink" href="#accessing-permutation-elements" title="Link to this heading">¶</a></h2>
+<p>The following functions can be used to access and manipulate
+permutations.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_get">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the value of the <a class="reference internal" href="#c.gsl_permutation_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>-th element of the
+permutation <a class="reference internal" href="#c.gsl_permutation_get" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  If <a class="reference internal" href="#c.gsl_permutation_get" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a> lies outside the allowed range of 0 to
+<img class="math" src="_images/math/20df0c4aec91444f204cfbfb831b4035081f410a.png" alt="n - 1"/> then the error handler is invoked and 0 is returned. An inline version of this function is used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.</p>
+</dd></dl>
+
+<dl class="c function" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_permutation_swap">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_swap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">i</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">j</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_swap" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function exchanges the <a class="reference internal" href="#c.gsl_permutation_swap" title="i"><code class="xref c c-data docutils literal notranslate"><span class="pre">i</span></code></a>-th and <a class="reference internal" href="#c.gsl_permutation_swap" title="j"><code class="xref c c-data docutils literal notranslate"><span class="pre">j</span></code></a>-th elements of the
+permutation <a class="reference internal" href="#c.gsl_permutation_swap" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="permutation-properties">
+<h2>Permutation properties<a class="headerlink" href="#permutation-properties" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_size">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_size</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_size" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the size of the permutation <a class="reference internal" href="#c.gsl_permutation_size" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_data">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_data" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the array of elements in the
+permutation <a class="reference internal" href="#c.gsl_permutation_data" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_permutation_valid">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_valid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_valid" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function checks that the permutation <a class="reference internal" href="#c.gsl_permutation_valid" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> is valid.  The <code class="code docutils literal notranslate"><span class="pre">n</span></code>
+elements should contain each of the numbers 0 to <code class="code docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> once and only
+once.</p>
+</dd></dl>
+
+</section>
+<section id="permutation-functions">
+<h2>Permutation functions<a class="headerlink" href="#permutation-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-4">
+<dt class="sig sig-object c" id="c.gsl_permutation_reverse">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_reverse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_reverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reverses the elements of the permutation <a class="reference internal" href="#c.gsl_permutation_reverse" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_permutation_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_inverse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">inv</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the inverse of the permutation <a class="reference internal" href="#c.gsl_permutation_inverse" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>, storing
+the result in <a class="reference internal" href="#c.gsl_permutation_inverse" title="inv"><code class="xref c c-data docutils literal notranslate"><span class="pre">inv</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function" id="index-6">
+<dt class="sig sig-object c" id="c.gsl_permutation_next">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_next</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_next" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function advances the permutation <a class="reference internal" href="#c.gsl_permutation_next" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the next permutation
+in lexicographic order and returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If no further
+permutations are available it returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> and leaves
+<a class="reference internal" href="#c.gsl_permutation_next" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> unmodified.  Starting with the identity permutation and
+repeatedly applying this function will iterate through all possible
+permutations of a given order.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_prev">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_prev</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_prev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function steps backwards from the permutation <a class="reference internal" href="#c.gsl_permutation_prev" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the
+previous permutation in lexicographic order, returning
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>.  If no previous permutation is available it returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> and leaves <a class="reference internal" href="#c.gsl_permutation_prev" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> unmodified.</p>
+</dd></dl>
+
+</section>
+<section id="applying-permutations">
+<h2>Applying Permutations<a class="headerlink" href="#applying-permutations" title="Link to this heading">¶</a></h2>
+<p>The following functions are defined in the header files <code class="file docutils literal notranslate"><span class="pre">gsl_permute.h</span></code>
+and <code class="file docutils literal notranslate"><span class="pre">gsl_permute_vector.h</span></code>.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permute">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permute</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permute" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the permutation <a class="reference internal" href="#c.gsl_permute" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the array <a class="reference internal" href="#c.gsl_permute" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> of
+size <a class="reference internal" href="#c.gsl_permute" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_permute" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permute_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permute_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stride</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permute_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the inverse of the permutation <a class="reference internal" href="#c.gsl_permute_inverse" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the
+array <a class="reference internal" href="#c.gsl_permute_inverse" title="data"><code class="xref c c-data docutils literal notranslate"><span class="pre">data</span></code></a> of size <a class="reference internal" href="#c.gsl_permute_inverse" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> with stride <a class="reference internal" href="#c.gsl_permute_inverse" title="stride"><code class="xref c c-data docutils literal notranslate"><span class="pre">stride</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permute_vector">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permute_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permute_vector" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the permutation <a class="reference internal" href="#c.gsl_permute_vector" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the elements of the
+vector <a class="reference internal" href="#c.gsl_permute_vector" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a>, considered as a row-vector acted on by a permutation
+matrix from the right, <img class="math" src="_images/math/25adec8616f774563032afda38c109a66fb1c045.png" alt="v' = v P"/>.  The <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>-th column of the
+permutation matrix <img class="math" src="_images/math/c5b618f2a069595f30c0f924a66f663930690d12.png" alt="P"/> is given by the <img class="math" src="_images/math/0d8123ce329eb25791c6613373cfffbbf352a376.png" alt="p_j"/>-th column of the
+identity matrix. The permutation <a class="reference internal" href="#c.gsl_permute_vector" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> and the vector <a class="reference internal" href="#c.gsl_permute_vector" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> must
+have the same length.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permute_vector_inverse">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permute_vector_inverse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permute_vector_inverse" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the inverse of the permutation <a class="reference internal" href="#c.gsl_permute_vector_inverse" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the
+elements of the vector <a class="reference internal" href="#c.gsl_permute_vector_inverse" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a>, considered as a row-vector acted on by
+an inverse permutation matrix from the right, <img class="math" src="_images/math/98562c3a8c3c7fbfc13c44abab306a6404277185.png" alt="v' = v P^T"/>.  Note
+that for permutation matrices the inverse is the same as the transpose.
+The <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>-th column of the permutation matrix <img class="math" src="_images/math/c5b618f2a069595f30c0f924a66f663930690d12.png" alt="P"/> is given by
+the <img class="math" src="_images/math/0d8123ce329eb25791c6613373cfffbbf352a376.png" alt="p_j"/>-th column of the identity matrix. The permutation <a class="reference internal" href="#c.gsl_permute_vector_inverse" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>
+and the vector <a class="reference internal" href="#c.gsl_permute_vector_inverse" title="v"><code class="xref c c-data docutils literal notranslate"><span class="pre">v</span></code></a> must have the same length.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permute_matrix">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permute_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permute_matrix" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the permutation <a class="reference internal" href="#c.gsl_permute_matrix" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the matrix <a class="reference internal" href="#c.gsl_permute_matrix" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> from
+the right, <img class="math" src="_images/math/93686e44a95a1ae9e863d15433713ae169884054.png" alt="A' = A P"/>.  The <img class="math" src="_images/math/247a8ccf6f990a64b94856540b903c7d1e5eef57.png" alt="j"/>-th column of the
+permutation matrix <img class="math" src="_images/math/c5b618f2a069595f30c0f924a66f663930690d12.png" alt="P"/> is given by the <img class="math" src="_images/math/0d8123ce329eb25791c6613373cfffbbf352a376.png" alt="p_j"/>-th column of the
+identity matrix. This effectively permutes the columns of <a class="reference internal" href="#c.gsl_permute_matrix" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> according
+to the permutation <a class="reference internal" href="#c.gsl_permute_matrix" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>, and so the number of columns of <a class="reference internal" href="#c.gsl_permute_matrix" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> must
+equal the size of the permutation <a class="reference internal" href="#c.gsl_permute_matrix" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_mul">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_mul</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pa</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_mul" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function combines the two permutations <a class="reference internal" href="#c.gsl_permutation_mul" title="pa"><code class="xref c c-data docutils literal notranslate"><span class="pre">pa</span></code></a> and <a class="reference internal" href="#c.gsl_permutation_mul" title="pb"><code class="xref c c-data docutils literal notranslate"><span class="pre">pb</span></code></a> into a
+single permutation <a class="reference internal" href="#c.gsl_permutation_mul" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>, where <img class="math" src="_images/math/2d52a771c3c57bd04f0d1bd9cb458477740a90ed.png" alt="p = pa * pb"/>
+The permutation <a class="reference internal" href="#c.gsl_permutation_mul" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> is equivalent to applying <a class="reference internal" href="#c.gsl_permutation_mul" title="pb"><code class="xref c c-data docutils literal notranslate"><span class="pre">pb</span></code></a> first and
+then <a class="reference internal" href="#c.gsl_permutation_mul" title="pa"><code class="xref c c-data docutils literal notranslate"><span class="pre">pa</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="reading-and-writing-permutations">
+<h2>Reading and writing permutations<a class="headerlink" href="#reading-and-writing-permutations" title="Link to this heading">¶</a></h2>
+<p>The library provides functions for reading and writing permutations to a
+file as binary data or formatted text.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_fwrite">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_fwrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_fwrite" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the elements of the permutation <a class="reference internal" href="#c.gsl_permutation_fwrite" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to the
+stream <a class="reference internal" href="#c.gsl_permutation_fwrite" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing to the file.  Since the
+data is written in the native binary format it may not be portable
+between different architectures.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_fread">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_fread</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_fread" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads into the permutation <a class="reference internal" href="#c.gsl_permutation_fread" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> from the open stream
+<a class="reference internal" href="#c.gsl_permutation_fread" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> in binary format.  The permutation <a class="reference internal" href="#c.gsl_permutation_fread" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> must be
+preallocated with the correct length since the function uses the size of
+<a class="reference internal" href="#c.gsl_permutation_fread" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to determine how many bytes to read.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from the file.  The
+data is assumed to have been written in the native binary format on the
+same architecture.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_fprintf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_fprintf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">format</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_fprintf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the elements of the permutation <a class="reference internal" href="#c.gsl_permutation_fprintf" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>
+line-by-line to the stream <a class="reference internal" href="#c.gsl_permutation_fprintf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> using the format specifier
+<a class="reference internal" href="#c.gsl_permutation_fprintf" title="format"><code class="xref c c-data docutils literal notranslate"><span class="pre">format</span></code></a>, which should be suitable for a type of <code class="xref c c-data docutils literal notranslate"><span class="pre">size_t</span></code>.
+In ISO C99 the type modifier <code class="code docutils literal notranslate"><span class="pre">z</span></code> represents <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>, so
+<code class="code docutils literal notranslate"><span class="pre">&quot;%zun&quot;</span></code> is a suitable format <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.
+The function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem writing
+to the file.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_fscanf">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_fscanf</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">FILE</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_fscanf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads formatted data from the stream <a class="reference internal" href="#c.gsl_permutation_fscanf" title="stream"><code class="xref c c-data docutils literal notranslate"><span class="pre">stream</span></code></a> into the
+permutation <a class="reference internal" href="#c.gsl_permutation_fscanf" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  The permutation <a class="reference internal" href="#c.gsl_permutation_fscanf" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> must be preallocated with
+the correct length since the function uses the size of <a class="reference internal" href="#c.gsl_permutation_fscanf" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> to
+determine how many numbers to read.  The function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAILED</span></code> if there was a problem reading from the file.</p>
+</dd></dl>
+
+</section>
+<section id="permutations-in-cyclic-form">
+<h2>Permutations in cyclic form<a class="headerlink" href="#permutations-in-cyclic-form" title="Link to this heading">¶</a></h2>
+<p>A permutation can be represented in both <em>linear</em> and <em>cyclic</em>
+notations.  The functions described in this section convert between the
+two forms.  The linear notation is an index mapping, and has already
+been described above.  The cyclic notation expresses a permutation as a
+series of circular rearrangements of groups of elements, or
+<em>cycles</em>.</p>
+<p>For example, under the cycle (1 2 3), 1 is replaced by 2, 2 is replaced
+by 3 and 3 is replaced by 1 in a circular fashion. Cycles of different
+sets of elements can be combined independently, for example (1 2 3) (4
+5) combines the cycle (1 2 3) with the cycle (4 5), which is an exchange
+of elements 4 and 5.  A cycle of length one represents an element which
+is unchanged by the permutation and is referred to as a <em>singleton</em>.</p>
+<p>It can be shown that every permutation can be decomposed into
+combinations of cycles.  The decomposition is not unique, but can always
+be rearranged into a standard <em>canonical form</em> by a reordering of
+elements.  The library uses the canonical form defined in Knuth’s
+<em>Art of Computer Programming</em> (Vol 1, 3rd Ed, 1997) Section 1.3.3,
+p.178.</p>
+<p>The procedure for obtaining the canonical form given by Knuth is,</p>
+<ol class="arabic simple">
+<li><p>Write all singleton cycles explicitly</p></li>
+<li><p>Within each cycle, put the smallest number first</p></li>
+<li><p>Order the cycles in decreasing order of the first number in the cycle.</p></li>
+</ol>
+<p>For example, the linear representation (2 4 3 0 1) is represented as (1
+4) (0 2 3) in canonical form. The permutation corresponds to an
+exchange of elements 1 and 4, and rotation of elements 0, 2 and 3.</p>
+<p>The important property of the canonical form is that it can be
+reconstructed from the contents of each cycle without the brackets. In
+addition, by removing the brackets it can be considered as a linear
+representation of a different permutation. In the example given above
+the permutation (2 4 3 0 1) would become (1 4 0 2 3).  This mapping has
+many applications in the theory of permutations.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_linear_to_canonical">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_linear_to_canonical</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_linear_to_canonical" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the canonical form of the permutation <a class="reference internal" href="#c.gsl_permutation_linear_to_canonical" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a> and
+stores it in the output argument <a class="reference internal" href="#c.gsl_permutation_linear_to_canonical" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_canonical_to_linear">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_canonical_to_linear</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_canonical_to_linear" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function converts a permutation <a class="reference internal" href="#c.gsl_permutation_canonical_to_linear" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a> in canonical form back into
+linear form storing it in the output argument <a class="reference internal" href="#c.gsl_permutation_canonical_to_linear" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_inversions">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_inversions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_inversions" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function counts the number of inversions in the permutation
+<a class="reference internal" href="#c.gsl_permutation_inversions" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>.  An inversion is any pair of elements that are not in order.
+For example, the permutation 2031 has three inversions, corresponding to
+the pairs (2,0) (2,1) and (3,1).  The identity permutation has no
+inversions.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_linear_cycles">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_linear_cycles</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_linear_cycles" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function counts the number of cycles in the permutation <a class="reference internal" href="#c.gsl_permutation_linear_cycles" title="p"><code class="xref c c-data docutils literal notranslate"><span class="pre">p</span></code></a>, given in linear form.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_permutation_canonical_cycles">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_permutation_canonical_cycles</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_permutation" title="gsl_permutation"><span class="n"><span class="pre">gsl_permutation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_permutation_canonical_cycles" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function counts the number of cycles in the permutation <a class="reference internal" href="#c.gsl_permutation_canonical_cycles" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a>, given in canonical form.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The example program below creates a random permutation (by shuffling the
+elements of the identity) and finds its inverse.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_randist.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_permutation.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+
+  <span class="n">gsl_permutation</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">gsl_permutation_alloc</span> <span class="p">(</span><span class="n">N</span><span class="p">);</span>
+  <span class="n">gsl_permutation</span> <span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">gsl_permutation_alloc</span> <span class="p">(</span><span class="n">N</span><span class="p">);</span>
+
+  <span class="n">gsl_rng_env_setup</span><span class="p">();</span>
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;initial permutation:&quot;</span><span class="p">);</span>
+  <span class="n">gsl_permutation_init</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="n">gsl_permutation_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s2">&quot; </span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot; random permutation:&quot;</span><span class="p">);</span>
+  <span class="n">gsl_ran_shuffle</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">size_t</span><span class="p">));</span>
+  <span class="n">gsl_permutation_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s2">&quot; </span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;inverse permutation:&quot;</span><span class="p">);</span>
+  <span class="n">gsl_permutation_inverse</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">);</span>
+  <span class="n">gsl_permutation_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="s2">&quot; </span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">gsl_permutation_free</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="n">gsl_permutation_free</span> <span class="p">(</span><span class="n">q</span><span class="p">);</span>
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output from the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out
+initial permutation: 0 1 2 3 4 5 6 7 8 9
+ random permutation: 1 3 5 2 7 6 0 4 9 8
+inverse permutation: 6 0 3 1 7 2 5 4 9 8
+</pre></div>
+</div>
+<p>The random permutation <code class="code docutils literal notranslate"><span class="pre">p[i]</span></code> and its inverse <code class="code docutils literal notranslate"><span class="pre">q[i]</span></code> are
+related through the identity <code class="code docutils literal notranslate"><span class="pre">p[q[i]]</span> <span class="pre">=</span> <span class="pre">i</span></code>, which can be verified
+from the output.</p>
+<p>The next example program steps forwards through all possible third order
+permutations, starting from the identity,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_permutation.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">gsl_permutation</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">gsl_permutation_alloc</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+  <span class="n">gsl_permutation_init</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+
+  <span class="n">do</span>
+   <span class="p">{</span>
+      <span class="n">gsl_permutation_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s2">&quot; </span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">);</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">gsl_permutation_next</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="n">GSL_SUCCESS</span><span class="p">);</span>
+
+  <span class="n">gsl_permutation_free</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output from the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out
+ 0 1 2
+ 0 2 1
+ 1 0 2
+ 1 2 0
+ 2 0 1
+ 2 1 0
+</pre></div>
+</div>
+<p>The permutations are generated in lexicographic order.  To reverse the
+sequence, begin with the final permutation (which is the reverse of the
+identity) and replace <a class="reference internal" href="#c.gsl_permutation_next" title="gsl_permutation_next"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_permutation_next()</span></code></a> with
+<a class="reference internal" href="#c.gsl_permutation_prev" title="gsl_permutation_prev"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_permutation_prev()</span></code></a>.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The subject of permutations is covered extensively in the following,</p>
+<ul class="simple">
+<li><p>Donald E. Knuth, The Art of Computer Programming: Sorting and
+Searching (Vol 3, 3rd Ed, 1997), Addison-Wesley, ISBN 0201896850.</p></li>
+</ul>
+<p>For the definition of the <em>canonical form</em> see,</p>
+<ul class="simple">
+<li><p>Donald E. Knuth, The Art of Computer Programming: Fundamental
+Algorithms (Vol 1, 3rd Ed, 1997), Addison-Wesley, ISBN 0201896850.
+Section 1.3.3, An Unusual Correspondence, p.178–179.</p></li>
+</ul>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>In versions of the GNU C library prior to the ISO C99 standard,
+the type modifier <code class="code docutils literal notranslate"><span class="pre">Z</span></code> was used instead.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vectors.html" class="btn btn-neutral float-left" title="Vectors and Matrices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="combination.html" class="btn btn-neutral float-right" title="Combinations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

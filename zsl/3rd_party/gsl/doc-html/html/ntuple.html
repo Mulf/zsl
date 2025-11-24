@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N-tuples &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Monte Carlo Integration" href="montecarlo.html" />
+    <link rel="prev" title="Histograms" href="histogram.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">N-tuples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-ntuple-struct">The ntuple struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-ntuples">Creating ntuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#opening-an-existing-ntuple-file">Opening an existing ntuple file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-ntuples">Writing ntuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-ntuples">Reading ntuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#closing-an-ntuple-file">Closing an ntuple file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#histogramming-ntuple-values">Histogramming ntuple values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">N-tuples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ntuple.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="histogram.html" class="btn btn-neutral float-left" title="Histograms" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="montecarlo.html" class="btn btn-neutral float-right" title="Monte Carlo Integration" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="n-tuples">
+<span id="index-0"></span><h1>N-tuples<a class="headerlink" href="#n-tuples" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for creating and manipulating
+<em>ntuples</em>, sets of values associated with events.  The ntuples
+are stored in files. Their values can be extracted in any combination
+and <em>booked</em> in a histogram using a selection function.</p>
+<p>The values to be stored are held in a user-defined data structure, and
+an ntuple is created associating this data structure with a file.  The
+values are then written to the file (normally inside a loop) using
+the ntuple functions described below.</p>
+<p>A histogram can be created from ntuple data by providing a selection
+function and a value function.  The selection function specifies whether
+an event should be included in the subset to be analyzed or not. The value
+function computes the entry to be added to the histogram for each
+event.</p>
+<p>All the ntuple functions are defined in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_ntuple.h</span></code>.</p>
+<section id="the-ntuple-struct">
+<h2>The ntuple struct<a class="headerlink" href="#the-ntuple-struct" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_ntuple">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple</span></span></span><a class="headerlink" href="#c.gsl_ntuple" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Ntuples are manipulated using the <a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_ntuple</span></code></a> struct. This struct
+contains information on the file where the ntuple data is stored, a
+pointer to the current ntuple data row and the size of the user-defined
+ntuple data struct:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+  <span class="p">{</span>
+    <span class="n">FILE</span> <span class="o">*</span> <span class="n">file</span><span class="p">;</span>
+    <span class="n">void</span> <span class="o">*</span> <span class="n">ntuple_data</span><span class="p">;</span>
+    <span class="n">size_t</span> <span class="n">size</span><span class="p">;</span>
+  <span class="p">}</span> <span class="n">gsl_ntuple</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="creating-ntuples">
+<h2>Creating ntuples<a class="headerlink" href="#creating-ntuples" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ntuple_create">
+<a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_create</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">filename</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple_data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_create" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function creates a new write-only ntuple file <a class="reference internal" href="#c.gsl_ntuple_create" title="filename"><code class="xref c c-data docutils literal notranslate"><span class="pre">filename</span></code></a> for
+ntuples of size <a class="reference internal" href="#c.gsl_ntuple_create" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a> and returns a pointer to the newly created
+ntuple struct.  Any existing file with the same name is truncated to
+zero length and overwritten.  A pointer to memory for the current ntuple
+row <a class="reference internal" href="#c.gsl_ntuple_create" title="ntuple_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">ntuple_data</span></code></a> must be supplied—this is used to copy ntuples
+in and out of the file.</p>
+</dd></dl>
+
+</section>
+<section id="opening-an-existing-ntuple-file">
+<h2>Opening an existing ntuple file<a class="headerlink" href="#opening-an-existing-ntuple-file" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ntuple_open">
+<a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_open</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">filename</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple_data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_open" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function opens an existing ntuple file <a class="reference internal" href="#c.gsl_ntuple_open" title="filename"><code class="xref c c-data docutils literal notranslate"><span class="pre">filename</span></code></a> for reading
+and returns a pointer to a corresponding ntuple struct. The ntuples in
+the file must have size <a class="reference internal" href="#c.gsl_ntuple_open" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>.  A pointer to memory for the current
+ntuple row <a class="reference internal" href="#c.gsl_ntuple_open" title="ntuple_data"><code class="xref c c-data docutils literal notranslate"><span class="pre">ntuple_data</span></code></a> must be supplied—this is used to copy
+ntuples in and out of the file.</p>
+</dd></dl>
+
+</section>
+<section id="writing-ntuples">
+<h2>Writing ntuples<a class="headerlink" href="#writing-ntuples" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ntuple_write">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_write</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_write" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function writes the current ntuple <code class="code docutils literal notranslate"><span class="pre">ntuple-&gt;ntuple_data</span></code> of
+size <code class="code docutils literal notranslate"><span class="pre">ntuple-&gt;size</span></code> to the corresponding file.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ntuple_bookdata">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_bookdata</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_bookdata" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is a synonym for <a class="reference internal" href="#c.gsl_ntuple_write" title="gsl_ntuple_write"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_ntuple_write()</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="reading-ntuples">
+<h2>Reading ntuples<a class="headerlink" href="#reading-ntuples" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ntuple_read">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_read</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_read" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reads the current row of the ntuple file for <a class="reference internal" href="#c.gsl_ntuple_read" title="ntuple"><code class="xref c c-data docutils literal notranslate"><span class="pre">ntuple</span></code></a>
+and stores the values in <code class="code docutils literal notranslate"><span class="pre">ntuple-&gt;data</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="closing-an-ntuple-file">
+<h2>Closing an ntuple file<a class="headerlink" href="#closing-an-ntuple-file" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_ntuple_close">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_close</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_close" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function closes the ntuple file <a class="reference internal" href="#c.gsl_ntuple_close" title="ntuple"><code class="xref c c-data docutils literal notranslate"><span class="pre">ntuple</span></code></a> and frees its
+associated allocated memory.</p>
+</dd></dl>
+
+</section>
+<section id="histogramming-ntuple-values">
+<h2>Histogramming ntuple values<a class="headerlink" href="#histogramming-ntuple-values" title="Link to this heading">¶</a></h2>
+<p>Once an ntuple has been created its contents can be histogrammed in
+various ways using the function <a class="reference internal" href="#c.gsl_ntuple_project" title="gsl_ntuple_project"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_ntuple_project()</span></code></a>.  Two
+user-defined functions must be provided, a function to select events and
+a function to compute scalar values. The selection function and the
+value function both accept the ntuple row as a first argument and other
+parameters as a second argument.</p>
+<dl class="c type" id="index-1">
+<dt class="sig sig-object c" id="c.gsl_ntuple_select_fn">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_select_fn</span></span></span><a class="headerlink" href="#c.gsl_ntuple_select_fn" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The <em>selection function</em> determines which ntuple rows are selected
+for histogramming.  It is defined by the following struct:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+  <span class="p">{</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span> <span class="n">function</span><span class="p">)</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span> <span class="n">ntuple_data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">);</span>
+    <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">;</span>
+  <span class="p">}</span> <span class="n">gsl_ntuple_select_fn</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The struct component <code class="xref c c-data docutils literal notranslate"><span class="pre">function</span></code> should return a non-zero value for
+each ntuple row that is to be included in the histogram.</p>
+</dd></dl>
+
+<dl class="c type" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_ntuple_value_fn">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_value_fn</span></span></span><a class="headerlink" href="#c.gsl_ntuple_value_fn" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The <em>value function</em> computes scalar values for those ntuple rows
+selected by the selection function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span>
+  <span class="p">{</span>
+    <span class="n">double</span> <span class="p">(</span><span class="o">*</span> <span class="n">function</span><span class="p">)</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span> <span class="n">ntuple_data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">);</span>
+    <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">;</span>
+  <span class="p">}</span> <span class="n">gsl_ntuple_value_fn</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In this case the struct component <code class="xref c c-data docutils literal notranslate"><span class="pre">function</span></code> should return the value
+to be added to the histogram for the ntuple row.</p>
+</dd></dl>
+
+<dl class="c function" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_ntuple_project">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_ntuple_project</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="histogram.html#c.gsl_histogram" title="gsl_histogram"><span class="n"><span class="pre">gsl_histogram</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <a class="reference internal" href="#c.gsl_ntuple" title="gsl_ntuple"><span class="n"><span class="pre">gsl_ntuple</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ntuple</span></span>, <a class="reference internal" href="#c.gsl_ntuple_value_fn" title="gsl_ntuple_value_fn"><span class="n"><span class="pre">gsl_ntuple_value_fn</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value_func</span></span>, <a class="reference internal" href="#c.gsl_ntuple_select_fn" title="gsl_ntuple_select_fn"><span class="n"><span class="pre">gsl_ntuple_select_fn</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">select_func</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_ntuple_project" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function updates the histogram <a class="reference internal" href="#c.gsl_ntuple_project" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> from the ntuple <a class="reference internal" href="#c.gsl_ntuple_project" title="ntuple"><code class="xref c c-data docutils literal notranslate"><span class="pre">ntuple</span></code></a>
+using the functions <a class="reference internal" href="#c.gsl_ntuple_project" title="value_func"><code class="xref c c-data docutils literal notranslate"><span class="pre">value_func</span></code></a> and <a class="reference internal" href="#c.gsl_ntuple_project" title="select_func"><code class="xref c c-data docutils literal notranslate"><span class="pre">select_func</span></code></a>. For each
+ntuple row where the selection function <a class="reference internal" href="#c.gsl_ntuple_project" title="select_func"><code class="xref c c-data docutils literal notranslate"><span class="pre">select_func</span></code></a> is non-zero the
+corresponding value of that row is computed using the function
+<a class="reference internal" href="#c.gsl_ntuple_project" title="value_func"><code class="xref c c-data docutils literal notranslate"><span class="pre">value_func</span></code></a> and added to the histogram.  Those ntuple rows where
+<a class="reference internal" href="#c.gsl_ntuple_project" title="select_func"><code class="xref c c-data docutils literal notranslate"><span class="pre">select_func</span></code></a> returns zero are ignored.  New entries are added to
+the histogram, so subsequent calls can be used to accumulate further
+data in the same histogram.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following example programs demonstrate the use of ntuples in
+managing a large dataset.  The first program creates a set of 10,000
+simulated “events”, each with 3 associated values <img class="math" src="_images/math/c4c79394a21e5e631b04cdf80868a4b7fcc9d059.png" alt="(x,y,z)"/>.  These
+are generated from a Gaussian distribution with unit variance, for
+demonstration purposes, and written to the ntuple file <code class="file docutils literal notranslate"><span class="pre">test.dat</span></code>.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;gsl/gsl_ntuple.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_rng.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_randist.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">data</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">x</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">y</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_rng_type</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span>
+  <span class="n">gsl_rng</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+
+  <span class="n">struct</span> <span class="n">data</span> <span class="n">ntuple_row</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+
+  <span class="n">gsl_ntuple</span> <span class="o">*</span><span class="n">ntuple</span>
+    <span class="o">=</span> <span class="n">gsl_ntuple_create</span> <span class="p">(</span><span class="s2">&quot;test.dat&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ntuple_row</span><span class="p">,</span>
+                         <span class="n">sizeof</span> <span class="p">(</span><span class="n">ntuple_row</span><span class="p">));</span>
+
+  <span class="n">gsl_rng_env_setup</span> <span class="p">();</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="n">gsl_rng_default</span><span class="p">;</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">gsl_rng_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">ntuple_row</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">gsl_ran_ugaussian</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+      <span class="n">ntuple_row</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">gsl_ran_ugaussian</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+      <span class="n">ntuple_row</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">gsl_ran_ugaussian</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+      <span class="n">gsl_ntuple_write</span> <span class="p">(</span><span class="n">ntuple</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_ntuple_close</span> <span class="p">(</span><span class="n">ntuple</span><span class="p">);</span>
+  <span class="n">gsl_rng_free</span> <span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The next program analyses the ntuple data in the file <code class="file docutils literal notranslate"><span class="pre">test.dat</span></code>.
+The analysis procedure is to compute the squared-magnitude of each
+event, <img class="math" src="_images/math/465685458bf58bf0458fe217560bd411ee52fb18.png" alt="E^2=x^2+y^2+z^2"/>, and select only those which exceed a
+lower limit of 1.5.  The selected events are then histogrammed using
+their <img class="math" src="_images/math/5a7719ca1c47bfd2c92cdfc21ba7f90fde70f279.png" alt="E^2"/> values.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_ntuple.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_histogram.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">data</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">x</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">y</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">sel_func</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">ntuple_data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">);</span>
+<span class="n">double</span> <span class="n">val_func</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">ntuple_data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">);</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">struct</span> <span class="n">data</span> <span class="n">ntuple_row</span><span class="p">;</span>
+
+  <span class="n">gsl_ntuple</span> <span class="o">*</span><span class="n">ntuple</span>
+    <span class="o">=</span> <span class="n">gsl_ntuple_open</span> <span class="p">(</span><span class="s2">&quot;test.dat&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ntuple_row</span><span class="p">,</span>
+                       <span class="n">sizeof</span> <span class="p">(</span><span class="n">ntuple_row</span><span class="p">));</span>
+  <span class="n">double</span> <span class="n">lower</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+
+  <span class="n">gsl_ntuple_select_fn</span> <span class="n">S</span><span class="p">;</span>
+  <span class="n">gsl_ntuple_value_fn</span> <span class="n">V</span><span class="p">;</span>
+
+  <span class="n">gsl_histogram</span> <span class="o">*</span><span class="n">h</span> <span class="o">=</span> <span class="n">gsl_histogram_alloc</span> <span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="n">gsl_histogram_set_ranges_uniform</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">);</span>
+
+  <span class="n">S</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sel_func</span><span class="p">;</span>
+  <span class="n">S</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lower</span><span class="p">;</span>
+
+  <span class="n">V</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">val_func</span><span class="p">;</span>
+  <span class="n">V</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">gsl_ntuple_project</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">ntuple</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">V</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">);</span>
+  <span class="n">gsl_histogram_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">gsl_histogram_free</span> <span class="p">(</span><span class="n">h</span><span class="p">);</span>
+  <span class="n">gsl_ntuple_close</span> <span class="p">(</span><span class="n">ntuple</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">sel_func</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">ntuple_data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">struct</span> <span class="n">data</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">data</span> <span class="o">*</span><span class="p">)</span> <span class="n">ntuple_data</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">scale</span><span class="p">;</span>
+  <span class="n">scale</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="p">)</span> <span class="n">params</span><span class="p">;</span>
+
+  <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">;</span>
+  <span class="n">z</span> <span class="o">=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">z</span><span class="p">;</span>
+
+  <span class="n">E2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="n">E2</span> <span class="o">&gt;</span> <span class="n">scale</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">double</span>
+<span class="n">val_func</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">ntuple_data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">params</span><span class="p">);</span> <span class="o">/*</span> <span class="n">avoid</span> <span class="n">unused</span> <span class="n">parameter</span> <span class="n">warning</span> <span class="o">*/</span>
+  <span class="n">struct</span> <span class="n">data</span> <span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">data</span> <span class="o">*</span><span class="p">)</span> <span class="n">ntuple_data</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
+
+  <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">;</span>
+  <span class="n">z</span> <span class="o">=</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">z</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#fig-ntuples"><span class="std std-numref">Fig. 15</span></a> shows the distribution of the selected events.
+Note the cut-off at the lower bound.</p>
+<figure class="align-default" id="id1">
+<span id="fig-ntuples"></span><a class="reference internal image-reference" href="_images/ntuple.png"><img alt="_images/ntuple.png" src="_images/ntuple.png" style="width: 384.0px; height: 288.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Distribution of selected events</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p id="index-4">Further information on the use of ntuples can be found in the
+documentation for the CERN packages PAW and HBOOK
+(available online).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="histogram.html" class="btn btn-neutral float-left" title="Histograms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="montecarlo.html" class="btn btn-neutral float-right" title="Monte Carlo Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

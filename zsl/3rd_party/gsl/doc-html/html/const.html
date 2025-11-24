@@ -1,0 +1,1000 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physical Constants &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IEEE floating-point arithmetic" href="ieee754.html" />
+    <link rel="prev" title="Sparse Linear Algebra" href="splinalg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Physical Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fundamental-constants">Fundamental Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astronomy-and-astrophysics">Astronomy and Astrophysics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atomic-and-nuclear-physics">Atomic and Nuclear Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#measurement-of-time">Measurement of Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#imperial-units">Imperial Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#speed-and-nautical-units">Speed and Nautical Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#printers-units">Printers Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volume-area-and-length">Volume, Area and Length</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mass-and-weight">Mass and Weight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thermal-energy-and-power">Thermal Energy and Power</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pressure">Pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#viscosity">Viscosity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#light-and-illumination">Light and Illumination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#radioactivity">Radioactivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#force-and-energy">Force and Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prefixes">Prefixes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Physical Constants</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/const.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="splinalg.html" class="btn btn-neutral float-left" title="Sparse Linear Algebra" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ieee754.html" class="btn btn-neutral float-right" title="IEEE floating-point arithmetic" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="physical-constants">
+<span id="index-0"></span><h1>Physical Constants<a class="headerlink" href="#physical-constants" title="Link to this heading">¶</a></h1>
+<p>This chapter describes macros for the values of physical constants, such
+as the speed of light, <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/>, and gravitational constant, <img class="math" src="_images/math/f5295044f66ab7fe74a7120a197288cc3f042278.png" alt="G"/>.
+The values are available in different unit systems, including the
+standard MKSA system (meters, kilograms, seconds, amperes) and the CGSM
+system (centimeters, grams, seconds, gauss), which is commonly used in
+Astronomy.</p>
+<p>The definitions of constants in the MKSA system are available in the file
+<code class="file docutils literal notranslate"><span class="pre">gsl_const_mksa.h</span></code>.  The constants in the CGSM system are defined in
+<code class="file docutils literal notranslate"><span class="pre">gsl_const_cgsm.h</span></code>.  Dimensionless constants, such as the fine
+structure constant, which are pure numbers are defined in
+<code class="file docutils literal notranslate"><span class="pre">gsl_const_num.h</span></code>.</p>
+<p>The full list of constants is described briefly below.  Consult the
+header files themselves for the values of the constants used in the
+library.</p>
+<section id="fundamental-constants">
+<span id="index-1"></span><h2>Fundamental Constants<a class="headerlink" href="#fundamental-constants" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_SPEED_OF_LIGHT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_SPEED_OF_LIGHT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_SPEED_OF_LIGHT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The speed of light in vacuum, <img class="math" src="_images/math/9d8e96031ca3d760ae8d01f085c4b4b7d82d382e.png" alt="c"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_VACUUM_PERMEABILITY">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_VACUUM_PERMEABILITY</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_VACUUM_PERMEABILITY" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The permeability of free space, <img class="math" src="_images/math/ff2f529f2a35db48be68c7fd2e1d84306fc1c065.png" alt="\mu_0"/>. This constant is defined
+in the MKSA system only.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_VACUUM_PERMITTIVITY">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_VACUUM_PERMITTIVITY</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_VACUUM_PERMITTIVITY" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The permittivity of free space, <img class="math" src="_images/math/e8011272a90c13e2599aab8278645050e6eb2e92.png" alt="\epsilon_0"/>.  This constant is
+defined in the MKSA system only.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PLANCKS_CONSTANT_H">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PLANCKS_CONSTANT_H</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PLANCKS_CONSTANT_H" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Planck’s constant, <img class="math" src="_images/math/aca32b204f928ef3ee8c82cd7a605c4da0c65f18.png" alt="h"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Planck’s constant divided by <img class="math" src="_images/math/dfee3e2a92a47b726eb60c6c56ce6d790b4c6336.png" alt="2\pi"/>, <img class="math" src="_images/math/2ed94ba0c686941d93301aacdf399d40c8c60f51.png" alt="\hbar"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_AVOGADRO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_AVOGADRO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_AVOGADRO" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Avogadro’s number, <img class="math" src="_images/math/f22126062202c9d795b00bbf4b92e6d16a75b486.png" alt="N_a"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_FARADAY">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_FARADAY</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_FARADAY" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The molar charge of 1 Faraday.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_BOLTZMANN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_BOLTZMANN</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_BOLTZMANN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Boltzmann constant, <img class="math" src="_images/math/71e6c03676f7f43b827bdaf404bc29149f5d99d7.png" alt="k"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MOLAR_GAS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MOLAR_GAS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MOLAR_GAS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The molar gas constant, <img class="math" src="_images/math/73585c55ff05ccd30994528c42b7dc120e1503e8.png" alt="R_0"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_STANDARD_GAS_VOLUME">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_STANDARD_GAS_VOLUME</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_STANDARD_GAS_VOLUME" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The standard gas volume, <img class="math" src="_images/math/432b9482f3faad39d9e0b63c29a7165f0d17daae.png" alt="V_0"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Stefan-Boltzmann radiation constant, <img class="math" src="_images/math/0b7620936fd7a90e5dde43c07609be992245871a.png" alt="\sigma"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_GAUSS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_GAUSS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_GAUSS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The magnetic field of 1 Gauss.</p>
+</dd></dl>
+
+</section>
+<section id="astronomy-and-astrophysics">
+<span id="index-2"></span><h2>Astronomy and Astrophysics<a class="headerlink" href="#astronomy-and-astrophysics" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ASTRONOMICAL_UNIT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ASTRONOMICAL_UNIT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ASTRONOMICAL_UNIT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 astronomical unit (mean earth-sun distance), <img class="math" src="_images/math/f10d5848eb8d635941c8123dae26a3670e6493e4.png" alt="au"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The gravitational constant, <img class="math" src="_images/math/f5295044f66ab7fe74a7120a197288cc3f042278.png" alt="G"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_LIGHT_YEAR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_LIGHT_YEAR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_LIGHT_YEAR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The distance of 1 light-year, <img class="math" src="_images/math/8de2122eaf1a573df97fd02927bd798a9d637682.png" alt="ly"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PARSEC">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PARSEC</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PARSEC" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The distance of 1 parsec, <img class="math" src="_images/math/e02153f98ea1833e576f1ee0f006872a40d7603f.png" alt="pc"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_GRAV_ACCEL">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_GRAV_ACCEL</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_GRAV_ACCEL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The standard gravitational acceleration on Earth, <img class="math" src="_images/math/a2d34c8a92c62b29096b15c1ae20083c2b0985ca.png" alt="g"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_SOLAR_MASS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_SOLAR_MASS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_SOLAR_MASS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of the Sun.</p>
+</dd></dl>
+
+</section>
+<section id="atomic-and-nuclear-physics">
+<span id="index-3"></span><h2>Atomic and Nuclear Physics<a class="headerlink" href="#atomic-and-nuclear-physics" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ELECTRON_CHARGE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ELECTRON_CHARGE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ELECTRON_CHARGE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The charge of the electron, <img class="math" src="_images/math/778faa4958afbc02befe47c08fc7b8c6eaa84daa.png" alt="e"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ELECTRON_VOLT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ELECTRON_VOLT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ELECTRON_VOLT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The energy of 1 electron volt, <img class="math" src="_images/math/4534be664cd3246a6d4d9a0384621515944d8fc0.png" alt="eV"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_UNIFIED_ATOMIC_MASS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_UNIFIED_ATOMIC_MASS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_UNIFIED_ATOMIC_MASS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The unified atomic mass, <img class="math" src="_images/math/f55c4adcb71c6056268a5a35d8c40156fa0e4a25.png" alt="amu"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MASS_ELECTRON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MASS_ELECTRON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MASS_ELECTRON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of the electron, <img class="math" src="_images/math/d877cf6f1b1605ed487e024a07cb8601343c8ffa.png" alt="m_e"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MASS_MUON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MASS_MUON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MASS_MUON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of the muon, <img class="math" src="_images/math/69042396fd538c674a2323a42a3ece0f1246a7ed.png" alt="m_\mu"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MASS_PROTON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MASS_PROTON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MASS_PROTON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of the proton, <img class="math" src="_images/math/30760923f9d2cac612fc7c6eb6936c9d30973daf.png" alt="m_p"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MASS_NEUTRON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MASS_NEUTRON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MASS_NEUTRON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of the neutron, <img class="math" src="_images/math/18bbc183cd17a2feacf3d29073458bab23fc7304.png" alt="m_n"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_FINE_STRUCTURE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_FINE_STRUCTURE</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_FINE_STRUCTURE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The electromagnetic fine structure constant <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_RYDBERG">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_RYDBERG</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_RYDBERG" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Rydberg constant, <img class="math" src="_images/math/82ff1151b19b8f61eac62a1ca47bc29aae2e9214.png" alt="Ry"/>, in units of energy.  This is related to
+the Rydberg inverse wavelength <img class="math" src="_images/math/c59e3a43a64fe6711afcc1ef14d0067d761bd02e.png" alt="R_\infty"/> by <img class="math" src="_images/math/27050fb1ce20138cd3e8fe1042ba5cd8b6e5f8c1.png" alt="Ry = h c R_\infty"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_BOHR_RADIUS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_BOHR_RADIUS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_BOHR_RADIUS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Bohr radius, <img class="math" src="_images/math/ce23cf2aa45ec75ae591e109f8d804170e7daf03.png" alt="a_0"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ANGSTROM">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ANGSTROM</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ANGSTROM" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 angstrom.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_BARN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_BARN</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_BARN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The area of 1 barn.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_BOHR_MAGNETON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_BOHR_MAGNETON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_BOHR_MAGNETON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Bohr Magneton, <img class="math" src="_images/math/be9cc71a3903e310dcdc5ce3c4fc09ff57a2d99d.png" alt="\mu_B"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_NUCLEAR_MAGNETON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_NUCLEAR_MAGNETON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_NUCLEAR_MAGNETON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Nuclear Magneton, <img class="math" src="_images/math/683f9ca839bcebd42ce45ff4bc44ef409ca46c8b.png" alt="\mu_N"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ELECTRON_MAGNETIC_MOMENT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ELECTRON_MAGNETIC_MOMENT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ELECTRON_MAGNETIC_MOMENT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The absolute value of the magnetic moment of the electron, <img class="math" src="_images/math/d060f32120b7a9fba12c5d71b59d19f2274fe83f.png" alt="\mu_e"/>.
+The physical magnetic moment of the electron is negative.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PROTON_MAGNETIC_MOMENT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PROTON_MAGNETIC_MOMENT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PROTON_MAGNETIC_MOMENT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The magnetic moment of the proton, <img class="math" src="_images/math/e84a84a4613d8976810b9b7ba754d151ef388d9c.png" alt="\mu_p"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_THOMSON_CROSS_SECTION">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_THOMSON_CROSS_SECTION</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_THOMSON_CROSS_SECTION" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The Thomson cross section, <img class="math" src="_images/math/33ea5beccd301b99a4f292dd1729a317a1542274.png" alt="\sigma_T"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_DEBYE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_DEBYE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_DEBYE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The electric dipole moment of 1 Debye, <img class="math" src="_images/math/63d10e84cf24903abdb7a8b5e36b743c831a7040.png" alt="D"/>.</p>
+</dd></dl>
+
+</section>
+<section id="measurement-of-time">
+<span id="index-4"></span><h2>Measurement of Time<a class="headerlink" href="#measurement-of-time" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MINUTE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MINUTE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MINUTE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The number of seconds in 1 minute.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_HOUR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_HOUR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_HOUR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The number of seconds in 1 hour.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_DAY">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_DAY</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_DAY" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The number of seconds in 1 day.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_WEEK">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_WEEK</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_WEEK" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The number of seconds in 1 week.</p>
+</dd></dl>
+
+</section>
+<section id="imperial-units">
+<span id="index-5"></span><h2>Imperial Units<a class="headerlink" href="#imperial-units" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_INCH">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_INCH</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_INCH" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 inch.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_FOOT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_FOOT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_FOOT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 foot.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_YARD">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_YARD</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_YARD" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 yard.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MILE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MILE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MILE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 mile.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MIL">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MIL</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MIL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 mil (1/1000th of an inch).</p>
+</dd></dl>
+
+</section>
+<section id="speed-and-nautical-units">
+<span id="index-6"></span><h2>Speed and Nautical Units<a class="headerlink" href="#speed-and-nautical-units" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_KILOMETERS_PER_HOUR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_KILOMETERS_PER_HOUR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_KILOMETERS_PER_HOUR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The speed of 1 kilometer per hour.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MILES_PER_HOUR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MILES_PER_HOUR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MILES_PER_HOUR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The speed of 1 mile per hour.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_NAUTICAL_MILE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_NAUTICAL_MILE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_NAUTICAL_MILE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 nautical mile.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_FATHOM">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_FATHOM</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_FATHOM" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 fathom.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_KNOT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_KNOT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_KNOT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The speed of 1 knot.</p>
+</dd></dl>
+
+</section>
+<section id="printers-units">
+<span id="index-7"></span><h2>Printers Units<a class="headerlink" href="#printers-units" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_POINT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_POINT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_POINT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 printer’s point (1/72 inch).</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_TEXPOINT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_TEXPOINT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_TEXPOINT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 TeX point (1/72.27 inch).</p>
+</dd></dl>
+
+</section>
+<section id="volume-area-and-length">
+<span id="index-8"></span><h2>Volume, Area and Length<a class="headerlink" href="#volume-area-and-length" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_MICRON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_MICRON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_MICRON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The length of 1 micron.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_HECTARE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_HECTARE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_HECTARE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The area of 1 hectare.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ACRE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ACRE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ACRE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The area of 1 acre.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_LITER">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_LITER</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_LITER" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The volume of 1 liter.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_US_GALLON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_US_GALLON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_US_GALLON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The volume of 1 US gallon.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_CANADIAN_GALLON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_CANADIAN_GALLON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_CANADIAN_GALLON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The volume of 1 Canadian gallon.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_UK_GALLON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_UK_GALLON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_UK_GALLON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The volume of 1 UK gallon.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_QUART">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_QUART</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_QUART" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The volume of 1 quart.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PINT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PINT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PINT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The volume of 1 pint.</p>
+</dd></dl>
+
+</section>
+<section id="mass-and-weight">
+<span id="index-9"></span><h2>Mass and Weight<a class="headerlink" href="#mass-and-weight" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_POUND_MASS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_POUND_MASS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_POUND_MASS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 pound.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_OUNCE_MASS">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_OUNCE_MASS</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_OUNCE_MASS" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 ounce.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_TON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_TON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_TON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 ton.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_METRIC_TON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_METRIC_TON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_METRIC_TON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 metric ton (1000 kg).</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_UK_TON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_UK_TON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_UK_TON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 UK ton.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_TROY_OUNCE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_TROY_OUNCE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_TROY_OUNCE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 troy ounce.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_CARAT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_CARAT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_CARAT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The mass of 1 carat.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_GRAM_FORCE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_GRAM_FORCE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_GRAM_FORCE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The force of 1 gram weight.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_POUND_FORCE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_POUND_FORCE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_POUND_FORCE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The force of 1 pound weight.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_KILOPOUND_FORCE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_KILOPOUND_FORCE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_KILOPOUND_FORCE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The force of 1 kilopound weight.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_POUNDAL">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_POUNDAL</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_POUNDAL" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The force of 1 poundal.</p>
+</dd></dl>
+
+</section>
+<section id="thermal-energy-and-power">
+<span id="index-10"></span><h2>Thermal Energy and Power<a class="headerlink" href="#thermal-energy-and-power" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_CALORIE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_CALORIE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_CALORIE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The energy of 1 calorie.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_BTU">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_BTU</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_BTU" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The energy of 1 British Thermal Unit, <img class="math" src="_images/math/6ab520b0d1b7a726398a1382e8b56df440217b59.png" alt="btu"/>.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_THERM">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_THERM</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_THERM" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The energy of 1 Therm.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_HORSEPOWER">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_HORSEPOWER</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_HORSEPOWER" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The power of 1 horsepower.</p>
+</dd></dl>
+
+</section>
+<section id="pressure">
+<span id="index-11"></span><h2>Pressure<a class="headerlink" href="#pressure" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_BAR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_BAR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_BAR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 bar.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_STD_ATMOSPHERE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_STD_ATMOSPHERE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_STD_ATMOSPHERE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 standard atmosphere.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_TORR">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_TORR</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_TORR" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 torr.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_METER_OF_MERCURY">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_METER_OF_MERCURY</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_METER_OF_MERCURY" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 meter of mercury.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_INCH_OF_MERCURY">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_INCH_OF_MERCURY</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_INCH_OF_MERCURY" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 inch of mercury.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_INCH_OF_WATER">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_INCH_OF_WATER</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_INCH_OF_WATER" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 inch of water.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PSI">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PSI</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PSI" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The pressure of 1 pound per square inch.</p>
+</dd></dl>
+
+</section>
+<section id="viscosity">
+<span id="index-12"></span><h2>Viscosity<a class="headerlink" href="#viscosity" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_POISE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_POISE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_POISE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The dynamic viscosity of 1 poise.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_STOKES">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_STOKES</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_STOKES" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The kinematic viscosity of 1 stokes.</p>
+</dd></dl>
+
+</section>
+<section id="light-and-illumination">
+<span id="index-13"></span><h2>Light and Illumination<a class="headerlink" href="#light-and-illumination" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_STILB">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_STILB</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_STILB" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The luminance of 1 stilb.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_LUMEN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_LUMEN</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_LUMEN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The luminous flux of 1 lumen.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_LUX">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_LUX</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_LUX" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The illuminance of 1 lux.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_PHOT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_PHOT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_PHOT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The illuminance of 1 phot.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_FOOTCANDLE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_FOOTCANDLE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_FOOTCANDLE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The illuminance of 1 footcandle.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_LAMBERT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_LAMBERT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_LAMBERT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The luminance of 1 lambert.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_FOOTLAMBERT">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_FOOTLAMBERT</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_FOOTLAMBERT" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The luminance of 1 footlambert.</p>
+</dd></dl>
+
+</section>
+<section id="radioactivity">
+<span id="index-14"></span><h2>Radioactivity<a class="headerlink" href="#radioactivity" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_CURIE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_CURIE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_CURIE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The activity of 1 curie.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ROENTGEN">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ROENTGEN</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ROENTGEN" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The exposure of 1 roentgen.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_RAD">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_RAD</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_RAD" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The absorbed dose of 1 rad.</p>
+</dd></dl>
+
+</section>
+<section id="force-and-energy">
+<span id="index-15"></span><h2>Force and Energy<a class="headerlink" href="#force-and-energy" title="Link to this heading">¶</a></h2>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_NEWTON">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_NEWTON</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_NEWTON" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The SI unit of force, 1 Newton.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_DYNE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_DYNE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_DYNE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The force of 1 Dyne = <img class="math" src="_images/math/77511d1fe0e5db81d1649521df9b3a65d934e734.png" alt="10^{-5}"/> Newton.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_JOULE">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_JOULE</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_JOULE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The SI unit of energy, 1 Joule.</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_MKSA_ERG">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_MKSA_ERG</span></span></span><a class="headerlink" href="#c.GSL_CONST_MKSA_ERG" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The energy 1 erg = <img class="math" src="_images/math/5340c340f21a5bb82b14ab70ad1e8bcf3ffe37d1.png" alt="10^{-7}"/> Joule.</p>
+</dd></dl>
+
+</section>
+<section id="prefixes">
+<span id="index-16"></span><h2>Prefixes<a class="headerlink" href="#prefixes" title="Link to this heading">¶</a></h2>
+<p>These constants are dimensionless scaling factors.</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_YOTTA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_YOTTA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_YOTTA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/8ce3c942cd12db90329dfed3739b622d3d6b8f3d.png" alt="10^{24}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_ZETTA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_ZETTA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_ZETTA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/90a30cd1ad2abd85897760c30cddf91987b25668.png" alt="10^{21}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_EXA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_EXA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_EXA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/7754ebc6dec3e9f770e011a89b8b76c3f26998ba.png" alt="10^{18}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_PETA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_PETA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_PETA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/acf941f882ea7c2a2219d96cece49cb5764692aa.png" alt="10^{15}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_TERA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_TERA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_TERA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/2110c7889080d0309196317237f5f75b5edaaf57.png" alt="10^{12}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_GIGA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_GIGA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_GIGA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/d12fb0519a376139bcc136940bad3e730c829013.png" alt="10^9"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_MEGA">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_MEGA</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_MEGA" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/77dae57b8273da08d2c07a5a592cac08e7c7fb68.png" alt="10^6"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_KILO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_KILO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_KILO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/cd6d8b9f76b737c8db6959ee69d89c328ec4c34a.png" alt="10^3"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_MILLI">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_MILLI</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_MILLI" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/49e1de3ff66e219673854ae2ef154468484aa479.png" alt="10^{-3}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_MICRO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_MICRO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_MICRO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/89e101ca93aff6de51f3f50284bca187e04d974e.png" alt="10^{-6}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_NANO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_NANO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_NANO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/89f04e755940f1d6030efbc79936467e80905e39.png" alt="10^{-9}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_PICO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_PICO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_PICO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/f9e12ec505341e356220dc716be5bf05f0807e03.png" alt="10^{-12}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_FEMTO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_FEMTO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_FEMTO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/d750b779c8a23a41591f8136faa99b607f94c138.png" alt="10^{-15}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_ATTO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_ATTO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_ATTO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/26832ca1553eec7edf386725e6bd92d47cd49d78.png" alt="10^{-18}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_ZEPTO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_ZEPTO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_ZEPTO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/0a5d87590d842ff2eaa0a19e949a6c37e961d1e1.png" alt="10^{-21}"/></p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.GSL_CONST_NUM_YOCTO">
+<span class="sig-name descname"><span class="n"><span class="pre">GSL_CONST_NUM_YOCTO</span></span></span><a class="headerlink" href="#c.GSL_CONST_NUM_YOCTO" title="Link to this definition">¶</a><br /></dt>
+<dd><p><img class="math" src="_images/math/d69cfd7a224b1ab1655c6ca9230bf8ab6a749425.png" alt="10^{-24}"/></p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following program demonstrates the use of the physical constants in
+a calculation.  In this case, the goal is to calculate the range of
+light-travel times from Earth to Mars.</p>
+<p>The required data is the average distance of each planet from the Sun in
+astronomical units (the eccentricities and inclinations of the orbits
+will be neglected for the purposes of this calculation).  The average
+radius of the orbit of Mars is 1.52 astronomical units, and for the
+orbit of Earth it is 1 astronomical unit (by definition).  These values
+are combined with the MKSA values of the constants for the speed of
+light and the length of an astronomical unit to produce a result for the
+shortest and longest light-travel times in seconds.  The figures are
+converted into minutes before being displayed.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_const_mksa.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">c</span>  <span class="o">=</span> <span class="n">GSL_CONST_MKSA_SPEED_OF_LIGHT</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">au</span> <span class="o">=</span> <span class="n">GSL_CONST_MKSA_ASTRONOMICAL_UNIT</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">minutes</span> <span class="o">=</span> <span class="n">GSL_CONST_MKSA_MINUTE</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">distance</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">meters</span> <span class="o">*/</span>
+  <span class="n">double</span> <span class="n">r_earth</span> <span class="o">=</span> <span class="mf">1.00</span> <span class="o">*</span> <span class="n">au</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">r_mars</span>  <span class="o">=</span> <span class="mf">1.52</span> <span class="o">*</span> <span class="n">au</span><span class="p">;</span>
+
+  <span class="n">double</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">;</span>
+
+  <span class="n">t_min</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_mars</span> <span class="o">-</span> <span class="n">r_earth</span><span class="p">)</span> <span class="o">/</span> <span class="n">c</span><span class="p">;</span>
+  <span class="n">t_max</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_mars</span> <span class="o">+</span> <span class="n">r_earth</span><span class="p">)</span> <span class="o">/</span> <span class="n">c</span><span class="p">;</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;light travel time from Earth to Mars:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;minimum = </span><span class="si">%.1f</span><span class="s2"> minutes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t_min</span> <span class="o">/</span> <span class="n">minutes</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;maximum = </span><span class="si">%.1f</span><span class="s2"> minutes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t_max</span> <span class="o">/</span> <span class="n">minutes</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output from the program,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">light</span> <span class="n">travel</span> <span class="n">time</span> <span class="kn">from</span><span class="w"> </span><span class="nn">Earth</span> <span class="n">to</span> <span class="n">Mars</span><span class="p">:</span>
+<span class="n">minimum</span> <span class="o">=</span> <span class="mf">4.3</span> <span class="n">minutes</span>
+<span class="n">maximum</span> <span class="o">=</span> <span class="mf">21.0</span> <span class="n">minutes</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The authoritative sources for physical constants are the 2006 CODATA
+recommended values, published in the article below. Further
+information on the values of physical constants is also available from
+the NIST website.</p>
+<ul class="simple">
+<li><p>P.J. Mohr, B.N. Taylor, D.B. Newell, “CODATA Recommended
+Values of the Fundamental Physical Constants: 2006”, Reviews of
+Modern Physics, 80(2), pp. 633–730 (2008).</p></li>
+<li><p><a class="reference external" href="http://www.physics.nist.gov/cuu/Constants/index.html">http://www.physics.nist.gov/cuu/Constants/index.html</a></p></li>
+<li><p><a class="reference external" href="http://physics.nist.gov/Pubs/SP811/appenB9.html">http://physics.nist.gov/Pubs/SP811/appenB9.html</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="splinalg.html" class="btn btn-neutral float-left" title="Sparse Linear Algebra" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ieee754.html" class="btn btn-neutral float-right" title="IEEE floating-point arithmetic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

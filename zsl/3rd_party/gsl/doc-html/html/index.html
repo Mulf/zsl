@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GNU Scientific Library &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">GNU Scientific Library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gnu-scientific-library">
+<h1>GNU Scientific Library<a class="headerlink" href="#gnu-scientific-library" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#routines-available-in-gsl">Routines available in GSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#gsl-is-free-software">GSL is Free Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#obtaining-gsl">Obtaining GSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#no-warranty">No Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#reporting-bugs">Reporting Bugs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#further-information">Further Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#conventions-used-in-this-manual">Conventions used in this manual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#an-example-program">An Example Program</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#compiling-and-linking">Compiling and Linking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#shared-libraries">Shared Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#ansi-c-compliance">ANSI C Compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#inline-functions">Inline functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#long-double">Long double</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#portability-functions">Portability functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#alternative-optimized-functions">Alternative optimized functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#support-for-different-numeric-types">Support for different numeric types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#compatibility-with-c">Compatibility with C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#aliasing-of-arrays">Aliasing of arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#thread-safety">Thread-safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#deprecated-functions">Deprecated Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#code-reuse">Code Reuse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="err.html#error-reporting">Error Reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="err.html#error-codes">Error Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="err.html#error-handlers">Error Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="err.html#using-gsl-error-reporting-in-your-own-functions">Using GSL error reporting in your own functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="err.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="math.html#mathematical-constants">Mathematical Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#infinities-and-not-a-number">Infinities and Not-a-number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#elementary-functions">Elementary Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#small-integer-powers">Small integer powers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#testing-the-sign-of-numbers">Testing the Sign of Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#testing-for-odd-and-even-numbers">Testing for Odd and Even Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#maximum-and-minimum-functions">Maximum and Minimum functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html#approximate-comparison-of-floating-point-numbers">Approximate Comparison of Floating Point Numbers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#representation-of-complex-numbers">Representation of complex numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#complex-number-macros">Complex number macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#assigning-complex-numbers">Assigning complex numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#properties-of-complex-numbers">Properties of complex numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#complex-arithmetic-operators">Complex arithmetic operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#elementary-complex-functions">Elementary Complex Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#complex-trigonometric-functions">Complex Trigonometric Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#inverse-complex-trigonometric-functions">Inverse Complex Trigonometric Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#complex-hyperbolic-functions">Complex Hyperbolic Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#inverse-complex-hyperbolic-functions">Inverse Complex Hyperbolic Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#polynomial-evaluation">Polynomial Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#divided-difference-representation-of-polynomials">Divided Difference Representation of Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#quadratic-equations">Quadratic Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#cubic-equations">Cubic Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#general-polynomial-equations">General Polynomial Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poly.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#the-gsl-sf-result-struct">The gsl_sf_result struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#modes">Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#airy-functions-and-derivatives">Airy Functions and Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#bessel-functions">Bessel Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#clausen-functions">Clausen Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#coulomb-functions">Coulomb Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#coupling-coefficients">Coupling Coefficients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#dawson-function">Dawson Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#debye-functions">Debye Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#dilogarithm">Dilogarithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#elementary-operations">Elementary Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#elliptic-integrals">Elliptic Integrals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#elliptic-functions-jacobi">Elliptic Functions (Jacobi)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#error-functions">Error Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#exponential-functions">Exponential Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#exponential-integrals">Exponential Integrals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#fermi-dirac-function">Fermi-Dirac Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#gamma-and-beta-functions">Gamma and Beta Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#gegenbauer-functions">Gegenbauer Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#hermite-polynomials-and-functions">Hermite Polynomials and Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#hypergeometric-functions">Hypergeometric Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#laguerre-functions">Laguerre Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#lambert-w-functions">Lambert W Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#legendre-functions-and-spherical-harmonics">Legendre Functions and Spherical Harmonics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#logarithm-and-related-functions">Logarithm and Related Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#mathieu-functions">Mathieu Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#power-function">Power Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#psi-digamma-function">Psi (Digamma) Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#synchrotron-functions">Synchrotron Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#transport-functions">Transport Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#trigonometric-functions">Trigonometric Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#zeta-functions">Zeta Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specfunc.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#data-types">Data types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#blocks">Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#vectors">Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectors.html#matrices">Matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#the-permutation-struct">The Permutation struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#permutation-allocation">Permutation allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#accessing-permutation-elements">Accessing permutation elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#permutation-properties">Permutation properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#permutation-functions">Permutation functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#applying-permutations">Applying Permutations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#reading-and-writing-permutations">Reading and writing permutations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#permutations-in-cyclic-form">Permutations in cyclic form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="permutation.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#the-combination-struct">The Combination struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#combination-allocation">Combination allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#accessing-combination-elements">Accessing combination elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#combination-properties">Combination properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#combination-functions">Combination functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#reading-and-writing-combinations">Reading and writing combinations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combination.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#the-multiset-struct">The Multiset struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#multiset-allocation">Multiset allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#accessing-multiset-elements">Accessing multiset elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#multiset-properties">Multiset properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#multiset-functions">Multiset functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#reading-and-writing-multisets">Reading and writing multisets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiset.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sort.html#sorting-objects">Sorting objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sort.html#sorting-vectors">Sorting vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sort.html#selecting-the-k-smallest-or-largest-elements">Selecting the k smallest or largest elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sort.html#computing-the-rank">Computing the rank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sort.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sort.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#gsl-blas-interface">GSL BLAS Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#lu-decomposition">LU Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#qr-decomposition">QR Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#qr-decomposition-with-column-pivoting">QR Decomposition with Column Pivoting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#lq-decomposition">LQ Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#ql-decomposition">QL Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#complete-orthogonal-decomposition">Complete Orthogonal Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#singular-value-decomposition">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#cholesky-decomposition">Cholesky Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#pivoted-cholesky-decomposition">Pivoted Cholesky Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#modified-cholesky-decomposition">Modified Cholesky Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#ldlt-decomposition">LDLT Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#tridiagonal-decomposition-of-real-symmetric-matrices">Tridiagonal Decomposition of Real Symmetric Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#tridiagonal-decomposition-of-hermitian-matrices">Tridiagonal Decomposition of Hermitian Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#hessenberg-decomposition-of-real-matrices">Hessenberg Decomposition of Real Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#hessenberg-triangular-decomposition-of-real-matrices">Hessenberg-Triangular Decomposition of Real Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#bidiagonalization">Bidiagonalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#givens-rotations">Givens Rotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#householder-transformations">Householder Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#householder-solver-for-linear-systems">Householder solver for linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#tridiagonal-systems">Tridiagonal Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#triangular-systems">Triangular Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#banded-systems">Banded Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#balancing">Balancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#real-symmetric-matrices">Real Symmetric Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#complex-hermitian-matrices">Complex Hermitian Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#real-nonsymmetric-matrices">Real Nonsymmetric Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#real-generalized-symmetric-definite-eigensystems">Real Generalized Symmetric-Definite Eigensystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#complex-generalized-hermitian-definite-eigensystems">Complex Generalized Hermitian-Definite Eigensystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#real-generalized-nonsymmetric-eigensystems">Real Generalized Nonsymmetric Eigensystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#sorting-eigenvalues-and-eigenvectors">Sorting Eigenvalues and Eigenvectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eigen.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#mathematical-definitions">Mathematical Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#overview-of-complex-data-ffts">Overview of complex data FFTs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#radix-2-fft-routines-for-complex-data">Radix-2 FFT routines for complex data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#mixed-radix-fft-routines-for-complex-data">Mixed-radix FFT routines for complex data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#overview-of-real-data-ffts">Overview of real data FFTs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#radix-2-fft-routines-for-real-data">Radix-2 FFT routines for real data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#mixed-radix-fft-routines-for-real-data">Mixed-radix FFT routines for real data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fft.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qng-non-adaptive-gauss-kronrod-integration">QNG non-adaptive Gauss-Kronrod integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qag-adaptive-integration">QAG adaptive integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qags-adaptive-integration-with-singularities">QAGS adaptive integration with singularities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qagp-adaptive-integration-with-known-singular-points">QAGP adaptive integration with known singular points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qagi-adaptive-integration-on-infinite-intervals">QAGI adaptive integration on infinite intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qawc-adaptive-integration-for-cauchy-principal-values">QAWC adaptive integration for Cauchy principal values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qaws-adaptive-integration-for-singular-functions">QAWS adaptive integration for singular functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qawo-adaptive-integration-for-oscillatory-functions">QAWO adaptive integration for oscillatory functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#qawf-adaptive-integration-for-fourier-integrals">QAWF adaptive integration for Fourier integrals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#cquad-doubly-adaptive-integration">CQUAD doubly-adaptive integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#romberg-integration">Romberg integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#gauss-legendre-integration">Gauss-Legendre integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#fixed-point-quadratures">Fixed point quadratures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#integrating-on-the-unit-sphere">Integrating on the unit sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#error-codes">Error codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#general-comments-on-random-numbers">General comments on random numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#the-random-number-generator-interface">The Random Number Generator Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#random-number-generator-initialization">Random number generator initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#sampling-from-a-random-number-generator">Sampling from a random number generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#auxiliary-random-number-generator-functions">Auxiliary random number generator functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#random-number-environment-variables">Random number environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#copying-random-number-generator-state">Copying random number generator state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#reading-and-writing-random-number-generator-state">Reading and writing random number generator state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#random-number-generator-algorithms">Random number generator algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#unix-random-number-generators">Unix random number generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#other-random-number-generators">Other random number generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#references-and-further-reading">References and Further Reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rng.html#acknowledgements">Acknowledgements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#quasi-random-number-generator-initialization">Quasi-random number generator initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#sampling-from-a-quasi-random-number-generator">Sampling from a quasi-random number generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#auxiliary-quasi-random-number-generator-functions">Auxiliary quasi-random number generator functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#saving-and-restoring-quasi-random-number-generator-state">Saving and restoring quasi-random number generator state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#quasi-random-number-generator-algorithms">Quasi-random number generator algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qrng.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-gaussian-distribution">The Gaussian Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-gaussian-tail-distribution">The Gaussian Tail Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-bivariate-gaussian-distribution">The Bivariate Gaussian Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-multivariate-gaussian-distribution">The Multivariate Gaussian Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-exponential-distribution">The Exponential Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-laplace-distribution">The Laplace Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-exponential-power-distribution">The Exponential Power Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-cauchy-distribution">The Cauchy Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-rayleigh-distribution">The Rayleigh Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-rayleigh-tail-distribution">The Rayleigh Tail Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-landau-distribution">The Landau Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-levy-alpha-stable-distributions">The Levy alpha-Stable Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-levy-skew-alpha-stable-distribution">The Levy skew alpha-Stable Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-gamma-distribution">The Gamma Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-flat-uniform-distribution">The Flat (Uniform) Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-lognormal-distribution">The Lognormal Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-chi-squared-distribution">The Chi-squared Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-f-distribution">The F-distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-t-distribution">The t-distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-beta-distribution">The Beta Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-logistic-distribution">The Logistic Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-pareto-distribution">The Pareto Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#spherical-vector-distributions">Spherical Vector Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-weibull-distribution">The Weibull Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-type-1-gumbel-distribution">The Type-1 Gumbel Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-type-2-gumbel-distribution">The Type-2 Gumbel Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-dirichlet-distribution">The Dirichlet Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#general-discrete-distributions">General Discrete Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-poisson-distribution">The Poisson Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-bernoulli-distribution">The Bernoulli Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-binomial-distribution">The Binomial Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-multinomial-distribution">The Multinomial Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-negative-binomial-distribution">The Negative Binomial Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-pascal-distribution">The Pascal Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-geometric-distribution">The Geometric Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-hypergeometric-distribution">The Hypergeometric Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-logarithmic-distribution">The Logarithmic Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#the-wishart-distribution">The Wishart Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#shuffling-and-sampling">Shuffling and Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randist.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#mean-standard-deviation-and-variance">Mean, Standard Deviation and Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#absolute-deviation">Absolute deviation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#higher-moments-skewness-and-kurtosis">Higher moments (skewness and kurtosis)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#autocorrelation">Autocorrelation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#covariance">Covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#correlation">Correlation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#weighted-samples">Weighted Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#maximum-and-minimum-values">Maximum and Minimum values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#median-and-percentiles">Median and Percentiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#order-statistics">Order Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#robust-location-estimates">Robust Location Estimates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#robust-scale-estimates">Robust Scale Estimates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rstat.html#initializing-the-accumulator">Initializing the Accumulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstat.html#adding-data-to-the-accumulator">Adding Data to the Accumulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstat.html#current-statistics">Current Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstat.html#quantiles">Quantiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstat.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rstat.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#handling-endpoints">Handling Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#allocation-for-moving-window-statistics">Allocation for Moving Window Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#moving-mean">Moving Mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#moving-variance-and-standard-deviation">Moving Variance and Standard Deviation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#moving-minimum-and-maximum">Moving Minimum and Maximum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#moving-sum">Moving Sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#moving-median">Moving Median</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#robust-scale-estimation">Robust Scale Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#user-defined-moving-statistics">User-defined Moving Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#accumulators">Accumulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="movstat.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="filter.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html#handling-endpoints">Handling Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html#linear-digital-filters">Linear Digital Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html#nonlinear-digital-filters">Nonlinear Digital Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#the-histogram-struct">The histogram struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#histogram-allocation">Histogram allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#copying-histograms">Copying Histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#updating-and-accessing-histogram-elements">Updating and accessing histogram elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#searching-histogram-ranges">Searching histogram ranges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#histogram-statistics">Histogram Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#histogram-operations">Histogram Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#reading-and-writing-histograms">Reading and writing histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#resampling-from-histograms">Resampling from histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#the-histogram-probability-distribution-struct">The histogram probability distribution struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#example-programs-for-histograms">Example programs for histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#two-dimensional-histograms">Two dimensional histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#the-2d-histogram-struct">The 2D histogram struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#d-histogram-allocation">2D Histogram allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#copying-2d-histograms">Copying 2D Histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#updating-and-accessing-2d-histogram-elements">Updating and accessing 2D histogram elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#searching-2d-histogram-ranges">Searching 2D histogram ranges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#d-histogram-statistics">2D Histogram Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#d-histogram-operations">2D Histogram Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#reading-and-writing-2d-histograms">Reading and writing 2D histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#resampling-from-2d-histograms">Resampling from 2D histograms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogram.html#example-programs-for-2d-histograms">Example programs for 2D histograms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#the-ntuple-struct">The ntuple struct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#creating-ntuples">Creating ntuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#opening-an-existing-ntuple-file">Opening an existing ntuple file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#writing-ntuples">Writing ntuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#reading-ntuples">Reading ntuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#closing-an-ntuple-file">Closing an ntuple file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#histogramming-ntuple-values">Histogramming ntuple values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="montecarlo.html#interface">Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="montecarlo.html#plain-monte-carlo">PLAIN Monte Carlo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="montecarlo.html#miser">MISER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="montecarlo.html#vegas">VEGAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="montecarlo.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="montecarlo.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="siman.html#simulated-annealing-algorithm">Simulated Annealing algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="siman.html#simulated-annealing-functions">Simulated Annealing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="siman.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="siman.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#defining-the-ode-system">Defining the ODE System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#stepping-functions">Stepping Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#adaptive-step-size-control">Adaptive Step-size Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#evolution">Evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#driver">Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ode-initval.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#introduction-to-1d-interpolation">Introduction to 1D Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-interpolation-functions">1D Interpolation Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-interpolation-types">1D Interpolation Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-index-look-up-and-acceleration">1D Index Look-up and Acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-evaluation-of-interpolating-functions">1D Evaluation of Interpolating Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-higher-level-interface">1D Higher-level Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-interpolation-example-programs">1D Interpolation Example Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#introduction-to-2d-interpolation">Introduction to 2D Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#id1">2D Interpolation Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#d-interpolation-grids">2D Interpolation Grids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#id2">2D Interpolation Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#id3">2D Evaluation of Interpolating Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#id4">2D Higher-level Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#id5">2D Interpolation Example programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diff.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diff.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diff.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#creation-and-calculation-of-chebyshev-series">Creation and Calculation of Chebyshev Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#auxiliary-functions">Auxiliary Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#chebyshev-series-evaluation">Chebyshev Series Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#derivatives-and-integrals">Derivatives and Integrals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheb.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sum.html#acceleration-functions">Acceleration functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sum.html#acceleration-functions-without-error-estimation">Acceleration functions without error estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sum.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sum.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dwt.html#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dwt.html#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dwt.html#transform-functions">Transform Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dwt.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dwt.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dht.html#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dht.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dht.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#caveats">Caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#initializing-the-solver">Initializing the Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#providing-the-function-to-solve">Providing the function to solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#search-bounds-and-guesses">Search Bounds and Guesses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#search-stopping-parameters">Search Stopping Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#root-bracketing-algorithms">Root Bracketing Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#root-finding-algorithms-using-derivatives">Root Finding Algorithms using Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roots.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="min.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#caveats">Caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#initializing-the-minimizer">Initializing the Minimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#providing-the-function-to-minimize">Providing the function to minimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#stopping-parameters">Stopping Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#minimization-algorithms">Minimization Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="min.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#initializing-the-solver">Initializing the Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#providing-the-function-to-solve">Providing the function to solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#search-stopping-parameters">Search Stopping Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#algorithms-using-derivatives">Algorithms using Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#algorithms-without-derivatives">Algorithms without Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiroots.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#caveats">Caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#initializing-the-multidimensional-minimizer">Initializing the Multidimensional Minimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#providing-a-function-to-minimize">Providing a function to minimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#stopping-criteria">Stopping Criteria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#algorithms-with-derivatives">Algorithms with Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#algorithms-without-derivatives">Algorithms without Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimin.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#linear-regression">Linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#multi-parameter-regression">Multi-parameter regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#regularized-regression">Regularized regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#robust-linear-regression">Robust linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#large-dense-linear-systems">Large dense linear systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lls.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#solving-the-trust-region-subproblem-trs">Solving the Trust Region Subproblem (TRS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#weighted-nonlinear-least-squares">Weighted Nonlinear Least-Squares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#tunable-parameters">Tunable Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#initializing-the-solver">Initializing the Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#providing-the-function-to-be-minimized">Providing the Function to be Minimized</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#testing-for-convergence">Testing for Convergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#high-level-driver">High Level Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#covariance-matrix-of-best-fit-parameters">Covariance matrix of best fit parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nls.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#allocation-of-b-splines">Allocation of B-splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#initializing-the-knots-vector">Initializing the knots vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#properties-of-b-splines">Properties of B-splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#evaluation-of-b-splines">Evaluation of B-splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#evaluation-of-b-spline-derivatives">Evaluation of B-spline derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#evaluation-of-b-spline-integrals">Evaluation of B-spline integrals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#least-squares-fitting-with-b-splines">Least Squares Fitting with B-splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#gram-matrix">Gram Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#interpolation-with-b-splines">Interpolation with B-splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#hermite-interpolation-with-b-splines">Hermite Interpolation with B-splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#projection-onto-the-b-spline-basis">Projection onto the B-spline Basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#greville-abscissae">Greville abscissae</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bspline.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#data-types">Data types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#sparse-matrix-storage-formats">Sparse Matrix Storage Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#allocation">Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#accessing-matrix-elements">Accessing Matrix Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#initializing-matrix-elements">Initializing Matrix Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#reading-and-writing-matrices">Reading and Writing Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#copying-matrices">Copying Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#exchanging-rows-and-columns">Exchanging Rows and Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#matrix-operations">Matrix Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#matrix-properties">Matrix Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#finding-maximum-and-minimum-elements">Finding Maximum and Minimum Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#compressed-format">Compressed Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#conversion-between-sparse-and-dense-matrices">Conversion Between Sparse and Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spmatrix.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spblas.html#sparse-blas-operations">Sparse BLAS operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spblas.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="splinalg.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splinalg.html#sparse-iterative-solvers">Sparse Iterative Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splinalg.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splinalg.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="const.html#fundamental-constants">Fundamental Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#astronomy-and-astrophysics">Astronomy and Astrophysics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#atomic-and-nuclear-physics">Atomic and Nuclear Physics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#measurement-of-time">Measurement of Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#imperial-units">Imperial Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#speed-and-nautical-units">Speed and Nautical Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#printers-units">Printers Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#volume-area-and-length">Volume, Area and Length</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#mass-and-weight">Mass and Weight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#thermal-energy-and-power">Thermal Energy and Power</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#pressure">Pressure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#viscosity">Viscosity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#light-and-illumination">Light and Illumination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#radioactivity">Radioactivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#force-and-energy">Force and Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#prefixes">Prefixes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="const.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ieee754.html#representation-of-floating-point-numbers">Representation of floating point numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ieee754.html#setting-up-your-ieee-environment">Setting up your IEEE environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ieee754.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="debug.html#using-gdb">Using gdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html#examining-floating-point-registers">Examining floating point registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html#handling-floating-point-exceptions">Handling floating point exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html#gcc-warning-options-for-numerical-programs">GCC warning options for numerical programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cblas.html#level-1">Level 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cblas.html#level-2">Level 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cblas.html#level-3">Level 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cblas.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1006 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ordinary Differential Equations &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interpolation" href="interp.html" />
+    <link rel="prev" title="Simulated Annealing" href="siman.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ordinary Differential Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#defining-the-ode-system">Defining the ODE System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stepping-functions">Stepping Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adaptive-step-size-control">Adaptive Step-size Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evolution">Evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#driver">Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Ordinary Differential Equations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ode-initval.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="siman.html" class="btn btn-neutral float-left" title="Simulated Annealing" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interp.html" class="btn btn-neutral float-right" title="Interpolation" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ordinary-differential-equations">
+<span id="index-0"></span><h1>Ordinary Differential Equations<a class="headerlink" href="#ordinary-differential-equations" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for solving ordinary differential
+equation (ODE) initial value problems.  The library provides a variety
+of low-level methods, such as Runge-Kutta and Bulirsch-Stoer routines,
+and higher-level components for adaptive step-size control. The
+components can be combined by the user to achieve the desired
+solution, with full access to any intermediate steps. A driver object
+can be used as a high level wrapper for easy use of low level
+functions.</p>
+<p>These functions are declared in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_odeiv2.h</span></code>.
+This is a new interface in version 1.15 and uses the prefix
+<code class="code docutils literal notranslate"><span class="pre">gsl_odeiv2</span></code> for all functions.  It is recommended over the
+previous <code class="code docutils literal notranslate"><span class="pre">gsl_odeiv</span></code> implementation defined in <code class="file docutils literal notranslate"><span class="pre">gsl_odeiv.h</span></code>
+The old interface has been retained under the original name for
+backwards compatibility.</p>
+<section id="defining-the-ode-system">
+<h2>Defining the ODE System<a class="headerlink" href="#defining-the-ode-system" title="Link to this heading">¶</a></h2>
+<p>The routines solve the general <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-dimensional first-order system,</p>
+<div class="math">
+<p><img src="_images/math/cdf7d1a5de461ebd3031ad7273f3d38d5b9352a8.png" alt="{dy_i(t) \over dt} = f_i (t, y_1(t), \dots y_n(t))"/></p>
+</div><p>for <img class="math" src="_images/math/c9062c60e73a13bfd2ed05bb6710da4acd88b633.png" alt="i = 1, \dots, n"/>.  The stepping functions rely on the vector
+of derivatives <img class="math" src="_images/math/b7524c4d67379a7045021fd157d0fc7c890ce138.png" alt="f_i"/> and the Jacobian matrix,</p>
+<div class="math">
+<p><img src="_images/math/cb2cf2a9d6f3698991085e0023377d08247c4e6e.png" alt="J_{ij} = \partial f_i(t, y(t)) / \partial y_j"/></p>
+</div><p>A system of equations is defined using the <a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_odeiv2_system</span></code></a>
+datatype.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_system">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_system" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This data type defines a general ODE system with arbitrary parameters.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*</span> <span class="pre">function)</span> <span class="pre">(double</span> <span class="pre">t,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">y[],</span> <span class="pre">double</span> <span class="pre">dydt[],</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params)</span></code></p>
+<blockquote>
+<div><p>This function should store the vector elements
+<img class="math" src="_images/math/32e3cfbcb3d7c40676bd3c1469c106f7cafbcd9d.png" alt="f_i(t,y,params)"/> in the array <code class="xref c c-data docutils literal notranslate"><span class="pre">dydt</span></code>,
+for arguments (<code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code>, <code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code>) and parameters <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>.</p>
+<p>The function should return <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if the calculation was
+completed successfully. Any other return value indicates an error. A
+special return value <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EBADFUNC</span></code> causes <code class="code docutils literal notranslate"><span class="pre">gsl_odeiv2</span></code>
+routines to immediately stop and return. If <code class="code docutils literal notranslate"><span class="pre">function</span></code>
+is modified (for example contents of <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>), the user must call an
+appropriate reset function (<a class="reference internal" href="#c.gsl_odeiv2_driver_reset" title="gsl_odeiv2_driver_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_driver_reset()</span></code></a>,
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_reset" title="gsl_odeiv2_evolve_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_evolve_reset()</span></code></a> or <a class="reference internal" href="#c.gsl_odeiv2_step_reset" title="gsl_odeiv2_step_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_reset()</span></code></a>)
+before continuing. Use return values
+distinct from standard GSL error codes to distinguish your function as
+the source of the error.</p>
+</div></blockquote>
+<p id="index-1"><code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*</span> <span class="pre">jacobian)</span> <span class="pre">(double</span> <span class="pre">t,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">y[],</span> <span class="pre">double</span> <span class="pre">*</span> <span class="pre">dfdy,</span> <span class="pre">double</span> <span class="pre">dfdt[],</span> <span class="pre">void</span> <span class="pre">*</span> <span class="pre">params)</span></code></p>
+<blockquote>
+<div><p>This function should store the vector of derivative elements</p>
+<div class="math">
+<p><img src="_images/math/f0c49deb85066fa513836246d48a5d97916a6b08.png" alt="\partial f_i(t,y,params) / \partial t"/></p>
+</div><p>in the array <code class="xref c c-data docutils literal notranslate"><span class="pre">dfdt</span></code> and the Jacobian matrix <img class="math" src="_images/math/4476ac2e27439e6462b919bf99880d610d2335b3.png" alt="J_{ij}"/>
+in the array <code class="xref c c-data docutils literal notranslate"><span class="pre">dfdy</span></code>, regarded as a row-ordered
+matrix <code class="code docutils literal notranslate"><span class="pre">J(i,j)</span> <span class="pre">=</span> <span class="pre">dfdy[i</span> <span class="pre">*</span> <span class="pre">dimension</span> <span class="pre">+</span> <span class="pre">j]</span></code> where <code class="code docutils literal notranslate"><span class="pre">dimension</span></code>
+is the dimension of the system.</p>
+<p>Not all of the stepper algorithms of <code class="code docutils literal notranslate"><span class="pre">gsl_odeiv2</span></code> make use of the
+Jacobian matrix, so it may not be necessary to provide this function
+(the <code class="code docutils literal notranslate"><span class="pre">jacobian</span></code> element of the struct can be replaced by a null
+pointer for those algorithms).</p>
+<p>The function should return <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> if the calculation was
+completed successfully. Any other return value indicates an error. A
+special return value <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EBADFUNC</span></code> causes <code class="code docutils literal notranslate"><span class="pre">gsl_odeiv2</span></code>
+routines to immediately stop and return. If <code class="code docutils literal notranslate"><span class="pre">jacobian</span></code>
+is modified (for example contents of <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code>), the user must call an
+appropriate reset function (<a class="reference internal" href="#c.gsl_odeiv2_driver_reset" title="gsl_odeiv2_driver_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_driver_reset()</span></code></a>,
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_reset" title="gsl_odeiv2_evolve_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_evolve_reset()</span></code></a> or <a class="reference internal" href="#c.gsl_odeiv2_step_reset" title="gsl_odeiv2_step_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_reset()</span></code></a>)
+before continuing. Use return values
+distinct from standard GSL error codes to distinguish your function as
+the source of the error.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">dimension</span></code></p>
+<blockquote>
+<div><p>This is the dimension of the system of equations.</p>
+</div></blockquote>
+<p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span> <span class="pre">params</span></code></p>
+<blockquote>
+<div><p>This is a pointer to the arbitrary parameters of the system.</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="stepping-functions">
+<h2>Stepping Functions<a class="headerlink" href="#stepping-functions" title="Link to this heading">¶</a></h2>
+<p>The lowest level components are the <em>stepping functions</em> which
+advance a solution from time <img class="math" src="_images/math/6f8cfe577555c6a7a9baff60b7e8169ef9c203eb.png" alt="t"/> to <img class="math" src="_images/math/659a49187158dc760117bbcaf4896090ba411d6a.png" alt="t+h"/> for a fixed
+step-size <img class="math" src="_images/math/aca32b204f928ef3ee8c82cd7a605c4da0c65f18.png" alt="h"/> and estimate the resulting local error.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This contains internal parameters for a stepping function.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_alloc">
+<a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly allocated instance of a
+stepping function of type <a class="reference internal" href="#c.gsl_odeiv2_step_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a> for a system of <a class="reference internal" href="#c.gsl_odeiv2_step_alloc" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a>
+dimensions. Please note that if you use a stepper method that
+requires access to a driver object, it is advisable to use a driver
+allocation method, which automatically allocates a stepper, too.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_reset">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_reset</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_reset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function resets the stepping function <a class="reference internal" href="#c.gsl_odeiv2_step_reset" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.  It should be used
+whenever the next use of <a class="reference internal" href="#c.gsl_odeiv2_step_reset" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> will not be a continuation of a
+previous step.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the stepping function
+<a class="reference internal" href="#c.gsl_odeiv2_step_free" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the name of the stepping function.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;step method is &#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_odeiv2_step_name</span> <span class="p">(</span><span class="n">s</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>would print something like <code class="code docutils literal notranslate"><span class="pre">step</span> <span class="pre">method</span> <span class="pre">is</span> <span class="pre">'rkf45'</span></code>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_order">
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_order</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_order" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the order of the stepping function on the previous
+step. The order can vary if the stepping function itself is adaptive.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_set_driver">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_set_driver</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_set_driver" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets a pointer of the driver object <a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a> for stepper
+<a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a>, to allow the stepper to access control (and evolve) object
+through the driver object. This is a requirement for some steppers, to
+get the desired error level for internal iteration of
+stepper. Allocation of a driver object calls this function
+automatically.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_apply">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_apply</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">t</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">yerr</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dydt_in</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dydt_out</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_step_apply" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the stepping function <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="s"><code class="xref c c-data docutils literal notranslate"><span class="pre">s</span></code></a> to the system of
+equations defined by <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a>, using the step-size <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> to advance
+the system from time <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and state <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> to time <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> + <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.
+The new state of the system is stored in <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> on output, with an
+estimate of the absolute error in each component stored in <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="yerr"><code class="xref c c-data docutils literal notranslate"><span class="pre">yerr</span></code></a>.
+If the argument <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="dydt_in"><code class="xref c c-data docutils literal notranslate"><span class="pre">dydt_in</span></code></a> is not null it should point an array
+containing the derivatives for the system at time <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> on input. This
+is optional as the derivatives will be computed internally if they are
+not provided, but allows the reuse of existing derivative information.
+On output the new derivatives of the system at time <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> + <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> will
+be stored in <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="dydt_out"><code class="xref c c-data docutils literal notranslate"><span class="pre">dydt_out</span></code></a> if it is not null.</p>
+<p>The stepping function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> if it is unable to
+compute the requested step. Also, if the user-supplied functions
+defined in the system <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a> return a status other than
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> the step will be aborted. In that case, the
+elements of <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> will be restored to their pre-step values and the
+error code from the user-supplied function will be returned. Failure
+may be due to a singularity in the system or too large step-size
+<a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. In that case the step should be attempted again with a
+smaller step-size, e.g. <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> / 2.</p>
+<p>If the driver object is not appropriately set via
+<a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="gsl_odeiv2_step_set_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_set_driver()</span></code></a> for those steppers that need it, the
+stepping function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EFAULT</span></code>. If the user-supplied
+functions defined in the system <a class="reference internal" href="#c.gsl_odeiv2_step_apply" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a> returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EBADFUNC</span></code>,
+the function returns immediately with the same return code. In this
+case the user must call <a class="reference internal" href="#c.gsl_odeiv2_step_reset" title="gsl_odeiv2_step_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_reset()</span></code></a> before calling
+this function again.</p>
+</dd></dl>
+
+<p>The following algorithms are available. Please note that algorithms
+which use step doubling for error estimation apply the more accurate
+values from two half steps instead of values from a single step for
+the new state <code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="c var" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk2">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rk2</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Explicit embedded Runge-Kutta (2, 3) method.</p>
+</dd></dl>
+
+<dl class="c var" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk4">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rk4</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk4" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Explicit 4th order (classical) Runge-Kutta. Error estimation is
+carried out by the step doubling method. For more efficient estimate
+of the error, use the embedded methods described below.</p>
+</dd></dl>
+
+<dl class="c var" id="index-4">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rkf45">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rkf45</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rkf45" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Explicit embedded Runge-Kutta-Fehlberg (4, 5) method.  This method is
+a good general-purpose integrator.</p>
+</dd></dl>
+
+<dl class="c var" id="index-5">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rkck">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rkck</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rkck" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Explicit embedded Runge-Kutta Cash-Karp (4, 5) method.</p>
+</dd></dl>
+
+<dl class="c var" id="index-6">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk8pd">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rk8pd</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk8pd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Explicit embedded Runge-Kutta Prince-Dormand (8, 9) method.</p>
+</dd></dl>
+
+<dl class="c var" id="index-7">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk1imp">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rk1imp</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk1imp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Implicit Gaussian first order Runge-Kutta. Also known as implicit
+Euler or backward Euler method. Error estimation is carried out by the
+step doubling method. This algorithm requires the Jacobian and
+access to the driver object via <a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="gsl_odeiv2_step_set_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_set_driver()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-8">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk2imp">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rk2imp</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk2imp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Implicit Gaussian second order Runge-Kutta. Also known as implicit
+mid-point rule. Error estimation is carried out by the step doubling
+method. This stepper requires the Jacobian and access to the driver
+object via <a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="gsl_odeiv2_step_set_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_set_driver()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk4imp">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_rk4imp</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_rk4imp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Implicit Gaussian 4th order Runge-Kutta. Error estimation is carried
+out by the step doubling method. This algorithm requires the Jacobian
+and access to the driver object via <a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="gsl_odeiv2_step_set_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_set_driver()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-9">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_bsimp">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_bsimp</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_bsimp" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Implicit Bulirsch-Stoer method of Bader and Deuflhard. The method is
+generally suitable for stiff problems. This stepper requires the
+Jacobian.</p>
+</dd></dl>
+
+<dl class="c var" id="index-10">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_msadams">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_msadams</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_msadams" title="Link to this definition">¶</a><br /></dt>
+<dd><p>A variable-coefficient linear multistep Adams method in Nordsieck
+form. This stepper uses explicit Adams-Bashforth (predictor) and
+implicit Adams-Moulton (corrector) methods in <img class="math" src="_images/math/cd792e9229342774ebaed1cbed7de013d049f67d.png" alt="P(EC)^m"/>
+functional iteration mode. Method order varies dynamically between 1
+and 12. This stepper requires the access to the driver object via
+<a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="gsl_odeiv2_step_set_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_set_driver()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c var" id="index-11">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_step_type.gsl_odeiv2_step_msbdf">
+<a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_step_msbdf</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_step_type.gsl_odeiv2_step_msbdf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>A variable-coefficient linear multistep backward differentiation
+formula (BDF) method in Nordsieck form. This stepper uses the explicit
+BDF formula as predictor and implicit BDF formula as corrector. A
+modified Newton iteration method is used to solve the system of
+non-linear equations. Method order varies dynamically between 1 and
+5. The method is generally suitable for stiff problems. This stepper
+requires the Jacobian and the access to the driver object via
+<a class="reference internal" href="#c.gsl_odeiv2_step_set_driver" title="gsl_odeiv2_step_set_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_set_driver()</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="adaptive-step-size-control">
+<span id="index-12"></span><h2>Adaptive Step-size Control<a class="headerlink" href="#adaptive-step-size-control" title="Link to this heading">¶</a></h2>
+<p>The control function examines the proposed change to the solution
+produced by a stepping function and attempts to determine the optimal
+step-size for a user-specified level of error.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_control" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for controlling step size.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_type</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_control_type" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This specifies the control type.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_standard_new">
+<a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_standard_new</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_abs</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_rel</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_y</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_dydt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_standard_new" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The standard control object is a four parameter heuristic based on
+absolute and relative errors <a class="reference internal" href="#c.gsl_odeiv2_control_standard_new" title="eps_abs"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_abs</span></code></a> and <a class="reference internal" href="#c.gsl_odeiv2_control_standard_new" title="eps_rel"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_rel</span></code></a>, and
+scaling factors <a class="reference internal" href="#c.gsl_odeiv2_control_standard_new" title="a_y"><code class="xref c c-data docutils literal notranslate"><span class="pre">a_y</span></code></a> and <a class="reference internal" href="#c.gsl_odeiv2_control_standard_new" title="a_dydt"><code class="xref c c-data docutils literal notranslate"><span class="pre">a_dydt</span></code></a> for the system state
+<img class="math" src="_images/math/a82db948b9a720863b9f387888296a43d3e1768e.png" alt="y(t)"/> and derivatives <img class="math" src="_images/math/2629352f3c3356518db4578ff2532d7e74c8cdf5.png" alt="y'(t)"/> respectively.</p>
+<p>The step-size adjustment procedure for this method begins by computing
+the desired error level <img class="math" src="_images/math/6ccfce4f056e2516a630e94f17e49feeeeb1e2eb.png" alt="D_i"/> for each component,</p>
+<div class="math">
+<p><img src="_images/math/8b5e55ee09785bc5eaf515e5d1fd9a7ede26f736.png" alt="D_i = \epsilon_{abs} + \epsilon_{rel} * (a_{y} |y_i| + a_{dydt} h |y\prime_i|)"/></p>
+</div><p>and comparing it with the observed error <img class="math" src="_images/math/f7df5490ba9366351f9d4645de68054065648091.png" alt="E_i = |yerr_i|"/>.  If the
+observed error <code class="xref c c-data docutils literal notranslate"><span class="pre">E</span></code> exceeds the desired error level <code class="xref c c-data docutils literal notranslate"><span class="pre">D</span></code> by more
+than 10% for any component then the method reduces the step-size by an
+appropriate factor,</p>
+<div class="math">
+<p><img src="_images/math/0666189e5e7244bad88149f8a642fb044603a608.png" alt="h_{new} = h_{old} * S * (E/D)^{-1/q}"/></p>
+</div><p>where <img class="math" src="_images/math/b37ddf7d09edbcd8e9da5bb7965bdcc6ab32b507.png" alt="q"/> is the consistency order of the method (e.g. <img class="math" src="_images/math/4b0aef1411b7a94623f8fdf682f170e03e7469f4.png" alt="q=4"/> for
+4(5) embedded RK), and <img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/> is a safety factor of 0.9. The ratio
+<img class="math" src="_images/math/65fce5cfaae7680fedc1fbcf4cb12ef4692a5572.png" alt="E/D"/> is taken to be the maximum of the ratios
+<img class="math" src="_images/math/dda328e7e68823fe7b93130543f6a285117dc9f6.png" alt="E_i/D_i"/>.</p>
+<p>If the observed error <img class="math" src="_images/math/ea7a3b09fb6f7ffe70ef3cf67781ce887438a668.png" alt="E"/> is less than 50% of the desired error
+level <code class="xref c c-data docutils literal notranslate"><span class="pre">D</span></code> for the maximum ratio <img class="math" src="_images/math/dda328e7e68823fe7b93130543f6a285117dc9f6.png" alt="E_i/D_i"/> then the algorithm
+takes the opportunity to increase the step-size to bring the error in
+line with the desired level,</p>
+<div class="math">
+<p><img src="_images/math/7f17d35fd93e0ae0c493b6fd2f41cbcfec40ff01.png" alt="h_{new} = h_{old} * S * (E/D)^{-1/(q+1)}"/></p>
+</div><p>This encompasses all the standard error scaling methods. To avoid
+uncontrolled changes in the stepsize, the overall scaling factor is
+limited to the range <img class="math" src="_images/math/6b2de377fe546abaf34863952d4f6591fb95872e.png" alt="1/5"/> to 5.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_y_new">
+<a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_y_new</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_abs</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_rel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_y_new" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function creates a new control object which will keep the local
+error on each step within an absolute error of <a class="reference internal" href="#c.gsl_odeiv2_control_y_new" title="eps_abs"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_abs</span></code></a> and
+relative error of <a class="reference internal" href="#c.gsl_odeiv2_control_y_new" title="eps_rel"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_rel</span></code></a> with respect to the solution <img class="math" src="_images/math/123c33cd96aa498d5d149c47098037735b165a3e.png" alt="y_i(t)"/>.
+This is equivalent to the standard control object with <code class="xref c c-data docutils literal notranslate"><span class="pre">a_y</span></code> = 1 and
+<code class="xref c c-data docutils literal notranslate"><span class="pre">a_dydt</span></code> = 0.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_yp_new">
+<a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_yp_new</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_abs</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_rel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_yp_new" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function creates a new control object which will keep the local
+error on each step within an absolute error of <a class="reference internal" href="#c.gsl_odeiv2_control_yp_new" title="eps_abs"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_abs</span></code></a> and
+relative error of <a class="reference internal" href="#c.gsl_odeiv2_control_yp_new" title="eps_rel"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_rel</span></code></a> with respect to the derivatives of the
+solution <img class="math" src="_images/math/7a6ef0eb3a1fce541bff91f9c66320038f7e483a.png" alt="y'_i(t)"/>.  This is equivalent to the standard control
+object with <code class="xref c c-data docutils literal notranslate"><span class="pre">a_y</span></code> = 0 and <code class="xref c c-data docutils literal notranslate"><span class="pre">a_dydt</span></code> = 1.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_scaled_new">
+<a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_scaled_new</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_abs</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_rel</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_y</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_dydt</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">scale_abs</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_scaled_new" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function creates a new control object which uses the same algorithm
+as <a class="reference internal" href="#c.gsl_odeiv2_control_standard_new" title="gsl_odeiv2_control_standard_new"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_control_standard_new()</span></code></a> but with an absolute error
+which is scaled for each component by the array <a class="reference internal" href="#c.gsl_odeiv2_control_scaled_new" title="scale_abs"><code class="xref c c-data docutils literal notranslate"><span class="pre">scale_abs</span></code></a>.
+The formula for <img class="math" src="_images/math/6ccfce4f056e2516a630e94f17e49feeeeb1e2eb.png" alt="D_i"/> for this control object is,</p>
+<div class="math">
+<p><img src="_images/math/aded9137e124b41a93c742e969aaa06bbf3fbf65.png" alt="D_i = \epsilon_{abs} s_i + \epsilon_{rel} * (a_{y} |y_i| + a_{dydt} h |y\prime_i|)"/></p>
+</div><p>where <img class="math" src="_images/math/2121683fda9968d845d5cbfed7475427b8b473f6.png" alt="s_i"/> is the <img class="math" src="_images/math/8ba3c887c6b69d4f3fc99ada2119799a385a325f.png" alt="i"/>-th component of the array <a class="reference internal" href="#c.gsl_odeiv2_control_scaled_new" title="scale_abs"><code class="xref c c-data docutils literal notranslate"><span class="pre">scale_abs</span></code></a>.
+The same error control heuristic is used by the Matlab ODE suite.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_alloc">
+<a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_control_type" title="gsl_odeiv2_control_type"><span class="n"><span class="pre">gsl_odeiv2_control_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly allocated instance of a
+control function of type <a class="reference internal" href="#c.gsl_odeiv2_control_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a>.  This function is only needed for
+defining new types of control functions.  For most purposes the standard
+control functions described above should be sufficient.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_abs</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">eps_rel</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_y</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_dydt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the control function <a class="reference internal" href="#c.gsl_odeiv2_control_init" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a> with the
+parameters <a class="reference internal" href="#c.gsl_odeiv2_control_init" title="eps_abs"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_abs</span></code></a> (absolute error), <a class="reference internal" href="#c.gsl_odeiv2_control_init" title="eps_rel"><code class="xref c c-data docutils literal notranslate"><span class="pre">eps_rel</span></code></a> (relative
+error), <a class="reference internal" href="#c.gsl_odeiv2_control_init" title="a_y"><code class="xref c c-data docutils literal notranslate"><span class="pre">a_y</span></code></a> (scaling factor for y) and <a class="reference internal" href="#c.gsl_odeiv2_control_init" title="a_dydt"><code class="xref c c-data docutils literal notranslate"><span class="pre">a_dydt</span></code></a> (scaling
+factor for derivatives).</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the control function
+<a class="reference internal" href="#c.gsl_odeiv2_control_free" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_hadjust">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_hadjust</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">yerr</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dydt</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_hadjust" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function adjusts the step-size <a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> using the control function
+<a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>, and the current values of <a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>, <a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="yerr"><code class="xref c c-data docutils literal notranslate"><span class="pre">yerr</span></code></a> and <a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="dydt"><code class="xref c c-data docutils literal notranslate"><span class="pre">dydt</span></code></a>.
+The stepping function <code class="xref c c-data docutils literal notranslate"><span class="pre">step</span></code> is also needed to determine the order
+of the method.  If the error in the y-values <a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="yerr"><code class="xref c c-data docutils literal notranslate"><span class="pre">yerr</span></code></a> is found to be
+too large then the step-size <a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> is reduced and the function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ODEIV_HADJ_DEC</span></code>.  If the error is sufficiently small then
+<a class="reference internal" href="#c.gsl_odeiv2_control_hadjust" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> may be increased and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ODEIV_HADJ_INC</span></code> is returned.  The
+function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ODEIV_HADJ_NIL</span></code> if the step-size is
+unchanged.  The goal of the function is to estimate the largest
+step-size which satisfies the user-specified accuracy requirements for
+the current point.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the name of the control function.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;control method is &#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gsl_odeiv2_control_name</span> <span class="p">(</span><span class="n">c</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>would print something like <code class="code docutils literal notranslate"><span class="pre">control</span> <span class="pre">method</span> <span class="pre">is</span> <span class="pre">'standard'</span></code></p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_errlevel">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_errlevel</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">dydt</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">ind</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">errlev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_errlevel" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function calculates the desired error level of the <a class="reference internal" href="#c.gsl_odeiv2_control_errlevel" title="ind"><code class="xref c c-data docutils literal notranslate"><span class="pre">ind</span></code></a>-th component
+to <a class="reference internal" href="#c.gsl_odeiv2_control_errlevel" title="errlev"><code class="xref c c-data docutils literal notranslate"><span class="pre">errlev</span></code></a>. It requires the value (<a class="reference internal" href="#c.gsl_odeiv2_control_errlevel" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>) and value of the derivative
+(<a class="reference internal" href="#c.gsl_odeiv2_control_errlevel" title="dydt"><code class="xref c c-data docutils literal notranslate"><span class="pre">dydt</span></code></a>) of the component, and the current step size <a class="reference internal" href="#c.gsl_odeiv2_control_errlevel" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_control_set_driver">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_control_set_driver</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_control_set_driver" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets a pointer of the driver object <a class="reference internal" href="#c.gsl_odeiv2_control_set_driver" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a> for control
+object <a class="reference internal" href="#c.gsl_odeiv2_control_set_driver" title="c"><code class="xref c c-data docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="evolution">
+<h2>Evolution<a class="headerlink" href="#evolution" title="Link to this heading">¶</a></h2>
+<p>The evolution function combines the results of a stepping function and
+control function to reliably advance the solution forward one step
+using an acceptable step-size.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></span><a class="headerlink" href="#c.gsl_odeiv2_evolve" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains parameters for controlling the evolution function</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve_alloc">
+<a class="reference internal" href="#c.gsl_odeiv2_evolve" title="gsl_odeiv2_evolve"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_evolve_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly allocated instance of an
+evolution function for a system of <a class="reference internal" href="#c.gsl_odeiv2_evolve_alloc" title="dim"><code class="xref c c-data docutils literal notranslate"><span class="pre">dim</span></code></a> dimensions.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve_apply">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve_apply</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_evolve" title="gsl_odeiv2_evolve"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">e</span></span>, <a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">con</span></span>, <a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">step</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">t1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_evolve_apply" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function advances the system (<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="e"><code class="xref c c-data docutils literal notranslate"><span class="pre">e</span></code></a>, <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a>) from time
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and position <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> using the stepping function <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="step"><code class="xref c c-data docutils literal notranslate"><span class="pre">step</span></code></a>.
+The new time and position are stored in <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> on output.</p>
+<p>The initial step-size is taken as <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. The control function
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="con"><code class="xref c c-data docutils literal notranslate"><span class="pre">con</span></code></a> is applied to check whether the local error estimated by the
+stepping function <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="step"><code class="xref c c-data docutils literal notranslate"><span class="pre">step</span></code></a> using step-size <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> exceeds the
+required error tolerance. If the error is too high, the step is
+retried by calling <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="step"><code class="xref c c-data docutils literal notranslate"><span class="pre">step</span></code></a> with a decreased step-size. This process
+is continued until an acceptable step-size is found. An estimate of
+the local error for the step can be obtained from the components of
+the array <code class="code docutils literal notranslate"><span class="pre">e-&gt;yerr[]</span></code>.</p>
+<p>If the user-supplied functions defined in the system <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a> returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EBADFUNC</span></code>, the function returns immediately with the same
+return code. In this case the user must call
+<a class="reference internal" href="#c.gsl_odeiv2_step_reset" title="gsl_odeiv2_step_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_step_reset()</span></code></a> and
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_reset" title="gsl_odeiv2_evolve_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_evolve_reset()</span></code></a> before calling this function again.</p>
+<p>Otherwise, if the user-supplied functions defined in the system
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a> or the stepping function <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="step"><code class="xref c c-data docutils literal notranslate"><span class="pre">step</span></code></a> return a status other
+than <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>, the step is retried with a decreased
+step-size. If the step-size decreases below machine precision, a
+status of <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code> is returned if the user functions
+returned <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code>. Otherwise the value returned by user
+function is returned. If no acceptable step can be made, <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> will be restored to their pre-step values and <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> contains
+the final attempted step-size.</p>
+<p>If the step is successful the function returns a suggested step-size
+for the next step in <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. The maximum time <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="t1"><code class="xref c c-data docutils literal notranslate"><span class="pre">t1</span></code></a> is guaranteed
+not to be exceeded by the time-step. On the final time-step the value
+of <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> will be set to <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="t1"><code class="xref c c-data docutils literal notranslate"><span class="pre">t1</span></code></a> exactly.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve_apply_fixed_step">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve_apply_fixed_step</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_evolve" title="gsl_odeiv2_evolve"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">e</span></span>, <a class="reference internal" href="#c.gsl_odeiv2_control" title="gsl_odeiv2_control"><span class="n"><span class="pre">gsl_odeiv2_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">con</span></span>, <a class="reference internal" href="#c.gsl_odeiv2_step" title="gsl_odeiv2_step"><span class="n"><span class="pre">gsl_odeiv2_step</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">step</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function advances the ODE-system (<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="e"><code class="xref c c-data docutils literal notranslate"><span class="pre">e</span></code></a>, <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a>, <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="con"><code class="xref c c-data docutils literal notranslate"><span class="pre">con</span></code></a>)
+from time <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and position <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> using the stepping function
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="step"><code class="xref c c-data docutils literal notranslate"><span class="pre">step</span></code></a> by a specified step size <a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. If the local error
+estimated by the stepping function exceeds the desired error level,
+the step is not taken and the function returns
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_FAILURE</span></code>. Otherwise the value returned by user function is
+returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve_reset">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve_reset</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_evolve" title="gsl_odeiv2_evolve"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_evolve_reset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function resets the evolution function <a class="reference internal" href="#c.gsl_odeiv2_evolve_reset" title="e"><code class="xref c c-data docutils literal notranslate"><span class="pre">e</span></code></a>.  It should be used
+whenever the next use of <a class="reference internal" href="#c.gsl_odeiv2_evolve_reset" title="e"><code class="xref c c-data docutils literal notranslate"><span class="pre">e</span></code></a> will not be a continuation of a
+previous step.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_evolve" title="gsl_odeiv2_evolve"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_evolve_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the evolution function
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_free" title="e"><code class="xref c c-data docutils literal notranslate"><span class="pre">e</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_evolve_set_driver">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_evolve_set_driver</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_odeiv2_evolve" title="gsl_odeiv2_evolve"><span class="n"><span class="pre">gsl_odeiv2_evolve</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">e</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_evolve_set_driver" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets a pointer of the driver object <a class="reference internal" href="#c.gsl_odeiv2_evolve_set_driver" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a> for evolve
+object <a class="reference internal" href="#c.gsl_odeiv2_evolve_set_driver" title="e"><code class="xref c c-data docutils literal notranslate"><span class="pre">e</span></code></a>.</p>
+</dd></dl>
+
+<p id="index-13">If a system has discontinuous changes in the derivatives at known
+points, it is advisable to evolve the system between each discontinuity
+in sequence.  For example, if a step-change in an external driving
+force occurs at times <img class="math" src="_images/math/c2cf47cf54cf5e7684cddaa4d6ec6d8ab4356eec.png" alt="t_a, t_b"/> and <img class="math" src="_images/math/a2cfcbc53b4076c2ef12def441cadf754a59530c.png" alt="t_c"/> then evolution
+should be carried out over the ranges <img class="math" src="_images/math/25ed853abc90e2bc2a311614082050fbc874bc14.png" alt="(t_0,t_a)"/>,
+<img class="math" src="_images/math/42927784b36ffc9410bb3918480c238385f3bd4c.png" alt="(t_a,t_b)"/>, <img class="math" src="_images/math/c880503747bd29c0c02a716e28b580e6cc83062f.png" alt="(t_b,t_c)"/>, and <img class="math" src="_images/math/d65b5892a59af04b28f6bb9365258e6258857867.png" alt="(t_c,t_1)"/> separately
+and not directly over the range <img class="math" src="_images/math/21ec00c5cb44b895a9820bccaa6ec78980070c10.png" alt="(t_0,t_1)"/>.</p>
+</section>
+<section id="driver">
+<h2>Driver<a class="headerlink" href="#driver" title="Link to this heading">¶</a></h2>
+<p>The driver object is a high level wrapper that combines the evolution,
+control and stepper objects for easy use.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_alloc_y_new">
+<span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_alloc_y_new</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hstart</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsrel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_alloc_y_new" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_alloc_yp_new">
+<span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_alloc_yp_new</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hstart</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsrel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_alloc_yp_new" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_alloc_standard_new">
+<span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_alloc_standard_new</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hstart</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsrel</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_y</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_dydt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_alloc_standard_new" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_alloc_scaled_new">
+<span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_alloc_scaled_new</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><span class="n"><span class="pre">gsl_odeiv2_system</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sys</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_odeiv2_step_type" title="gsl_odeiv2_step_type"><span class="n"><span class="pre">gsl_odeiv2_step_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hstart</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsabs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">epsrel</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_y</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">a_dydt</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">scale_abs</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_alloc_scaled_new" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return a pointer to a newly allocated instance of a
+driver object. The functions automatically allocate and initialise the
+evolve, control and stepper objects for ODE system <a class="reference internal" href="#c.gsl_odeiv2_driver_alloc_scaled_new" title="sys"><code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code></a> using
+stepper type <a class="reference internal" href="#c.gsl_odeiv2_driver_alloc_scaled_new" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a>. The initial step size is given in
+<a class="reference internal" href="#c.gsl_odeiv2_driver_alloc_scaled_new" title="hstart"><code class="xref c c-data docutils literal notranslate"><span class="pre">hstart</span></code></a>. The rest of the arguments follow the syntax and
+semantics of the control functions with same name
+(<code class="code docutils literal notranslate"><span class="pre">gsl_odeiv2_control_*_new</span></code>).</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_set_hmin">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_set_hmin</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hmin</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_set_hmin" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The function sets a minimum for allowed step size <a class="reference internal" href="#c.gsl_odeiv2_driver_set_hmin" title="hmin"><code class="xref c c-data docutils literal notranslate"><span class="pre">hmin</span></code></a> for
+driver <a class="reference internal" href="#c.gsl_odeiv2_driver_set_hmin" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a>. Default value is 0.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_set_hmax">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_set_hmax</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hmax</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_set_hmax" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The function sets a maximum for allowed step size <a class="reference internal" href="#c.gsl_odeiv2_driver_set_hmax" title="hmax"><code class="xref c c-data docutils literal notranslate"><span class="pre">hmax</span></code></a> for
+driver <a class="reference internal" href="#c.gsl_odeiv2_driver_set_hmax" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a>. Default value is <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_DBL_MAX</span></code>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_set_nmax">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_set_nmax</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nmax</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_set_nmax" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The function sets a maximum for allowed number of steps <a class="reference internal" href="#c.gsl_odeiv2_driver_set_nmax" title="nmax"><code class="xref c c-data docutils literal notranslate"><span class="pre">nmax</span></code></a> for
+driver <a class="reference internal" href="#c.gsl_odeiv2_driver_set_nmax" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a>. Default value of 0 sets no limit for steps.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_apply">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_apply</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">t1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_apply" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evolves the driver system <a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a> from <a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> to
+<a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="t1"><code class="xref c c-data docutils literal notranslate"><span class="pre">t1</span></code></a>. Initially vector <a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> should contain the values of
+dependent variables at point <a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a>. If the function is unable to
+complete the calculation, an error code from
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply" title="gsl_odeiv2_evolve_apply"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_evolve_apply()</span></code></a> is returned, and <a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and <a class="reference internal" href="#c.gsl_odeiv2_driver_apply" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a>
+contain the values from last successful step.</p>
+<p>If maximum number of steps is reached, a value of <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EMAXITER</span></code>
+is returned. If the step size drops below minimum value, the function
+returns with <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOPROG</span></code>. If the user-supplied functions
+defined in the system <code class="xref c c-data docutils literal notranslate"><span class="pre">sys</span></code> returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EBADFUNC</span></code>, the
+function returns immediately with the same return code. In this case
+the user must call <a class="reference internal" href="#c.gsl_odeiv2_driver_reset" title="gsl_odeiv2_driver_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_driver_reset()</span></code></a> before calling this
+function again.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_apply_fixed_step">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_apply_fixed_step</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function evolves the driver system <a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a> from <a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> with
+<a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> steps of size <a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. If the function is unable to complete
+the calculation, an error code from
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="gsl_odeiv2_evolve_apply_fixed_step"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_evolve_apply_fixed_step()</span></code></a> is returned, and <a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> and
+<a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="y"><code class="xref c c-data docutils literal notranslate"><span class="pre">y</span></code></a> contain the values from last successful step.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_reset">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_reset</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_reset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function resets the evolution and stepper objects.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_reset_hstart">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_reset_hstart</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">hstart</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_reset_hstart" title="Link to this definition">¶</a><br /></dt>
+<dd><p>The routine resets the evolution and stepper objects and sets new
+initial step size to <a class="reference internal" href="#c.gsl_odeiv2_driver_reset_hstart" title="hstart"><code class="xref c c-data docutils literal notranslate"><span class="pre">hstart</span></code></a>. This function can be used e.g. to
+change the direction of integration.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_odeiv2_driver_free">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_odeiv2_driver_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_odeiv2_driver</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_odeiv2_driver_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the driver object, and the related evolution,
+stepper and control objects.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p id="index-14">The following program solves the second-order nonlinear Van der Pol
+oscillator equation,</p>
+<div class="math">
+<p><img src="_images/math/8d633b38fe2a92525dd83c82bbb80876fbfb54c1.png" alt="u''(t) + \mu u'(t) (u(t)^2 - 1) + u(t) = 0"/></p>
+</div><p>This can be converted into a first order system suitable for use with
+the routines described in this chapter by introducing a separate
+variable for the velocity, <img class="math" src="_images/math/3751c3ca4718ca87371a5ca7a1de5ef11e67e427.png" alt="v = u'(t)"/>,</p>
+<div class="math">
+<p><img src="_images/math/22451405011742e1c1b9760994a394ee852f3e8b.png" alt="u' &amp;= v \\
+v' &amp;= -u + \mu v (1-u^2)"/></p>
+</div><p>The program begins by defining functions for these derivatives and
+their Jacobian. The main function uses driver level functions to solve
+the problem. The program evolves the solution from <img class="math" src="_images/math/f0bd86faf25b9e0c619dc230c8dc7f0c3b87aea4.png" alt="(u, v) = (1, 0)"/>
+at <img class="math" src="_images/math/993e0e6a84ff3ca48c5c314f050a7d6ec924d7e8.png" alt="t = 0"/> to <img class="math" src="_images/math/eb622be791467bf09593852b303c82a0f728d362.png" alt="t = 100"/>.  The step-size <img class="math" src="_images/math/aca32b204f928ef3ee8c82cd7a605c4da0c65f18.png" alt="h"/> is
+automatically adjusted by the controller to maintain an absolute
+accuracy of <img class="math" src="_images/math/89e101ca93aff6de51f3f50284bca187e04d974e.png" alt="10^{-6}"/>
+in the function values <img class="math" src="_images/math/ccf5814ba4c7ef104a7e0952495b4bf17b867f66.png" alt="(u, v)"/>.
+The loop in the example prints the solution at the points
+<img class="math" src="_images/math/ccdde10668c4a23a2eb434a45204ff08803d4d80.png" alt="t_i = 1, 2, \dots, 100"/>.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_errno.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_matrix.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_odeiv2.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">func</span> <span class="p">(</span><span class="n">double</span> <span class="n">t</span><span class="p">,</span> <span class="n">const</span> <span class="n">double</span> <span class="n">y</span><span class="p">[],</span> <span class="n">double</span> <span class="n">f</span><span class="p">[],</span>
+      <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">t</span><span class="p">);</span> <span class="o">/*</span> <span class="n">avoid</span> <span class="n">unused</span> <span class="n">parameter</span> <span class="n">warning</span> <span class="o">*/</span>
+  <span class="n">double</span> <span class="n">mu</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="p">)</span><span class="n">params</span><span class="p">;</span>
+  <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+  <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">GSL_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">jac</span> <span class="p">(</span><span class="n">double</span> <span class="n">t</span><span class="p">,</span> <span class="n">const</span> <span class="n">double</span> <span class="n">y</span><span class="p">[],</span> <span class="n">double</span> <span class="o">*</span><span class="n">dfdy</span><span class="p">,</span>
+     <span class="n">double</span> <span class="n">dfdt</span><span class="p">[],</span> <span class="n">void</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">t</span><span class="p">);</span> <span class="o">/*</span> <span class="n">avoid</span> <span class="n">unused</span> <span class="n">parameter</span> <span class="n">warning</span> <span class="o">*/</span>
+  <span class="n">double</span> <span class="n">mu</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="p">)</span><span class="n">params</span><span class="p">;</span>
+  <span class="n">gsl_matrix_view</span> <span class="n">dfdy_mat</span>
+    <span class="o">=</span> <span class="n">gsl_matrix_view_array</span> <span class="p">(</span><span class="n">dfdy</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_matrix</span> <span class="o">*</span> <span class="n">m</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dfdy_mat</span><span class="o">.</span><span class="n">matrix</span><span class="p">;</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">);</span>
+  <span class="n">gsl_matrix_set</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">mu</span><span class="o">*</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">));</span>
+  <span class="n">dfdt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="n">dfdt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">GSL_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="n">gsl_odeiv2_system</span> <span class="n">sys</span> <span class="o">=</span> <span class="p">{</span><span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mu</span><span class="p">};</span>
+
+  <span class="n">gsl_odeiv2_driver</span> <span class="o">*</span> <span class="n">d</span> <span class="o">=</span>
+    <span class="n">gsl_odeiv2_driver_alloc_y_new</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">sys</span><span class="p">,</span> <span class="n">gsl_odeiv2_step_rk8pd</span><span class="p">,</span>
+                                  <span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">};</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">ti</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">t1</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">;</span>
+      <span class="nb">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_odeiv2_driver_apply</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t</span><span class="p">,</span> <span class="n">ti</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="n">GSL_SUCCESS</span><span class="p">)</span>
+        <span class="p">{</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;error, return value=</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.5e</span><span class="s2"> </span><span class="si">%.5e</span><span class="s2"> </span><span class="si">%.5e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_odeiv2_driver_free</span> <span class="p">(</span><span class="n">d</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The user can work with the lower level functions directly, as in
+the following example. In this case an intermediate result is printed
+after each successful step instead of equidistant time points.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">gsl_odeiv2_step_type</span> <span class="o">*</span> <span class="n">T</span>
+    <span class="o">=</span> <span class="n">gsl_odeiv2_step_rk8pd</span><span class="p">;</span>
+
+  <span class="n">gsl_odeiv2_step</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="o">=</span> <span class="n">gsl_odeiv2_step_alloc</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="n">gsl_odeiv2_control</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="o">=</span> <span class="n">gsl_odeiv2_control_y_new</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+  <span class="n">gsl_odeiv2_evolve</span> <span class="o">*</span> <span class="n">e</span>
+    <span class="o">=</span> <span class="n">gsl_odeiv2_evolve_alloc</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+  <span class="n">double</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="n">gsl_odeiv2_system</span> <span class="n">sys</span> <span class="o">=</span> <span class="p">{</span><span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mu</span><span class="p">};</span>
+
+  <span class="n">double</span> <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">h</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">};</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">t1</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="nb">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_odeiv2_evolve_apply</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span>
+                                           <span class="o">&amp;</span><span class="n">sys</span><span class="p">,</span>
+                                           <span class="o">&amp;</span><span class="n">t</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span>
+                                           <span class="o">&amp;</span><span class="n">h</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="n">GSL_SUCCESS</span><span class="p">)</span>
+          <span class="k">break</span><span class="p">;</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.5e</span><span class="s2"> </span><span class="si">%.5e</span><span class="s2"> </span><span class="si">%.5e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_odeiv2_evolve_free</span> <span class="p">(</span><span class="n">e</span><span class="p">);</span>
+  <span class="n">gsl_odeiv2_control_free</span> <span class="p">(</span><span class="n">c</span><span class="p">);</span>
+  <span class="n">gsl_odeiv2_step_free</span> <span class="p">(</span><span class="n">s</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For functions with multiple parameters, the appropriate information
+can be passed in through the <code class="xref c c-data docutils literal notranslate"><span class="pre">params</span></code> argument in
+<a class="reference internal" href="#c.gsl_odeiv2_system" title="gsl_odeiv2_system"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_odeiv2_system</span></code></a> definition (<code class="xref c c-data docutils literal notranslate"><span class="pre">mu</span></code> in this example) by using
+a pointer to a struct.</p>
+<figure class="align-default" id="id1">
+<img alt="_images/ode-vdp.png" src="_images/ode-vdp.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Numerical solution of the Van der Pol oscillator equation
+using Prince-Dormand 8th order Runge-Kutta.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>It is also possible to work with a non-adaptive integrator, using only
+the stepping function itself,
+<a class="reference internal" href="#c.gsl_odeiv2_driver_apply_fixed_step" title="gsl_odeiv2_driver_apply_fixed_step"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_driver_apply_fixed_step()</span></code></a> or
+<a class="reference internal" href="#c.gsl_odeiv2_evolve_apply_fixed_step" title="gsl_odeiv2_evolve_apply_fixed_step"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_odeiv2_evolve_apply_fixed_step()</span></code></a>. The following program uses
+the driver level function, with fourth-order
+Runge-Kutta stepping function with a fixed stepsize of
+0.001.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">mu</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="n">gsl_odeiv2_system</span> <span class="n">sys</span> <span class="o">=</span> <span class="p">{</span> <span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mu</span> <span class="p">};</span>
+
+  <span class="n">gsl_odeiv2_driver</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span>
+    <span class="n">gsl_odeiv2_driver_alloc_y_new</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">sys</span><span class="p">,</span> <span class="n">gsl_odeiv2_step_rk4</span><span class="p">,</span>
+                                   <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">);</span>
+
+  <span class="n">double</span> <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">};</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">s</span> <span class="o">=</span> <span class="n">gsl_odeiv2_driver_apply_fixed_step</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">GSL_SUCCESS</span><span class="p">)</span>
+        <span class="p">{</span>
+          <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;error: driver returned </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.5e</span><span class="s2"> </span><span class="si">%.5e</span><span class="s2"> </span><span class="si">%.5e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_odeiv2_driver_free</span> <span class="p">(</span><span class="n">d</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Ascher, U.M., Petzold, L.R., <em>Computer Methods for Ordinary
+Differential and Differential-Algebraic Equations</em>, SIAM,
+Philadelphia, 1998.</p></li>
+<li><p>Hairer, E., Norsett, S. P., Wanner, G., <em>Solving Ordinary Differential
+Equations I: Nonstiff Problems</em>, Springer, Berlin, 1993.</p></li>
+<li><p>Hairer, E., Wanner, G., <em>Solving Ordinary Differential
+Equations II: Stiff and Differential-Algebraic Problems</em>,
+Springer, Berlin, 1996.</p></li>
+</ul>
+<p>Many of the basic Runge-Kutta formulas can be found in the Handbook of
+Mathematical Functions,</p>
+<ul class="simple">
+<li><p>Abramowitz &amp; Stegun (eds.), <em>Handbook of Mathematical Functions</em>,
+Section 25.5.</p></li>
+</ul>
+<p>The implicit Bulirsch-Stoer algorithm <code class="code docutils literal notranslate"><span class="pre">bsimp</span></code> is described in the
+following paper,</p>
+<ul class="simple">
+<li><p>G. Bader and P. Deuflhard, “A Semi-Implicit Mid-Point Rule for Stiff
+Systems of Ordinary Differential Equations.”, Numer.: Math.: 41, 373–398,
+1983.</p></li>
+</ul>
+<p>The Adams and BDF multistep methods <code class="code docutils literal notranslate"><span class="pre">msadams</span></code> and <code class="code docutils literal notranslate"><span class="pre">msbdf</span></code>
+are based on the following articles,</p>
+<ul class="simple">
+<li><p>G. D. Byrne and A. C. Hindmarsh, “A Polyalgorithm for the
+Numerical Solution of Ordinary Differential Equations.”,
+ACM Trans. Math. Software, 1, 71–96, 1975.</p></li>
+<li><p>P. N. Brown, G. D. Byrne and A. C. Hindmarsh, “VODE: A
+Variable-coefficient ODE Solver.”, SIAM J. Sci. Stat. Comput. 10,
+1038–1051, 1989.</p></li>
+<li><p>A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban,
+D. E. Shumaker and C. S. Woodward, “SUNDIALS: Suite of
+Nonlinear and Differential/Algebraic Equation Solvers.”, ACM
+Trans. Math. Software 31, 363–396, 2005.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="siman.html" class="btn btn-neutral float-left" title="Simulated Annealing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interp.html" class="btn btn-neutral float-right" title="Interpolation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

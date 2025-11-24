@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Numerical Differentiation &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Chebyshev Approximations" href="cheb.html" />
+    <link rel="prev" title="Interpolation" href="interp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Numerical Differentiation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Numerical Differentiation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/diff.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="interp.html" class="btn btn-neutral float-left" title="Interpolation" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cheb.html" class="btn btn-neutral float-right" title="Chebyshev Approximations" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="numerical-differentiation">
+<span id="index-0"></span><h1>Numerical Differentiation<a class="headerlink" href="#numerical-differentiation" title="Link to this heading">¶</a></h1>
+<p>The functions described in this chapter compute numerical derivatives by
+finite differencing.  An adaptive algorithm is used to find the best
+choice of finite difference and to estimate the error in the derivative.
+These functions are declared in the header file <code class="file docutils literal notranslate"><span class="pre">gsl_deriv.h</span></code>.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_deriv_central">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_deriv_central</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="roots.html#c.gsl_function" title="gsl_function"><span class="n"><span class="pre">gsl_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_deriv_central" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the numerical derivative of the function <a class="reference internal" href="#c.gsl_deriv_central" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a>
+at the point <a class="reference internal" href="#c.gsl_deriv_central" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> using an adaptive central difference algorithm with
+a step-size of <a class="reference internal" href="#c.gsl_deriv_central" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>.   The derivative is returned in <a class="reference internal" href="#c.gsl_deriv_central" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a> and an
+estimate of its absolute error is returned in <a class="reference internal" href="#c.gsl_deriv_central" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.</p>
+<p>The initial value of <a class="reference internal" href="#c.gsl_deriv_central" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> is used to estimate an optimal step-size,
+based on the scaling of the truncation error and round-off error in the
+derivative calculation.  The derivative is computed using a 5-point rule
+for equally spaced abscissae at <img class="math" src="_images/math/b4d6b2da21c9f8c71a89ae9109b0a5453892d78a.png" alt="x - h"/>, <img class="math" src="_images/math/9100ef74e05749538b95cdf6befe9852db1d213c.png" alt="x - h/2"/>, <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>,
+<img class="math" src="_images/math/a3ecf767559f7837d6bf77ac93225d4e9e942c0d.png" alt="x + h/2"/>, <img class="math" src="_images/math/7c73814afafbeba508bbc85f19ff66eb0824d497.png" alt="x+h"/>, with an error estimate taken from the difference
+between the 5-point rule and the corresponding 3-point rule <img class="math" src="_images/math/1ee2a93c4ee3cccb9434e3705e3b2c13187aa69a.png" alt="x-h"/>,
+<img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>, <img class="math" src="_images/math/7c73814afafbeba508bbc85f19ff66eb0824d497.png" alt="x+h"/>.  Note that the value of the function at <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/>
+does not contribute to the derivative calculation, so only 4-points are
+actually used.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_deriv_forward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_deriv_forward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="roots.html#c.gsl_function" title="gsl_function"><span class="n"><span class="pre">gsl_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_deriv_forward" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the numerical derivative of the function <a class="reference internal" href="#c.gsl_deriv_forward" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a>
+at the point <a class="reference internal" href="#c.gsl_deriv_forward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> using an adaptive forward difference algorithm with
+a step-size of <a class="reference internal" href="#c.gsl_deriv_forward" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. The function is evaluated only at points greater
+than <a class="reference internal" href="#c.gsl_deriv_forward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, and never at <a class="reference internal" href="#c.gsl_deriv_forward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> itself.  The derivative is returned in
+<a class="reference internal" href="#c.gsl_deriv_forward" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a> and an estimate of its absolute error is returned in
+<a class="reference internal" href="#c.gsl_deriv_forward" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.  This function should be used if <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/> has a
+discontinuity at <a class="reference internal" href="#c.gsl_deriv_forward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, or is undefined for values less than <a class="reference internal" href="#c.gsl_deriv_forward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.</p>
+<p>The initial value of <a class="reference internal" href="#c.gsl_deriv_forward" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a> is used to estimate an optimal step-size,
+based on the scaling of the truncation error and round-off error in the
+derivative calculation.  The derivative at <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> is computed using an
+“open” 4-point rule for equally spaced abscissae at <img class="math" src="_images/math/0c8f31b9cb4eeba501e9d73637c5644e4904af4b.png" alt="x+h/4"/>,
+<img class="math" src="_images/math/a3ecf767559f7837d6bf77ac93225d4e9e942c0d.png" alt="x + h/2"/>, <img class="math" src="_images/math/5fe8aa80edd170e6dccdc316b0c52b6a2d0b442c.png" alt="x + 3h/4"/>, <img class="math" src="_images/math/7c73814afafbeba508bbc85f19ff66eb0824d497.png" alt="x+h"/>, with an error estimate taken
+from the difference between the 4-point rule and the corresponding
+2-point rule <img class="math" src="_images/math/db4b2cb4b6bea2c42df8a095a7c69e4cd14aca01.png" alt="x+h/2"/>, <img class="math" src="_images/math/7c73814afafbeba508bbc85f19ff66eb0824d497.png" alt="x+h"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_deriv_backward">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_deriv_backward</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="roots.html#c.gsl_function" title="gsl_function"><span class="n"><span class="pre">gsl_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">abserr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_deriv_backward" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the numerical derivative of the function <a class="reference internal" href="#c.gsl_deriv_backward" title="f"><code class="xref c c-data docutils literal notranslate"><span class="pre">f</span></code></a>
+at the point <a class="reference internal" href="#c.gsl_deriv_backward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> using an adaptive backward difference algorithm
+with a step-size of <a class="reference internal" href="#c.gsl_deriv_backward" title="h"><code class="xref c c-data docutils literal notranslate"><span class="pre">h</span></code></a>. The function is evaluated only at points
+less than <a class="reference internal" href="#c.gsl_deriv_backward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, and never at <a class="reference internal" href="#c.gsl_deriv_backward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> itself.  The derivative is
+returned in <a class="reference internal" href="#c.gsl_deriv_backward" title="result"><code class="xref c c-data docutils literal notranslate"><span class="pre">result</span></code></a> and an estimate of its absolute error is
+returned in <a class="reference internal" href="#c.gsl_deriv_backward" title="abserr"><code class="xref c c-data docutils literal notranslate"><span class="pre">abserr</span></code></a>.  This function should be used if <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/>
+has a discontinuity at <a class="reference internal" href="#c.gsl_deriv_backward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>, or is undefined for values greater than
+<a class="reference internal" href="#c.gsl_deriv_backward" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.</p>
+<p>This function is equivalent to calling <a class="reference internal" href="#c.gsl_deriv_forward" title="gsl_deriv_forward"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_deriv_forward()</span></code></a> with a
+negative step-size.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following code estimates the derivative of the function
+<img class="math" src="_images/math/07e9d6d3af9532be87e7335956765c982569deeb.png" alt="f(x) = x^{3/2}"/>
+at <img class="math" src="_images/math/f65ec338df23397a47af28dee018c35544378837.png" alt="x = 2"/> and at <img class="math" src="_images/math/ea53d3da38f677d92ff9a9de7953ab879bfdca12.png" alt="x = 0"/>.  The function <img class="math" src="_images/math/affcac78cbf3ede97b9d3996b222aff08b185b08.png" alt="f(x)"/> is
+undefined for <img class="math" src="_images/math/d3f85f15daab5226a74cd1a9a3f9419ec82ee181.png" alt="x &lt; 0"/> so the derivative at <img class="math" src="_images/math/7a7473d91c1b569502878bc1d51c2d15f91d9a8e.png" alt="x=0"/> is computed
+using <a class="reference internal" href="#c.gsl_deriv_forward" title="gsl_deriv_forward"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_deriv_forward()</span></code></a>.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_deriv.h&gt;</span>
+
+<span class="n">double</span> <span class="n">f</span> <span class="p">(</span><span class="n">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span> <span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="p">(</span><span class="n">void</span><span class="p">)(</span><span class="n">params</span><span class="p">);</span> <span class="o">/*</span> <span class="n">avoid</span> <span class="n">unused</span> <span class="n">parameter</span> <span class="n">warning</span> <span class="o">*/</span>
+  <span class="k">return</span> <span class="nb">pow</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">gsl_function</span> <span class="n">F</span><span class="p">;</span>
+  <span class="n">double</span> <span class="n">result</span><span class="p">,</span> <span class="n">abserr</span><span class="p">;</span>
+
+  <span class="n">F</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">f</span><span class="p">;</span>
+  <span class="n">F</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;f(x) = x^(3/2)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+  <span class="n">gsl_deriv_central</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">F</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">abserr</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;x = 2.0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;f&#39;(x) = </span><span class="si">%.10f</span><span class="s2"> +/- </span><span class="si">%.10f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">abserr</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;exact = </span><span class="si">%.10f</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">));</span>
+
+  <span class="n">gsl_deriv_forward</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">F</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">abserr</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;x = 0.0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;f&#39;(x) = </span><span class="si">%.10f</span><span class="s2"> +/- </span><span class="si">%.10f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">abserr</span><span class="p">);</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;exact = </span><span class="si">%.10f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output of the program,</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="o">^</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="sa">f</span><span class="s1">&#39;(x) = 2.1213203120 +/- 0.0000005006</span>
+<span class="n">exact</span> <span class="o">=</span> <span class="mf">2.1213203436</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="sa">f</span><span class="s1">&#39;(x) = 0.0000000160 +/- 0.0000000339</span>
+<span class="n">exact</span> <span class="o">=</span> <span class="mf">0.0000000000</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The algorithms used by these functions are described in the following sources:</p>
+<ul class="simple">
+<li><p>Abramowitz and Stegun, <em>Handbook of Mathematical Functions</em>,
+Section 25.3.4, and Table 25.5 (Coefficients for Differentiation).</p></li>
+<li><p>S.D. Conte and Carl de Boor, <em>Elementary Numerical Analysis: An
+Algorithmic Approach</em>, McGraw-Hill, 1972.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="interp.html" class="btn btn-neutral float-left" title="Interpolation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cheb.html" class="btn btn-neutral float-right" title="Chebyshev Approximations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

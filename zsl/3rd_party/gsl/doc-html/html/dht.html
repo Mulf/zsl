@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discrete Hankel Transforms &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="One Dimensional Root-Finding" href="roots.html" />
+    <link rel="prev" title="Wavelet Transforms" href="dwt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Discrete Hankel Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Discrete Hankel Transforms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dht.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="dwt.html" class="btn btn-neutral float-left" title="Wavelet Transforms" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="roots.html" class="btn btn-neutral float-right" title="One Dimensional Root-Finding" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="discrete-hankel-transforms">
+<span id="index-0"></span><h1>Discrete Hankel Transforms<a class="headerlink" href="#discrete-hankel-transforms" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for performing Discrete Hankel
+Transforms (DHTs). The functions are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_dht.h</span></code>.</p>
+<section id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>
+<p>The discrete Hankel transform acts on a vector of sampled data, where
+the samples are assumed to have been taken at points related to the
+zeros of a Bessel function of fixed order; compare this to the case of
+the discrete Fourier transform, where samples are taken at points
+related to the zeroes of the sine or cosine function.</p>
+<p>Starting with its definition, the Hankel transform (or Bessel transform) of
+order <img class="math" src="_images/math/25f363e3892b0d108cd45bfa18382aca47f09dc2.png" alt="\nu"/> of a function <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> with <img class="math" src="_images/math/5b03778c60b9817b061d436a43320e618e6cc04a.png" alt="\nu &gt; -1/2"/> is defined as
+(see Johnson, 1987 and Lemoine, 1994)</p>
+<div class="math">
+<p><img src="_images/math/5a6fa2fb41a8d2ed4b2f2fb2544c5bf3e63ed538.png" alt="F_\nu(u) = \int_0^\infty f(t) J_\nu(u t) t dt"/></p>
+</div><p>If the integral exists, <img class="math" src="_images/math/c71268054b4c24b4aacbd7221bc36f59cbc6357b.png" alt="F_\nu"/> is called the Hankel transformation
+of <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>. The reverse transform is given by</p>
+<div class="math">
+<p><img src="_images/math/3aa92f1d4a46b3034e8b16acc716f1f97ef8fbe5.png" alt="f(t) = \int_0^\infty F_\nu(u) J_\nu(u t) u du"/></p>
+</div><p>where <img class="math" src="_images/math/def5f41cc646cb82a262f7b5ba4f1d4a4a16d1f9.png" alt="\int_0^\infty f(t) t^{1/2} dt"/> must exist and be
+absolutely convergent, and where <img class="math" src="_images/math/dda0836cd304d95031144b10424d63e2dc941c76.png" alt="f(t)"/> satisfies Dirichlet’s
+conditions (of limited total fluctuations) in the interval
+<img class="math" src="_images/math/1571bc4591ab1dadc54897ac1b6d5a156bfbe988.png" alt="[0,\infty]"/>.</p>
+<p>Now the discrete Hankel transform works on a discrete function
+<img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/>, which is sampled on points <img class="math" src="_images/math/670566702bf550c4063427f0852546438c9fe336.png" alt="n=1...M"/> located at
+positions <img class="math" src="_images/math/e26e8b0f4c7c0aed35e398d993dcf14e0cf30f92.png" alt="t_n=(j_{\nu,n}/j_{\nu,M}) X"/> in real space and
+at <img class="math" src="_images/math/ddff5c1eada18d8661e4f8330340596972503c39.png" alt="u_n=j_{\nu,n}/X"/> in reciprocal space. Here,
+<img class="math" src="_images/math/4726ce0ba9ad98968bc0f2e9efca2b8108e45a7a.png" alt="j_{\nu,m}"/> are the m-th zeros of the Bessel function
+<img class="math" src="_images/math/721af3180b910c69b28951705a832f948f7d86b1.png" alt="J_\nu(x)"/> arranged in ascending order. Moreover, the
+discrete functions are assumed to be band limited, so
+<img class="math" src="_images/math/767252d7cbf77041466a34609c6845f6d22706f1.png" alt="f(t_n)=0"/> and <img class="math" src="_images/math/4b3cbe8e4b903159a6d61de3da89214137202806.png" alt="F(u_n)=0"/> for <img class="math" src="_images/math/3bb254eccd8947186ee514b0ade2b444ec60162d.png" alt="n&gt;M"/>. Accordingly,
+the function <img class="math" src="_images/math/297ac74049e250d35993e62353e189c7bfda5398.png" alt="f"/> is defined on the interval <img class="math" src="_images/math/0b5c231d65bdf35281a05c6e1ed4c13d87114aad.png" alt="[0,X]"/>.</p>
+<p>Following the work of Johnson, 1987 and
+Lemoine, 1994, the discrete Hankel transform is given by</p>
+<div class="math">
+<p><img src="_images/math/1f2743af651549cb769778c271ac4e67dd4f203c.png" alt="F_\nu(u_m) = {{2 X^2}\over{j_{\nu,M}^2}}
+      \sum_{k=1}^{M-1} f\left({{j_{\nu,k} X}\over{j_{\nu,M}}}\right)
+          {{J_\nu(j_{\nu,m} j_{\nu,k} / j_{\nu,M})}\over{J_{\nu+1}(j_{\nu,k})^2}}."/></p>
+</div><p>It is this discrete expression which defines the discrete Hankel
+transform calculated by GSL. In GSL, forward and backward transforms
+are defined equally and calculate <img class="math" src="_images/math/1ac9cd8691c295bf85920665f8a3bd447c261480.png" alt="F_\nu(u_m)"/>.
+Following Johnson, the backward transform reads</p>
+<div class="math">
+<p><img src="_images/math/02847c6d27c70538719dcdf2b7a9105792113e09.png" alt="f(t_k) = {{2}\over{X^2}}
+      \sum_{m=1}^{M-1} F\left({{j_{\nu,m}}\over{X}}\right)
+          {{J_\nu(j_{\nu,m} j_{\nu,k} / j_{\nu,M})}\over{J_{\nu+1}(j_{\nu,m})^2}}."/></p>
+</div><p>Obviously, using the forward transform instead of the backward transform gives an
+additional factor <img class="math" src="_images/math/1f4902b2a41c4c6ede1aa874eef8a52fdbfbbc31.png" alt="X^4/j_{\nu,M}^2=t_m^2/u_m^2"/>.</p>
+<p>The kernel in the summation above defines the matrix of the
+<img class="math" src="_images/math/25f363e3892b0d108cd45bfa18382aca47f09dc2.png" alt="\nu"/>-Hankel transform of size <img class="math" src="_images/math/896560d56a2832a2d0660ffc470aa24889456f8c.png" alt="M-1"/>. The coefficients of
+this matrix, being dependent on <img class="math" src="_images/math/25f363e3892b0d108cd45bfa18382aca47f09dc2.png" alt="\nu"/> and <img class="math" src="_images/math/e7ca688f7c1f0c4a6496a2d3b6b6bd815553b38b.png" alt="M"/>, must be
+precomputed and stored; the <a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_dht</span></code></a> object encapsulates this
+data. The allocation function <a class="reference internal" href="#c.gsl_dht_alloc" title="gsl_dht_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_dht_alloc()</span></code></a> returns a
+<a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_dht</span></code></a> object which must be properly initialized with
+<a class="reference internal" href="#c.gsl_dht_init" title="gsl_dht_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_dht_init()</span></code></a> before it can be used to perform transforms on data
+sample vectors, for fixed <img class="math" src="_images/math/25f363e3892b0d108cd45bfa18382aca47f09dc2.png" alt="\nu"/> and <img class="math" src="_images/math/e7ca688f7c1f0c4a6496a2d3b6b6bd815553b38b.png" alt="M"/>, using the
+<a class="reference internal" href="#c.gsl_dht_apply" title="gsl_dht_apply"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_dht_apply()</span></code></a> function. The implementation allows to define the
+length <img class="math" src="_images/math/a5ff3717ce7e8e5b109e09a32e89321eef3862bf.png" alt="X"/> of the fundamental interval, for convenience, while
+discrete Hankel transforms are often defined on the unit interval
+instead of <img class="math" src="_images/math/0b5c231d65bdf35281a05c6e1ed4c13d87114aad.png" alt="[0,X]"/>.</p>
+<p>Notice that by assumption <img class="math" src="_images/math/dda0836cd304d95031144b10424d63e2dc941c76.png" alt="f(t)"/> vanishes at the endpoints
+of the interval, consistent with the inversion formula
+and the sampling formula given above. Therefore, this transform
+corresponds to an orthogonal expansion in eigenfunctions
+of the Dirichlet problem for the Bessel differential equation.</p>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_dht">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht</span></span></span><a class="headerlink" href="#c.gsl_dht" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Workspace for computing discrete Hankel transforms</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_alloc">
+<a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a Discrete Hankel transform object of size
+<a class="reference internal" href="#c.gsl_dht_alloc" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">nu</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xmax</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function initializes the transform <a class="reference internal" href="#c.gsl_dht_init" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> for the given values of
+<a class="reference internal" href="#c.gsl_dht_init" title="nu"><code class="xref c c-data docutils literal notranslate"><span class="pre">nu</span></code></a> and <a class="reference internal" href="#c.gsl_dht_init" title="xmax"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmax</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_new">
+<a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_new</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">nu</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">xmax</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_new" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a Discrete Hankel transform object of size
+<a class="reference internal" href="#c.gsl_dht_new" title="size"><code class="xref c c-data docutils literal notranslate"><span class="pre">size</span></code></a> and initializes it for the given values of <a class="reference internal" href="#c.gsl_dht_new" title="nu"><code class="xref c c-data docutils literal notranslate"><span class="pre">nu</span></code></a> and
+<a class="reference internal" href="#c.gsl_dht_new" title="xmax"><code class="xref c c-data docutils literal notranslate"><span class="pre">xmax</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the transform <a class="reference internal" href="#c.gsl_dht_free" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_apply">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_apply</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f_in</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f_out</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_apply" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function applies the transform <a class="reference internal" href="#c.gsl_dht_apply" title="t"><code class="xref c c-data docutils literal notranslate"><span class="pre">t</span></code></a> to the array <a class="reference internal" href="#c.gsl_dht_apply" title="f_in"><code class="xref c c-data docutils literal notranslate"><span class="pre">f_in</span></code></a>
+whose size is equal to the size of the transform.  The result is stored
+in the array <a class="reference internal" href="#c.gsl_dht_apply" title="f_out"><code class="xref c c-data docutils literal notranslate"><span class="pre">f_out</span></code></a> which must be of the same length.</p>
+<p>Applying this function to its output gives the original data
+multiplied by <img class="math" src="_images/math/36d27e8914e99fbcfbf1d6a9489207b4eb368754.png" alt="(X^2/j_{\nu,M})^2"/>,
+up to numerical errors.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_x_sample">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_x_sample</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_x_sample" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the value of the <a class="reference internal" href="#c.gsl_dht_x_sample" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-th sample point in the unit interval,
+<img class="math" src="_images/math/b41ba604282c1eacbe70ae45765d1aa821412030.png" alt="{({j_{\nu,n+1}} / {j_{\nu,M}}}) X"/>.
+These are the points where the function <img class="math" src="_images/math/dda0836cd304d95031144b10424d63e2dc941c76.png" alt="f(t)"/> is assumed to be sampled.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_dht_k_sample">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_dht_k_sample</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_dht" title="gsl_dht"><span class="n"><span class="pre">gsl_dht</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_dht_k_sample" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the value of the <a class="reference internal" href="#c.gsl_dht_k_sample" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-th sample point in “k-space”,
+<img class="math" src="_images/math/997db1f6775adeda548213a2f3bd6a58a01233f0.png" alt="{{j_{\nu,n+1}} / X}"/>.</p>
+</dd></dl>
+
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The algorithms used by these functions are described in the following papers,</p>
+<ul class="simple">
+<li><ol class="upperalpha simple" start="8">
+<li><p>Fisk Johnson, Comp.: Phys.: Comm.: 43, 181 (1987).</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="4">
+<li><p>Lemoine, J. Chem.: Phys.: 101, 3936 (1994).</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dwt.html" class="btn btn-neutral float-left" title="Wavelet Transforms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="roots.html" class="btn btn-neutral float-right" title="One Dimensional Root-Finding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

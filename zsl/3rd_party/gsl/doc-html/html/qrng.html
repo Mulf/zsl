@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quasi-Random Sequences &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Random Number Distributions" href="randist.html" />
+    <link rel="prev" title="Random Number Generation" href="rng.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quasi-Random Sequences</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quasi-random-number-generator-initialization">Quasi-random number generator initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sampling-from-a-quasi-random-number-generator">Sampling from a quasi-random number generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#auxiliary-quasi-random-number-generator-functions">Auxiliary quasi-random number generator functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-and-restoring-quasi-random-number-generator-state">Saving and restoring quasi-random number generator state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quasi-random-number-generator-algorithms">Quasi-random number generator algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quasi-Random Sequences</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/qrng.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="rng.html" class="btn btn-neutral float-left" title="Random Number Generation" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="randist.html" class="btn btn-neutral float-right" title="Random Number Distributions" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quasi-random-sequences">
+<span id="index-0"></span><h1>Quasi-Random Sequences<a class="headerlink" href="#quasi-random-sequences" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for generating quasi-random sequences
+in arbitrary dimensions.  A quasi-random sequence progressively covers a
+<img class="math" src="_images/math/92f093ef8e67b2293db7509b06c7817f327f445c.png" alt="d"/>-dimensional space with a set of points that are uniformly
+distributed.  Quasi-random sequences are also known as low-discrepancy
+sequences.  The quasi-random sequence generators use an interface that
+is similar to the interface for random number generators, except that
+seeding is not required—each generator produces a single sequence.</p>
+<p>The functions described in this section are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_qrng.h</span></code>.</p>
+<section id="quasi-random-number-generator-initialization">
+<h2>Quasi-random number generator initialization<a class="headerlink" href="#quasi-random-number-generator-initialization" title="Link to this heading">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_qrng">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng</span></span></span><a class="headerlink" href="#c.gsl_qrng" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This is a workspace for computing quasi-random sequences.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_alloc">
+<a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng_type" title="gsl_qrng_type"><span class="n"><span class="pre">gsl_qrng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly-created instance of a
+quasi-random sequence generator of type <a class="reference internal" href="#c.gsl_qrng_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a> and dimension <a class="reference internal" href="#c.gsl_qrng_alloc" title="d"><code class="xref c c-data docutils literal notranslate"><span class="pre">d</span></code></a>.
+If there is insufficient memory to create the generator then the
+function returns a null pointer and the error handler is invoked with an
+error code of <a class="reference internal" href="err.html#c.GSL_ENOMEM" title="GSL_ENOMEM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_ENOMEM</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees all the memory associated with the generator
+<a class="reference internal" href="#c.gsl_qrng_free" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_init">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function reinitializes the generator <a class="reference internal" href="#c.gsl_qrng_init" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a> to its starting point.
+Note that quasi-random sequences do not use a seed and always produce
+the same set of values.</p>
+</dd></dl>
+
+</section>
+<section id="sampling-from-a-quasi-random-number-generator">
+<h2>Sampling from a quasi-random number generator<a class="headerlink" href="#sampling-from-a-quasi-random-number-generator" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_get">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_get" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function stores the next point from the sequence generator <a class="reference internal" href="#c.gsl_qrng_get" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a>
+in the array <a class="reference internal" href="#c.gsl_qrng_get" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>.  The space available for <a class="reference internal" href="#c.gsl_qrng_get" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> must match the
+dimension of the generator.  The point <a class="reference internal" href="#c.gsl_qrng_get" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> will lie in the range
+<img class="math" src="_images/math/aa6af4b128d0ed8c51438b9e849475cd63437fd0.png" alt="0 &lt; x_i &lt; 1"/> for each <img class="math" src="_images/math/3efd6fd1c2b0c335484bcd4bf7d5d98b99e619f4.png" alt="x_i"/>. An inline version of this function is used when <code class="code docutils literal notranslate"><span class="pre">HAVE_INLINE</span></code> is defined.</p>
+</dd></dl>
+
+</section>
+<section id="auxiliary-quasi-random-number-generator-functions">
+<h2>Auxiliary quasi-random number generator functions<a class="headerlink" href="#auxiliary-quasi-random-number-generator-functions" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to the name of the generator.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_size">
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_size</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_size" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_qrng_state">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_state" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These functions return a pointer to the state of generator <code class="xref c c-data docutils literal notranslate"><span class="pre">r</span></code> and
+its size.  You can use this information to access the state directly.  For
+example, the following code will write the state of a generator to a
+stream:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="o">*</span> <span class="n">state</span> <span class="o">=</span> <span class="n">gsl_qrng_state</span> <span class="p">(</span><span class="n">q</span><span class="p">);</span>
+<span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">gsl_qrng_size</span> <span class="p">(</span><span class="n">q</span><span class="p">);</span>
+<span class="n">fwrite</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="saving-and-restoring-quasi-random-number-generator-state">
+<h2>Saving and restoring quasi-random number generator state<a class="headerlink" href="#saving-and-restoring-quasi-random-number-generator-state" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_memcpy">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_memcpy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_memcpy" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function copies the quasi-random sequence generator <a class="reference internal" href="#c.gsl_qrng_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a> into the
+pre-existing generator <a class="reference internal" href="#c.gsl_qrng_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a>, making <a class="reference internal" href="#c.gsl_qrng_memcpy" title="dest"><code class="xref c c-data docutils literal notranslate"><span class="pre">dest</span></code></a> into an exact copy
+of <a class="reference internal" href="#c.gsl_qrng_memcpy" title="src"><code class="xref c c-data docutils literal notranslate"><span class="pre">src</span></code></a>.  The two generators must be of the same type.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_qrng_clone">
+<a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_qrng" title="gsl_qrng"><span class="n"><span class="pre">gsl_qrng</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">q</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_qrng_clone" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a pointer to a newly created generator which is an
+exact copy of the generator <a class="reference internal" href="#c.gsl_qrng_clone" title="q"><code class="xref c c-data docutils literal notranslate"><span class="pre">q</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="quasi-random-number-generator-algorithms">
+<h2>Quasi-random number generator algorithms<a class="headerlink" href="#quasi-random-number-generator-algorithms" title="Link to this heading">¶</a></h2>
+<p>The following quasi-random sequence algorithms are available,</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_qrng_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_type</span></span></span><a class="headerlink" href="#c.gsl_qrng_type" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_qrng_type.gsl_qrng_niederreiter_2">
+<a class="reference internal" href="#c.gsl_qrng_type" title="gsl_qrng_type"><span class="n"><span class="pre">gsl_qrng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_niederreiter_2</span></span></span><a class="headerlink" href="#c.gsl_qrng_type.gsl_qrng_niederreiter_2" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This generator uses the algorithm described in Bratley, Fox,
+Niederreiter, ACM Trans. Model. Comp. Sim. 2, 195 (1992). It is
+valid up to 12 dimensions.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_qrng_type.gsl_qrng_sobol">
+<a class="reference internal" href="#c.gsl_qrng_type" title="gsl_qrng_type"><span class="n"><span class="pre">gsl_qrng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_sobol</span></span></span><a class="headerlink" href="#c.gsl_qrng_type.gsl_qrng_sobol" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This generator uses the Sobol sequence described in Antonov, Saleev,
+USSR Comput. Maths. Math. Phys. 19, 252 (1980). It is valid up to
+40 dimensions.</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gsl_qrng_type.gsl_qrng_halton">
+<a class="reference internal" href="#c.gsl_qrng_type" title="gsl_qrng_type"><span class="n"><span class="pre">gsl_qrng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_halton</span></span></span><a class="headerlink" href="#c.gsl_qrng_type.gsl_qrng_halton" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.gsl_qrng_type.gsl_qrng_reversehalton">
+<a class="reference internal" href="#c.gsl_qrng_type" title="gsl_qrng_type"><span class="n"><span class="pre">gsl_qrng_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_qrng_reversehalton</span></span></span><a class="headerlink" href="#c.gsl_qrng_type.gsl_qrng_reversehalton" title="Link to this definition">¶</a><br /></dt>
+<dd><p>These generators use the Halton and reverse Halton sequences described
+in J.H. Halton, Numerische Mathematik, 2, 84-90 (1960) and
+B. Vandewoestyne and R. Cools Computational and Applied
+Mathematics, 189, 1&amp;2, 341-361 (2006).  They are valid up to 1229
+dimensions.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following program prints the first 1024 points of the 2-dimensional
+Sobol sequence.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_qrng.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">gsl_qrng</span> <span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">gsl_qrng_alloc</span> <span class="p">(</span><span class="n">gsl_qrng_sobol</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+      <span class="n">gsl_qrng_get</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+      <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.5f</span><span class="s2"> </span><span class="si">%.5f</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+  <span class="n">gsl_qrng_free</span> <span class="p">(</span><span class="n">q</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the output from the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out
+0.50000 0.50000
+0.75000 0.25000
+0.25000 0.75000
+0.37500 0.37500
+0.87500 0.87500
+0.62500 0.12500
+0.12500 0.62500
+....
+</pre></div>
+</div>
+<p>It can be seen that successive points progressively fill-in the spaces
+between previous points.</p>
+<p><a class="reference internal" href="#fig-qrng"><span class="std std-numref">Fig. 4</span></a> shows the distribution in the x-y plane of the first
+1024 points from the Sobol sequence,</p>
+<figure class="align-default" id="id1">
+<span id="fig-qrng"></span><a class="reference internal image-reference" href="_images/qrng.png"><img alt="_images/qrng.png" src="_images/qrng.png" style="width: 384.0px; height: 288.0px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Distribution of the first 1024 points
+from the quasi-random Sobol sequence</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<p>The implementations of the quasi-random sequence routines are based on
+the algorithms described in the following paper,</p>
+<ul class="simple">
+<li><p>P. Bratley and B.L. Fox and H. Niederreiter, “Algorithm 738: Programs
+to Generate Niederreiter’s Low-discrepancy Sequences”, ACM
+Transactions on Mathematical Software, Vol.: 20, No.: 4, December, 1994,
+p.: 494–495.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rng.html" class="btn btn-neutral float-left" title="Random Number Generation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="randist.html" class="btn btn-neutral float-right" title="Random Number Distributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

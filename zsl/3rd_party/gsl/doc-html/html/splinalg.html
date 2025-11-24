@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sparse Linear Algebra &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Physical Constants" href="const.html" />
+    <link rel="prev" title="Sparse BLAS Support" href="spblas.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eigen.html">Eigensystems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sparse Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sparse-iterative-solvers">Sparse Iterative Solvers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#types-of-sparse-iterative-solvers">Types of Sparse Iterative Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iterating-the-sparse-linear-system">Iterating the Sparse Linear System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sparse Linear Algebra</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/splinalg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="spblas.html" class="btn btn-neutral float-left" title="Sparse BLAS Support" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="const.html" class="btn btn-neutral float-right" title="Physical Constants" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sparse-linear-algebra">
+<span id="index-0"></span><h1>Sparse Linear Algebra<a class="headerlink" href="#sparse-linear-algebra" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for solving sparse linear systems
+of equations. The library provides linear algebra routines which
+operate directly on the <a class="reference internal" href="spmatrix.html#c.gsl_spmatrix" title="gsl_spmatrix"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_spmatrix</span></code></a> and <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><code class="xref c c-type docutils literal notranslate"><span class="pre">gsl_vector</span></code></a>
+objects.</p>
+<p>The functions described in this chapter are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_splinalg.h</span></code>.</p>
+<section id="overview">
+<span id="index-1"></span><h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>This chapter is primarily concerned with the solution of the
+linear system</p>
+<div class="math">
+<p><img src="_images/math/5ac6358f56c9d8a90bf65d0895fcc3a5d7d606b0.png" alt="A x = b"/></p>
+</div><p>where <img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/> is a general square <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-by-<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> non-singular
+sparse matrix, <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> is an unknown <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-by-<img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/> vector, and
+<img class="math" src="_images/math/b9e7a11d6c55d13df40be0f0e33a142fd09d27af.png" alt="b"/> is a given <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-by-1 right hand side vector. There exist
+many methods for solving such sparse linear systems, which broadly
+fall into either direct or iterative categories. Direct methods include
+LU and QR decompositions, while iterative methods start with an
+initial guess for the vector <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> and update the guess through
+iteration until convergence. GSL does not currently provide any
+direct sparse solvers.</p>
+</section>
+<section id="sparse-iterative-solvers">
+<span id="index-2"></span><h2>Sparse Iterative Solvers<a class="headerlink" href="#sparse-iterative-solvers" title="Link to this heading">¶</a></h2>
+<section id="id1">
+<h3>Overview<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>Many practical iterative methods of solving large <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>-by-<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>
+sparse linear systems involve projecting an approximate solution for
+<code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> onto a subspace of <img class="math" src="_images/math/03b20002748adbc21477f85f48bb9c6dd57327c4.png" alt="{\bf R}^n"/>. If we define a <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/>-dimensional
+subspace <img class="math" src="_images/math/bd5b903d7b46b012220230066efb8a933a761068.png" alt="{\cal K}"/> as the subspace of approximations to the solution
+<code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>, then <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/> constraints must be imposed to determine
+the next approximation. These <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/> constraints define another
+<img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/>-dimensional subspace denoted by <img class="math" src="_images/math/1f3b332cadcdb0d20d2400901680c6e4beadbd36.png" alt="{\cal L}"/>. The
+subspace dimension <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/> is typically chosen to be much smaller than
+<img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/> in order to reduce the computational
+effort needed to generate the next approximate solution vector.
+The many iterative algorithms which exist differ mainly
+in their choice of <img class="math" src="_images/math/bd5b903d7b46b012220230066efb8a933a761068.png" alt="{\cal K}"/> and <img class="math" src="_images/math/1f3b332cadcdb0d20d2400901680c6e4beadbd36.png" alt="{\cal L}"/>.</p>
+</section>
+<section id="types-of-sparse-iterative-solvers">
+<h3>Types of Sparse Iterative Solvers<a class="headerlink" href="#types-of-sparse-iterative-solvers" title="Link to this heading">¶</a></h3>
+<p>The sparse linear algebra library provides the following types
+of iterative solvers:</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_type">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_type</span></span></span><a class="headerlink" href="#c.gsl_splinalg_itersolve_type" title="Link to this definition">¶</a><br /></dt>
+<dd><dl class="c var" id="index-3">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_type.gsl_splinalg_itersolve_gmres">
+<a class="reference internal" href="#c.gsl_splinalg_itersolve_type" title="gsl_splinalg_itersolve_type"><span class="n"><span class="pre">gsl_splinalg_itersolve_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_gmres</span></span></span><a class="headerlink" href="#c.gsl_splinalg_itersolve_type.gsl_splinalg_itersolve_gmres" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This specifies the Generalized Minimum Residual Method (GMRES).
+This is a projection method using <img class="math" src="_images/math/8c3b0864082257db0a8f637245d66727e85305cd.png" alt="{\cal K} = {\cal K}_m"/>
+and <img class="math" src="_images/math/e26657b49436562db37088eec633c6ca03da8932.png" alt="{\cal L} = A {\cal K}_m"/> where <img class="math" src="_images/math/267f98c19df6dddb2d76729823c1df7adb10569d.png" alt="{\cal K}_m"/> is
+the <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/>-th Krylov subspace</p>
+<div class="math">
+<p><img src="_images/math/89d9c32b9c7508068e1dfa21e46d5f24f86bd3d8.png" alt="{\cal K}_m = span \left\{ r_0, A r_0, ..., A^{m-1} r_0 \right\}"/></p>
+</div><p>and <img class="math" src="_images/math/d94cb8a2ae9e172d336a5d447edc49e0b3d9ea4f.png" alt="r_0 = b - A x_0"/> is the residual vector of the initial guess
+<img class="math" src="_images/math/d45c09a2a331e0ce1ad0fb441b2bb6915516ec0a.png" alt="x_0"/>. If <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/> is set equal to <img class="math" src="_images/math/f43dc929f43b9ea0d06d0c87855b9e50ee4479ea.png" alt="n"/>, then the Krylov
+subspace is <img class="math" src="_images/math/03b20002748adbc21477f85f48bb9c6dd57327c4.png" alt="{\bf R}^n"/> and GMRES will provide the exact solution
+<code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code>.  However, the goal is for the method to arrive at a very good
+approximation to <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> using a much smaller subspace <img class="math" src="_images/math/267f98c19df6dddb2d76729823c1df7adb10569d.png" alt="{\cal K}_m"/>. By
+default, the GMRES method selects <img class="math" src="_images/math/323a39fbc8653c966514fc9b0644bf5c10d5db7a.png" alt="m = MIN(n,10)"/> but the user
+may specify a different value for <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/>. The GMRES storage
+requirements grow as <img class="math" src="_images/math/3941c7b3022eba44cc6fd4dff9de4d843b1065ce.png" alt="O(n(m+1))"/> and the number of flops
+grow as <img class="math" src="_images/math/82a1c8c89e0189a8286496a3fa1ac5c5fad80393.png" alt="O(4 m^2 n - 4 m^3 / 3)"/>.</p>
+<p>In the below function <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="gsl_splinalg_itersolve_iterate"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_splinalg_itersolve_iterate()</span></code></a>, one
+GMRES iteration is defined as projecting the approximate solution
+vector onto each Krylov subspace <img class="math" src="_images/math/90d50a358881ca91a95bb0a94be66a907a600469.png" alt="{\cal K}_1, ..., {\cal K}_m"/>,
+and so <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/> can be kept smaller by “restarting” the method
+and calling <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="gsl_splinalg_itersolve_iterate"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_splinalg_itersolve_iterate()</span></code></a> multiple times,
+providing the updated approximation <code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code> to each new call. If
+the method is not adequately converging, the user may try increasing
+the parameter <img class="math" src="_images/math/d8aab746990b1e68a457b5fa326f991469488b82.png" alt="m"/>.</p>
+<p>GMRES is considered a robust general purpose iterative solver, however
+there are cases where the method stagnates if the matrix is not
+positive-definite and fails to reduce the residual until the very last
+projection onto the subspace <img class="math" src="_images/math/423977ac9e8ef81275b136cd340c182e305a8d0a.png" alt="{\cal K}_n = {\bf R}^n"/>. In these
+cases, preconditioning the linear system can help, but GSL does not
+currently provide any preconditioners.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="iterating-the-sparse-linear-system">
+<h3>Iterating the Sparse Linear System<a class="headerlink" href="#iterating-the-sparse-linear-system" title="Link to this heading">¶</a></h3>
+<p>The following functions are provided to allocate storage for the
+sparse linear solvers and iterate the system to a solution.</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_alloc">
+<span class="n"><span class="pre">gsl_splinalg_itersolve</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.gsl_splinalg_itersolve_type" title="gsl_splinalg_itersolve_type"><span class="n"><span class="pre">gsl_splinalg_itersolve_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_splinalg_itersolve_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for the iterative solution of
+<a class="reference internal" href="#c.gsl_splinalg_itersolve_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_splinalg_itersolve_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> sparse matrix systems. The iterative solver type
+is specified by <a class="reference internal" href="#c.gsl_splinalg_itersolve_alloc" title="T"><code class="xref c c-data docutils literal notranslate"><span class="pre">T</span></code></a>. The argument <a class="reference internal" href="#c.gsl_splinalg_itersolve_alloc" title="m"><code class="xref c c-data docutils literal notranslate"><span class="pre">m</span></code></a> specifies the size
+of the solution candidate subspace <img class="math" src="_images/math/267f98c19df6dddb2d76729823c1df7adb10569d.png" alt="{\cal K}_m"/>. The dimension
+<a class="reference internal" href="#c.gsl_splinalg_itersolve_alloc" title="m"><code class="xref c c-data docutils literal notranslate"><span class="pre">m</span></code></a> may be set to 0 in which case a reasonable default value is used.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_splinalg_itersolve</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_splinalg_itersolve_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_splinalg_itersolve_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_splinalg_itersolve</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_splinalg_itersolve_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns a string pointer to the name of the solver.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_iterate">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_iterate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="spmatrix.html#c.gsl_spmatrix" title="gsl_spmatrix"><span class="n"><span class="pre">gsl_spmatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n"><span class="pre">tol</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="n"><span class="pre">gsl_splinalg_itersolve</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_splinalg_itersolve_iterate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function performs one iteration of the iterative method for
+the sparse linear system specfied by the matrix <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, right hand
+side vector <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> and solution vector <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>. On input, <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>
+must be set to an initial guess for the solution. On output,
+<a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a> is updated to give the current solution estimate. The
+parameter <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="tol"><code class="xref c c-data docutils literal notranslate"><span class="pre">tol</span></code></a> specifies the relative tolerance between the residual
+norm and norm of <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="b"><code class="xref c c-data docutils literal notranslate"><span class="pre">b</span></code></a> in order to check for convergence.
+When the following condition is satisfied:</p>
+<div class="math">
+<p><img src="_images/math/62b23882d50338d0864b89829678ca5e8298e355.png" alt="|| A x - b || \le tol \times || b ||"/></p>
+</div><p>the method has converged, the function returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_SUCCESS</span></code> and
+the final solution is provided in <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="x"><code class="xref c c-data docutils literal notranslate"><span class="pre">x</span></code></a>. Otherwise, the function
+returns <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_CONTINUE</span></code> to signal that more iterations are
+required. Here, <img class="math" src="_images/math/861fb31afcf24b292e77d708daab22edf48c5763.png" alt="|| \cdot ||"/> represents the Euclidean norm.
+The input matrix <a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> may be in triplet or compressed format.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_splinalg_itersolve_normr">
+<span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_splinalg_itersolve_normr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">gsl_splinalg_itersolve</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_splinalg_itersolve_normr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function returns the current residual norm
+<img class="math" src="_images/math/c534145e1c8f296167b976695c678cdd4c202a88.png" alt="||r|| = ||A x - b||"/>, which is updated after each call to
+<a class="reference internal" href="#c.gsl_splinalg_itersolve_iterate" title="gsl_splinalg_itersolve_iterate"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_splinalg_itersolve_iterate()</span></code></a>.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="examples">
+<span id="index-4"></span><h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>This example program demonstrates the sparse linear algebra routines on
+the solution of a simple 1D Poisson equation on <img class="math" src="_images/math/e7e8ac4ddd4ab0fc62c2a6435f8373f48c776858.png" alt="[0,1]"/>:</p>
+<div class="math">
+<p><img src="_images/math/c9fd8d4c8037073dba2fc4195b1e7cb69fba0b3c.png" alt="{d^2 u(x) \over dx^2} = f(x) = -\pi^2 \sin{(\pi x)}"/></p>
+</div><p>with boundary conditions <img class="math" src="_images/math/0918c0cc5dd53657f4191b5dbd39661fe13e1790.png" alt="u(0) = u(1) = 0"/>. The analytic solution of
+this simple problem is <img class="math" src="_images/math/04ee8dcd52abf5b665b4de26aaaf0345b85c151f.png" alt="u(x) = \sin{\pi x}"/>. We will solve this
+problem by finite differencing the left hand side to give</p>
+<div class="math">
+<p><img src="_images/math/7a1b53532b1c80e2e240d9e220ec2646a57382a1.png" alt="{1 \over h^2} \left( u_{i+1} - 2 u_i + u_{i-1} \right) = f_i"/></p>
+</div><p>Defining a grid of <img class="math" src="_images/math/cb5c0921ee22e878437766648c5925b76e462235.png" alt="N"/> points, <img class="math" src="_images/math/b5ee094d697925158f586e0ef69b9bb86adb23ef.png" alt="h = 1/(N-1)"/>. In the finite
+difference equation above, <img class="math" src="_images/math/a92f18b600dc2efd16f707efe277e3febdc1f5fd.png" alt="u_0 = u_{N-1} = 0"/> are known from
+the boundary conditions, so we will only put the equations for
+<img class="math" src="_images/math/bb85246af8342b4e84e0d29570d1846674aa7d64.png" alt="i = 1, ..., N-2"/> into the matrix system. The resulting
+<img class="math" src="_images/math/c4084414d1482b21dad00fecefc607fd9505cf38.png" alt="(N-2) \times (N-2)"/> matrix equation is</p>
+<div class="math">
+<p><img src="_images/math/0399cdf2efb1d85ead2b17ac8c8112bf7c2c95a6.png" alt="{1 \over h^2}
+\left(
+  \begin{array}{cccccc}
+    -2 &amp; 1 &amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\
+    1 &amp; -2 &amp; 1 &amp; 0 &amp; \ldots &amp; 0 \\
+    0 &amp; 1 &amp; -2 &amp; 1 &amp; \ldots &amp; 0 \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \ddots &amp; \ddots &amp; \vdots \\
+    0 &amp; \ldots &amp; \ldots &amp; 1 &amp; -2 &amp; 1 \\
+    0 &amp; \ldots &amp; \ldots &amp; \ldots &amp; 1 &amp; -2
+  \end{array}
+\right)
+\left(
+  \begin{array}{c}
+    u_1 \\
+    u_2 \\
+    u_3 \\
+    \vdots \\
+    u_{N-3} \\
+    u_{N-2}
+  \end{array}
+\right) =
+\left(
+  \begin{array}{c}
+    f_1 \\
+    f_2 \\
+    f_3 \\
+    \vdots \\
+    f_{N-3} \\
+    f_{N-2}
+  \end{array}
+\right)"/></p>
+</div><p>An example program which constructs and solves this system is given below.
+The system is solved using the iterative GMRES solver. Here is
+the output of the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">iter</span> <span class="mi">0</span> <span class="n">residual</span> <span class="o">=</span> <span class="mf">4.297275996844e-11</span>
+<span class="n">Converged</span>
+</pre></div>
+</div>
+<p>showing that the method converged in a single iteration.
+The calculated solution is shown in <a class="reference internal" href="#fig-splinalg-poisson"><span class="std std-numref">Fig. 50</span></a>.</p>
+<figure class="align-default" id="id2">
+<span id="fig-splinalg-poisson"></span><img alt="_images/sparse_poisson.png" src="_images/sparse_poisson.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 50 </span><span class="caption-text">Solution of PDE</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+<span class="c1">#include &lt;math.h&gt;</span>
+
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_vector.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_spmatrix.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_splinalg.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>                       <span class="o">/*</span> <span class="n">number</span> <span class="n">of</span> <span class="n">grid</span> <span class="n">points</span> <span class="o">*/</span>
+  <span class="n">const</span> <span class="n">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span>                     <span class="o">/*</span> <span class="n">subtract</span> <span class="mi">2</span> <span class="n">to</span> <span class="n">exclude</span> <span class="n">boundaries</span> <span class="o">*/</span>
+  <span class="n">const</span> <span class="n">double</span> <span class="n">h</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">);</span>           <span class="o">/*</span> <span class="n">grid</span> <span class="n">spacing</span> <span class="o">*/</span>
+  <span class="n">gsl_spmatrix</span> <span class="o">*</span><span class="n">A</span> <span class="o">=</span> <span class="n">gsl_spmatrix_alloc</span><span class="p">(</span><span class="n">n</span> <span class="p">,</span><span class="n">n</span><span class="p">);</span> <span class="o">/*</span> <span class="n">triplet</span> <span class="nb">format</span> <span class="o">*/</span>
+  <span class="n">gsl_spmatrix</span> <span class="o">*</span><span class="n">C</span><span class="p">;</span>                            <span class="o">/*</span> <span class="n">compressed</span> <span class="nb">format</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">f</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">right</span> <span class="n">hand</span> <span class="n">side</span> <span class="n">vector</span> <span class="o">*/</span>
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="n">u</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>        <span class="o">/*</span> <span class="n">solution</span> <span class="n">vector</span> <span class="o">*/</span>
+  <span class="n">size_t</span> <span class="n">i</span><span class="p">;</span>
+
+  <span class="o">/*</span> <span class="n">construct</span> <span class="n">the</span> <span class="n">sparse</span> <span class="n">matrix</span> <span class="k">for</span> <span class="n">the</span> <span class="n">finite</span> <span class="n">difference</span> <span class="n">equation</span> <span class="o">*/</span>
+
+  <span class="o">/*</span> <span class="n">construct</span> <span class="n">first</span> <span class="n">row</span> <span class="o">*/</span>
+  <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">);</span>
+  <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">construct</span> <span class="n">rows</span> <span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+      <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">);</span>
+      <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="o">/*</span> <span class="n">construct</span> <span class="n">last</span> <span class="n">row</span> <span class="o">*/</span>
+  <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">);</span>
+  <span class="n">gsl_spmatrix_set</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">scale</span> <span class="n">by</span> <span class="n">h</span><span class="o">^</span><span class="mi">2</span> <span class="o">*/</span>
+  <span class="n">gsl_spmatrix_scale</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="n">h</span><span class="p">));</span>
+
+  <span class="o">/*</span> <span class="n">construct</span> <span class="n">right</span> <span class="n">hand</span> <span class="n">side</span> <span class="n">vector</span> <span class="o">*/</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">double</span> <span class="n">xi</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span><span class="p">;</span>
+      <span class="n">double</span> <span class="n">fi</span> <span class="o">=</span> <span class="o">-</span><span class="n">M_PI</span> <span class="o">*</span> <span class="n">M_PI</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">M_PI</span> <span class="o">*</span> <span class="n">xi</span><span class="p">);</span>
+      <span class="n">gsl_vector_set</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">fi</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="o">/*</span> <span class="n">convert</span> <span class="n">to</span> <span class="n">compressed</span> <span class="n">column</span> <span class="nb">format</span> <span class="o">*/</span>
+  <span class="n">C</span> <span class="o">=</span> <span class="n">gsl_spmatrix_ccs</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+
+  <span class="o">/*</span> <span class="n">now</span> <span class="n">solve</span> <span class="n">the</span> <span class="n">system</span> <span class="k">with</span> <span class="n">the</span> <span class="n">GMRES</span> <span class="n">iterative</span> <span class="n">solver</span> <span class="o">*/</span>
+  <span class="p">{</span>
+    <span class="n">const</span> <span class="n">double</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0e-6</span><span class="p">;</span>  <span class="o">/*</span> <span class="n">solution</span> <span class="n">relative</span> <span class="n">tolerance</span> <span class="o">*/</span>
+    <span class="n">const</span> <span class="n">size_t</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">/*</span> <span class="n">maximum</span> <span class="n">iterations</span> <span class="o">*/</span>
+    <span class="n">const</span> <span class="n">gsl_splinalg_itersolve_type</span> <span class="o">*</span><span class="n">T</span> <span class="o">=</span> <span class="n">gsl_splinalg_itersolve_gmres</span><span class="p">;</span>
+    <span class="n">gsl_splinalg_itersolve</span> <span class="o">*</span><span class="n">work</span> <span class="o">=</span>
+      <span class="n">gsl_splinalg_itersolve_alloc</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">size_t</span> <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">double</span> <span class="n">residual</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">status</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">initial</span> <span class="n">guess</span> <span class="n">u</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*/</span>
+    <span class="n">gsl_vector_set_zero</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+
+    <span class="o">/*</span> <span class="n">solve</span> <span class="n">the</span> <span class="n">system</span> <span class="n">A</span> <span class="n">u</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*/</span>
+    <span class="n">do</span>
+      <span class="p">{</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">gsl_splinalg_itersolve_iterate</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">work</span><span class="p">);</span>
+
+        <span class="o">/*</span> <span class="nb">print</span> <span class="n">out</span> <span class="n">residual</span> <span class="n">norm</span> <span class="o">||</span><span class="n">A</span><span class="o">*</span><span class="n">u</span> <span class="o">-</span> <span class="n">f</span><span class="o">||</span> <span class="o">*/</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">gsl_splinalg_itersolve_normr</span><span class="p">(</span><span class="n">work</span><span class="p">);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;iter %zu residual = </span><span class="si">%.12e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">iter</span><span class="p">,</span> <span class="n">residual</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_SUCCESS</span><span class="p">)</span>
+          <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Converged</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">GSL_CONTINUE</span> <span class="o">&amp;&amp;</span> <span class="o">++</span><span class="nb">iter</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">);</span>
+
+    <span class="o">/*</span> <span class="n">output</span> <span class="n">solution</span> <span class="o">*/</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="n">double</span> <span class="n">xi</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span><span class="p">;</span>
+        <span class="n">double</span> <span class="n">u_exact</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">M_PI</span> <span class="o">*</span> <span class="n">xi</span><span class="p">);</span>
+        <span class="n">double</span> <span class="n">u_gsl</span> <span class="o">=</span> <span class="n">gsl_vector_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%.12e</span><span class="s2"> </span><span class="si">%.12e</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">u_gsl</span><span class="p">,</span> <span class="n">u_exact</span><span class="p">);</span>
+      <span class="p">}</span>
+
+    <span class="n">gsl_splinalg_itersolve_free</span><span class="p">(</span><span class="n">work</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">gsl_spmatrix_free</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+  <span class="n">gsl_spmatrix_free</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+  <span class="n">gsl_vector_free</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span> <span class="o">/*</span> <span class="n">main</span><span class="p">()</span> <span class="o">*/</span>
+</pre></div>
+</div>
+</section>
+<section id="references-and-further-reading">
+<span id="index-5"></span><h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>The implementation of the GMRES iterative solver closely follows
+the publications</p>
+<ul class="simple">
+<li><p>H. F. Walker, Implementation of the GMRES method using
+Householder transformations, SIAM J. Sci. Stat. Comput.
+9(1), 1988.</p></li>
+<li><p>Y. Saad, Iterative methods for sparse linear systems, 2nd edition,
+SIAM, 2003.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="spblas.html" class="btn btn-neutral float-left" title="Sparse BLAS Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="const.html" class="btn btn-neutral float-right" title="Physical Constants" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1096 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eigensystems &mdash; GSL 2.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/documentation_options.js?v=4348de45"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fast Fourier Transforms (FFTs)" href="fft.html" />
+    <link rel="prev" title="Linear Algebra" href="linalg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GSL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using the Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="err.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Mathematical Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly.html">Polynomials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specfunc.html">Special Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vectors and Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permutation.html">Permutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combination.html">Combinations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiset.html">Multisets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sort.html">Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linalg.html">Linear Algebra</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Eigensystems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#real-symmetric-matrices">Real Symmetric Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complex-hermitian-matrices">Complex Hermitian Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#real-nonsymmetric-matrices">Real Nonsymmetric Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#real-generalized-symmetric-definite-eigensystems">Real Generalized Symmetric-Definite Eigensystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complex-generalized-hermitian-definite-eigensystems">Complex Generalized Hermitian-Definite Eigensystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#real-generalized-nonsymmetric-eigensystems">Real Generalized Nonsymmetric Eigensystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sorting-eigenvalues-and-eigenvectors">Sorting Eigenvalues and Eigenvectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms (FFTs)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rng.html">Random Number Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qrng.html">Quasi-Random Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randist.html">Random Number Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rstat.html">Running Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="movstat.html">Moving Window Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Digital Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="histogram.html">Histograms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ntuple.html">N-tuples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="montecarlo.html">Monte Carlo Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siman.html">Simulated Annealing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ode-initval.html">Ordinary Differential Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interp.html">Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff.html">Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheb.html">Chebyshev Approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sum.html">Series Acceleration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dwt.html">Wavelet Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dht.html">Discrete Hankel Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roots.html">One Dimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min.html">One Dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiroots.html">Multidimensional Root-Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multidimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lls.html">Linear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nls.html">Nonlinear Least-Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bspline.html">Basis Splines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spmatrix.html">Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spblas.html">Sparse BLAS Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splinalg.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ieee754.html">IEEE floating-point arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">Debugging Numerical Programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributors to GSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoconf.html">Autoconf Macros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cblas.html">GSL CBLAS Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpl.html">GNU General Public License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fdl.html">GNU Free Documentation License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GSL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Eigensystems</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/eigen.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="linalg.html" class="btn btn-neutral float-left" title="Linear Algebra" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fft.html" class="btn btn-neutral float-right" title="Fast Fourier Transforms (FFTs)" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="eigensystems">
+<span id="index-0"></span><h1>Eigensystems<a class="headerlink" href="#eigensystems" title="Link to this heading">¶</a></h1>
+<p>This chapter describes functions for computing eigenvalues and
+eigenvectors of matrices.  There are routines for real symmetric,
+real nonsymmetric, complex hermitian, real generalized symmetric-definite,
+complex generalized hermitian-definite, and real generalized nonsymmetric
+eigensystems. Eigenvalues can be computed with or without eigenvectors.
+The hermitian and real symmetric matrix algorithms are symmetric bidiagonalization
+followed by QR reduction. The nonsymmetric algorithm is the Francis QR
+double-shift.  The generalized nonsymmetric algorithm is the QZ method due
+to Moler and Stewart.</p>
+<p>The functions described in this chapter are declared in the header file
+<code class="file docutils literal notranslate"><span class="pre">gsl_eigen.h</span></code>.</p>
+<section id="real-symmetric-matrices">
+<h2>Real Symmetric Matrices<a class="headerlink" href="#real-symmetric-matrices" title="Link to this heading">¶</a></h2>
+<p id="index-1">For real symmetric matrices, the library uses the symmetric
+bidiagonalization and QR reduction method.  This is described in Golub
+&amp; van Loan, section 8.3.  The computed eigenvalues are accurate to an
+absolute accuracy of <img class="math" src="_images/math/db56208981e31a8a118b77c6b7688a7420575c05.png" alt="\epsilon ||A||_2"/>, where <img class="math" src="_images/math/be3df5344ca00c17e18e2e38fde14b3415593780.png" alt="\epsilon"/> is
+the machine precision.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_symm_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symm_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_symm_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving symmetric eigenvalue
+problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_symm_alloc">
+<a class="reference internal" href="#c.gsl_eigen_symm_workspace" title="gsl_eigen_symm_workspace"><span class="n"><span class="pre">gsl_eigen_symm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symm_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symm_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues of
+<a class="reference internal" href="#c.gsl_eigen_symm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_symm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real symmetric matrices.  The size of the workspace
+is <img class="math" src="_images/math/14294e3470eb60926c52481f64f66ab82ac5b43d.png" alt="O(2n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_symm_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symm_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_symm_workspace" title="gsl_eigen_symm_workspace"><span class="n"><span class="pre">gsl_eigen_symm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symm_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_symm_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_symm">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symm</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="#c.gsl_eigen_symm_workspace" title="gsl_eigen_symm_workspace"><span class="n"><span class="pre">gsl_eigen_symm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symm" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues of the real symmetric matrix
+<a class="reference internal" href="#c.gsl_eigen_symm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>.  Additional workspace of the appropriate size must be provided
+in <a class="reference internal" href="#c.gsl_eigen_symm" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.  The diagonal and lower triangular part of <a class="reference internal" href="#c.gsl_eigen_symm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> are
+destroyed during the computation, but the strict upper triangular part
+is not referenced.  The eigenvalues are stored in the vector <a class="reference internal" href="#c.gsl_eigen_symm" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a>
+and are unordered.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_symmv_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symmv_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_symmv_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving symmetric eigenvalue
+and eigenvector problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_symmv_alloc">
+<a class="reference internal" href="#c.gsl_eigen_symmv_workspace" title="gsl_eigen_symmv_workspace"><span class="n"><span class="pre">gsl_eigen_symmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symmv_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symmv_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues and
+eigenvectors of <a class="reference internal" href="#c.gsl_eigen_symmv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_symmv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real symmetric matrices.  The size of
+the workspace is <img class="math" src="_images/math/d0cb6055def3b95d45bda544d38153f662017dd5.png" alt="O(4n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_symmv_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symmv_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_symmv_workspace" title="gsl_eigen_symmv_workspace"><span class="n"><span class="pre">gsl_eigen_symmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symmv_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_symmv_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_symmv">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symmv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_symmv_workspace" title="gsl_eigen_symmv_workspace"><span class="n"><span class="pre">gsl_eigen_symmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symmv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues and eigenvectors of the real
+symmetric matrix <a class="reference internal" href="#c.gsl_eigen_symmv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>.  Additional workspace of the appropriate size
+must be provided in <a class="reference internal" href="#c.gsl_eigen_symmv" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.  The diagonal and lower triangular part of
+<a class="reference internal" href="#c.gsl_eigen_symmv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> are destroyed during the computation, but the strict upper
+triangular part is not referenced.  The eigenvalues are stored in the
+vector <a class="reference internal" href="#c.gsl_eigen_symmv" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and are unordered.  The corresponding eigenvectors are
+stored in the columns of the matrix <a class="reference internal" href="#c.gsl_eigen_symmv" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a>.  For example, the
+eigenvector in the first column corresponds to the first eigenvalue.
+The eigenvectors are guaranteed to be mutually orthogonal and normalised
+to unit magnitude.</p>
+</dd></dl>
+
+</section>
+<section id="complex-hermitian-matrices">
+<h2>Complex Hermitian Matrices<a class="headerlink" href="#complex-hermitian-matrices" title="Link to this heading">¶</a></h2>
+<p>For hermitian matrices, the library uses the complex form of
+the symmetric bidiagonalization and QR reduction method.</p>
+<dl class="c type" id="index-2">
+<dt class="sig sig-object c" id="c.gsl_eigen_herm_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_herm_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_herm_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving hermitian eigenvalue
+problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_herm_alloc">
+<a class="reference internal" href="#c.gsl_eigen_herm_workspace" title="gsl_eigen_herm_workspace"><span class="n"><span class="pre">gsl_eigen_herm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_herm_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_herm_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues of
+<a class="reference internal" href="#c.gsl_eigen_herm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_herm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> complex hermitian matrices.  The size of the workspace
+is <img class="math" src="_images/math/9dae32ea1035953abb5a8626643629aa2aff85ad.png" alt="O(3n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_herm_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_herm_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_herm_workspace" title="gsl_eigen_herm_workspace"><span class="n"><span class="pre">gsl_eigen_herm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_herm_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_herm_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_herm">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_herm</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="#c.gsl_eigen_herm_workspace" title="gsl_eigen_herm_workspace"><span class="n"><span class="pre">gsl_eigen_herm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_herm" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues of the complex hermitian matrix
+<a class="reference internal" href="#c.gsl_eigen_herm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>.  Additional workspace of the appropriate size must be provided
+in <a class="reference internal" href="#c.gsl_eigen_herm" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.  The diagonal and lower triangular part of <a class="reference internal" href="#c.gsl_eigen_herm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> are
+destroyed during the computation, but the strict upper triangular part
+is not referenced.  The imaginary parts of the diagonal are assumed to be
+zero and are not referenced. The eigenvalues are stored in the vector
+<a class="reference internal" href="#c.gsl_eigen_herm" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and are unordered.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_hermv_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_hermv_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_hermv_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving hermitian eigenvalue
+and eigenvector problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_hermv_alloc">
+<a class="reference internal" href="#c.gsl_eigen_hermv_workspace" title="gsl_eigen_hermv_workspace"><span class="n"><span class="pre">gsl_eigen_hermv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_hermv_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_hermv_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues and
+eigenvectors of <a class="reference internal" href="#c.gsl_eigen_hermv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_hermv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> complex hermitian matrices.  The size of
+the workspace is <img class="math" src="_images/math/1d8051599a3bb6486aa36d082b90e04dae96a67b.png" alt="O(5n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_hermv_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_hermv_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_hermv_workspace" title="gsl_eigen_hermv_workspace"><span class="n"><span class="pre">gsl_eigen_hermv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_hermv_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_hermv_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_hermv">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_hermv</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_hermv_workspace" title="gsl_eigen_hermv_workspace"><span class="n"><span class="pre">gsl_eigen_hermv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_hermv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues and eigenvectors of the complex
+hermitian matrix <a class="reference internal" href="#c.gsl_eigen_hermv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>.  Additional workspace of the appropriate size
+must be provided in <a class="reference internal" href="#c.gsl_eigen_hermv" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.  The diagonal and lower triangular part of
+<a class="reference internal" href="#c.gsl_eigen_hermv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> are destroyed during the computation, but the strict upper
+triangular part is not referenced. The imaginary parts of the diagonal
+are assumed to be zero and are not referenced.  The eigenvalues are
+stored in the vector <a class="reference internal" href="#c.gsl_eigen_hermv" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and are unordered.  The corresponding
+complex eigenvectors are stored in the columns of the matrix <a class="reference internal" href="#c.gsl_eigen_hermv" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a>.
+For example, the eigenvector in the first column corresponds to the
+first eigenvalue.  The eigenvectors are guaranteed to be mutually
+orthogonal and normalised to unit magnitude.</p>
+</dd></dl>
+
+</section>
+<section id="real-nonsymmetric-matrices">
+<h2>Real Nonsymmetric Matrices<a class="headerlink" href="#real-nonsymmetric-matrices" title="Link to this heading">¶</a></h2>
+<p id="index-3">The solution of the real nonsymmetric eigensystem problem for a
+matrix <img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/> involves computing the Schur decomposition</p>
+<div class="math">
+<p><img src="_images/math/8e5c338a8c3f824ad1215092d3fdc40feca5b5d6.png" alt="A = Z T Z^T"/></p>
+</div><p>where <img class="math" src="_images/math/6da5fd1458d858983023853d7724f9c737da67f4.png" alt="Z"/> is an orthogonal matrix of Schur vectors and <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>,
+the Schur form, is quasi upper triangular with diagonal
+<img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>-by-<img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/> blocks which are real eigenvalues of <img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/>, and
+diagonal <img class="math" src="_images/math/2a2702de739befc144e6b7371e7f63ac3aeb8bec.png" alt="2"/>-by-<img class="math" src="_images/math/2a2702de739befc144e6b7371e7f63ac3aeb8bec.png" alt="2"/> blocks whose eigenvalues are complex
+conjugate eigenvalues of <img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/>. The algorithm used is the double-shift
+Francis method.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymm_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_nonsymm_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving nonsymmetric eigenvalue
+problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymm_alloc">
+<a class="reference internal" href="#c.gsl_eigen_nonsymm_workspace" title="gsl_eigen_nonsymm_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymm_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymm_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues of
+<a class="reference internal" href="#c.gsl_eigen_nonsymm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_nonsymm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real nonsymmetric matrices. The size of the workspace
+is <img class="math" src="_images/math/14294e3470eb60926c52481f64f66ab82ac5b43d.png" alt="O(2n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymm_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymm_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_nonsymm_workspace" title="gsl_eigen_nonsymm_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymm_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_nonsymm_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymm_params">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymm_params</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">compute_t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">balance</span></span>, <a class="reference internal" href="#c.gsl_eigen_nonsymm_workspace" title="gsl_eigen_nonsymm_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymm_params" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets some parameters which determine how the eigenvalue
+problem is solved in subsequent calls to <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="gsl_eigen_nonsymm"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm()</span></code></a>.</p>
+<p>If <a class="reference internal" href="#c.gsl_eigen_nonsymm_params" title="compute_t"><code class="xref c c-data docutils literal notranslate"><span class="pre">compute_t</span></code></a> is set to 1, the full Schur form <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> will be
+computed by <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="gsl_eigen_nonsymm"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm()</span></code></a>. If it is set to 0,
+<img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> will not be computed (this is the default setting). Computing
+the full Schur form <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> requires approximately 1.5–2 times the
+number of flops.</p>
+<p>If <a class="reference internal" href="#c.gsl_eigen_nonsymm_params" title="balance"><code class="xref c c-data docutils literal notranslate"><span class="pre">balance</span></code></a> is set to 1, a balancing transformation is applied
+to the matrix prior to computing eigenvalues. This transformation is
+designed to make the rows and columns of the matrix have comparable
+norms, and can result in more accurate eigenvalues for matrices
+whose entries vary widely in magnitude. See <a class="reference internal" href="linalg.html#balancing"><span class="std std-ref">Balancing</span></a> for more
+information. Note that the balancing transformation does not preserve
+the orthogonality of the Schur vectors, so if you wish to compute the
+Schur vectors with <a class="reference internal" href="#c.gsl_eigen_nonsymm_Z" title="gsl_eigen_nonsymm_Z"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm_Z()</span></code></a> you will obtain the Schur
+vectors of the balanced matrix instead of the original matrix. The
+relationship will be</p>
+<div class="math">
+<p><img src="_images/math/0d2d4d5c69c136ce708b2639511b2d29a11e5620.png" alt="T = Q^T D^{-1} A D Q"/></p>
+</div><p>where <code class="xref c c-data docutils literal notranslate"><span class="pre">Q</span></code> is the matrix of Schur vectors for the balanced matrix, and
+<code class="xref c c-data docutils literal notranslate"><span class="pre">D</span></code> is the balancing transformation. Then <a class="reference internal" href="#c.gsl_eigen_nonsymm_Z" title="gsl_eigen_nonsymm_Z"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm_Z()</span></code></a>
+will compute a matrix <code class="xref c c-data docutils literal notranslate"><span class="pre">Z</span></code> which satisfies</p>
+<div class="math">
+<p><img src="_images/math/9e6699c7ec7776b248ceb65ef8287ea4feb11bd0.png" alt="T = Z^{-1} A Z"/></p>
+</div><p>with <img class="math" src="_images/math/41654ef41cf57618de15a7fbba94d0d2e1fd0207.png" alt="Z = D Q"/>. Note that <code class="xref c c-data docutils literal notranslate"><span class="pre">Z</span></code> will not be orthogonal. For
+this reason, balancing is not performed by default.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymm">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymm</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="#c.gsl_eigen_nonsymm_workspace" title="gsl_eigen_nonsymm_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymm" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues of the real nonsymmetric matrix
+<a class="reference internal" href="#c.gsl_eigen_nonsymm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> and stores them in the vector <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a>. If <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> is
+desired, it is stored in the upper portion of <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> on output.
+Otherwise, on output, the diagonal of <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> will contain the
+<img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/>-by-<img class="math" src="_images/math/083794f6b6375b92a331ddd53c8cc62a3a0a2a6d.png" alt="1"/> real eigenvalues and <img class="math" src="_images/math/2a2702de739befc144e6b7371e7f63ac3aeb8bec.png" alt="2"/>-by-<img class="math" src="_images/math/2a2702de739befc144e6b7371e7f63ac3aeb8bec.png" alt="2"/>
+complex conjugate eigenvalue systems, and the rest of <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> is
+destroyed. In rare cases, this function may fail to find all
+eigenvalues. If this happens, an error code is returned
+and the number of converged eigenvalues is stored in <code class="code docutils literal notranslate"><span class="pre">w-&gt;n_evals</span></code>.
+The converged eigenvalues are stored in the beginning of <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymm_Z">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymm_Z</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">Z</span></span>, <a class="reference internal" href="#c.gsl_eigen_nonsymm_workspace" title="gsl_eigen_nonsymm_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymm_Z" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is identical to <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="gsl_eigen_nonsymm"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm()</span></code></a> except that it also
+computes the Schur vectors and stores them into <a class="reference internal" href="#c.gsl_eigen_nonsymm_Z" title="Z"><code class="xref c c-data docutils literal notranslate"><span class="pre">Z</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_nonsymmv_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving nonsymmetric eigenvalue
+and eigenvector problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv_alloc">
+<a class="reference internal" href="#c.gsl_eigen_nonsymmv_workspace" title="gsl_eigen_nonsymmv_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymmv_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues and
+eigenvectors of <a class="reference internal" href="#c.gsl_eigen_nonsymmv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_nonsymmv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real nonsymmetric matrices. The
+size of the workspace is <img class="math" src="_images/math/1d8051599a3bb6486aa36d082b90e04dae96a67b.png" alt="O(5n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_nonsymmv_workspace" title="gsl_eigen_nonsymmv_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymmv_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_nonsymmv_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv_params">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv_params</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">balance</span></span>, <a class="reference internal" href="#c.gsl_eigen_nonsymm_workspace" title="gsl_eigen_nonsymm_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymmv_params" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets parameters which determine how the eigenvalue
+problem is solved in subsequent calls to <a class="reference internal" href="#c.gsl_eigen_nonsymmv" title="gsl_eigen_nonsymmv"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymmv()</span></code></a>.
+If <a class="reference internal" href="#c.gsl_eigen_nonsymmv_params" title="balance"><code class="xref c c-data docutils literal notranslate"><span class="pre">balance</span></code></a> is set to 1, a balancing transformation is applied
+to the matrix. See <a class="reference internal" href="#c.gsl_eigen_nonsymm_params" title="gsl_eigen_nonsymm_params"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm_params()</span></code></a> for more information.
+Balancing is turned off by default since it does not preserve the
+orthogonality of the Schur vectors.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_nonsymmv_workspace" title="gsl_eigen_nonsymmv_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymmv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes eigenvalues and right eigenvectors of the
+<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>-by-<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> real nonsymmetric matrix <a class="reference internal" href="#c.gsl_eigen_nonsymmv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>. It first calls
+<a class="reference internal" href="#c.gsl_eigen_nonsymm" title="gsl_eigen_nonsymm"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm()</span></code></a> to compute the eigenvalues, Schur form <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>, and
+Schur vectors. Then it finds eigenvectors of <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> and backtransforms
+them using the Schur vectors. The Schur vectors are destroyed in the
+process, but can be saved by using <a class="reference internal" href="#c.gsl_eigen_nonsymmv_Z" title="gsl_eigen_nonsymmv_Z"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymmv_Z()</span></code></a>. The
+computed eigenvectors are normalized to have unit magnitude. On
+output, the upper portion of <a class="reference internal" href="#c.gsl_eigen_nonsymmv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> contains the Schur form
+<img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>. If <a class="reference internal" href="#c.gsl_eigen_nonsymm" title="gsl_eigen_nonsymm"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymm()</span></code></a> fails, no eigenvectors are
+computed, and an error code is returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv_Z">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv_Z</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">Z</span></span>, <a class="reference internal" href="#c.gsl_eigen_nonsymmv_workspace" title="gsl_eigen_nonsymmv_workspace"><span class="n"><span class="pre">gsl_eigen_nonsymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymmv_Z" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is identical to <a class="reference internal" href="#c.gsl_eigen_nonsymmv" title="gsl_eigen_nonsymmv"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_nonsymmv()</span></code></a> except that it also saves
+the Schur vectors into <a class="reference internal" href="#c.gsl_eigen_nonsymmv_Z" title="Z"><code class="xref c c-data docutils literal notranslate"><span class="pre">Z</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="real-generalized-symmetric-definite-eigensystems">
+<h2>Real Generalized Symmetric-Definite Eigensystems<a class="headerlink" href="#real-generalized-symmetric-definite-eigensystems" title="Link to this heading">¶</a></h2>
+<p id="index-4">The real generalized symmetric-definite eigenvalue problem is to find
+eigenvalues <img class="math" src="_images/math/ab8c818c5b43470e387a04bc496e8c092a6f5317.png" alt="\lambda"/> and eigenvectors <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> such that</p>
+<div class="math">
+<p><img src="_images/math/531284dd0119537b2dad33dccfa204f7c50a1e65.png" alt="A x = \lambda B x"/></p>
+</div><p>where <img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/> and <img class="math" src="_images/math/e6a99fa732c78a355b197a0f49be984da77598d4.png" alt="B"/> are symmetric matrices, and <img class="math" src="_images/math/e6a99fa732c78a355b197a0f49be984da77598d4.png" alt="B"/> is
+positive-definite. This problem reduces to the standard symmetric
+eigenvalue problem by applying the Cholesky decomposition to <img class="math" src="_images/math/e6a99fa732c78a355b197a0f49be984da77598d4.png" alt="B"/>:</p>
+<div class="math">
+<p><img src="_images/math/6d3044ba0d867e1fa19d519744bd636d87b02f09.png" alt="A x &amp; = \lambda B x \\
+A x &amp; = \lambda L L^T x \\
+\left( L^{-1} A L^{-T} \right) L^T x &amp; = \lambda L^T x"/></p>
+</div><p>Therefore, the problem becomes <img class="math" src="_images/math/a574df9c7e7be2416dcfc0a60c9390a80323d256.png" alt="C y = \lambda y"/> where
+<img class="math" src="_images/math/eba9783c63de1c7405dd2482539d0af32392d14d.png" alt="C = L^{-1} A L^{-T}"/>
+is symmetric, and <img class="math" src="_images/math/29fd38d748bfffead489833570a79e2536690332.png" alt="y = L^T x"/>. The standard
+symmetric eigensolver can be applied to the matrix <img class="math" src="_images/math/1c7cd1082f784807490782bc79aaad2511a89f8b.png" alt="C"/>.
+The resulting eigenvectors are backtransformed to find the
+vectors of the original problem. The eigenvalues and eigenvectors
+of the generalized symmetric-definite eigenproblem are always real.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymm_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymm_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_gensymm_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving generalized symmetric eigenvalue
+problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymm_alloc">
+<a class="reference internal" href="#c.gsl_eigen_gensymm_workspace" title="gsl_eigen_gensymm_workspace"><span class="n"><span class="pre">gsl_eigen_gensymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymm_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymm_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues of
+<a class="reference internal" href="#c.gsl_eigen_gensymm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_gensymm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real generalized symmetric-definite eigensystems. The
+size of the workspace is <img class="math" src="_images/math/14294e3470eb60926c52481f64f66ab82ac5b43d.png" alt="O(2n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymm_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymm_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_gensymm_workspace" title="gsl_eigen_gensymm_workspace"><span class="n"><span class="pre">gsl_eigen_gensymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymm_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_gensymm_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymm">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymm</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="#c.gsl_eigen_gensymm_workspace" title="gsl_eigen_gensymm_workspace"><span class="n"><span class="pre">gsl_eigen_gensymm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymm" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues of the real generalized
+symmetric-definite matrix pair (<a class="reference internal" href="#c.gsl_eigen_gensymm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_gensymm" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>), and stores them
+in <a class="reference internal" href="#c.gsl_eigen_gensymm" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a>, using the method outlined above. On output, <a class="reference internal" href="#c.gsl_eigen_gensymm" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>
+contains its Cholesky decomposition and <a class="reference internal" href="#c.gsl_eigen_gensymm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> is destroyed.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymmv_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymmv_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_gensymmv_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving generalized symmetric eigenvalue
+and eigenvector problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymmv_alloc">
+<a class="reference internal" href="#c.gsl_eigen_gensymmv_workspace" title="gsl_eigen_gensymmv_workspace"><span class="n"><span class="pre">gsl_eigen_gensymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymmv_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymmv_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues and
+eigenvectors of <a class="reference internal" href="#c.gsl_eigen_gensymmv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_gensymmv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real generalized symmetric-definite
+eigensystems. The size of the workspace is <img class="math" src="_images/math/d0cb6055def3b95d45bda544d38153f662017dd5.png" alt="O(4n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymmv_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymmv_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_gensymmv_workspace" title="gsl_eigen_gensymmv_workspace"><span class="n"><span class="pre">gsl_eigen_gensymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymmv_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_gensymmv_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymmv">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymmv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_gensymmv_workspace" title="gsl_eigen_gensymmv_workspace"><span class="n"><span class="pre">gsl_eigen_gensymmv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymmv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues and eigenvectors of the real
+generalized symmetric-definite matrix pair (<a class="reference internal" href="#c.gsl_eigen_gensymmv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_gensymmv" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>), and
+stores them in <a class="reference internal" href="#c.gsl_eigen_gensymmv" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and <a class="reference internal" href="#c.gsl_eigen_gensymmv" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> respectively. The computed
+eigenvectors are normalized to have unit magnitude. On output,
+<a class="reference internal" href="#c.gsl_eigen_gensymmv" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a> contains its Cholesky decomposition and <a class="reference internal" href="#c.gsl_eigen_gensymmv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> is destroyed.</p>
+</dd></dl>
+
+</section>
+<section id="complex-generalized-hermitian-definite-eigensystems">
+<h2>Complex Generalized Hermitian-Definite Eigensystems<a class="headerlink" href="#complex-generalized-hermitian-definite-eigensystems" title="Link to this heading">¶</a></h2>
+<p id="index-5">The complex generalized hermitian-definite eigenvalue problem is to find
+eigenvalues <img class="math" src="_images/math/ab8c818c5b43470e387a04bc496e8c092a6f5317.png" alt="\lambda"/> and eigenvectors <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> such that</p>
+<div class="math">
+<p><img src="_images/math/531284dd0119537b2dad33dccfa204f7c50a1e65.png" alt="A x = \lambda B x"/></p>
+</div><p>where <img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/> and <img class="math" src="_images/math/e6a99fa732c78a355b197a0f49be984da77598d4.png" alt="B"/> are hermitian matrices, and <img class="math" src="_images/math/e6a99fa732c78a355b197a0f49be984da77598d4.png" alt="B"/> is
+positive-definite. Similarly to the real case, this can be reduced
+to <img class="math" src="_images/math/a574df9c7e7be2416dcfc0a60c9390a80323d256.png" alt="C y = \lambda y"/> where
+<img class="math" src="_images/math/2671ed391b4512940d287ae4d9591d57391e0d1b.png" alt="C = L^{-1} A L^{-\dagger}"/>
+is hermitian, and
+<img class="math" src="_images/math/11a49756630fc3882587921b1e969077e8de7b11.png" alt="y = L^{\dagger} x"/>.  The standard
+hermitian eigensolver can be applied to the matrix <img class="math" src="_images/math/1c7cd1082f784807490782bc79aaad2511a89f8b.png" alt="C"/>.
+The resulting eigenvectors are backtransformed to find the
+vectors of the original problem. The eigenvalues
+of the generalized hermitian-definite eigenproblem are always real.</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_genherm_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genherm_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_genherm_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving generalized hermitian eigenvalue
+problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genherm_alloc">
+<a class="reference internal" href="#c.gsl_eigen_genherm_workspace" title="gsl_eigen_genherm_workspace"><span class="n"><span class="pre">gsl_eigen_genherm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genherm_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genherm_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues of
+<a class="reference internal" href="#c.gsl_eigen_genherm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_genherm_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> complex generalized hermitian-definite eigensystems. The
+size of the workspace is <img class="math" src="_images/math/9dae32ea1035953abb5a8626643629aa2aff85ad.png" alt="O(3n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genherm_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genherm_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_genherm_workspace" title="gsl_eigen_genherm_workspace"><span class="n"><span class="pre">gsl_eigen_genherm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genherm_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_genherm_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genherm">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genherm</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="#c.gsl_eigen_genherm_workspace" title="gsl_eigen_genherm_workspace"><span class="n"><span class="pre">gsl_eigen_genherm_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genherm" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues of the complex generalized
+hermitian-definite matrix pair (<a class="reference internal" href="#c.gsl_eigen_genherm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_genherm" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>), and stores them
+in <a class="reference internal" href="#c.gsl_eigen_genherm" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a>, using the method outlined above. On output, <a class="reference internal" href="#c.gsl_eigen_genherm" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>
+contains its Cholesky decomposition and <a class="reference internal" href="#c.gsl_eigen_genherm" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> is destroyed.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_genhermv_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genhermv_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_genhermv_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving generalized hermitian eigenvalue
+and eigenvector problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genhermv_alloc">
+<a class="reference internal" href="#c.gsl_eigen_genhermv_workspace" title="gsl_eigen_genhermv_workspace"><span class="n"><span class="pre">gsl_eigen_genhermv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genhermv_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genhermv_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues and
+eigenvectors of <a class="reference internal" href="#c.gsl_eigen_genhermv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_genhermv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> complex generalized hermitian-definite
+eigensystems. The size of the workspace is <img class="math" src="_images/math/1d8051599a3bb6486aa36d082b90e04dae96a67b.png" alt="O(5n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genhermv_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genhermv_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_genhermv_workspace" title="gsl_eigen_genhermv_workspace"><span class="n"><span class="pre">gsl_eigen_genhermv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genhermv_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_genhermv_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genhermv">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genhermv</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_genhermv_workspace" title="gsl_eigen_genhermv_workspace"><span class="n"><span class="pre">gsl_eigen_genhermv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genhermv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues and eigenvectors of the complex
+generalized hermitian-definite matrix pair (<a class="reference internal" href="#c.gsl_eigen_genhermv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_genhermv" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>), and
+stores them in <a class="reference internal" href="#c.gsl_eigen_genhermv" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and <a class="reference internal" href="#c.gsl_eigen_genhermv" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> respectively. The computed
+eigenvectors are normalized to have unit magnitude. On output,
+<a class="reference internal" href="#c.gsl_eigen_genhermv" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a> contains its Cholesky decomposition and <a class="reference internal" href="#c.gsl_eigen_genhermv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> is destroyed.</p>
+</dd></dl>
+
+</section>
+<section id="real-generalized-nonsymmetric-eigensystems">
+<h2>Real Generalized Nonsymmetric Eigensystems<a class="headerlink" href="#real-generalized-nonsymmetric-eigensystems" title="Link to this heading">¶</a></h2>
+<p id="index-6">Given two square matrices (<img class="math" src="_images/math/fe895c925fafcf3161c4d10b14fb00b979c0015f.png" alt="A"/>, <img class="math" src="_images/math/e6a99fa732c78a355b197a0f49be984da77598d4.png" alt="B"/>), the generalized
+nonsymmetric eigenvalue problem is to find eigenvalues <img class="math" src="_images/math/ab8c818c5b43470e387a04bc496e8c092a6f5317.png" alt="\lambda"/> and
+eigenvectors <img class="math" src="_images/math/43f98bc915444c1fdc19b396ac4fbc66f194c578.png" alt="x"/> such that</p>
+<div class="math">
+<p><img src="_images/math/531284dd0119537b2dad33dccfa204f7c50a1e65.png" alt="A x = \lambda B x"/></p>
+</div><p>We may also define the problem as finding eigenvalues <img class="math" src="_images/math/7d29918417bdbeb6749620d5f24e09c1080dd299.png" alt="\mu"/> and
+eigenvectors <img class="math" src="_images/math/e5b4bb56c8a593a62ae474d2b008601486633c57.png" alt="y"/> such that</p>
+<div class="math">
+<p><img src="_images/math/806f07d2a76099d72aafc1606f0c27ade9768a10.png" alt="\mu A y = B y"/></p>
+</div><p>Note that these two problems are equivalent (with <img class="math" src="_images/math/d3b89ba5c90f109d09e43f081f72b60abdba9b53.png" alt="\lambda = 1/\mu"/>)
+if neither <img class="math" src="_images/math/ab8c818c5b43470e387a04bc496e8c092a6f5317.png" alt="\lambda"/> nor <img class="math" src="_images/math/7d29918417bdbeb6749620d5f24e09c1080dd299.png" alt="\mu"/> is zero. If say, <img class="math" src="_images/math/ab8c818c5b43470e387a04bc496e8c092a6f5317.png" alt="\lambda"/>
+is zero, then it is still a well defined eigenproblem, but its alternate
+problem involving <img class="math" src="_images/math/7d29918417bdbeb6749620d5f24e09c1080dd299.png" alt="\mu"/> is not. Therefore, to allow for zero
+(and infinite) eigenvalues, the problem which is actually solved is</p>
+<div class="math">
+<p><img src="_images/math/0aa15d7ba9fc6dc9c01958ca9702d5bbe7c95684.png" alt="\beta A x = \alpha B x"/></p>
+</div><p>The eigensolver routines below will return two values <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/>
+and <img class="math" src="_images/math/e02f190f8fb57cf0cbdb88e60ad6999080cfed17.png" alt="\beta"/> and leave it to the user to perform the divisions
+<img class="math" src="_images/math/692cef018b14f59bcff2184a7122adb5f3ddcf33.png" alt="\lambda = \alpha / \beta"/> and <img class="math" src="_images/math/579ad1de6d2176f6b7325fe3bed2a2d74f7fa245.png" alt="\mu = \beta / \alpha"/>.</p>
+<p>If the determinant of the matrix pencil <img class="math" src="_images/math/de34ed3198dc14f4f7e0b5ddfb61b8b53f7f4215.png" alt="A - \lambda B"/> is zero
+for all <img class="math" src="_images/math/ab8c818c5b43470e387a04bc496e8c092a6f5317.png" alt="\lambda"/>, the problem is said to be singular; otherwise
+it is called regular.  Singularity normally leads to some
+<img class="math" src="_images/math/ac755daa9879f36f2b2b36122aa8c5e0b6f0189c.png" alt="\alpha = \beta = 0"/> which means the eigenproblem is ill-conditioned
+and generally does not have well defined eigenvalue solutions. The
+routines below are intended for regular matrix pencils and could yield
+unpredictable results when applied to singular pencils.</p>
+<p>The solution of the real generalized nonsymmetric eigensystem problem for a
+matrix pair <img class="math" src="_images/math/7ba1905485d67b45cf6257623265c68ece500b58.png" alt="(A, B)"/> involves computing the generalized Schur
+decomposition</p>
+<div class="math">
+<p><img src="_images/math/e180f318b1a0584f9bb88ea1da7cd3b505877afe.png" alt="A &amp;= Q S Z^T \\
+B &amp;= Q T Z^T"/></p>
+</div><p>where <img class="math" src="_images/math/e103d281ada9f45ddb73d266667a18adc3e50536.png" alt="Q"/> and <img class="math" src="_images/math/6da5fd1458d858983023853d7724f9c737da67f4.png" alt="Z"/> are orthogonal matrices of left and right
+Schur vectors respectively, and <img class="math" src="_images/math/e1090da03696fbe6606a8a70a8e686460ba8a1af.png" alt="(S, T)"/> is the generalized Schur
+form whose diagonal elements give the <img class="math" src="_images/math/0ab46f38795b87ecb430f3146823a15ef903e42d.png" alt="\alpha"/> and <img class="math" src="_images/math/e02f190f8fb57cf0cbdb88e60ad6999080cfed17.png" alt="\beta"/>
+values. The algorithm used is the QZ method due to Moler and Stewart
+(see references).</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_gen_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gen_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_gen_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving generalized eigenvalue
+problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gen_alloc">
+<a class="reference internal" href="#c.gsl_eigen_gen_workspace" title="gsl_eigen_gen_workspace"><span class="n"><span class="pre">gsl_eigen_gen_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gen_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gen_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues of
+<a class="reference internal" href="#c.gsl_eigen_gen_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_gen_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real generalized nonsymmetric eigensystems. The
+size of the workspace is <img class="math" src="_images/math/8c9c88e7ccbfc1a8524f9121fb555eb486beb2ea.png" alt="O(n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gen_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gen_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_gen_workspace" title="gsl_eigen_gen_workspace"><span class="n"><span class="pre">gsl_eigen_gen_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gen_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_gen_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gen_params">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gen_params</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">compute_s</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">compute_t</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">balance</span></span>, <a class="reference internal" href="#c.gsl_eigen_gen_workspace" title="gsl_eigen_gen_workspace"><span class="n"><span class="pre">gsl_eigen_gen_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gen_params" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function sets some parameters which determine how the eigenvalue
+problem is solved in subsequent calls to <a class="reference internal" href="#c.gsl_eigen_gen" title="gsl_eigen_gen"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_gen()</span></code></a>.</p>
+<p>If <a class="reference internal" href="#c.gsl_eigen_gen_params" title="compute_s"><code class="xref c c-data docutils literal notranslate"><span class="pre">compute_s</span></code></a> is set to 1, the full Schur form <img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/> will be
+computed by <a class="reference internal" href="#c.gsl_eigen_gen" title="gsl_eigen_gen"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_gen()</span></code></a>. If it is set to 0,
+<img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/> will not be computed (this is the default setting). <img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/>
+is a quasi upper triangular matrix with 1-by-1 and 2-by-2 blocks
+on its diagonal. 1-by-1 blocks correspond to real eigenvalues, and
+2-by-2 blocks correspond to complex eigenvalues.</p>
+<p>If <a class="reference internal" href="#c.gsl_eigen_gen_params" title="compute_t"><code class="xref c c-data docutils literal notranslate"><span class="pre">compute_t</span></code></a> is set to 1, the full Schur form <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> will be
+computed by <a class="reference internal" href="#c.gsl_eigen_gen" title="gsl_eigen_gen"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_gen()</span></code></a>. If it is set to 0,
+<img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/> will not be computed (this is the default setting). <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>
+is an upper triangular matrix with non-negative elements on its diagonal.
+Any 2-by-2 blocks in <img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/> will correspond to a 2-by-2 diagonal
+block in <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>.</p>
+<p>The <a class="reference internal" href="#c.gsl_eigen_gen_params" title="balance"><code class="xref c c-data docutils literal notranslate"><span class="pre">balance</span></code></a> parameter is currently ignored, since generalized
+balancing is not yet implemented.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gen">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gen</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">alpha</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">beta</span></span>, <a class="reference internal" href="#c.gsl_eigen_gen_workspace" title="gsl_eigen_gen_workspace"><span class="n"><span class="pre">gsl_eigen_gen_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gen" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes the eigenvalues of the real generalized nonsymmetric
+matrix pair (<a class="reference internal" href="#c.gsl_eigen_gen" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_gen" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>), and stores them as pairs in
+(<a class="reference internal" href="#c.gsl_eigen_gen" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_gen" title="beta"><code class="xref c c-data docutils literal notranslate"><span class="pre">beta</span></code></a>), where <a class="reference internal" href="#c.gsl_eigen_gen" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a> is complex and <a class="reference internal" href="#c.gsl_eigen_gen" title="beta"><code class="xref c c-data docutils literal notranslate"><span class="pre">beta</span></code></a> is
+real. If <img class="math" src="_images/math/334b187bd82b7d198e6ac06ec184b560d921a23b.png" alt="\beta_i"/> is non-zero, then
+<img class="math" src="_images/math/d8d2c19169c892d500e8d2175e8feb6325aee395.png" alt="\lambda = \alpha_i / \beta_i"/> is an eigenvalue. Likewise,
+if <img class="math" src="_images/math/30b5004bcdd2eb2f5bab4da74793a33fa7ff793d.png" alt="\alpha_i"/> is non-zero, then
+<img class="math" src="_images/math/0254bd2de14a7580e612bf722a74c6db42377b40.png" alt="\mu = \beta_i / \alpha_i"/> is an eigenvalue of the alternate
+problem <img class="math" src="_images/math/c7d615c6f1a4e7f01a322694b9ab355e9e9adeec.png" alt="\mu A y = B y"/>. The elements of <a class="reference internal" href="#c.gsl_eigen_gen" title="beta"><code class="xref c c-data docutils literal notranslate"><span class="pre">beta</span></code></a> are normalized
+to be non-negative.</p>
+<p>If <img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/> is desired, it is stored in <a class="reference internal" href="#c.gsl_eigen_gen" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a> on output. If <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>
+is desired, it is stored in <a class="reference internal" href="#c.gsl_eigen_gen" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a> on output. The ordering of
+eigenvalues in (<a class="reference internal" href="#c.gsl_eigen_gen" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_gen" title="beta"><code class="xref c c-data docutils literal notranslate"><span class="pre">beta</span></code></a>) follows the ordering
+of the diagonal blocks in the Schur forms <img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/> and <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>. In rare
+cases, this function may fail to find all eigenvalues. If this occurs, an
+error code is returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gen_QZ">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gen_QZ</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">alpha</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">beta</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">Q</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">Z</span></span>, <a class="reference internal" href="#c.gsl_eigen_gen_workspace" title="gsl_eigen_gen_workspace"><span class="n"><span class="pre">gsl_eigen_gen_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gen_QZ" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is identical to <a class="reference internal" href="#c.gsl_eigen_gen" title="gsl_eigen_gen"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_gen()</span></code></a> except that it also
+computes the left and right Schur vectors and stores them into <a class="reference internal" href="#c.gsl_eigen_gen_QZ" title="Q"><code class="xref c c-data docutils literal notranslate"><span class="pre">Q</span></code></a>
+and <a class="reference internal" href="#c.gsl_eigen_gen_QZ" title="Z"><code class="xref c c-data docutils literal notranslate"><span class="pre">Z</span></code></a> respectively.</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_genv_workspace">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genv_workspace</span></span></span><a class="headerlink" href="#c.gsl_eigen_genv_workspace" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This workspace contains internal parameters used for solving generalized eigenvalue
+and eigenvector problems.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genv_alloc">
+<a class="reference internal" href="#c.gsl_eigen_genv_workspace" title="gsl_eigen_genv_workspace"><span class="n"><span class="pre">gsl_eigen_genv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genv_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genv_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function allocates a workspace for computing eigenvalues and
+eigenvectors of <a class="reference internal" href="#c.gsl_eigen_genv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a>-by-<a class="reference internal" href="#c.gsl_eigen_genv_alloc" title="n"><code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code></a> real generalized nonsymmetric
+eigensystems. The size of the workspace is <img class="math" src="_images/math/cce688b0ed7013d13412456fa42e8e1743e667fc.png" alt="O(7n)"/>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genv_free">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genv_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gsl_eigen_genv_workspace" title="gsl_eigen_genv_workspace"><span class="n"><span class="pre">gsl_eigen_genv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genv_free" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function frees the memory associated with the workspace <a class="reference internal" href="#c.gsl_eigen_genv_free" title="w"><code class="xref c c-data docutils literal notranslate"><span class="pre">w</span></code></a>.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genv">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genv</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">alpha</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">beta</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_genv_workspace" title="gsl_eigen_genv_workspace"><span class="n"><span class="pre">gsl_eigen_genv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function computes eigenvalues and right eigenvectors of the
+<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code>-by-<code class="xref c c-data docutils literal notranslate"><span class="pre">n</span></code> real generalized nonsymmetric matrix pair
+(<a class="reference internal" href="#c.gsl_eigen_genv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_genv" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>). The eigenvalues are stored in (<a class="reference internal" href="#c.gsl_eigen_genv" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_genv" title="beta"><code class="xref c c-data docutils literal notranslate"><span class="pre">beta</span></code></a>)
+and the eigenvectors are stored in <a class="reference internal" href="#c.gsl_eigen_genv" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a>. It first calls
+<a class="reference internal" href="#c.gsl_eigen_gen" title="gsl_eigen_gen"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_gen()</span></code></a> to compute the eigenvalues, Schur forms, and
+Schur vectors. Then it finds eigenvectors of the Schur forms and
+backtransforms them using the Schur vectors. The Schur vectors are
+destroyed in the process, but can be saved by using
+<a class="reference internal" href="#c.gsl_eigen_genv_QZ" title="gsl_eigen_genv_QZ"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_genv_QZ()</span></code></a>. The computed eigenvectors are normalized
+to have unit magnitude. On output, (<a class="reference internal" href="#c.gsl_eigen_genv" title="A"><code class="xref c c-data docutils literal notranslate"><span class="pre">A</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_genv" title="B"><code class="xref c c-data docutils literal notranslate"><span class="pre">B</span></code></a>) contains
+the generalized Schur form (<img class="math" src="_images/math/c5d9edbc4067984805da0e3610944e9308e12408.png" alt="S"/>, <img class="math" src="_images/math/da008f30aec40b729feeb13989fbe54555b2bba0.png" alt="T"/>). If <a class="reference internal" href="#c.gsl_eigen_gen" title="gsl_eigen_gen"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_gen()</span></code></a>
+fails, no eigenvectors are computed, and an error code is returned.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genv_QZ">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genv_QZ</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">A</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">B</span></span>, <span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">alpha</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">beta</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">Q</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">Z</span></span>, <a class="reference internal" href="#c.gsl_eigen_genv_workspace" title="gsl_eigen_genv_workspace"><span class="n"><span class="pre">gsl_eigen_genv_workspace</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">w</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genv_QZ" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function is identical to <a class="reference internal" href="#c.gsl_eigen_genv" title="gsl_eigen_genv"><code class="xref c c-func docutils literal notranslate"><span class="pre">gsl_eigen_genv()</span></code></a> except that it also
+computes the left and right Schur vectors and stores them into <a class="reference internal" href="#c.gsl_eigen_genv_QZ" title="Q"><code class="xref c c-data docutils literal notranslate"><span class="pre">Q</span></code></a>
+and <a class="reference internal" href="#c.gsl_eigen_genv_QZ" title="Z"><code class="xref c c-data docutils literal notranslate"><span class="pre">Z</span></code></a> respectively.</p>
+</dd></dl>
+
+</section>
+<section id="sorting-eigenvalues-and-eigenvectors">
+<h2>Sorting Eigenvalues and Eigenvectors<a class="headerlink" href="#sorting-eigenvalues-and-eigenvectors" title="Link to this heading">¶</a></h2>
+<dl class="c function" id="index-7">
+<dt class="sig sig-object c" id="c.gsl_eigen_symmv_sort">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_symmv_sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <a class="reference internal" href="#c.gsl_eigen_symmv_sort.gsl_eigen_sort_t" title="gsl_eigen_sort_t"><span class="n"><span class="pre">gsl_eigen_sort_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sort_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_symmv_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function simultaneously sorts the eigenvalues stored in the vector
+<a class="reference internal" href="#c.gsl_eigen_symmv_sort" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and the corresponding real eigenvectors stored in the columns
+of the matrix <a class="reference internal" href="#c.gsl_eigen_symmv_sort" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> into ascending or descending order according to
+the value of the parameter <a class="reference internal" href="#c.gsl_eigen_symmv_sort" title="sort_type"><code class="xref c c-data docutils literal notranslate"><span class="pre">sort_type</span></code></a>,</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gsl_eigen_symmv_sort.gsl_eigen_sort_t">
+<span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_sort_t</span></span></span><a class="headerlink" href="#c.gsl_eigen_symmv_sort.gsl_eigen_sort_t" title="Link to this definition">¶</a><br /></dt>
+<dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_VAL_ASC</span></code></p></td>
+<td><p>ascending order in numerical value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_VAL_DESC</span></code></p></td>
+<td><p>descending order in numerical value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_ABS_ASC</span></code></p></td>
+<td><p>ascending order in magnitude</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_ABS_DESC</span></code></p></td>
+<td><p>descending order in magnitude</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_hermv_sort">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_hermv_sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <span class="n"><span class="pre">gsl_eigen_sort_t</span></span><span class="w"> </span><span class="n"><span class="pre">sort_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_hermv_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function simultaneously sorts the eigenvalues stored in the vector
+<a class="reference internal" href="#c.gsl_eigen_hermv_sort" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and the corresponding complex eigenvectors stored in the
+columns of the matrix <a class="reference internal" href="#c.gsl_eigen_hermv_sort" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> into ascending or descending order
+according to the value of the parameter <a class="reference internal" href="#c.gsl_eigen_hermv_sort" title="sort_type"><code class="xref c c-data docutils literal notranslate"><span class="pre">sort_type</span></code></a> as shown above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_nonsymmv_sort">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_nonsymmv_sort</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <span class="n"><span class="pre">gsl_eigen_sort_t</span></span><span class="w"> </span><span class="n"><span class="pre">sort_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_nonsymmv_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function simultaneously sorts the eigenvalues stored in the vector
+<a class="reference internal" href="#c.gsl_eigen_nonsymmv_sort" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and the corresponding complex eigenvectors stored in the
+columns of the matrix <a class="reference internal" href="#c.gsl_eigen_nonsymmv_sort" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> into ascending or descending order
+according to the value of the parameter <a class="reference internal" href="#c.gsl_eigen_nonsymmv_sort" title="sort_type"><code class="xref c c-data docutils literal notranslate"><span class="pre">sort_type</span></code></a> as shown above.
+Only <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_ABS_ASC</span></code> and <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_ABS_DESC</span></code> are
+supported due to the eigenvalues being complex.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_gensymmv_sort">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_gensymmv_sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <a class="reference internal" href="vectors.html#c.gsl_matrix" title="gsl_matrix"><span class="n"><span class="pre">gsl_matrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <span class="n"><span class="pre">gsl_eigen_sort_t</span></span><span class="w"> </span><span class="n"><span class="pre">sort_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_gensymmv_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function simultaneously sorts the eigenvalues stored in the vector
+<a class="reference internal" href="#c.gsl_eigen_gensymmv_sort" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and the corresponding real eigenvectors stored in the columns
+of the matrix <a class="reference internal" href="#c.gsl_eigen_gensymmv_sort" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> into ascending or descending order according to
+the value of the parameter <a class="reference internal" href="#c.gsl_eigen_gensymmv_sort" title="sort_type"><code class="xref c c-data docutils literal notranslate"><span class="pre">sort_type</span></code></a> as shown above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genhermv_sort">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genhermv_sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">eval</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <span class="n"><span class="pre">gsl_eigen_sort_t</span></span><span class="w"> </span><span class="n"><span class="pre">sort_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genhermv_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function simultaneously sorts the eigenvalues stored in the vector
+<a class="reference internal" href="#c.gsl_eigen_genhermv_sort" title="eval"><code class="xref c c-data docutils literal notranslate"><span class="pre">eval</span></code></a> and the corresponding complex eigenvectors stored in the columns
+of the matrix <a class="reference internal" href="#c.gsl_eigen_genhermv_sort" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> into ascending or descending order according to
+the value of the parameter <a class="reference internal" href="#c.gsl_eigen_genhermv_sort" title="sort_type"><code class="xref c c-data docutils literal notranslate"><span class="pre">sort_type</span></code></a> as shown above.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gsl_eigen_genv_sort">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gsl_eigen_genv_sort</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl_vector_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">alpha</span></span>, <a class="reference internal" href="vectors.html#c.gsl_vector" title="gsl_vector"><span class="n"><span class="pre">gsl_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">beta</span></span>, <span class="n"><span class="pre">gsl_matrix_complex</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evec</span></span>, <span class="n"><span class="pre">gsl_eigen_sort_t</span></span><span class="w"> </span><span class="n"><span class="pre">sort_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gsl_eigen_genv_sort" title="Link to this definition">¶</a><br /></dt>
+<dd><p>This function simultaneously sorts the eigenvalues stored in the vectors
+(<a class="reference internal" href="#c.gsl_eigen_genv_sort" title="alpha"><code class="xref c c-data docutils literal notranslate"><span class="pre">alpha</span></code></a>, <a class="reference internal" href="#c.gsl_eigen_genv_sort" title="beta"><code class="xref c c-data docutils literal notranslate"><span class="pre">beta</span></code></a>) and the corresponding complex eigenvectors
+stored in the columns of the matrix <a class="reference internal" href="#c.gsl_eigen_genv_sort" title="evec"><code class="xref c c-data docutils literal notranslate"><span class="pre">evec</span></code></a> into ascending or
+descending order according to the value of the parameter <a class="reference internal" href="#c.gsl_eigen_genv_sort" title="sort_type"><code class="xref c c-data docutils literal notranslate"><span class="pre">sort_type</span></code></a>
+as shown above. Only <code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_ABS_ASC</span></code> and
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">GSL_EIGEN_SORT_ABS_DESC</span></code> are supported due to the eigenvalues being
+complex.</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>The following program computes the eigenvalues and eigenvectors of the 4-th order Hilbert matrix, <img class="math" src="_images/math/6601fde66bf63f550c3cfecb6ab2633195aaf4dd.png" alt="H(i,j) = 1/(i + j + 1)"/>.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_eigen.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">data</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">1.0</span>  <span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">3.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">4.0</span><span class="p">,</span>
+                    <span class="mi">1</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">3.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">4.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">5.0</span><span class="p">,</span>
+                    <span class="mi">1</span><span class="o">/</span><span class="mf">3.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">4.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">5.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">6.0</span><span class="p">,</span>
+                    <span class="mi">1</span><span class="o">/</span><span class="mf">4.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">5.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">6.0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">7.0</span> <span class="p">};</span>
+
+  <span class="n">gsl_matrix_view</span> <span class="n">m</span>
+    <span class="o">=</span> <span class="n">gsl_matrix_view_array</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+  <span class="n">gsl_vector</span> <span class="o">*</span><span class="nb">eval</span> <span class="o">=</span> <span class="n">gsl_vector_alloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+  <span class="n">gsl_matrix</span> <span class="o">*</span><span class="n">evec</span> <span class="o">=</span> <span class="n">gsl_matrix_alloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_symmv_workspace</span> <span class="o">*</span> <span class="n">w</span> <span class="o">=</span>
+    <span class="n">gsl_eigen_symmv_alloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_symmv</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="nb">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_symmv_free</span> <span class="p">(</span><span class="n">w</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_symmv_sort</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">,</span>
+                        <span class="n">GSL_EIGEN_SORT_ABS_ASC</span><span class="p">);</span>
+
+  <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="n">double</span> <span class="n">eval_i</span>
+           <span class="o">=</span> <span class="n">gsl_vector_get</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="n">gsl_vector_view</span> <span class="n">evec_i</span>
+           <span class="o">=</span> <span class="n">gsl_matrix_column</span> <span class="p">(</span><span class="n">evec</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+        <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;eigenvalue = </span><span class="si">%g</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">eval_i</span><span class="p">);</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;eigenvector = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="n">gsl_vector_fprintf</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span>
+                            <span class="o">&amp;</span><span class="n">evec_i</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%g</span><span class="s2">&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">gsl_vector_free</span> <span class="p">(</span><span class="nb">eval</span><span class="p">);</span>
+  <span class="n">gsl_matrix_free</span> <span class="p">(</span><span class="n">evec</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the beginning of the output from the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out
+eigenvalue = 9.67023e-05
+eigenvector =
+-0.0291933
+0.328712
+-0.791411
+0.514553
+...
+</pre></div>
+</div>
+<p>This can be compared with the corresponding output from GNU octave:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">octave</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">v</span><span class="p">,</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">hilb</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="n">octave</span><span class="o">&gt;</span> <span class="n">diag</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span>
+
+   <span class="mf">9.6702e-05</span>
+   <span class="mf">6.7383e-03</span>
+   <span class="mf">1.6914e-01</span>
+   <span class="mf">1.5002e+00</span>
+
+<span class="n">octave</span><span class="o">&gt;</span> <span class="n">v</span>
+<span class="n">v</span> <span class="o">=</span>
+
+   <span class="mf">0.029193</span>   <span class="mf">0.179186</span>  <span class="o">-</span><span class="mf">0.582076</span>   <span class="mf">0.792608</span>
+  <span class="o">-</span><span class="mf">0.328712</span>  <span class="o">-</span><span class="mf">0.741918</span>   <span class="mf">0.370502</span>   <span class="mf">0.451923</span>
+   <span class="mf">0.791411</span>   <span class="mf">0.100228</span>   <span class="mf">0.509579</span>   <span class="mf">0.322416</span>
+  <span class="o">-</span><span class="mf">0.514553</span>   <span class="mf">0.638283</span>   <span class="mf">0.514048</span>   <span class="mf">0.252161</span>
+</pre></div>
+</div>
+<p>Note that the eigenvectors can differ by a change of sign, since the
+sign of an eigenvector is arbitrary.</p>
+<p>The following program illustrates the use of the nonsymmetric
+eigensolver, by computing the eigenvalues and eigenvectors of
+the Vandermonde matrix
+<img class="math" src="_images/math/9a5a934a52f7fd29ca92be754e3454b4427bcd95.png" alt="V(x;i,j) = x_i^{n - j}"/>
+with <img class="math" src="_images/math/06b3d7493e28ece117fee516102219fc60614dcd.png" alt="x = (-1,-2,3,4)"/>.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_math.h&gt;</span>
+<span class="c1">#include &lt;gsl/gsl_eigen.h&gt;</span>
+
+<span class="nb">int</span>
+<span class="n">main</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">data</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+                    <span class="o">-</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+                    <span class="mf">27.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>
+                    <span class="mf">64.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">};</span>
+
+  <span class="n">gsl_matrix_view</span> <span class="n">m</span>
+    <span class="o">=</span> <span class="n">gsl_matrix_view_array</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+  <span class="n">gsl_vector_complex</span> <span class="o">*</span><span class="nb">eval</span> <span class="o">=</span> <span class="n">gsl_vector_complex_alloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+  <span class="n">gsl_matrix_complex</span> <span class="o">*</span><span class="n">evec</span> <span class="o">=</span> <span class="n">gsl_matrix_complex_alloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_nonsymmv_workspace</span> <span class="o">*</span> <span class="n">w</span> <span class="o">=</span>
+    <span class="n">gsl_eigen_nonsymmv_alloc</span> <span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_nonsymmv</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="nb">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_nonsymmv_free</span> <span class="p">(</span><span class="n">w</span><span class="p">);</span>
+
+  <span class="n">gsl_eigen_nonsymmv_sort</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">,</span>
+                           <span class="n">GSL_EIGEN_SORT_ABS_DESC</span><span class="p">);</span>
+
+  <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="n">gsl_complex</span> <span class="n">eval_i</span>
+           <span class="o">=</span> <span class="n">gsl_vector_complex_get</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="n">gsl_vector_complex_view</span> <span class="n">evec_i</span>
+           <span class="o">=</span> <span class="n">gsl_matrix_complex_column</span> <span class="p">(</span><span class="n">evec</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+        <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;eigenvalue = </span><span class="si">%g</span><span class="s2"> + </span><span class="si">%g</span><span class="s2">i</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">GSL_REAL</span><span class="p">(</span><span class="n">eval_i</span><span class="p">),</span> <span class="n">GSL_IMAG</span><span class="p">(</span><span class="n">eval_i</span><span class="p">));</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;eigenvector = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+          <span class="p">{</span>
+            <span class="n">gsl_complex</span> <span class="n">z</span> <span class="o">=</span>
+              <span class="n">gsl_vector_complex_get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">evec_i</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%g</span><span class="s2"> + </span><span class="si">%g</span><span class="s2">i</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">GSL_REAL</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">GSL_IMAG</span><span class="p">(</span><span class="n">z</span><span class="p">));</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">gsl_vector_complex_free</span><span class="p">(</span><span class="nb">eval</span><span class="p">);</span>
+  <span class="n">gsl_matrix_complex_free</span><span class="p">(</span><span class="n">evec</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the beginning of the output from the program:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./a.out
+eigenvalue = -6.41391 + 0i
+eigenvector =
+-0.0998822 + 0i
+-0.111251 + 0i
+0.292501 + 0i
+0.944505 + 0i
+eigenvalue = 5.54555 + 3.08545i
+eigenvector =
+-0.043487 + -0.0076308i
+0.0642377 + -0.142127i
+-0.515253 + 0.0405118i
+-0.840592 + -0.00148565i
+...
+</pre></div>
+</div>
+<p>This can be compared with the corresponding output from GNU octave:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">octave</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">v</span><span class="p">,</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">vander</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]));</span>
+<span class="n">octave</span><span class="o">&gt;</span> <span class="n">diag</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span>
+
+  <span class="o">-</span><span class="mf">6.4139</span> <span class="o">+</span> <span class="mf">0.0000</span><span class="n">i</span>
+   <span class="mf">5.5456</span> <span class="o">+</span> <span class="mf">3.0854</span><span class="n">i</span>
+   <span class="mf">5.5456</span> <span class="o">-</span> <span class="mf">3.0854</span><span class="n">i</span>
+   <span class="mf">2.3228</span> <span class="o">+</span> <span class="mf">0.0000</span><span class="n">i</span>
+
+<span class="n">octave</span><span class="o">&gt;</span> <span class="n">v</span>
+<span class="n">v</span> <span class="o">=</span>
+
+ <span class="n">Columns</span> <span class="mi">1</span> <span class="n">through</span> <span class="mi">3</span><span class="p">:</span>
+
+  <span class="o">-</span><span class="mf">0.09988</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>  <span class="o">-</span><span class="mf">0.04350</span> <span class="o">-</span> <span class="mf">0.00755</span><span class="n">i</span>  <span class="o">-</span><span class="mf">0.04350</span> <span class="o">+</span> <span class="mf">0.00755</span><span class="n">i</span>
+  <span class="o">-</span><span class="mf">0.11125</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>   <span class="mf">0.06399</span> <span class="o">-</span> <span class="mf">0.14224</span><span class="n">i</span>   <span class="mf">0.06399</span> <span class="o">+</span> <span class="mf">0.14224</span><span class="n">i</span>
+   <span class="mf">0.29250</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>  <span class="o">-</span><span class="mf">0.51518</span> <span class="o">+</span> <span class="mf">0.04142</span><span class="n">i</span>  <span class="o">-</span><span class="mf">0.51518</span> <span class="o">-</span> <span class="mf">0.04142</span><span class="n">i</span>
+   <span class="mf">0.94451</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>  <span class="o">-</span><span class="mf">0.84059</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>  <span class="o">-</span><span class="mf">0.84059</span> <span class="o">-</span> <span class="mf">0.00000</span><span class="n">i</span>
+
+ <span class="n">Column</span> <span class="mi">4</span><span class="p">:</span>
+
+  <span class="o">-</span><span class="mf">0.14493</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>
+   <span class="mf">0.35660</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>
+   <span class="mf">0.91937</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>
+   <span class="mf">0.08118</span> <span class="o">+</span> <span class="mf">0.00000</span><span class="n">i</span>
+</pre></div>
+</div>
+<p>Note that the eigenvectors corresponding to the eigenvalue
+<img class="math" src="_images/math/ce38151a08e2ec042b704ee16d29ad484704ca5c.png" alt="5.54555 + 3.08545i"/> differ by the multiplicative constant
+<img class="math" src="_images/math/8b514ea1bde2cadf916706cf20a037000bfdec20.png" alt="0.9999984 + 0.0017674i"/> which is an arbitrary phase factor
+of magnitude 1.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading">¶</a></h2>
+<p>Further information on the algorithms described in this section can be
+found in the following book,</p>
+<ul class="simple">
+<li><p>G. H. Golub, C. F. Van Loan, “Matrix Computations” (3rd Ed, 1996),
+Johns Hopkins University Press, ISBN 0-8018-5414-8.</p></li>
+</ul>
+<p>Further information on the generalized eigensystems QZ algorithm
+can be found in this paper,</p>
+<ul class="simple">
+<li><p>C. Moler, G. Stewart, “An Algorithm for Generalized Matrix Eigenvalue
+Problems”, SIAM J. Numer. Anal., Vol 10, No 2, 1973.</p></li>
+</ul>
+<p id="index-8">Eigensystem routines for very large matrices can be found in the
+Fortran library LAPACK. The LAPACK library is described in,</p>
+<ul class="simple">
+<li><p>LAPACK Users’ Guide (Third Edition, 1999), Published by SIAM,
+ISBN 0-89871-447-8.</p></li>
+</ul>
+<p>The LAPACK source code can be found at the website <a class="reference external" href="http://www.netlib.org/lapack">http://www.netlib.org/lapack</a>
+along with an online copy of the users guide.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="linalg.html" class="btn btn-neutral float-left" title="Linear Algebra" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fft.html" class="btn btn-neutral float-right" title="Fast Fourier Transforms (FFTs)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1996-2024 The GSL Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
