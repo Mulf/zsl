@@ -266,6 +266,7 @@ auto rdivide(const std::vector<T> &v, const std::vector<U> &w)
 	ArithOp<T, U> div = [](const T &t, const U &u) -> decltype(T{} - U{}) {
 		return t / u;
 	};
+	zsl::expect_no_zero(w);
 	auto ans = arith_op_vv(v, w, div);
 	return ans;
 }
