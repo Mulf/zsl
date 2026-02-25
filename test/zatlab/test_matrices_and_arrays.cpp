@@ -14,8 +14,8 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 		EXPECT_EQ(cat(v, w), x);
 
 
-		auto A = ones(3);
-		auto B = zeros(3);
+		auto A = ones(3, 3);
+		auto B = zeros(3, 3);
 		vector2_d C1{
 			{1, 1, 1},
 			{1, 1, 1},
@@ -107,24 +107,24 @@ TEST(matrices_and_arrays, create_and_combine_arrays) {
 
 	// zeros
 	{
-		vector_d v = zeros_v(3);
+		vector_d v = zeros(3);
 		vector_d r{ 0.0, 0.0, 0.0 };
-		vector2_d m1 = zeros(3);
+		vector2_d m1 = zeros(3, 3);
 		vector2_d r1 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
 		vector2_d m2 = zeros(2, 3);
 		vector2_d r2 = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
 		EXPECT_EQ(v, r);
 		EXPECT_EQ(m1, r1);
 		EXPECT_EQ(m2, r2);
-		EXPECT_EQ(zeros_v(0), vector_d{});
-		EXPECT_EQ(zeros(0), vector2_d{});
+		EXPECT_EQ(zeros(0), vector_d{});
+		EXPECT_EQ(zeros(0, 0), vector2_d{});
 	}
 
 	// ones
 	{
-		auto v3 = ones_v(4);
+		auto v3 = ones(4);
 		vector_d r3 = { 1.0, 1.0, 1.0, 1.0 };
-		vector2_d m4 = ones(3);
+		vector2_d m4 = ones(3, 3);
 		vector2_d r4 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };
 		vector2_d m5 = ones(2, 3);
 		vector2_d r5 = { { 1.0, 1.0, 1.0 }, { 1.0, 1.0, 1.0 } };

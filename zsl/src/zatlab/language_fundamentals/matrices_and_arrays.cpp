@@ -88,7 +88,7 @@ vector2_d cat(size_t dim, const vector2_d &A, const vector2_d &B) {
 
 // diag
 vector2_d diag(const vector_d &v) {
-  auto A = zeros(v.size());
+  auto A = zeros(v.size(), v.size());
   for (size_t i = 0; i < v.size(); i++) {
     A[i][i] = v[i];
   }
@@ -96,23 +96,25 @@ vector2_d diag(const vector_d &v) {
 }
 
 vector2_d diag(const vector_d &v, int k) {
-  if (k == 0) {
-    return diag(v);
-  }
+	if (k == 0) {
+		return diag(v);
+	}
 
-  if (k > 0) {
-    auto A = zeros(v.size() + static_cast<size_t>(k));
-    for (size_t i = 0; i < v.size(); i++) {
-      A[i][i + static_cast<size_t>(k)] = v[i];
-    }
-    return A;
-  }
+	if (k > 0) {
+        const size_t N = v.size() + static_cast<size_t>(k);
+		auto A = zeros(N, N);
+		for (size_t i = 0; i < v.size(); i++) {
+			A[i][i + static_cast<size_t>(k)] = v[i];
+		}
+		return A;
+	}
 
-  auto A = zeros(v.size() + static_cast<size_t>(-k));
-  for (size_t i = 0; i < v.size(); i++) {
-    A[i + static_cast<size_t>(-k)][i] = v[i];
-  }
-  return A;
+	const size_t N = v.size() + static_cast<size_t>(-k);
+    auto A = zeros(N, N);
+	for (size_t i = 0; i < v.size(); i++) {
+		A[i + static_cast<size_t>(-k)][i] = v[i];
+	}
+	return A;
 }
 
 vector_d diag(const vector2_d &A) {
@@ -161,7 +163,7 @@ vector_d diag(const vector2_d &A, int k) {
 }
 
 // eye
-vector2_d eye(size_t n) { return diag(ones_v(n)); }
+vector2_d eye(size_t n) { return diag(ones(n)); }
 
 vector2_d eye(size_t n, size_t m) {
   assert(n != 0 && m != 0);
@@ -196,18 +198,14 @@ vector2_d vertcat(const vector2_d &A, const vector2_d &B) { return cat(1, A, B);
 vector_d vertcat(const vector_d &v, const vector_d &w) { return cat(v, w); }
 
 // ones
-vector_d ones_v(size_t n) { return vector_d(n, 1.0); }
+vector_d ones(size_t n) { return vector_d(n, 1.0); }
 
-vector2_d ones(size_t n) { return vector2_d(n, ones_v(n)); }
-
-vector2_d ones(size_t sz1, size_t sz2) { return vector2_d(sz1, ones_v(sz2)); }
+vector2_d ones(size_t sz1, size_t sz2) { return vector2_d(sz1, ones(sz2)); }
 
 // zeros
-vector_d zeros_v(size_t n) { return vector_d(n, 0.0); }
+vector_d zeros(size_t n) { return vector_d(n, 0.0); }
 
-vector2_d zeros(size_t n) { return vector2_d(n, zeros_v(n)); }
-
-vector2_d zeros(size_t sz1, size_t sz2) { return vector2_d(sz1, zeros_v(sz2)); }
+vector2_d zeros(size_t sz1, size_t sz2) { return vector2_d(sz1, zeros(sz2)); }
 #pragma endregion
 
 #pragma region Create Grids

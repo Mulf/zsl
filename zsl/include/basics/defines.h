@@ -14,6 +14,7 @@ constexpr double pi = std::numbers::pi_v<double>;
 
 using vector_d = std::vector<double>;
 using vector_sz = std::vector<size_t>;
+using vector2_sz = std::vector<size_t>;
 using complex_d = std::complex<double>;
 using vector_c = std::vector<std::complex<double>>;
 using vector2_d = std::vector<std::vector<double>>;

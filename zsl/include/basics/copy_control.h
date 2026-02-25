@@ -10,10 +10,10 @@
 /// @class value sematics derived
 class Copyable {
 protected:
-  Copyable() = default;
-  ~Copyable() = default;
+	Copyable() = default;
+	~Copyable() = default;
 
-  COPYABLE(Copyable);
+	COPYABLE(Copyable);
 };
 
 #endif

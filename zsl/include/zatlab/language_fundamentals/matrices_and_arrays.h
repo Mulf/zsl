@@ -32,14 +32,11 @@ vector2_d vertcat(const vector2_d &A, const vector2_d &B);
 vector_d vertcat(const vector_d &v, const vector_d &w);
 
 // ones
-vector_d ones_v(size_t n);
-vector2_d ones(size_t n);
+vector_d ones(size_t n);
 vector2_d ones(size_t sz1, size_t sz2);
 
 // zeros
-vector_d zeros_v(size_t n);
-vector2_d zeros(size_t n);
-vector2_d zeros(size_t n);
+vector_d zeros(size_t n);
 vector2_d zeros(size_t sz1, size_t sz2);
 #pragma endregion
 
@@ -106,8 +103,6 @@ struct Colon {
   int interval;
   Colon(size_t first, size_t last);
   Colon(size_t first, int interval, size_t last);
-
-  COPYABLE(Colon);
 
   vector_sz to_vector() const;
   size_t count() const;
