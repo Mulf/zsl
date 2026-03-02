@@ -4,445 +4,367 @@
 #include "basics/basics.h"
 
 namespace zsl {
-#pragma region Addition
-// vector + scalar
-vector_d plus(const vector_d &v, double d);
-vector_d plus(double d, const vector_d &v);
-vector_c plus(const vector_d &v, const complex_d &c);
-vector_c plus(const complex_d &c, const vector_d &v);
-vector_c plus(const vector_c &v, double d);
-vector_c plus(double d, const vector_c &v);
-vector_c plus(const vector_c &v, const complex_d &c);
-vector_c plus(const complex_d &c, const vector_c &v);
-vector_d &plus_self(vector_d &v, double d);
-vector_c &plus_self(vector_c &v, const complex_d &c);
-vector_c &plus_self(vector_c &v, double d);
-// vector + vector
-vector_d plus(const vector_d &v, const vector_d &w);
-vector_c plus(const vector_c &v, const vector_c &w);
-vector_c plus(const vector_d &v, const vector_c &w);
-vector_c plus(const vector_c &v, const vector_d &w);
-vector_d &plus_self(vector_d &v, const vector_d &w);
-vector_c &plus_self(vector_c &v, const vector_c &w);
-vector_c &plus_self(vector_c &v, const vector_d &w);
-// matrix + scalar
-vector2_d plus(const vector2_d &A, double d);
-vector2_d plus(double d, const vector2_d &A);
-vector2_c plus(const vector2_d &A, const complex_d &c);
-vector2_c plus(const complex_d &c, const vector2_d &A);
-vector2_c plus(const vector2_c &A, double d);
-vector2_c plus(double d, const vector2_c &A);
-vector2_c plus(const vector2_c &A, const complex_d &c);
-vector2_c plus(const complex_d &c, const vector2_c &A);
-vector2_d &plus_self(vector2_d &A, double d);
-vector2_c &plus_self(vector2_c &A, const complex_d &c);
-vector2_c &plus_self(vector2_c &A, double d);
-// matrix + vector
-vector2_d plus(const vector2_d &A, const vector_d &v);
-vector2_d plus(const vector_d &v, const vector2_d &A);
-vector2_c plus(const vector2_d &A, const vector_c &v);
-vector2_c plus(const vector_c &v, const vector2_d &A);
-vector2_c plus(const vector2_c &A, const vector_d &v);
-vector2_c plus(const vector_d &v, const vector2_c &A);
-vector2_c plus(const vector2_c &A, const vector_c &v);
-vector2_c plus(const vector_c &v, const vector2_c &A);
-vector2_d &plus_self(vector2_d &A, const vector_d &v);
-vector2_c &plus_self(vector2_c &A, const vector_c &v);
-vector2_c &plus_self(vector2_c &A, const vector_d &v);
-// matrix + matrix
-vector2_d plus(const vector2_d &A, const vector2_d &B);
-vector2_c plus(const vector2_c &A, const vector2_c &B);
-vector2_c plus(const vector2_d &A, const vector2_c &B);
-vector2_c plus(const vector2_c &A, const vector2_d &B);
-vector2_d &plus_self(vector2_d &A, const vector2_d &B);
-vector2_c &plus_self(vector2_c &A, const vector2_c &B);
-vector2_c &plus_self(vector2_c &A, const vector2_d &B);
-#pragma endregion
 
-#pragma region Subtraction
-// vector - scalar
-vector_d minus(const vector_d &v, double d);
-vector_d minus(double d, const vector_d &v);
-vector_c minus(const vector_d &v, const complex_d &c);
-vector_c minus(const complex_d &c, const vector_d &v);
-vector_c minus(const vector_c &v, double d);
-vector_c minus(double d, const vector_c &v);
-vector_c minus(const vector_c &v, const complex_d &c);
-vector_c minus(const complex_d &c, const vector_c &v);
-vector_d &minus_self(vector_d &v, double d);
-vector_c &minus_self(vector_c &v, const complex_d &c);
-vector_c &minus_self(vector_c &v, double d);
-// vector - vector
-vector_d minus(const vector_d &v, const vector_d &w);
-vector_c minus(const vector_c &v, const vector_c &w);
-vector_c minus(const vector_d &v, const vector_c &w);
-vector_c minus(const vector_c &v, const vector_d &w);
-vector_d &minus_self(vector_d &v, const vector_d &w);
-vector_c &minus_self(vector_c &v, const vector_c &w);
-vector_c &minus_self(vector_c &v, const vector_d &w);
-// matrix - scalar
-vector2_d minus(const vector2_d &A, double d);
-vector2_d minus(double d, const vector2_d &A);
-vector2_c minus(const vector2_d &A, const complex_d &c);
-vector2_c minus(const complex_d &c, const vector2_d &A);
-vector2_c minus(const vector2_c &A, double d);
-vector2_c minus(double d, const vector2_c &A);
-vector2_c minus(const vector2_c &A, const complex_d &c);
-vector2_c minus(const complex_d &c, const vector2_c &A);
-vector2_d &minus_self(vector2_d &A, double d);
-vector2_c &minus_self(vector2_c &A, const complex_d &c);
-vector2_c &minus_self(vector2_c &A, double d);
-// matrix - vector
-vector2_d minus(const vector2_d &A, const vector_d &v);
-vector2_d minus(const vector_d &v, const vector2_d &A);
-vector2_c minus(const vector2_d &A, const vector_c &v);
-vector2_c minus(const vector_c &v, const vector2_d &A);
-vector2_c minus(const vector2_c &A, const vector_d &v);
-vector2_c minus(const vector_d &v, const vector2_c &A);
-vector2_c minus(const vector2_c &A, const vector_c &v);
-vector2_c minus(const vector_c &v, const vector2_c &A);
-vector2_d &minus_self(vector2_d &A, const vector_d &v);
-vector2_c &minus_self(vector2_c &A, const vector_c &v);
-vector2_c &minus_self(vector2_c &A, const vector_d &v);
-// matrix - matrix
-vector2_d minus(const vector2_d &A, const vector2_d &B);
-vector2_c minus(const vector2_c &A, const vector2_c &B);
-vector2_c minus(const vector2_d &A, const vector2_c &B);
-vector2_c minus(const vector2_c &A, const vector2_d &B);
-vector2_d &minus_self(vector2_d &A, const vector2_d &B);
-vector2_c &minus_self(vector2_c &A, const vector2_c &B);
-vector2_c &minus_self(vector2_c &A, const vector2_d &B);
-#pragma endregion
+template<typename F, typename T = double, typename U = double>
+concept ArithOp = requires(F f, T t, U u) {
+    { f(t, u) } -> std::same_as<std::common_type_t<T, U>>;
+};
 
-#pragma region Muliplication
-// vector * scalar
-vector_d times(const vector_d &v, double d);
-vector_d times(double d, const vector_d &v);
-vector_c times(const vector_d &v, const complex_d &c);
-vector_c times(const complex_d &c, const vector_d &v);
-vector_c times(const vector_c &v, double d);
-vector_c times(double d, const vector_c &v);
-vector_c times(const vector_c &v, const complex_d &c);
-vector_c times(const complex_d &c, const vector_c &v);
-vector_d &times_self(vector_d &v, double d);
-vector_c &times_self(vector_c &v, const complex_d &c);
-vector_c &times_self(vector_c &v, double d);
-// vector .* vector
-vector_d times(const vector_d &v, const vector_d &w);
-vector_c times(const vector_c &v, const vector_c &w);
-vector_c times(const vector_d &v, const vector_c &w);
-vector_c times(const vector_c &v, const vector_d &w);
-vector_d &times_self(vector_d &v, const vector_d &w);
-vector_c &times_self(vector_c &v, const vector_c &w);
-vector_c &times_self(vector_c &v, const vector_d &w);
-// matrix * scalar
-vector2_d times(const vector2_d &A, double d);
-vector2_d times(double d, const vector2_d &A);
-vector2_c times(const vector2_d &A, const complex_d &c);
-vector2_c times(const complex_d &c, const vector2_d &A);
-vector2_c times(const vector2_c &A, double d);
-vector2_c times(double d, const vector2_c &A);
-vector2_c times(const vector2_c &A, const complex_d &c);
-vector2_c times(const complex_d &c, const vector2_c &A);
-vector2_d &times_self(vector2_d &A, double d);
-vector2_c &times_self(vector2_c &A, const complex_d &c);
-vector2_c &times_self(vector2_c &A, double d);
-// matrix .* vector
-vector2_d times(const vector2_d &A, const vector_d &v);
-vector2_d times(const vector_d &v, const vector2_d &A);
-vector2_c times(const vector2_d &A, const vector_c &v);
-vector2_c times(const vector_c &v, const vector2_d &A);
-vector2_c times(const vector2_c &A, const vector_d &v);
-vector2_c times(const vector_d &v, const vector2_c &A);
-vector2_c times(const vector2_c &A, const vector_c &v);
-vector2_c times(const vector_c &v, const vector2_c &A);
-vector2_d &times_self(vector2_d &A, const vector_d &v);
-vector2_c &times_self(vector2_c &A, const vector_c &v);
-vector2_c &times_self(vector2_c &A, const vector_d &v);
-// matrix .* matrix
-vector2_d times(const vector2_d &A, const vector2_d &B);
-vector2_c times(const vector2_c &A, const vector2_c &B);
-vector2_c times(const vector2_d &A, const vector2_c &B);
-vector2_c times(const vector2_c &A, const vector2_d &B);
-vector2_d &times_self(vector2_d &A, const vector2_d &B);
-vector2_c &times_self(vector2_c &A, const vector2_c &B);
-vector2_c &times_self(vector2_c &A, const vector2_d &B);
-#pragma endregion
+template<typename F, typename T = double, typename U = double>
+concept ArithOpSelf = requires(F f, T t, U u) {
+    f(t, u);
+    std::same_as<std::common_type_t<T, U>, T>;
+};
 
-#pragma region Rdivide
-// vector / scalar
-vector_d rdivide(const vector_d &v, double d);
-vector_d rdivide(double d, const vector_d &v);
-vector_c rdivide(const vector_d &v, const complex_d &c);
-vector_c rdivide(const complex_d &c, const vector_d &v);
-vector_c rdivide(const vector_c &v, double d);
-vector_c rdivide(double d, const vector_c &v);
-vector_c rdivide(const vector_c &v, const complex_d &c);
-vector_c rdivide(const complex_d &c, const vector_c &v);
-vector_d &rdivide_self(vector_d &v, double d);
-vector_c &rdivide_self(vector_c &v, const complex_d &c);
-vector_c &rdivide_self(vector_c &v, double d);
-// vector ./ vector
-vector_d rdivide(const vector_d &v, const vector_d &w);
-vector_c rdivide(const vector_c &v, const vector_c &w);
-vector_c rdivide(const vector_d &v, const vector_c &w);
-vector_c rdivide(const vector_c &v, const vector_d &w);
-vector_d &rdivide_self(vector_d &v, const vector_d &w);
-vector_c &rdivide_self(vector_c &v, const vector_c &w);
-vector_c &rdivide_self(vector_c &v, const vector_d &w);
-// matrix / scalar
-vector2_d rdivide(const vector2_d &A, double d);
-vector2_d rdivide(double d, const vector2_d &A);
-vector2_c rdivide(const vector2_d &A, const complex_d &c);
-vector2_c rdivide(const complex_d &c, const vector2_d &A);
-vector2_c rdivide(const vector2_c &A, double d);
-vector2_c rdivide(double d, const vector2_c &A);
-vector2_c rdivide(const vector2_c &A, const complex_d &c);
-vector2_c rdivide(const complex_d &c, const vector2_c &A);
-vector2_d &rdivide_self(vector2_d &A, double d);
-vector2_c &rdivide_self(vector2_c &A, const complex_d &c);
-vector2_c &rdivide_self(vector2_c &A, double d);
-// matrix ./ vector
-vector2_d rdivide(const vector2_d &A, const vector_d &v);
-vector2_d rdivide(const vector_d &v, const vector2_d &A);
-vector2_c rdivide(const vector2_d &A, const vector_c &v);
-vector2_c rdivide(const vector_c &v, const vector2_d &A);
-vector2_c rdivide(const vector2_c &A, const vector_d &v);
-vector2_c rdivide(const vector_d &v, const vector2_c &A);
-vector2_c rdivide(const vector2_c &A, const vector_c &v);
-vector2_c rdivide(const vector_c &v, const vector2_c &A);
-vector2_d &rdivide_self(vector2_d &A, const vector_d &v);
-vector2_c &rdivide_self(vector2_c &A, const vector_c &v);
-vector2_c &rdivide_self(vector2_c &A, const vector_d &v);
-// matrix ./ matrix
-vector2_d rdivide(const vector2_d &A, const vector2_d &B);
-vector2_c rdivide(const vector2_c &A, const vector2_c &B);
-vector2_c rdivide(const vector2_d &A, const vector2_c &B);
-vector2_c rdivide(const vector2_c &A, const vector2_d &B);
-vector2_d &rdivide_self(vector2_d &A, const vector2_d &B);
-vector2_c &rdivide_self(vector2_c &A, const vector2_c &B);
-vector2_c &rdivide_self(vector2_c &A, const vector2_d &B);
-#pragma endregion
+template<Vector V>
+std::ostream &operator<<(std::ostream &os, const V &v) {
+    os << "[";
+    for (size_t i = 0; i < v.size(); ++i) {
+        os << v[i];
+        if (i != v.size() - 1) {
+            os << ", ";
+        }
+    }
+    os << "]";
+    return os;
+}
+
+template<Matrix V>
+std::ostream &operator<<(std::ostream &os, const V &v) {
+    os << "[";
+
+    const auto [N, M] = dim(v);
+    for (size_t i = 0; i < N; i++) {
+        os << "[";
+        for (size_t j = 0; j < M; j++) {
+            os << at(v, i, j);
+            if (j != M - 1) {
+                os << ", ";
+            }
+        }
+        os << "]";
+        if (i != N - 1) {
+            os << "; ";
+        }
+    }
+    os << "]";
+    return os;
+}
+
+template<Form S, Form F, ArithOp Op>
+auto arith_op(const S &s, const F &f, Op op) {
+    using T = std::common_type_t<element_type_t<S>, element_type_t<F>>;
+
+    if constexpr (Scalar<S>) {
+        if constexpr (Scalar<F>) {
+            return op(s, f);
+        }
+        else if constexpr (Vector<F>) {
+            const std::size_t N = f.size();
+            std::vector<T> r(N);
+            for (size_t i = 0; i < N; i++) {
+                r[i] = op(s, f[i]);
+            }
+            return r;
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            std::vector<std::vector<T>> r(N, std::vector<T>(M));
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    r[i][j] = op(s, at(f, i, j));
+                }
+            }
+            return r;
+        }
+    }
+    else if constexpr (Vector<S>) {
+        if constexpr (Scalar<F>) {
+            const std::size_t N = s.size();
+            std::vector<T> r(N);
+            for (size_t i = 0; i < N; i++) {
+                r[i] = op(s[i], f);
+            }
+            return r;
+        }
+        else if constexpr (Vector<F>) {
+            const std::size_t N = s.size();
+            std::vector<T> r(N);
+            for (size_t i = 0; i < N; i++) {
+                r[i] = op(s[i], f[i]);
+            }
+            return r;
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            std::vector<std::vector<T>> r(N, std::vector<T>(M));
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    r[i][j] = op(s[i], at(f, i, j));
+                }
+            }
+            return r;
+        }
+    }
+    else if constexpr (Matrix<S>) {
+        if constexpr (Scalar<F>) {
+            const auto [N, M] = dim(s);
+            std::vector<std::vector<T>> r(N, std::vector<T>(M));
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    r[i][j] = op(at(s, i, j), f);
+                }
+            }
+            return r;
+        }
+        else if constexpr (Vector<F>) {
+            const auto [N, M] = dim(s);
+            std::vector<std::vector<T>> r(N, std::vector<T>(M));
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    r[i][j] = op(at(s, i, j), f[i]);
+                }
+            }
+            return r;
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            std::vector<std::vector<T>> r(N, std::vector<T>(M));
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    r[i][j] = op(at(s, i, j), at(f, i, j));
+                }
+            }
+            return r;
+        }
+    }
+}
+
+template<Form S, Form F, ArithOpSelf Op>
+void arith_op_self(S &s, const F &f, Op op) {
+    using T = std::common_type_t<element_type_t<S>, element_type_t<F>>;
+
+    if constexpr (Scalar<S>) {
+        if constexpr (Scalar<F>) {
+            op(s, f);
+        }
+    }
+    else if constexpr (Vector<S>) {
+        if constexpr (Scalar<F>) {
+            const std::size_t N = s.size();
+            for (size_t i = 0; i < N; i++) {
+                op(s[i], f);
+            }
+        }
+        else if constexpr (Vector<F>) {
+            const std::size_t N = s.size();
+            for (size_t i = 0; i < N; i++) {
+                op(s[i], f[i]);
+            }
+        }
+    }
+    else if constexpr (Matrix<S>) {
+        if constexpr (Scalar<F>) {
+            const auto [N, M] = dim(s);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    op(at(s, i, j), f);
+                }
+            }
+        }
+        else if constexpr (Vector<F>) {
+            const auto [N, M] = dim(s);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    op(at(s, i, j), f[i]);
+                }
+            }
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    op(at(s, i, j), at(f, i, j));
+                }
+            }
+        }
+    }
+}
+
+template<Form R, Form S, Form F, ArithOp Op>
+void arith_op_to(R &r, const S &s, const F &f, Op op) {
+    using T = std::common_type_t<element_type_t<S>, element_type_t<F>>;
+
+    if constexpr (Scalar<S>) {
+        if constexpr (Scalar<F>) {
+            r = op(s, f);
+        }
+        else if constexpr (Vector<F>) {
+            const std::size_t N = f.size();
+            for (size_t i = 0; i < N; i++) {
+                r[i] = op(s, f[i]);
+            }
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    at(r, i, j) = op(s, at(f, i, j));
+                }
+            }
+        }
+    }
+    else if constexpr (Vector<S>) {
+        if constexpr (Scalar<F>) {
+            const std::size_t N = s.size();
+            for (size_t i = 0; i < N; i++) {
+                r[i] = op(s[i], f);
+            }
+        }
+        else if constexpr (Vector<F>) {
+            const std::size_t N = s.size();
+            for (size_t i = 0; i < N; i++) {
+                r[i] = op(s[i], f[i]);
+            }
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    at(r, i, j) = op(s[i], at(f, i, j));
+                }
+            }
+        }
+    }
+    else if constexpr (Matrix<S>) {
+        if constexpr (Scalar<F>) {
+            const auto [N, M] = dim(s);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    at(r, i, j) = op(at(s, i, j), f);
+                }
+            }
+        }
+        else if constexpr (Vector<F>) {
+            const auto [N, M] = dim(s);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    at(r, i, j) = op(at(s, i, j), f[i]);
+                }
+            }
+        }
+        else if constexpr (Matrix<F>) {
+            const auto [N, M] = dim(f);
+            for (size_t i = 0; i < N; i++) {
+                for (size_t j = 0; j < M; j++) {
+                    at(r, i, j) = op(at(s, i, j), at(f, i, j));
+                }
+            }
+        }
+    }
+}
+
+template<Form F, Form G>
+auto plus(const F &f, const G &g) {
+    return arith_op(f, g, [](auto a, auto b) { return a + b; });
+}
+
+template<Form F, Form G>
+void plus_self(F &f, const G &g) {
+    arith_op_self(f, g, [](auto &a, auto b) { a += b; });
+}
+
+template<Form R, Form F, Form G>
+auto plus_to(R &r, const F &f, const G &g) {
+    arith_op_to(r, f, g, [](auto a, auto b) { return a + b; });
+}
+
+template<Form F, Form G>
+auto minus(const F &f, const G &g) {
+    return arith_op(f, g, [](auto a, auto b) { return a - b; });
+}
+
+template<Form F, Form G>
+void minus_self(F &f, const G &g) {
+    return arith_op_self(f, g, [](auto &a, auto b) { a -= b; });
+}
+
+template<Form R, Form F, Form G>
+auto minus_to(R &r, const F &f, const G &g) {
+    return arith_op_to(r, f, g, [](auto a, auto b) { return a - b; });
+}
+
+template<Form F, Form G>
+auto times(const F &f, const G &g) {
+    return arith_op(f, g, [](auto a, auto b) { return a * b; });
+}
+
+template<Form F, Form G>
+void times_self(F &f, const G &g) {
+    return arith_op_self(f, g, [](auto &a, auto b) { a *= b; });
+}
+
+template<Form R, Form F, Form G>
+auto times_to(R &r, const F &f, const G &g) {
+    return arith_op_to(r, f, g, [](auto a, auto b) { return a * b; });
+}
+
+template<Form F, Form G>
+auto rdivide(const F &f, const G &g) {
+    return arith_op(f, g, [](auto a, auto b) { return a / b; });
+}
+
+template<Form R, Form F, Form G>
+auto rdivide_to(R &r, const F &f, const G &g) {
+    return arith_op_to(r, f, g, [](auto a, auto b) { return a / b; });
+}
+
+template<Form F, Form G>
+void rdivide_self(F &f, const G &g) {
+    return arith_op_self(f, g, [](auto &a, auto b) { a /= b; });
+}
+
 } // namespace zsl
 
-#pragma region Addition Plus sign Overload
-// vector + scalar
-zsl::vector_d operator+(const zsl::vector_d &v, double d);
-zsl::vector_d operator+(double d, const zsl::vector_d &v);
-zsl::vector_c operator+(const zsl::vector_d &v, const zsl::complex_d &c);
-zsl::vector_c operator+(const zsl::complex_d &c, const zsl::vector_d &v);
-zsl::vector_c operator+(const zsl::vector_c &v, double d);
-zsl::vector_c operator+(double d, const zsl::vector_c &v);
-zsl::vector_c operator+(const zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c operator+(const zsl::complex_d &c, const zsl::vector_c &v);
-zsl::vector_d &operator+=(zsl::vector_d &v, double d);
-zsl::vector_c &operator+=(zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c &operator+=(zsl::vector_c &v, double d);
-// vector + vector
-zsl::vector_d operator+(const zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c operator+(const zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c operator+(const zsl::vector_d &v, const zsl::vector_c &w);
-zsl::vector_c operator+(const zsl::vector_c &v, const zsl::vector_d &w);
-zsl::vector_d &operator+=(zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c &operator+=(zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c &operator+=(zsl::vector_c &v, const zsl::vector_d &w);
-// matrix + scalar
-zsl::vector2_d operator+(const zsl::vector2_d &A, double d);
-zsl::vector2_d operator+(double d, const zsl::vector2_d &A);
-zsl::vector2_c operator+(const zsl::vector2_d &A, const zsl::complex_d &c);
-zsl::vector2_c operator+(const zsl::complex_d &c, const zsl::vector2_d &A);
-zsl::vector2_c operator+(const zsl::vector2_c &A, double d);
-zsl::vector2_c operator+(double d, const zsl::vector2_c &A);
-zsl::vector2_c operator+(const zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c operator+(const zsl::complex_d &c, const zsl::vector2_c &A);
-zsl::vector2_d &operator+=(zsl::vector2_d &A, double d);
-zsl::vector2_c &operator+=(zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c &operator+=(zsl::vector2_c &A, double d);
-// matrix + vector
-zsl::vector2_d operator+(const zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_d operator+(const zsl::vector_d &v, const zsl::vector2_d &A);
-zsl::vector2_c operator+(const zsl::vector2_d &A, const zsl::vector_c &v);
-zsl::vector2_c operator+(const zsl::vector_c &v, const zsl::vector2_d &A);
-zsl::vector2_c operator+(const zsl::vector2_c &A, const zsl::vector_d &v);
-zsl::vector2_c operator+(const zsl::vector_d &v, const zsl::vector2_c &A);
-zsl::vector2_c operator+(const zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c operator+(const zsl::vector_c &v, const zsl::vector2_c &A);
-zsl::vector2_d &operator+=(zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_c &operator+=(zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c &operator+=(zsl::vector2_c &A, const zsl::vector_d &v);
-// matrix + matrix
-zsl::vector2_d operator+(const zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c operator+(const zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c operator+(const zsl::vector2_d &A, const zsl::vector2_c &B);
-zsl::vector2_c operator+(const zsl::vector2_c &A, const zsl::vector2_d &B);
-zsl::vector2_d &operator+=(zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c &operator+=(zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c &operator+=(zsl::vector2_c &A, const zsl::vector2_d &B);
-#pragma endregion
+using zsl::Form;
+template<Form F, Form G>
+auto operator+(const F &f, const G &g) {
+    return zsl::plus(f, g);
+}
 
-#pragma region Subtraction Sign Overload
-// vector - scalar
-zsl::vector_d operator-(const zsl::vector_d &v, double d);
-zsl::vector_d operator-(double d, const zsl::vector_d &v);
-zsl::vector_c operator-(const zsl::vector_d &v, const zsl::complex_d &c);
-zsl::vector_c operator-(const zsl::complex_d &c, const zsl::vector_d &v);
-zsl::vector_c operator-(const zsl::vector_c &v, double d);
-zsl::vector_c operator-(double d, const zsl::vector_c &v);
-zsl::vector_c operator-(const zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c operator-(const zsl::complex_d &c, const zsl::vector_c &v);
-zsl::vector_d &operator-=(zsl::vector_d &v, double d);
-zsl::vector_c &operator-=(zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c &operator-=(zsl::vector_c &v, double d);
-// vector - vector
-zsl::vector_d operator-(const zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c operator-(const zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c operator-(const zsl::vector_d &v, const zsl::vector_c &w);
-zsl::vector_c operator-(const zsl::vector_c &v, const zsl::vector_d &w);
-zsl::vector_d &operator-=(zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c &operator-=(zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c &operator-=(zsl::vector_c &v, const zsl::vector_d &w);
-// matrix - scalar
-zsl::vector2_d operator-(const zsl::vector2_d &A, double d);
-zsl::vector2_d operator-(double d, const zsl::vector2_d &A);
-zsl::vector2_c operator-(const zsl::vector2_d &A, const zsl::complex_d &c);
-zsl::vector2_c operator-(const zsl::complex_d &c, const zsl::vector2_d &A);
-zsl::vector2_c operator-(const zsl::vector2_c &A, double d);
-zsl::vector2_c operator-(double d, const zsl::vector2_c &A);
-zsl::vector2_c operator-(const zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c operator-(const zsl::complex_d &c, const zsl::vector2_c &A);
-zsl::vector2_d &operator-=(zsl::vector2_d &A, double d);
-zsl::vector2_c &operator-=(zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c &operator-=(zsl::vector2_c &A, double d);
-// matrix - vector
-zsl::vector2_d operator-(const zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_d operator-(const zsl::vector_d &v, const zsl::vector2_d &A);
-zsl::vector2_c operator-(const zsl::vector2_d &A, const zsl::vector_c &v);
-zsl::vector2_c operator-(const zsl::vector_c &v, const zsl::vector2_d &A);
-zsl::vector2_c operator-(const zsl::vector2_c &A, const zsl::vector_d &v);
-zsl::vector2_c operator-(const zsl::vector_d &v, const zsl::vector2_c &A);
-zsl::vector2_c operator-(const zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c operator-(const zsl::vector_c &v, const zsl::vector2_c &A);
-zsl::vector2_d &operator-=(zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_c &operator-=(zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c &operator-=(zsl::vector2_c &A, const zsl::vector_d &v);
-// matrix - matrix
-zsl::vector2_d operator-(const zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c operator-(const zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c operator-(const zsl::vector2_d &A, const zsl::vector2_c &B);
-zsl::vector2_c operator-(const zsl::vector2_c &A, const zsl::vector2_d &B);
-zsl::vector2_d &operator-=(zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c &operator-=(zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c &operator-=(zsl::vector2_c &A, const zsl::vector2_d &B);
-#pragma endregion
+template<Form F, Form G>
+void operator+=(F &f, const G &g) {
+    zsl::plus_self(f, g);
+}
 
-#pragma region Times Sign Overload
-// vector * scalar
-zsl::vector_d operator*(const zsl::vector_d &v, double d);
-zsl::vector_d operator*(double d, const zsl::vector_d &v);
-zsl::vector_c operator*(const zsl::vector_d &v, const zsl::complex_d &c);
-zsl::vector_c operator*(const zsl::complex_d &c, const zsl::vector_d &v);
-zsl::vector_c operator*(const zsl::vector_c &v, double d);
-zsl::vector_c operator*(double d, const zsl::vector_c &v);
-zsl::vector_c operator*(const zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c operator*(const zsl::complex_d &c, const zsl::vector_c &v);
-zsl::vector_d &operator*=(zsl::vector_d &v, double d);
-zsl::vector_c &operator*=(zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c &operator*=(zsl::vector_c &v, double d);
-// vector * vector
-zsl::vector_d operator*(const zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c operator*(const zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c operator*(const zsl::vector_d &v, const zsl::vector_c &w);
-zsl::vector_c operator*(const zsl::vector_c &v, const zsl::vector_d &w);
-zsl::vector_d &operator*=(zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c &operator*=(zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c &operator*=(zsl::vector_c &v, const zsl::vector_d &w);
-// matrix * scalar
-zsl::vector2_d operator*(const zsl::vector2_d &A, double d);
-zsl::vector2_d operator*(double d, const zsl::vector2_d &A);
-zsl::vector2_c operator*(const zsl::vector2_d &A, const zsl::complex_d &c);
-zsl::vector2_c operator*(const zsl::complex_d &c, const zsl::vector2_d &A);
-zsl::vector2_c operator*(const zsl::vector2_c &A, double d);
-zsl::vector2_c operator*(double d, const zsl::vector2_c &A);
-zsl::vector2_c operator*(const zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c operator*(const zsl::complex_d &c, const zsl::vector2_c &A);
-zsl::vector2_d &operator*=(zsl::vector2_d &A, double d);
-zsl::vector2_c &operator*=(zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c &operator*=(zsl::vector2_c &A, double d);
-// matrix * vector
-zsl::vector2_d operator*(const zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_d operator*(const zsl::vector_d &v, const zsl::vector2_d &A);
-zsl::vector2_c operator*(const zsl::vector2_d &A, const zsl::vector_c &v);
-zsl::vector2_c operator*(const zsl::vector_c &v, const zsl::vector2_d &A);
-zsl::vector2_c operator*(const zsl::vector2_c &A, const zsl::vector_d &v);
-zsl::vector2_c operator*(const zsl::vector_d &v, const zsl::vector2_c &A);
-zsl::vector2_c operator*(const zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c operator*(const zsl::vector_c &v, const zsl::vector2_c &A);
-zsl::vector2_d &operator*=(zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_c &operator*=(zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c &operator*=(zsl::vector2_c &A, const zsl::vector_d &v);
-// matrix * matrix
-zsl::vector2_d operator*(const zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c operator*(const zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c operator*(const zsl::vector2_d &A, const zsl::vector2_c &B);
-zsl::vector2_c operator*(const zsl::vector2_c &A, const zsl::vector2_d &B);
-zsl::vector2_d &operator*=(zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c &operator*=(zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c &operator*=(zsl::vector2_c &A, const zsl::vector2_d &B);
-#pragma endregion
+template<Form F, Form G>
+auto operator-(const F &f, const G &g) {
+    return zsl::minus(f, g);
+}
 
-#pragma region Rdivide Sign Overload
-// vector / scalar
-zsl::vector_d operator/(const zsl::vector_d &v, double d);
-zsl::vector_d operator/(double d, const zsl::vector_d &v);
-zsl::vector_c operator/(const zsl::vector_d &v, const zsl::complex_d &c);
-zsl::vector_c operator/(const zsl::complex_d &c, const zsl::vector_d &v);
-zsl::vector_c operator/(const zsl::vector_c &v, double d);
-zsl::vector_c operator/(double d, const zsl::vector_c &v);
-zsl::vector_c operator/(const zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c operator/(const zsl::complex_d &c, const zsl::vector_c &v);
-zsl::vector_d &operator/=(zsl::vector_d &v, double d);
-zsl::vector_c &operator/=(zsl::vector_c &v, const zsl::complex_d &c);
-zsl::vector_c &operator/=(zsl::vector_c &v, double d);
-// vector / vector
-zsl::vector_d operator/(const zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c operator/(const zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c operator/(const zsl::vector_d &v, const zsl::vector_c &w);
-zsl::vector_c operator/(const zsl::vector_c &v, const zsl::vector_d &w);
-zsl::vector_d &operator/=(zsl::vector_d &v, const zsl::vector_d &w);
-zsl::vector_c &operator/=(zsl::vector_c &v, const zsl::vector_c &w);
-zsl::vector_c &operator/=(zsl::vector_c &v, const zsl::vector_d &w);
-// matrix / scalar
-zsl::vector2_d operator/(const zsl::vector2_d &A, double d);
-zsl::vector2_d operator/(double d, const zsl::vector2_d &A);
-zsl::vector2_c operator/(const zsl::vector2_d &A, const zsl::complex_d &c);
-zsl::vector2_c operator/(const zsl::complex_d &c, const zsl::vector2_d &A);
-zsl::vector2_c operator/(const zsl::vector2_c &A, double d);
-zsl::vector2_c operator/(double d, const zsl::vector2_c &A);
-zsl::vector2_c operator/(const zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c operator/(const zsl::complex_d &c, const zsl::vector2_c &A);
-zsl::vector2_d &operator/=(zsl::vector2_d &A, double d);
-zsl::vector2_c &operator/=(zsl::vector2_c &A, const zsl::complex_d &c);
-zsl::vector2_c &operator/=(zsl::vector2_c &A, double d);
-// matrix / vector
-zsl::vector2_d operator/(const zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_d operator/(const zsl::vector_d &v, const zsl::vector2_d &A);
-zsl::vector2_c operator/(const zsl::vector2_d &A, const zsl::vector_c &v);
-zsl::vector2_c operator/(const zsl::vector_c &v, const zsl::vector2_d &A);
-zsl::vector2_c operator/(const zsl::vector2_c &A, const zsl::vector_d &v);
-zsl::vector2_c operator/(const zsl::vector_d &v, const zsl::vector2_c &A);
-zsl::vector2_c operator/(const zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c operator/(const zsl::vector_c &v, const zsl::vector2_c &A);
-zsl::vector2_d &operator/=(zsl::vector2_d &A, const zsl::vector_d &v);
-zsl::vector2_c &operator/=(zsl::vector2_c &A, const zsl::vector_c &v);
-zsl::vector2_c &operator/=(zsl::vector2_c &A, const zsl::vector_d &v);
-// matrix / matrix
-zsl::vector2_d operator/(const zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c operator/(const zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c operator/(const zsl::vector2_d &A, const zsl::vector2_c &B);
-zsl::vector2_c operator/(const zsl::vector2_c &A, const zsl::vector2_d &B);
-zsl::vector2_d &operator/=(zsl::vector2_d &A, const zsl::vector2_d &B);
-zsl::vector2_c &operator/=(zsl::vector2_c &A, const zsl::vector2_c &B);
-zsl::vector2_c &operator/=(zsl::vector2_c &A, const zsl::vector2_d &B);
-#pragma endregion
+template<Form F, Form G>
+void operator-=(F &f, const G &g) {
+    zsl::minus_self(f, g);
+}
+
+template<Form F, Form G>
+auto operator*(const F &f, const G &g) {
+    return zsl::times(f, g);
+}
+
+template<Form F, Form G>
+void operator*=(F &f, const G &g) {
+    zsl::times_self(f, g);
+}
+
+template<Form F, Form G>
+auto operator/(const F &f, const G &g) {
+    return zsl::rdivide(f, g);
+}
+
+template<Form F, Form G>
+void operator/=(F &f, const G &g) {
+    zsl::rdivide_self(f, g);
+}
 
 #endif // !ZSL_ZATLAB_OPERATORS_AND_ARITHMETIC_OPERATOR_H

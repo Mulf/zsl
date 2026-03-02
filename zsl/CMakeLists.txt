@@ -21,7 +21,7 @@ target_sources(
 
         src/zatlab/language_fundamentals/matrices_and_arrays.cpp
         src/zatlab/language_fundamentals/matrices_and_arrays_indexing.cpp
-        src/zatlab/language_fundamentals/operators_and_elementary_operations/arithmetic_operations.cpp 
+        # src/zatlab/language_fundamentals/operators_and_elementary_operations/arithmetic_operations.cpp 
         # Data Import and Analysis
         include/zatlab/data_import_and_analysis/data_import_and_export.h
         include/zatlab/data_import_and_analysis/data_process.h
