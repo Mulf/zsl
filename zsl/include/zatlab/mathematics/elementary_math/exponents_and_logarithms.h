@@ -1,42 +1,41 @@
 #ifndef ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_EXPONENTS_AND_LOGRAITHMS_H
 
 #include "basics/basics.h"
+#include "elementary_math_temp.h"
 
 namespace zsl {
 
 #pragma region Exponents and Logarithms
 // exp
-vector_d exp(const vector_d &v);
-vector_c exp(const vector_c &v);
-vector2_d exp(const vector2_d &A);
-vector2_c exp(const vector2_c &A);
+STD_FUNC_PACK(exp)
+
 // log
-vector_d log(const vector_d &v);
-vector_c log(const vector_c &v);
-vector2_d log(const vector2_d &A);
-vector2_c log(const vector2_c &A);
+STD_FUNC_PACK(log)
+
 // log10
-vector_d log10(const vector_d &v);
-vector_c log10(const vector_c &v);
-vector2_d log10(const vector2_d &A);
-vector2_c log10(const vector2_c &A);
+STD_FUNC_PACK(log10)
+
 // log2
-vector_d log2(const vector_d &v);
-vector_c log2(const vector_c &v);
-vector2_d log2(const vector2_d &A);
-vector2_c log2(const vector2_c &A);
+STD_FUNC_PACK(log2)
+
 // pow2
-double pow2(double x);
-complex_d pow2(const complex_d &z);
-vector_d pow2(const vector_d &v);
-vector_c pow2(const vector_c &v);
-vector2_d pow2(const vector2_d &A);
-vector2_c pow2(const vector2_c &A);
+template<Form F>
+auto pow2(const F &v) {
+    return unary_func(v, [](auto x) { return std::pow(2, x); });
+}
+
+template<Form F>
+void pow2_self(F &v) {
+    unary_func_self(v, [](auto x) { return std::pow(2, x); });
+}
+
+template<Form R, Form F>
+void pow2_to(R &r, const F &v) {
+    unary_func_to(r, v, [](auto x) { return std::pow(2, x); });
+}
+
 // sqrt
-vector_d sqrt(const vector_d &v);
-vector_c sqrt(const vector_c &v);
-vector2_d sqrt(const vector2_d &A);
-vector2_c sqrt(const vector2_c &A);
+STD_FUNC_PACK(sqrt)
 
 #pragma endregion
 }

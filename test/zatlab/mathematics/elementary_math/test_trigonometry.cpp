@@ -8,7 +8,7 @@
 #define XSTRING(x) STRING(x)
 
 using namespace zsl;
-
+using namespace std::complex_literals;
 
 
 TEST(mathematics, elementary_math) {
@@ -25,7 +25,7 @@ TEST(mathematics, elementary_math) {
 		auto wd = sind(v);
 		auto wpi = sinpi(v);
 
-		/*{
+		{
 			using namespace matplot;
 			plot(v, row(Y, 0), "-o")->display_name("sin(x)");
 			hold(on);
@@ -38,7 +38,7 @@ TEST(mathematics, elementary_math) {
 			xlabel("x");
 			matplot::legend();
 			show();
-		}*/
+		}
 
 	}
 }

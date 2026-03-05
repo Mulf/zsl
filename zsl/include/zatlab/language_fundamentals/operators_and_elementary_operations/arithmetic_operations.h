@@ -16,41 +16,6 @@ concept ArithOpSelf = requires(F f, T t, U u) {
     std::same_as<std::common_type_t<T, U>, T>;
 };
 
-template<Vector V>
-std::ostream &operator<<(std::ostream &os, const V &v) {
-    os << "[";
-    for (size_t i = 0; i < v.size(); ++i) {
-        os << v[i];
-        if (i != v.size() - 1) {
-            os << ", ";
-        }
-    }
-    os << "]";
-    return os;
-}
-
-template<Matrix V>
-std::ostream &operator<<(std::ostream &os, const V &v) {
-    os << "[";
-
-    const auto [N, M] = dim(v);
-    for (size_t i = 0; i < N; i++) {
-        os << "[";
-        for (size_t j = 0; j < M; j++) {
-            os << at(v, i, j);
-            if (j != M - 1) {
-                os << ", ";
-            }
-        }
-        os << "]";
-        if (i != N - 1) {
-            os << "; ";
-        }
-    }
-    os << "]";
-    return os;
-}
-
 template<Form S, Form F, ArithOp Op>
 auto arith_op(const S &s, const F &f, Op op) {
     using T = std::common_type_t<element_type_t<S>, element_type_t<F>>;

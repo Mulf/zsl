@@ -2,15 +2,17 @@
 #define ZSL_ZATLAB_MATHEMATICS_ELEMENTARY_MATH_TRIGONOMETRY_H
 
 #include "basics/basics.h"
+#include "elementary_math_temp.h"
 
 
 namespace zsl {
 #pragma region Trigonometry
 // sin
-vector_d sin(const vector_d &v);
-vector_c sin(const vector_c &v);
-vector2_d sin(const vector2_d &v);
-vector2_c sin(const vector2_c &A);
+UNARY_STD_FUNC(sin);
+//vector_d sin(const vector_d &v);
+//vector_c sin(const vector_c &v);
+//vector2_d sin(const vector2_d &v);
+//vector2_c sin(const vector2_c &A);
 vector_d sind(const vector_d &v);
 vector_c sind(const vector_c &v);
 vector2_d sind(const vector2_d &A);

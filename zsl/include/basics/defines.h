@@ -138,6 +138,43 @@ auto &at(M &m, std::size_t row, std::size_t col) {
     }
 }
 
+
+template<Vector V>
+std::ostream &operator<<(std::ostream &os, const V &v) {
+    os << "[";
+    for (size_t i = 0; i < v.size(); ++i) {
+        os << v[i];
+        if (i != v.size() - 1) {
+            os << ", ";
+        }
+    }
+    os << "]";
+    return os;
+}
+
+template<Matrix V>
+std::ostream &operator<<(std::ostream &os, const V &v) {
+    os << "[";
+
+    const auto [N, M] = dim(v);
+    for (size_t i = 0; i < N; i++) {
+        os << "[";
+        for (size_t j = 0; j < M; j++) {
+            os << at(v, i, j);
+            if (j != M - 1) {
+                os << ", ";
+            }
+        }
+        os << "]";
+        if (i != N - 1) {
+            os << "; ";
+        }
+    }
+    os << "]";
+    return os;
+}
+
+
 template<class Matrix>
 bool is_matrix(const Matrix &A) {
     for (size_t i = 1; i < A.size(); i++) {
@@ -152,5 +189,8 @@ using UnaryOp = std::function<double(double)>;
 
 constexpr double ABS_EPS = 1e-4;
 } // namespace zsl
+
+
+
 
 #endif // !ZSL_BASICS_DEFINES_H

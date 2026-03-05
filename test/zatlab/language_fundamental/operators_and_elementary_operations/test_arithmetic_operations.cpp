@@ -4,7 +4,7 @@
 using namespace zsl;
 using namespace std::literals::complex_literals;
 
-constexpr double EPS = 1e-4;
+static constexpr double EPS = 1e-4;
 
 template<Form V, Form W>
 bool expect_eq(const V &v, const W &w) {

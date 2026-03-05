@@ -30,6 +30,7 @@ target_sources(
         src/zatlab/data_import_and_analysis/data_process.cpp
         src/zatlab/data_import_and_analysis/descriptive_statistics.cpp
         # Mathematics
+         include/zatlab/mathematics/elementary_math/elementary_math_temp.h
         include/zatlab/mathematics/elementary_math/trigonometry.h
         include/zatlab/mathematics/elementary_math/exponents_and_logarithms.h
         include/zatlab/mathematics/elementary_math/constants_and_test_matrices.h 
@@ -44,7 +45,7 @@ target_sources(
         src/zatlab/mathematics/random_number_generation.cpp
         src/zatlab/mathematics/fourier_analysis_and_filtering.cpp
         src/zatlab/mathematics/interpolation.cpp
-)
+ "include/zatlab/mathematics/elementary_math/elementary_math_temp.h")
 
 target_include_directories(zsl
     PUBLIC
