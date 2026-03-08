@@ -8,7 +8,10 @@ template<Form F, class Func>
 auto unary_func(const F &v, Func op) {
     using U = element_type_t<F>;
     using T = std::invoke_result_t<Func, U>;
-    if constexpr (Vector<F>) {
+    if constexpr (Scalar<F>) {
+        return op(v);
+	}
+    else if constexpr (Vector<F>) {
         const std::size_t N = v.size();
         std::vector<T> r(N);
         for (size_t i = 0; i < N; i++) {
@@ -74,28 +77,54 @@ void unary_func_to(R &r, const F &v, Func op) {
     }
 }
 
-#define UNARY_STD_FUNC(func)                                       \
-    template<Form F>                                               \
-    auto func(const F &v) {                                        \
-        return unary_func(v, [](auto x) { return std::func(x); }); \
+
+#define UNARY_FUNC(func, op)                                \
+    template<Form F>                                        \
+    auto func(const F &v) {                                 \
+        return unary_func(v, [](auto x) { return op(x); }); \
     }
 
-#define UNARY_STD_FUNC_SELF(func)                                \
-    template<Form F>                                             \
-    auto func##_##self(F &v) {                                   \
-        unary_func_self(v, [](auto x) { return std::func(x); }); \
+#define UNARY_FUNC_SELF(func, op)                           \
+    template<Form F>                                        \
+    auto func##_##self(F &v) {                              \
+        unary_func_self(v, [](auto x) { return op(x); });   \
     }
 
-#define UNARY_STD_FUNC_TO(func)                                   \
-    template<Form R, Form F>                                      \
-    void func##_##to(R &r, const F &v) {                          \
-        unary_func_to(r, v, [](auto x) { return std::func(x); }); \
+#define UNARY_FUNC_TO(func, op)                             \
+    template<Form R, Form F>                                \
+    void func##_##to(R &r, const F &v) {                    \
+        unary_func_to(r, v, [](auto x) { return op(x); });  \
     }
 
-#define STD_FUNC_PACK(func)   \
-    UNARY_STD_FUNC(func)      \
-    UNARY_STD_FUNC_SELF(func) \
-    UNARY_STD_FUNC_TO(func)
+#define UNARY_FUNC_PACK(func, op)  \
+    UNARY_FUNC(func, op)           \
+    UNARY_FUNC_SELF(func, op)      \
+    UNARY_FUNC_TO(func, op)
+
+#define STD_FUNC_PACK(func) UNARY_FUNC_PACK(func, std::func)   
+
+//#define UNARY_STD_FUNC(func)                                       \
+//    template<Form F>                                               \
+//    auto func(const F &v) {                                        \
+//        return unary_func(v, [](auto x) { return std::func(x); }); \
+//    }
+//
+//#define UNARY_STD_FUNC_SELF(func)                                \
+//    template<Form F>                                             \
+//    auto func##_##self(F &v) {                                   \
+//        unary_func_self(v, [](auto x) { return std::func(x); }); \
+//    }
+//
+//#define UNARY_STD_FUNC_TO(func)                                   \
+//    template<Form R, Form F>                                      \
+//    void func##_##to(R &r, const F &v) {                          \
+//        unary_func_to(r, v, [](auto x) { return std::func(x); }); \
+//    }
+//
+//#define STD_FUNC_PACK(func)   \
+//    UNARY_STD_FUNC(func)      \
+//    UNARY_STD_FUNC_SELF(func) \
+//    UNARY_STD_FUNC_TO(func)
 
 
 #define UNARY_STD_FUNC_RENAME(func, func_std)                                       \
@@ -104,7 +133,7 @@ void unary_func_to(R &r, const F &v, Func op) {
         return unary_func(v, [](auto x) { return std::func_std(x); }); \
     }
 
-#define UNARY_STD_FUNC_SELF_RENAME(func, func_std)                                \
+#define UNARY_STD_FUNC_SELF_RENAME(func, func_std)               \
     template<Form F>                                             \
     auto func##_##self(F &v) {                                   \
         unary_func_self(v, [](auto x) { return std::func_std(x); }); \

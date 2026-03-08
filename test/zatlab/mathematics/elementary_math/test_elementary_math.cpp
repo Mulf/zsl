@@ -178,6 +178,29 @@ TEST(elementary_math, complex_numbers)
             vt, v, [](auto &x, const auto &y) { return real_to(x, y); },
             v_real);
     }
+
+	{
+        vector_d v{-2.0, 0.0, 2.0};
+        vector_d v_sign{-1.0, 0.0, 1.0};
+        auto va = sign(v);
+        auto vs = v;
+        auto vt = v;
+        expect_eq(va, v_sign);
+        expect_eq_self(vs, [](auto &x) { return sign_self(x); }, v_sign);
+        expect_eq_to(
+            vt, v, [](auto &x, const auto &y) { return sign_to(x, y); },
+            v_sign);
+        vector_c w{6.0 + 8.0i, 0, 6.0i, -7.0};
+        vector_c w_sign{0.6 + 0.8i, 0, 1.0i, -1.0};
+        auto wa = sign(w);
+        auto ws = w;
+        auto wt = w;
+        expect_eq(wa, w_sign);
+        expect_eq_self(ws, [](auto &x) { return sign_self(x); }, w_sign);
+        expect_eq_to(
+            wt, w, [](auto &x, const auto &y) { return sign_to(x, y); },
+            w_sign);
+	}
 }
 
 TEST(elementary_math, exponents_and_logarithms) {

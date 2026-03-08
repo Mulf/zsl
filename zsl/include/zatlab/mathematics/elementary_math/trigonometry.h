@@ -8,7 +8,7 @@
 namespace zsl {
 #pragma region Trigonometry
 // sin
-UNARY_STD_FUNC(sin);
+STD_FUNC_PACK(sin);
 //vector_d sin(const vector_d &v);
 //vector_c sin(const vector_c &v);
 //vector2_d sin(const vector2_d &v);

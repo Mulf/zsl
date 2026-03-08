@@ -12,7 +12,7 @@ STD_FUNC_PACK(abs)
 
 // angle -> arg
 STD_FUNC_PACK(arg)
-STD_FUNC_PACK_RENAME(angle, arg)
+UNARY_FUNC_PACK(angle, std::arg)
 
 // conj
 STD_FUNC_PACK(conj)
@@ -25,10 +25,26 @@ STD_FUNC_PACK(real)
 
 
 // sign
-vector_d sign(const vector_d &v);
-vector2_d sign(const vector2_d &X);
-vector_c sign(const vector_c &v);
-vector2_c sign(const vector2_c &Z);
+
+inline double sign(double x) {
+    if (x > 0) {
+        return 1.0;
+    }
+    else if (x < 0) {
+        return -1.0;
+    }
+    return 0.0;
+}
+
+inline complex_d sign(const complex_d &z) {
+    if (std::abs(z) == 0) {
+        return 0;
+    }
+    return z / std::abs(z);
+}
+
+
+UNARY_FUNC_PACK(sign, sign)
 
 #pragma endregion
 } // namespace zsl
