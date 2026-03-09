@@ -11,7 +11,7 @@ using namespace zsl;
 using namespace std::complex_literals;
 
 
-TEST(mathematics, elementary_math) {
+TEST(mathematics, trigonometry) {
 	{
 		auto v = zsl::linspace(0, 8, 50);
 		vector2_d X = {v, v + 1.5};
@@ -39,6 +39,13 @@ TEST(mathematics, elementary_math) {
 			matplot::legend();
 			show();
 		}
+
+		double x = 0.5;
+        complex_d a = 1.0 + 2.0i;
+        double y = sind(x);
+        complex_d b = sind(a);
+        std::cout << "y = " << y << std::endl;
+        std::cout << "b = " << b << std::endl;
 
 	}
 }

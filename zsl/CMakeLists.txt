@@ -38,9 +38,9 @@ target_sources(
         include/zatlab/mathematics/random_number_generation.h
         include/zatlab/mathematics/fourier_analysis_and_filtering.h
         include/zatlab/mathematics/interpolation.h
-        src/zatlab/mathematics/elementary_math/trigonometry.cpp
+        #src/zatlab/mathematics/elementary_math/trigonometry.cpp
         #src/zatlab/mathematics/elementary_math/exponents_and_logarithms.cpp
-        src/zatlab/mathematics/elementary_math/constants_and_test_matrices.cpp 
+        #src/zatlab/mathematics/elementary_math/constants_and_test_matrices.cpp 
         #src/zatlab/mathematics/elementary_math/complex_numbers.cpp
         src/zatlab/mathematics/random_number_generation.cpp
         src/zatlab/mathematics/fourier_analysis_and_filtering.cpp

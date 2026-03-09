@@ -123,6 +123,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\zatlab\language_fundamentals\language_fundamental.h" />
+    <ClInclude Include="include\zatlab\mathematics\mathematics.h" />
+    <ClInclude Include="include\zatlab\zatlab.h" />
     <ClInclude Include="include\zsl.h" />
     <ClInclude Include="include\basics\basics.h" />
     <ClInclude Include="include\basics\check.h" />
@@ -135,7 +138,7 @@
     <ClInclude Include="include\zatlab\language_fundamentals\operators_and_elementary_operations\operators_and_elementary_operations.h" />
     <ClCompile Include="src\zatlab\language_fundamentals\matrices_and_arrays.cpp" />
     <ClCompile Include="src\zatlab\language_fundamentals\matrices_and_arrays_indexing.cpp" />
-    <ClCompile Include="src\zatlab\language_fundamentals\operators_and_elementary_operations\arithmetic_operations.cpp" />
+    <ClInclude Include="include\zatlab\data_import_and_analysis\data_import_and_analysis.h" />
     <ClInclude Include="include\zatlab\data_import_and_analysis\data_import_and_export.h" />
     <ClInclude Include="include\zatlab\data_import_and_analysis\data_process.h" />
     <ClInclude Include="include\zatlab\data_import_and_analysis\descriptive_statistics.h" />
@@ -149,10 +152,6 @@
     <ClInclude Include="include\zatlab\mathematics\random_number_generation.h" />
     <ClInclude Include="include\zatlab\mathematics\fourier_analysis_and_filtering.h" />
     <ClInclude Include="include\zatlab\mathematics\interpolation.h" />
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\trigonometry.cpp" />
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\exponents_and_logarithms.cpp" />
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\constants_and_test_matrices.cpp" />
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\complex_numbers.cpp" />
     <ClCompile Include="src\zatlab\mathematics\random_number_generation.cpp" />
     <ClCompile Include="src\zatlab\mathematics\fourier_analysis_and_filtering.cpp" />
     <ClCompile Include="src\zatlab\mathematics\interpolation.cpp" />

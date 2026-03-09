@@ -5,8 +5,7 @@
 
 namespace zsl {
 double rand();
-vector_d rand_v(size_t n);
-vector2_d rand(size_t n);
+vector_d rand(size_t n);
 vector2_d rand(size_t n, size_t m);
 
 }

@@ -10,9 +10,6 @@
     <ClCompile Include="src\zatlab\language_fundamentals\matrices_and_arrays_indexing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\zatlab\language_fundamentals\operators_and_elementary_operations\arithmetic_operations.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\zatlab\data_import_and_analysis\data_import_and_export.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -20,18 +17,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\zatlab\data_import_and_analysis\descriptive_statistics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\trigonometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\exponents_and_logarithms.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\constants_and_test_matrices.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\zatlab\mathematics\elementary_math\complex_numbers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\zatlab\mathematics\random_number_generation.cpp">
@@ -72,6 +57,9 @@
     <ClInclude Include="include\zatlab\language_fundamentals\operators_and_elementary_operations\operators_and_elementary_operations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\zatlab\data_import_and_analysis\data_import_and_analysis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\zatlab\data_import_and_analysis\data_import_and_export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -102,9 +90,9 @@
     <ClInclude Include="include\zatlab\mathematics\interpolation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="CMakeLists.txt" />
+    <ClInclude Include="include\zatlab\zatlab.h" />
+    <ClInclude Include="include\zatlab\language_fundamentals\language_fundamental.h" />
+    <ClInclude Include="include\zatlab\mathematics\mathematics.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
