@@ -1,4 +1,5 @@
 #include "zatlab/language_fundamentals/matrices_and_arrays.h"
+#include "zatlab/language_fundamentals/matrices_and_arrays_indexing.h"
 
 namespace _ {
 using namespace zsl;
@@ -616,39 +617,58 @@ Matrix &set_block_self(Matrix &A, const Colon &rowRng,
 } // namespace _
 
 namespace zsl {
-Colon::Colon(size_t first, size_t last) : Colon(first, 1, last) {}
 
-Colon::Colon(size_t first, int interval, size_t last)
-    : first{first}, interval{interval}, last{last} {
-	if (interval == 0) {
-		Z_THROW(ZErrorCode::LANG_INVALID_RANGE, "interval is 0");
-	} else if (interval > 0 && first > last) {
-		Z_THROW(ZErrorCode::LANG_INVALID_RANGE, "interval > 0 while first > last");
-	} else if (interval < 0 && first < last) {
-		Z_THROW(ZErrorCode::LANG_INVALID_RANGE, "interval < 0 while first < last");
-	}
+std::size_t detail::colon_iterator::operator*() const {
+    return _cln.get().at(_idx);
+}
+
+std::size_t detail::colon_iterator::size() const {
+    return _cln.get().size();
+}
+
+std::size_t Colon::size() const {
+    if (interval > 0) {
+        if (first > last)
+            return 0;
+        const std::size_t isz = static_cast<size_t>(interval);
+        return (last - first) / isz + 1;
+    }
+
+    if (first < last)
+        return 0;
+    const std::size_t isz = static_cast<size_t>(-interval);
+    return (first - last) / isz + 1;
+}
+
+std::size_t Colon::at(std::size_t idx) const {
+    if (interval >= 0)
+        return first + idx * interval;
+    else
+        return first - idx * static_cast<std::size_t>(-interval);
 }
 
 vector_sz Colon::to_vector() const {
-  const size_t N = count();
-  vector_sz ans{N, vector_sz::allocator_type{}};
-  for (int r = 0; r < N; r++) {
-    const int i = static_cast<int>(first) + r * interval;
-    ans[static_cast<size_t>(r)] = static_cast<size_t>(i);
-  }
+    const std::size_t N = size();
+    if (N == 0) {
+        return {};
+    }
+    vector_sz ans{N, vector_sz::allocator_type{}};
+    for (int r = 0; r < N; r++) {
+        const int i = static_cast<int>(first) + r * interval;
+        ans[static_cast<size_t>(r)] = static_cast<size_t>(i);
+    }
 
-  return ans;
+    return ans;
 }
 
-size_t Colon::count() const {
-  if (interval > 0) {
-    const size_t isz = static_cast<size_t>(interval);
-    return (last - first) / isz + 1;
-  }
-
-  const size_t isz = static_cast<size_t>(-interval);
-  return (first - last) / isz + 1;
+Colon::iterator Colon::begin() const {
+    return detail::colon_iterator{*this, 0};
 }
+
+Colon::iterator Colon::end() const {
+    return detail::colon_iterator{*this, size()};
+}
+
 
 #pragma region Indexing
 

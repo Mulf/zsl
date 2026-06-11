@@ -1,7 +1,7 @@
-#ifndef ZSL_ZATLAB_LANGUAGE_FUNDAMENTAL_MATRICES_AND_ARRARYS_H
-#define ZSL_ZATLAB_LANGUAGE_FUNDAMENTAL_MATRICES_AND_ARRARYS_H
+#pragma once
 
 #include "basics/basics.h"
+#include "matrices_and_arrays_indexing.h"
 
 #include <optional>
 #include <utility>
@@ -97,16 +97,16 @@ vector2_d &flip_self(vector2_d &A, size_t dim);
 #pragma endregion
 
 #pragma region Indexing
-struct Colon {
-  size_t first;
-  size_t last;
-  int interval;
-  Colon(size_t first, size_t last);
-  Colon(size_t first, int interval, size_t last);
-
-  vector_sz to_vector() const;
-  size_t count() const;
-};
+//struct Colon {
+//  size_t first;
+//  size_t last;
+//  int interval;
+//  Colon(size_t first, size_t last);
+//  Colon(size_t first, int interval, size_t last);
+//
+//  vector_sz to_vector() const;
+//  size_t count() const;
+//};
 vector_d colon(double j, double k);
 vector_sz colon(size_t j, size_t k);
 vector_d colon(double j, double i, double k);
@@ -115,6 +115,8 @@ vector_sz colon(size_t j, int i, size_t k);
 // block for real matrix/vector
 vector_d colon(const vector_d &v);
 vector_d colon(const vector2_d &A);
+
+/*
 vector_d block(const vector_d &v, const Colon &rng);
 vector_d block(const vector_d &v, const vector_sz &indices);
 vector_d set_block(const vector_d &v, const Colon &rng, const vector_d &w);
@@ -222,6 +224,7 @@ vector2_c set_block(const vector2_c &A, const Colon &rowRng,
                    const vector_sz &colIndices, const vector2_c &B);
 vector2_c &set_block_self(vector2_c &A, const Colon &rowRng,
                          const vector_sz &colIndices, const vector2_c &B);
+*/
 
 // ind2sub
 std::pair<size_t, size_t> ind2sub(const std::pair<size_t, size_t> &sz,
@@ -236,5 +239,3 @@ std::vector<size_t> sub2ind(const std::pair<size_t, size_t> &sz,
                             const std::vector<std::pair<size_t, size_t>> &sub);
 #pragma endregion
 } // namespace zsl
-
-#endif

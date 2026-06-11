@@ -15,6 +15,7 @@ target_sources(
         include/basics/ZException.h
         src/basics/ZException.cpp
         # Langugage Fundamentals
+        include/zatlab/language_fundamentals/matrices_and_arrays_indexing.h
         include/zatlab/language_fundamentals/matrices_and_arrays.h
         include/zatlab/language_fundamentals/operators_and_elementary_operations/arithmetic_operations.h 
         include/zatlab/language_fundamentals/operators_and_elementary_operations/operators_and_elementary_operations.h 
@@ -45,7 +46,7 @@ target_sources(
         src/zatlab/mathematics/random_number_generation.cpp
         src/zatlab/mathematics/fourier_analysis_and_filtering.cpp
         src/zatlab/mathematics/interpolation.cpp
- )
+)
 
 target_include_directories(zsl
     PUBLIC
